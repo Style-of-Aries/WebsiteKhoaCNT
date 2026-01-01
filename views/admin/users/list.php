@@ -31,11 +31,7 @@ ob_start();
 </style>
 
 <h2>Danh sách người dùng</h2>
-<div class="add">
-  <a href="index.php?controller=admin&action=addUser">
-    <i class="ri-add-circle-line"></i> 
-    Thêm Người Dùng Mới</a>
-</div>
+
 </style>
 <!-- <h2>Danh sách ngươi dùng</h2> -->
 
@@ -48,7 +44,7 @@ ob_start();
             <!-- <th>Email</th> -->
             <th>PassWord</th>
             <th>Role</th>
-            <th>id</th>
+            <th>id_SinhVien/GiangVien</th>
             <th>Hành Động</th>
           </tr>
         </thead>
@@ -63,8 +59,8 @@ ob_start();
             <td><?= htmlspecialchars($user['ref_id']) ?></td>
             <td>
               <!-- <a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?=$user['username'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Danh sách yêu thích</a> -->
-              <a href="index.php?controller=admin&action=edit_User&id=<?= $user['id'] ?>&user=<?=$user['username'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa thông tin</a>
-              <a href="index.php?controller=admin&action=deleteUser&id=<?= $user['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa người dùng</a>
+              <a href="index.php?controller=admin&action=edit_User&id=<?= $user['id'] ?>&user=<?=$user['username'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+              <a href="index.php?controller=admin&action=deleteUser&id=<?= $user['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
             </td>
           </tr>
           <?php endforeach ?>

@@ -9,6 +9,7 @@ class adminModel extends database
         $this->connect = $this->connect();
     }
 
+   
     
     
 }

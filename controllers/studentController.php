@@ -16,4 +16,8 @@ class studentController
         require_once './../views/admin/student/list.php';
     }
     
+
+    
+
+    
 }

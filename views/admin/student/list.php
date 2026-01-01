@@ -32,9 +32,9 @@ ob_start();
 
 <h2>Danh sách sinh viên</h2>
 <div class="add">
-  <a href="index.php?controller=admin&action=addUser">
+  <a href="index.php?controller=admin&action=addSinhVien">
     <i class="ri-add-circle-line"></i> 
-    Thêm Giảng Viên Mới</a>
+    Thêm Sinh Viên Mới</a>
 </div>
 </style>
 <!-- <h2>Danh sách ngươi dùng</h2> -->

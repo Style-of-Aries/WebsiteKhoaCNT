@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 29, 2025 lúc 05:04 PM
+-- Thời gian đã tạo: Th1 01, 2026 lúc 05:22 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -166,6 +166,13 @@ CREATE TABLE `lecturer` (
   `department_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `lecturer`
+--
+
+INSERT INTO `lecturer` (`id`, `full_name`, `lecturer_code`, `email`, `department_id`) VALUES
+(1, 'Nguyen Van A', 'GV001', 'giangvien01@gmail.com', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -207,6 +214,14 @@ CREATE TABLE `student` (
   `email` varchar(255) NOT NULL,
   `class_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `student`
+--
+
+INSERT INTO `student` (`id`, `full_name`, `student_code`, `email`, `class_id`) VALUES
+(2, 'Tran Van B', 'SV001', 'sinhvien01@gmail.com', NULL),
+(15, 'nvt', 'nvt', 'tutue9692@gmail.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -264,6 +279,16 @@ CREATE TABLE `users` (
   `role` enum('admin','lecturer','student') NOT NULL,
   `ref_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
+(5, 'admin123', 'admin123', 'admin', 0),
+(6, 'lecturer01', 'lecturer01', 'lecturer', 1),
+(7, 'student01', 'student01', 'student', 1),
+(8, 'nvt', '$2y$10$mEnc.cXUxMRFiLEfNqjcMeyp7B1Prvltv5zifOeyFmVL4nOsHiyvy', 'student', 15);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -462,7 +487,7 @@ ALTER TABLE `learning_materials`
 -- AUTO_INCREMENT cho bảng `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `rooms`
@@ -480,7 +505,7 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT cho bảng `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT cho bảng `subjects`
@@ -504,7 +529,7 @@ ALTER TABLE `training_points`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
