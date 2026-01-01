@@ -49,6 +49,9 @@ class authModel extends database
     }
     //end login
     
+    
+
+
     public function __query($sql){
         return mysqli_query($this->connect,$sql);
     }
