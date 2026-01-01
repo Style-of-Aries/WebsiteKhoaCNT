@@ -24,6 +24,7 @@ class studentModel extends database
         return $this->__query($sql);
     }
 
+    // thêm mới sinh viên 
     public function addSinhVien($full_name, $student_code, $email, $username, $password)
     {
         mysqli_begin_transaction($this->connect);
@@ -69,6 +70,8 @@ class studentModel extends database
         mysqli_commit($this->connect);
         return true;
     }
+
+    // kết thúc thêm sinh viên 
 
 
     public function __query($sql)

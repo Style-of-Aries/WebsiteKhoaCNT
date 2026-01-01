@@ -77,4 +77,35 @@ class adminController
     }
 
     // kết thúc thêm sinh viên 
+
+    // bắt đầu thêm sinh viên 
+
+
+    // truy cập tới giao diện sinh viên
+    public function addGiangVien()
+    {
+        require_once './../views/admin/lecturer/add.php';
+    }
+    // thêm mới sinh viên
+    public function addGv()
+    {
+        if ($_POST['btn_add']) {
+            $full_name = $_POST['full_name'];
+            $lecturer_code = $_POST['lecturer_code'];
+            $email = $_POST['email'];
+            // $class_id = $_POST['class_id'];
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            $student = $this->lecturerModel->addGiangVien($full_name, $lecturer_code, $email, $username, $password);
+            if ($student) {
+                $this->getAllGiangVien();
+            }else{
+                $this->no_index();
+            }
+        }
+    }
+
+    // kết thúc thêm sinh viên 
+    
 }
