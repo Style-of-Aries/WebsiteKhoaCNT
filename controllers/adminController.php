@@ -26,7 +26,7 @@ class adminController
         $users = $this->userModel->getAll();
         require_once './../views/admin/users/list.php';
     }
-    
+
     public function no_index()
     {
         // $users = $this->userModel->getAll();
@@ -70,7 +70,7 @@ class adminController
             $student = $this->studentModel->addSinhVien($full_name, $student_code, $email, $username, $password);
             if ($student) {
                 $this->getAllSinhVien();
-            }else{
+            } else {
                 $this->no_index();
             }
         }
@@ -100,12 +100,43 @@ class adminController
             $student = $this->lecturerModel->addGiangVien($full_name, $lecturer_code, $email, $username, $password);
             if ($student) {
                 $this->getAllGiangVien();
-            }else{
+            } else {
                 $this->no_index();
             }
         }
     }
 
     // kết thúc thêm sinh viên 
-    
+
+    // xóa người dùng 
+    public function deleteUser()
+    {
+        $id = $_GET['id'];
+        $role = $_GET['role'];
+        $ref_id = $_GET['ref_id'];
+        if ($role == 'student') {
+            $this->studentModel->deleteStudent($ref_id);
+        } else {
+            $this->lecturerModel->deleteLecturer($ref_id);
+        }
+        $this->userModel->deleteUser($id);
+        $this->index();
+    }
+
+    public function deleteStudent()
+    {
+        $ref_id = $_GET['id'];
+        $id = $_GET['id'];
+        $this->studentModel->deleteStudent($ref_id);
+        $this->userModel->deleteUser($id);
+        $this->getAllSinhVien();
+    }
+    public function deleteLecturer()
+    {
+        $ref_id = $_GET['id'];
+        $id = $_GET['id'];
+        $this->lecturerModel->deleteLecturer($ref_id);
+        $this->userModel->deleteUser($id);
+        $this->getAllGiangVien();
+    }
 }

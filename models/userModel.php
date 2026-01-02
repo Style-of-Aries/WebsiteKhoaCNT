@@ -22,6 +22,13 @@ class userModel extends database
         return $this->__query($sql);
     }
 
+    // lấy thông tin user theo id 
+    public function getById($id){
+        $sql = "SELECT * FROM users WHERE id='$id'";
+        return $this->__query($sql);
+    }
+
+    
     // kiểm tra email 
     public function checkEmail($email)
     {
@@ -35,6 +42,12 @@ class userModel extends database
             return true; // email đã tồn tại
         }
         return false;
+    }
+
+    public function deleteUser($id){
+        $sql="delete from users where id= $id";
+        return $this->__query($sql);
+
     }
     public function __query($sql)
     {

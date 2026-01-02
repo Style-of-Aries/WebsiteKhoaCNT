@@ -73,6 +73,13 @@ class lecturerModel extends database
 
     // kết thúc thêm sinh viên 
     
+
+ 
+    // xóa giảng viên 
+    public function deleteLecturer($ref_id){
+        $sql="delete from lecturer where id= $ref_id";
+        return $this->__query($sql);
+    }
     public function __query($sql){
         return mysqli_query($this->connect,$sql);
     }
