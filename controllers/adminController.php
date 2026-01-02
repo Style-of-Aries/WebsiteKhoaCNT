@@ -26,7 +26,7 @@ class adminController
         $users = $this->userModel->getAll();
         require_once './../views/admin/users/list.php';
     }
-    
+
     public function no_index()
     {
         // $users = $this->userModel->getAll();
@@ -70,11 +70,73 @@ class adminController
             $student = $this->studentModel->addSinhVien($full_name, $student_code, $email, $username, $password);
             if ($student) {
                 $this->getAllSinhVien();
-            }else{
+            } else {
                 $this->no_index();
             }
         }
     }
 
     // kết thúc thêm sinh viên 
+
+    // bắt đầu thêm sinh viên 
+
+
+    // truy cập tới giao diện sinh viên
+    public function addGiangVien()
+    {
+        require_once './../views/admin/lecturer/add.php';
+    }
+    // thêm mới sinh viên
+    public function addGv()
+    {
+        if ($_POST['btn_add']) {
+            $full_name = $_POST['full_name'];
+            $lecturer_code = $_POST['lecturer_code'];
+            $email = $_POST['email'];
+            // $class_id = $_POST['class_id'];
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            $student = $this->lecturerModel->addGiangVien($full_name, $lecturer_code, $email, $username, $password);
+            if ($student) {
+                $this->getAllGiangVien();
+            } else {
+                $this->no_index();
+            }
+        }
+    }
+
+    // kết thúc thêm sinh viên 
+
+    // xóa người dùng 
+    public function deleteUser()
+    {
+        $id = $_GET['id'];
+        $role = $_GET['role'];
+        $ref_id = $_GET['ref_id'];
+        if ($role == 'student') {
+            $this->studentModel->deleteStudent($ref_id);
+        } else {
+            $this->lecturerModel->deleteLecturer($ref_id);
+        }
+        $this->userModel->deleteUser($id);
+        $this->index();
+    }
+
+    public function deleteStudent()
+    {
+        $ref_id = $_GET['id'];
+        $id = $_GET['id'];
+        $this->studentModel->deleteStudent($ref_id);
+        $this->userModel->deleteUser($id);
+        $this->getAllSinhVien();
+    }
+    public function deleteLecturer()
+    {
+        $ref_id = $_GET['id'];
+        $id = $_GET['id'];
+        $this->lecturerModel->deleteLecturer($ref_id);
+        $this->userModel->deleteUser($id);
+        $this->getAllGiangVien();
+    }
 }

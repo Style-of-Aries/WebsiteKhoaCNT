@@ -24,6 +24,7 @@ class studentModel extends database
         return $this->__query($sql);
     }
 
+    // thêm mới sinh viên 
     public function addSinhVien($full_name, $student_code, $email, $username, $password)
     {
         mysqli_begin_transaction($this->connect);
@@ -70,7 +71,14 @@ class studentModel extends database
         return true;
     }
 
+    // kết thúc thêm sinh viên 
 
+
+    // xóa sinh viên 
+    public function deleteStudent($ref_id){
+        $sql="delete from student where id= $ref_id";
+        return $this->__query($sql);
+    }
     public function __query($sql)
     {
         return mysqli_query($this->connect, $sql);

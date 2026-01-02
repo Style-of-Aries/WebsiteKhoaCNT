@@ -40,6 +40,7 @@ ob_start();
         <thead>
           <tr>
             <th>#</th>
+            <th>id</th>
             <th>UserName</th>
             <!-- <th>Email</th> -->
             <th>PassWord</th>
@@ -51,8 +52,8 @@ ob_start();
         <tbody>
           <?php foreach ($users as $index => $user): ?>
           <tr>
-            <!-- <td><?= $user['id']   ?></td> -->
             <td><?= $index +1   ?></td>
+            <td><?= $user['id']   ?></td>
             <td><a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?=$user['username'] ?>"><?= htmlspecialchars($user['username']) ?></a></td>
             <td><?= htmlspecialchars($user['password']) ?></td>
             <td><?= htmlspecialchars($user['role']) ?></td>
@@ -60,7 +61,7 @@ ob_start();
             <td>
               <!-- <a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?=$user['username'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Danh sách yêu thích</a> -->
               <a href="index.php?controller=admin&action=edit_User&id=<?= $user['id'] ?>&user=<?=$user['username'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-              <a href="index.php?controller=admin&action=deleteUser&id=<?= $user['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
+              <a href="index.php?controller=admin&action=deleteUser&id=<?= $user['id'] ?>&ref_id=<?= $user['ref_id'] ?>&role=<?= $user['role'] ?>"   class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
             </td>
           </tr>
           <?php endforeach ?>
