@@ -21,7 +21,6 @@
     </div> -->
     <form action="index.php?controller=auth&action=auth_login" method="post">
       <h2>Đăng nhập</h2>
-
       <!-- <div class="input-box">
         <input type="text" name="email" placeholder="Email" required>
         <i class="fa-solid fa-envelope"></i>

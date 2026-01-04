@@ -49,6 +49,22 @@ class userModel extends database
         return $this->__query($sql);
 
     }
+    public function KtUserName($username){
+        $sql="Select *from users where username='$username'";
+        $query=$this->__query($sql);
+        if(mysqli_num_rows($query)>0){
+            return true;
+        }
+    }
+    public function getByRef_id($id){
+        $sql = "select * from users where ref_id='$id'";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
+    }
+    public function updateUser($id, $username,$password){
+        $sql = "UPDATE users SET username='$username',password = '$password' WHERE ref_id='$id'";
+        $query=$this->__query($sql);
+    }
     public function __query($sql)
     {
         return mysqli_query($this->connect, $sql);

@@ -13,7 +13,7 @@ class studentModel extends database
     // lấy thông tin user theo id
     public function getById($id)
     {
-        $sql = "SELECT * FROM student WHERE id='$id'";
+        $sql = "select * from student where id='$id'";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
@@ -22,6 +22,26 @@ class studentModel extends database
     {
         $sql = "SELECT * FROM student";
         return $this->__query($sql);
+    }
+
+    
+    public function KtEmail($email){
+        $sql="Select *from student where email='$email'";
+        $query=$this->__query($sql);
+        if(mysqli_num_rows($query)>0){
+            return true;
+        }
+    }
+    public function KtMasv($student_code){
+        $sql="Select *from student where student_code='$student_code'";
+        $query=$this->__query($sql);
+        if(mysqli_num_rows($query)>0){
+            return true;
+        }
+    }
+    public function updateSinhVien($id, $full_name, $student_code, $email){
+        $sql = "UPDATE student SET full_name='$full_name',student_code='$student_code', email='$email',class_id=null WHERE id='$id'";
+        $query=$this->__query($sql);
     }
 
     // thêm mới sinh viên 

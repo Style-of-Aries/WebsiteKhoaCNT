@@ -72,7 +72,24 @@ class lecturerModel extends database
     }
 
     // kết thúc thêm sinh viên 
-    
+    public function KtEmail($email){
+        $sql="Select *from lecturer where email='$email'";
+        $query=$this->__query($sql);
+        if(mysqli_num_rows($query)>0){
+            return true;
+        }
+    }
+    public function KtMagv($lecturer_code){
+        $sql="Select *from lecturer where lecturer_code='$lecturer_code'";
+        $query=$this->__query($sql);
+        if(mysqli_num_rows($query)>0){
+            return true;
+        }
+    }
+    public function updateGiangVien($id, $full_name, $lecturer_code, $email){
+        $sql = "UPDATE lecturer SET full_name='$full_name',lecturer_code='$lecturer_code', email='$email',department_id=null WHERE id='$id'";
+        $query=$this->__query($sql);
+    }
 
  
     // xóa giảng viên 

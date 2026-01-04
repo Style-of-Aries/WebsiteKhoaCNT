@@ -66,7 +66,7 @@ ob_start();
         <td><?= htmlspecialchars($user['class_id']) ?></td>
         <td>
           <!-- <a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?= $user['full_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Danh sách yêu thích</a> -->
-          <a href="index.php?controller=admin&action=edit_User&id=<?= $user['id'] ?>&user=<?= $user['full_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+          <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
           <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
 
         </td>

@@ -32,6 +32,7 @@ class adminController
         // $users = $this->userModel->getAll();
         require_once './../views/admin/users/list_no.php';
     }
+   
 
     // giao diện danh sách sinh viên 
     public function getAllSinhVien()
@@ -46,6 +47,63 @@ class adminController
         require_once './../views/admin/lecturer/list.php';
     }
 
+    // sửa sv 
+    
+     public function editSv()
+    {
+        $errorEmail = $errorMaSv = $errorName ="";
+        $id=$_GET['id'];
+        $user = $this->studentModel->getById($id);
+        $userNd = $this->userModel->getByRef_id($id);
+        require_once './../views/admin/student/edit.php';
+    }
+    public function editSinhVien()
+    {
+
+        if (isset($_POST['btn_edit'])) {
+            $id = $_POST['id'];
+            $full_name = $_POST['full_name'];
+            $student_code = $_POST['student_code'];
+            $email = $_POST['email'];
+            // $class_id=$_POST['class_id'];
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            // $sdtRegister = $_POST['phone'];
+
+            if ($this->userModel->KtUserName($username)) {
+                $errorName = "Tài khoản đã tồn tại";
+            }
+            if ($this->studentModel->KtMasv($student_code)) {
+                $errorMaSv = "Mã sinh viên đã tồn tại";
+            }
+            if ($this->studentModel->KtEmail($email)) {
+                $errorEmail = "Email đã tồn tại";
+            }
+            if ($this->lecturerModel->KtEmail($email)) {
+                $errorEmail = "Email đã tồn tại";
+            }
+            if (empty($errorName) && empty($errorEmail) && empty($errorMaSv)) {
+                $this->studentModel->updateSinhVien($id, $full_name, $student_code, $email);
+                $this->userModel->updateUser($id, $username,$password);
+                $this->getAllSinhVien();
+                exit;
+            } else {
+                // Gán lại dữ liệu vừa nhập để hiển thị lại form
+                $user= [
+                    'id' => $id,
+                    'full_name' => $full_name,
+                    'student_code' => $student_code,
+                    'email' => $email,
+                    'class_id' => null
+                ];
+                $userNd= [
+                    'username' => $username,
+                    'password' => $password
+                ];
+            }
+        }
+        include_once "./../views/admin/student/edit.php";
+    }
 
 
     // bắt đầu thêm sinh viên 
@@ -56,7 +114,7 @@ class adminController
     {
         require_once './../views/admin/student/add.php';
     }
-    // thêm mới sinh viên
+    // thêm mới sinh Đ
     public function add()
     {
         if ($_POST['btn_add']) {
@@ -75,7 +133,67 @@ class adminController
             }
         }
     }
+     public function editGv()
+    {
+        $errorEmail = $errorMaSv = $errorName ="";
+        $id=$_GET['id'];
+        $user = $this->lecturerModel->getById($id);
+        $userNd = $this->userModel->getByRef_id($id);
+        require_once './../views/admin/lecturer/edit.php';
+    }
+    public function editGiangVien()
+    {
 
+        if (isset($_POST['btn_edit'])) {
+            $id = $_POST['id'];
+            $full_name = $_POST['full_name'];
+            $lecturer_code = $_POST['lecturer_code'];
+            $email = $_POST['email'];
+            // $class_id=$_POST['class_id'];
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            // $sdtRegister = $_POST['phone'];
+
+            if ($this->userModel->KtUserName($username)) {
+                $errorName = "Tài khoản đã tồn tại";
+            }
+            if ($this->lecturerModel->KtMagv($lecturer_code)) {
+                $errorMaSv = "Mã sinh viên đã tồn tại";
+            }
+            if ($this->studentModel->KtEmail($email)) {
+                $errorEmail = "Email đã tồn tại";
+            }
+            if ($this->lecturerModel->KtEmail($email)) {
+                $errorEmail = "Email đã tồn tại";
+            }
+            if (empty($errorName) && empty($errorEmail) && empty($errorMaGv)) {
+                $this->lecturerModel->updateGiangVien($id, $full_name, $lecturer_code, $email);
+                $this->userModel->updateUser($id, $username,$password);
+                $this->getAllGiangVien();
+                exit;
+            } else {
+                // Gán lại dữ liệu vừa nhập để hiển thị lại form
+                $user= [
+                    'id' => $id,
+                    'full_name' => $full_name,
+                    'lecturer_code' => $lecturer_code,
+                    'email' => $email,
+                    'department_id' => null
+                ];
+                $userNd= [
+                    'username' => $username,
+                    'password' => $password
+                ];
+            }
+        }
+        include_once "./../views/admin/lecturer/edit.php";
+    }
+
+
+    // bắt đầu thêm sinh viên 
+
+
+    
     // kết thúc thêm sinh viên 
 
     // bắt đầu thêm sinh viên 

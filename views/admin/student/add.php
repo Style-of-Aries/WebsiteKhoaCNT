@@ -56,7 +56,7 @@ ob_start();
 </style>
 
 
-<h2>Thêm sinh viên mới</h2>
+<h2>Thêm sinh viên</h2>
 
 <form class="song-form" action="index.php?controller=admin&action=add" method="POST" enctype="multipart/form-data">
     <div>
