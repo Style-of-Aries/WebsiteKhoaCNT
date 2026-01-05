@@ -15,5 +15,7 @@ class lecturerController
         $students = $this->lecturerModel->getAll();
         require_once './../views/admin/lecturer/list.php';
     }
+
+    
     
 }

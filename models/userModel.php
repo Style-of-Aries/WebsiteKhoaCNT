@@ -23,12 +23,13 @@ class userModel extends database
     }
 
     // lấy thông tin user theo id 
-    public function getById($id){
+    public function getById($id)
+    {
         $sql = "SELECT * FROM users WHERE id='$id'";
         return $this->__query($sql);
     }
 
-    
+
     // kiểm tra email 
     public function checkEmail($email)
     {
@@ -44,26 +45,36 @@ class userModel extends database
         return false;
     }
 
-    public function deleteUser($id){
-        $sql="delete from users where id= $id";
+    public function deleteUser($id)
+    {
+        $sql = "delete from users where id= $id";
         return $this->__query($sql);
+    }
+    public function KtUserName($username, $id)
+    {
+        $sql = "
+        SELECT id 
+        FROM users 
+        WHERE username = '$username'
+        AND ref_id != $id
+        LIMIT 1
+    ";
 
+        $query = $this->__query($sql);
+
+        return mysqli_num_rows($query) > 0;
     }
-    public function KtUserName($username){
-        $sql="Select *from users where username='$username'";
-        $query=$this->__query($sql);
-        if(mysqli_num_rows($query)>0){
-            return true;
-        }
-    }
-    public function getByRef_id($id){
+
+    public function getByRef_id($id)
+    {
         $sql = "select * from users where ref_id='$id'";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
-    public function updateUser($id, $username,$password){
+    public function updateUser($id, $username, $password)
+    {
         $sql = "UPDATE users SET username='$username',password = '$password' WHERE ref_id='$id'";
-        $query=$this->__query($sql);
+        $query = $this->__query($sql);
     }
     public function __query($sql)
     {

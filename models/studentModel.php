@@ -20,28 +20,40 @@ class studentModel extends database
     // lấy toàn bộ thông tin của sinh viên
     public function getAll()
     {
-        $sql = "SELECT * FROM student";
+        $sql = "SELECT 
+    s.id,
+    s.full_name,
+    s.student_code,
+    s.email,
+    c.class_name
+    FROM student s
+    LEFT JOIN classes c ON s.class_id = c.id";
         return $this->__query($sql);
     }
 
+    public function KtMa($id, $student_code)
+    {
+        $sql = "Select *from student where student_code='$student_code'AND id != $id
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
+            return true;
+        }
+    }
     
-    public function KtEmail($email){
-        $sql="Select *from student where email='$email'";
-        $query=$this->__query($sql);
-        if(mysqli_num_rows($query)>0){
+    public function KtEmail($email, $id)
+    {
+        $sql = "Select *from student where email='$email'AND id != $id
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
             return true;
         }
     }
-    public function KtMasv($student_code){
-        $sql="Select *from student where student_code='$student_code'";
-        $query=$this->__query($sql);
-        if(mysqli_num_rows($query)>0){
-            return true;
-        }
-    }
-    public function updateSinhVien($id, $full_name, $student_code, $email){
-        $sql = "UPDATE student SET full_name='$full_name',student_code='$student_code', email='$email',class_id=null WHERE id='$id'";
-        $query=$this->__query($sql);
+    public function updateSinhVien($id, $full_name, $student_code, $email, $class_id)
+    {
+        $sql = "UPDATE student SET full_name='$full_name',student_code='$student_code', email='$email',class_id=$class_id WHERE id='$id'";
+        $query = $this->__query($sql);
     }
 
     // thêm mới sinh viên 
@@ -95,8 +107,9 @@ class studentModel extends database
 
 
     // xóa sinh viên 
-    public function deleteStudent($ref_id){
-        $sql="delete from student where id= $ref_id";
+    public function deleteStudent($ref_id)
+    {
+        $sql = "delete from student where id= $ref_id";
         return $this->__query($sql);
     }
     public function __query($sql)

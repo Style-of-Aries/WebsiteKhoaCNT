@@ -3,6 +3,7 @@ require_once "./../models/adminModel.php";
 require_once "./../models/userModel.php";
 require_once "./../models/studentModel.php";
 require_once "./../models/lecturerModel.php";
+require_once "./../models/classesModel.php";
 class adminController
 {
 
@@ -11,12 +12,14 @@ class adminController
     private $userModel;
     private $studentModel;
     private $lecturerModel;
+    private $classesModel;
     public function __construct()
     {
         $this->model = new adminModel();
         $this->studentModel = new studentModel();
         $this->userModel = new userModel();
         $this->lecturerModel = new lecturerModel();
+        $this->classesModel = new classesModel();
     }
 
     // giao diện danh sách người dùng
@@ -32,7 +35,7 @@ class adminController
         // $users = $this->userModel->getAll();
         require_once './../views/admin/users/list_no.php';
     }
-   
+
 
     // giao diện danh sách sinh viên 
     public function getAllSinhVien()
@@ -48,11 +51,12 @@ class adminController
     }
 
     // sửa sv 
-    
-     public function editSv()
+
+    public function editSv()
     {
-        $errorEmail = $errorMaSv = $errorName ="";
-        $id=$_GET['id'];
+        $errorEmail = $errorMaSv = $errorName = "";
+        $id = $_GET['id'];
+        $classes = $this->classesModel->getAll();
         $user = $this->studentModel->getById($id);
         $userNd = $this->userModel->getByRef_id($id);
         require_once './../views/admin/student/edit.php';
@@ -65,41 +69,42 @@ class adminController
             $full_name = $_POST['full_name'];
             $student_code = $_POST['student_code'];
             $email = $_POST['email'];
-            // $class_id=$_POST['class_id'];
+            $class_id = $_POST['class_id'];
             $username = $_POST['username'];
             $password = $_POST['password'];
             // $sdtRegister = $_POST['phone'];
-
-            if ($this->userModel->KtUserName($username)) {
-                $errorName = "Tài khoản đã tồn tại";
-            }
-            if ($this->studentModel->KtMasv($student_code)) {
+            if ($this->studentModel->KtMa($id, $student_code)) {
                 $errorMaSv = "Mã sinh viên đã tồn tại";
             }
-            if ($this->studentModel->KtEmail($email)) {
+            if ($this->userModel->KtUserName($username, $id)) {
+                $errorName = "Tài khoản đã tồn tại";
+            }
+            if ($this->studentModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
             }
-            if ($this->lecturerModel->KtEmail($email)) {
+            if ($this->lecturerModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
             }
+
             if (empty($errorName) && empty($errorEmail) && empty($errorMaSv)) {
-                $this->studentModel->updateSinhVien($id, $full_name, $student_code, $email);
-                $this->userModel->updateUser($id, $username,$password);
+                $this->studentModel->updateSinhVien($id, $full_name, $student_code, $email, $class_id);
+                $this->userModel->updateUser($id, $username, $password);
                 $this->getAllSinhVien();
                 exit;
             } else {
                 // Gán lại dữ liệu vừa nhập để hiển thị lại form
-                $user= [
+                $user = [
                     'id' => $id,
                     'full_name' => $full_name,
                     'student_code' => $student_code,
                     'email' => $email,
                     'class_id' => null
                 ];
-                $userNd= [
+                $userNd = [
                     'username' => $username,
                     'password' => $password
                 ];
+                $classes = $this->classesModel->getAll();
             }
         }
         include_once "./../views/admin/student/edit.php";
@@ -112,6 +117,8 @@ class adminController
     // truy cập tới giao diện sinh viên
     public function addSinhVien()
     {
+        $classes = $this->classesModel->getAll();
+
         require_once './../views/admin/student/add.php';
     }
     // thêm mới sinh Đ
@@ -133,10 +140,10 @@ class adminController
             }
         }
     }
-     public function editGv()
+    public function editGv()
     {
-        $errorEmail = $errorMaSv = $errorName ="";
-        $id=$_GET['id'];
+        $errorEmail = $errorMaSv = $errorName = "";
+        $id = $_GET['id'];
         $user = $this->lecturerModel->getById($id);
         $userNd = $this->userModel->getByRef_id($id);
         require_once './../views/admin/lecturer/edit.php';
@@ -154,33 +161,33 @@ class adminController
             $password = $_POST['password'];
             // $sdtRegister = $_POST['phone'];
 
-            if ($this->userModel->KtUserName($username)) {
+            if ($this->userModel->KtUserName($username,$id)) {
                 $errorName = "Tài khoản đã tồn tại";
             }
-            if ($this->lecturerModel->KtMagv($lecturer_code)) {
+            if ($this->lecturerModel->KtMagv($lecturer_code,$id)) {
                 $errorMaSv = "Mã sinh viên đã tồn tại";
             }
-            if ($this->studentModel->KtEmail($email)) {
+            if ($this->studentModel->KtEmail($email,$id)) {
                 $errorEmail = "Email đã tồn tại";
             }
-            if ($this->lecturerModel->KtEmail($email)) {
+            if ($this->lecturerModel->KtEmail($email,$id)) {
                 $errorEmail = "Email đã tồn tại";
             }
             if (empty($errorName) && empty($errorEmail) && empty($errorMaGv)) {
                 $this->lecturerModel->updateGiangVien($id, $full_name, $lecturer_code, $email);
-                $this->userModel->updateUser($id, $username,$password);
+                $this->userModel->updateUser($id, $username, $password);
                 $this->getAllGiangVien();
                 exit;
             } else {
                 // Gán lại dữ liệu vừa nhập để hiển thị lại form
-                $user= [
+                $user = [
                     'id' => $id,
                     'full_name' => $full_name,
                     'lecturer_code' => $lecturer_code,
                     'email' => $email,
                     'department_id' => null
                 ];
-                $userNd= [
+                $userNd = [
                     'username' => $username,
                     'password' => $password
                 ];
@@ -193,10 +200,10 @@ class adminController
     // bắt đầu thêm sinh viên 
 
 
-    
-    // kết thúc thêm sinh viên 
 
-    // bắt đầu thêm sinh viên 
+    // kết thúc thêm giảng viên 
+
+    // bắt đầu thêm giảng viên 
 
 
     // truy cập tới giao diện sinh viên

@@ -31,7 +31,7 @@ ob_start();
   }
 </style>
 
-<h2>Danh sách sinh viên</h2>
+<h2>Danh sách sinh viên lớp: <?php echo $_GET['user'] ?></h2>
 <div class="add">
   <a href="index.php?controller=admin&action=addSinhVien">
     <i class="ri-add-circle-line"></i>

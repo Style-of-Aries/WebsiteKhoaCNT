@@ -292,8 +292,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="index.php?controller=admin&action=the_loai" class="menu-link">
-                        <i class="ri-bar-chart-fill"></i> Danh Sách Khoa
+                    <a href="index.php?controller=classes&action=getAllLopHoc" class="menu-link">
+                        <i class="ri-bar-chart-fill"></i> Danh Sách Lớp Học
                     </a>
                 </li> 
                 <li>

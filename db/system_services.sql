@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 01, 2026 lúc 05:22 PM
+-- Thời gian đã tạo: Th1 05, 2026 lúc 04:09 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -171,7 +171,8 @@ CREATE TABLE `lecturer` (
 --
 
 INSERT INTO `lecturer` (`id`, `full_name`, `lecturer_code`, `email`, `department_id`) VALUES
-(1, 'Nguyen Van A', 'GV001', 'giangvien01@gmail.com', NULL);
+(4, 'nvt', 'nvt', 'tutue9692@gmail.com', NULL),
+(11, 'Giảng viên Tứ', 'mgv123', 'tutue9692@gmail.com22', NULL);
 
 -- --------------------------------------------------------
 
@@ -220,8 +221,7 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `full_name`, `student_code`, `email`, `class_id`) VALUES
-(2, 'Tran Van B', 'SV001', 'sinhvien01@gmail.com', NULL),
-(15, 'nvt', 'nvt', 'tutue9692@gmail.com', NULL);
+(16, 'Nguyễn Văn Tứ', 'msv123', 'tutue9692@gmail.com484844', NULL);
 
 -- --------------------------------------------------------
 
@@ -286,9 +286,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 (5, 'admin123', 'admin123', 'admin', 0),
-(6, 'lecturer01', 'lecturer01', 'lecturer', 1),
-(7, 'student01', 'student01', 'student', 1),
-(8, 'nvt', '$2y$10$mEnc.cXUxMRFiLEfNqjcMeyp7B1Prvltv5zifOeyFmVL4nOsHiyvy', 'student', 15);
+(11, 'nvt1', '123', 'lecturer', 4),
+(12, 'giangvien123', '1', 'lecturer', 11),
+(14, 'nvt19065', '123', 'student', 16);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -487,7 +487,7 @@ ALTER TABLE `learning_materials`
 -- AUTO_INCREMENT cho bảng `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `rooms`
@@ -505,7 +505,7 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT cho bảng `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT cho bảng `subjects`
@@ -529,7 +529,7 @@ ALTER TABLE `training_points`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
