@@ -30,7 +30,7 @@ ob_start();
   }
 </style>
 
-<h2>Danh sách giảng viên</h2>
+<h2>Danh sách giảng viên khoa: <?php echo $_GET['user'] ?> </h2>
 <div class="add">
   <a href="index.php?controller=admin&action=addGiangVien">
     <i class="ri-add-circle-line"></i> 
@@ -54,7 +54,7 @@ ob_start();
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($lecturers as $index => $user): ?>
+          <?php foreach ($department as $index => $user): ?>
           <tr>
             <td><?= $index +1   ?></td>
             <td><?= $user['id']   ?></td>

@@ -1,5 +1,5 @@
 <?php
-    require_once "./../config/database.php";
+require_once "./../config/database.php";
 class lecturerModel extends database
 {
 
@@ -7,38 +7,40 @@ class lecturerModel extends database
 
     public function __construct()
     {
-        $this->connect= $this->connect();
+        $this->connect = $this->connect();
     }
 
     // lấy thông tin user theo id
-    public function getById($id){
+    public function getById($id)
+    {
         $sql = "SELECT * FROM lecturer WHERE id='$id'";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
     // lấy toàn bộ thông tin của giảng viên
-     public function getAll(){
-        $sql = "SELECT * FROM lecturer";
+    public function getAll()
+    {
+        $sql = "SELECT 
+    s.id,
+    s.full_name,
+    s.lecturer_code,
+    s.email,
+    c.name
+    FROM lecturer s
+    LEFT JOIN department c ON s.department_id = c.id";
         return $this->__query($sql);
     }
     // end 
 
 
-    // thêm mới sinh viên 
-    public function addGiangVien($full_name, $lecturer_code, $email, $username, $password)
+    // thêm mới giảng viên 
+    public function addGiangVien($full_name, $lecturer_code, $email,$department_id, $username, $password)
     {
         mysqli_begin_transaction($this->connect);
 
         // 1. Insert student
-        $sqlStudent = "
-        INSERT INTO lecturer(full_name, lecturer_code, email, department_id)
-        VALUES (
-            '$full_name',
-            '$lecturer_code',
-            '$email',
-            null
-        )
-    ";
+        $sqlStudent="INSERT INTO `lecturer` ( `full_name`, `lecturer_code`, `email`, `department_id`) VALUES ( '$full_name', '$lecturer_code', '$email', $department_id)";
+        
 
         if ($this->__query($sqlStudent) === false) {
             mysqli_rollback($this->connect);
@@ -71,35 +73,40 @@ class lecturerModel extends database
         return true;
     }
 
-    // kết thúc thêm sinh viên 
-    public function KtEmail($email,$id){
-        $sql="Select *from lecturer where email='$email'AND id != $id
+    // kết thúc thêm giảng viên 
+    public function KtEmail($email, $id)
+    {
+        $sql = "Select *from lecturer where email='$email'AND id != $id
         LIMIT 1";
-        $query=$this->__query($sql);
-        if(mysqli_num_rows($query)>0){
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
             return true;
         }
     }
-    public function KtMagv($lecturer_code,$id){
-        $sql="Select *from lecturer where lecturer_code='$lecturer_code'AND id != $id
+    public function KtMagv($lecturer_code, $id)
+    {
+        $sql = "Select *from lecturer where lecturer_code='$lecturer_code'AND id != $id
         LIMIT 1";
-        $query=$this->__query($sql);
-        if(mysqli_num_rows($query)>0){
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
             return true;
         }
     }
-    public function updateGiangVien($id, $full_name, $lecturer_code, $email){
-        $sql = "UPDATE lecturer SET full_name='$full_name',lecturer_code='$lecturer_code', email='$email',department_id=null WHERE id='$id'";
-        $query=$this->__query($sql);
+    public function updateGiangVien($id, $full_name, $lecturer_code, $email,$department_id)
+    {
+        $sql = "UPDATE lecturer SET full_name='$full_name',lecturer_code='$lecturer_code', email='$email',department_id='$department_id' WHERE id='$id'";
+        $query = $this->__query($sql);
     }
 
- 
+
     // xóa giảng viên 
-    public function deleteLecturer($ref_id){
-        $sql="delete from lecturer where id= $ref_id";
+    public function deleteLecturer($ref_id)
+    {
+        $sql = "delete from lecturer where id= $ref_id";
         return $this->__query($sql);
     }
-    public function __query($sql){
-        return mysqli_query($this->connect,$sql);
+    public function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
 }

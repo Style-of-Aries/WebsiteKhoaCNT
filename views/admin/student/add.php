@@ -74,18 +74,18 @@ ob_start();
         <input type="email" name="email" required>
     </div>
     <div>
-    <span>Lớp</span>
-    <select name="class_id" required>
-        <option value="">-- Chọn lớp --</option>
+        <span>Lớp</span>
+        <select name="class_id" required>
+            <option value="">-- Chọn lớp --</option>
 
-        <?php foreach ($classes as $class): ?>
-            <option value="<?= $class['id'] ?>">
-                <?= htmlspecialchars($class['class_name']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    <i class="fa-solid fa-school"></i>
-</div>
+            <?php foreach ($classes as $class): ?>
+                <option value="<?= $class['id'] ?>">
+                    <?= htmlspecialchars($class['class_name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <i class="fa-solid fa-school"></i>
+    </div>
 
     <div>
         <label>Tên đăng nhập</label>

@@ -11,6 +11,36 @@ class classesModel extends database
     }
 
 
+    public function deleteLh($id){
+        $sql= "delete from classes where id= '$id'";
+        return $this->__query($sql);
+    }
+    public function checkMaLop($class_code,$id)
+    {
+
+        $sql = "Select *from classes where class_code = '$class_code'AND id != '$id'
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
+            return true;
+        }
+    }
+    public function addLopHoc($class_name, $class_code, $department_id, $lecturer_id)
+    {
+        $sql = "INSERT INTO `classes` (`class_name`, `class_code`, `department_id`, `lecturer_id`) VALUES ('$class_name', '$class_code', '$department_id', '$lecturer_id')";
+        return $this->__query($sql);
+    }
+    public function getById($id)
+    {
+        $sql = "SELECT * FROM classes WHERE id='$id'";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
+    }
+    public function editLopHoc($id, $class_name, $class_code, $department_id, $lecturer_id)
+    {
+        $sql = "UPDATE classes SET class_name='$class_name',class_code='$class_code', department_id='$department_id',lecturer_id='$lecturer_id' WHERE id='$id'";
+        $query = $this->__query($sql);
+    }
 
     public function getAll()
     {
@@ -28,7 +58,8 @@ class classesModel extends database
         return $this->__query($sql);
     }
 
-    public function getAllSinhVienCuaLop($id){
+    public function getAllSinhVienCuaLop($id)
+    {
         $sql = "
         SELECT 
             s.id,
@@ -41,7 +72,6 @@ class classesModel extends database
         WHERE s.class_id = $id
     ";
         return $this->__query($sql);
-        
     }
     public function __query($sql)
     {

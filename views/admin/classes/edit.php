@@ -56,24 +56,18 @@ ob_start();
 </style>
 
 
-<h2>Sửa thông tin giảng viên:<?= $user['full_name'] ?> </h2>
+<h2>Sửa thông tin lớp học:<?= $user['class_name'] ?> </h2>
 
-<form class="song-form" action="index.php?controller=admin&action=editGiangVien" method="POST" enctype="multipart/form-data">
+<form class="song-form" action="index.php?controller=classes&action=edit" method="POST" enctype="multipart/form-data">
      <input type="hidden" name="id" value=" <?= $user['id'] ?>">
     <div>
-        <span>Họ và tên</span>
-        <input type="text" name="full_name" placeholder="Họ và tên" value="<?= $user['full_name'] ?>" required>
+        <span>Tên lớp học</span>
+        <input type="text" name="class_name" placeholder="Tên lớp học" value="<?= $user['class_name'] ?>" required>
     </div>
     <div>
-        <span>Mã giảng viên</span>
-        <input type="text" name="lecturer_code" placeholder="Mã giảng viên" value="<?= $user['lecturer_code'] ?>" required>
+        <span>Mã lớp</span>
+        <input type="text" name="class_code" placeholder="Mã lớp" value="<?= $user['class_code'] ?>" required>
           <?php if (!empty($errorMaSv)) echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
-    </div>
-    <div>
-        <span>Email</span>
-        <input type="text" name="email" placeholder="Email" value="<?= htmlspecialchars($user['email']) ?>" required>
-        <i class="fa-solid fa-envelope"></i>
-         <?php if (!empty($errorEmail)) echo "<span style='color:red;'>$errorEmail</span><br>"; ?>
     </div>
     <div>
         <span>Lớp</span>
@@ -84,22 +78,28 @@ ob_start();
                 <option
                     value="<?= $class['id'] ?>"
                     <?= ($class['id'] == $user['department_id']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($class['faculty_name']) ?>
+                    <?= htmlspecialchars($class['name']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
         <i class="fa-solid fa-school"></i>
     </div>
     <div>
-        <label>Tên đăng nhập</label>
-        <input type="text" name="username" placeholder="Tài khoản" value="<?= $userNd['username'] ?>" required>
-          <?php if (!empty($errorName)) echo "<span style='color:red;'>$errorName</span><br>"; ?>
+        <span>Giáo viên chủ nghiệm</span>
+        <select name="lecturer_id" required>
+            <option value="">-- Chọn giáo viên chủ nghiệm --</option>
+
+            <?php foreach ($lecturer as $class): ?>
+                <option
+                    value="<?= $class['id'] ?>"
+                    <?= ($class['id'] == $user['lecturer_id']) ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($class['full_name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <i class="fa-solid fa-school"></i>
     </div>
-    <div>
-        <span>Mật khẩu:</span>
-        <input type="text" name="password" placeholder="Mật khẩu" value="<?= $userNd['password'] ?>" required>
-        <i class="fa-solid fa-lock"></i>
-    </div>
+    
     <input type="submit" value="Sửa thông tin" name="btn_edit">
 </form>
 <?php

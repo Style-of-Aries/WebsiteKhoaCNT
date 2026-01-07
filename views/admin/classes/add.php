@@ -56,45 +56,49 @@ ob_start();
 </style>
 
 
-<h2>Thêm giảng viên mới</h2>
+<h2>Thêm lớp học</h2>
 
-<form class="song-form" action="index.php?controller=admin&action=addGv" method="POST" enctype="multipart/form-data">
+<form class="song-form" action="index.php?controller=classes&action=add" method="POST" enctype="multipart/form-data">
     <div>
-        <label>Họ và tên</label>
-        <input type="text" name="full_name" required>
+        <label>Tên lớp</label>
+        <input type="text" name="class_name" required>
         <!-- <i class="fa-solid fa-user"></i> -->
         <!-- <small class="error" id="error-title"></small> -->
     </div>
     <div>
-        <label>Mã giảng viên</label>
-        <input type="text" name="lecturer_code" required>
+        <label>Mã lớp</label>
+        <input type="text" name="class_code" required>
     </div>
-    <div>
-        <label>Email</label>
-        <input type="email" name="email" required>
-    </div>
+    
     <div>
         <span>Khoa</span>
         <select name="department_id" required>
             <option value="">-- Chọn khoa --</option>
 
-            <?php foreach ($department as $department): ?>
-                <option value="<?= $department['id'] ?>">
-                    <?= htmlspecialchars($department['faculty_name']) ?>
+            <?php foreach ($department as $class): ?>
+                <option value="<?= $class['id'] ?>">
+                    <?= htmlspecialchars($class['faculty_name']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
         <i class="fa-solid fa-school"></i>
     </div>
     <div>
-        <label>Tên đăng nhập</label>
-        <input type="text" name="username" required>
+        <span>Giảng viên chủ nhiệm</span>
+        <select name="lecturer_id" required>
+            <option value="">-- Chọn giảng viên --</option>
+
+            <?php foreach ($lecturer as $class): ?>
+                <option value="<?= $class['id'] ?>">
+                    <?= htmlspecialchars($class['full_name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <i class="fa-solid fa-school"></i>
     </div>
-    <div class="form-group">
-        <label>Mật khẩu</label>
-        <input type="password" name="password" required>
-    </div>
-    <input type="submit" value="Thêm giảng viên" name="btn_add">
+
+    
+    <input type="submit" value="Thêm lớp học" name="btn_add">
 </form>
 <?php
 $content = ob_get_clean();

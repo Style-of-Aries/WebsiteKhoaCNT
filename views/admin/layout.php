@@ -297,6 +297,11 @@
                     </a>
                 </li> 
                 <li>
+                    <a href="index.php?controller=department&action=getAllKhoa" class="menu-link">
+                        <i class="ri-bar-chart-fill"></i> Danh Sách Khoa
+                    </a>
+                </li> 
+                <li>
                     <a href="index.php?controller=auth&action=logout" class="menu-link">
                         🚪 Đăng Xuất
                     </a>

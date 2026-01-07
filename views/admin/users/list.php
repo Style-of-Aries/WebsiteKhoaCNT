@@ -46,7 +46,7 @@ ob_start();
             <th>PassWord</th>
             <th>Role</th>
             <th>id_SinhVien/GiangVien</th>
-            <th>Hành Động</th>
+            <!-- <th>Hành Động</th> -->
           </tr>
         </thead>
         <tbody>
@@ -58,9 +58,9 @@ ob_start();
             <td><?= htmlspecialchars($user['password']) ?></td>
             <td><?= htmlspecialchars($user['role']) ?></td>
             <td><?= htmlspecialchars($user['ref_id']) ?></td>
-            <td>
+            <!-- <td>
               <a href="index.php?controller=admin&action=deleteUser&id=<?= $user['id'] ?>&ref_id=<?= $user['ref_id'] ?>&role=<?= $user['role'] ?>"   class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
-            </td>
+            </td> -->
           </tr>
           <?php endforeach ?>
         </tbody>

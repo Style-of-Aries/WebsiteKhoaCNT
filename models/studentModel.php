@@ -57,7 +57,7 @@ class studentModel extends database
     }
 
     // thêm mới sinh viên 
-    public function addSinhVien($full_name, $student_code, $email, $username, $password)
+    public function addSinhVien($full_name, $student_code, $email,$class_id, $username, $password)
     {
         mysqli_begin_transaction($this->connect);
 
@@ -68,9 +68,10 @@ class studentModel extends database
             '$full_name',
             '$student_code',
             '$email',
-            null
+            '$class_id'
         )
     ";
+    
 
         if ($this->__query($sqlStudent) === false) {
             mysqli_rollback($this->connect);

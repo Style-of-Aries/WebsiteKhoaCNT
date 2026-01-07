@@ -20,7 +20,7 @@ class authController
     public function login() //trang đăng nhập
     {
         $errorLogin = "";
-        include_once "./../views/auth/loginNew.php";
+        include_once "./../views/auth/login.php";
     }
     // function xử lý chức năng đăng nhập
     public function auth_login()
@@ -51,7 +51,7 @@ class authController
                 exit();
             } else {
                 $errorLogin = "Thông tin tài khoản mật khẩu không chính xác";
-                include_once "./../views/auth/loginNew.php";
+                include_once "./../views/auth/login.php";
             }
         }
     }

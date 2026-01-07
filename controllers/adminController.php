@@ -4,6 +4,7 @@ require_once "./../models/userModel.php";
 require_once "./../models/studentModel.php";
 require_once "./../models/lecturerModel.php";
 require_once "./../models/classesModel.php";
+require_once "./../models/departmentModel.php";
 class adminController
 {
 
@@ -13,6 +14,7 @@ class adminController
     private $studentModel;
     private $lecturerModel;
     private $classesModel;
+    private $departmentModel;
     public function __construct()
     {
         $this->model = new adminModel();
@@ -20,6 +22,7 @@ class adminController
         $this->userModel = new userModel();
         $this->lecturerModel = new lecturerModel();
         $this->classesModel = new classesModel();
+        $this->departmentModel = new departmentModel();
     }
 
     // giao diện danh sách người dùng
@@ -128,11 +131,11 @@ class adminController
             $full_name = $_POST['full_name'];
             $student_code = $_POST['student_code'];
             $email = $_POST['email'];
-            // $class_id = $_POST['class_id'];
+            $class_id = $_POST['class_id'];
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $student = $this->studentModel->addSinhVien($full_name, $student_code, $email, $username, $password);
+            $student = $this->studentModel->addSinhVien($full_name, $student_code, $email, $class_id, $username, $password);
             if ($student) {
                 $this->getAllSinhVien();
             } else {
@@ -146,6 +149,7 @@ class adminController
         $id = $_GET['id'];
         $user = $this->lecturerModel->getById($id);
         $userNd = $this->userModel->getByRef_id($id);
+        $department = $this->departmentModel->getAll();
         require_once './../views/admin/lecturer/edit.php';
     }
     public function editGiangVien()
@@ -156,25 +160,25 @@ class adminController
             $full_name = $_POST['full_name'];
             $lecturer_code = $_POST['lecturer_code'];
             $email = $_POST['email'];
-            // $class_id=$_POST['class_id'];
+            $department_id = $_POST['department_id'];
             $username = $_POST['username'];
             $password = $_POST['password'];
             // $sdtRegister = $_POST['phone'];
 
-            if ($this->userModel->KtUserName($username,$id)) {
+            if ($this->userModel->KtUserName($username, $id)) {
                 $errorName = "Tài khoản đã tồn tại";
             }
-            if ($this->lecturerModel->KtMagv($lecturer_code,$id)) {
+            if ($this->lecturerModel->KtMagv($lecturer_code, $id)) {
                 $errorMaSv = "Mã sinh viên đã tồn tại";
             }
-            if ($this->studentModel->KtEmail($email,$id)) {
+            if ($this->studentModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
             }
-            if ($this->lecturerModel->KtEmail($email,$id)) {
+            if ($this->lecturerModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
             }
             if (empty($errorName) && empty($errorEmail) && empty($errorMaGv)) {
-                $this->lecturerModel->updateGiangVien($id, $full_name, $lecturer_code, $email);
+                $this->lecturerModel->updateGiangVien($id, $full_name, $lecturer_code, $email, $department_id);
                 $this->userModel->updateUser($id, $username, $password);
                 $this->getAllGiangVien();
                 exit;
@@ -185,7 +189,7 @@ class adminController
                     'full_name' => $full_name,
                     'lecturer_code' => $lecturer_code,
                     'email' => $email,
-                    'department_id' => null
+                    'department_id' => $department_id
                 ];
                 $userNd = [
                     'username' => $username,
@@ -209,6 +213,7 @@ class adminController
     // truy cập tới giao diện sinh viên
     public function addGiangVien()
     {
+        $department = $this->departmentModel->getAll();
         require_once './../views/admin/lecturer/add.php';
     }
     // thêm mới sinh viên
@@ -218,11 +223,11 @@ class adminController
             $full_name = $_POST['full_name'];
             $lecturer_code = $_POST['lecturer_code'];
             $email = $_POST['email'];
-            // $class_id = $_POST['class_id'];
+            $department_id = $_POST['department_id'];
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $student = $this->lecturerModel->addGiangVien($full_name, $lecturer_code, $email, $username, $password);
+            $student = $this->lecturerModel->addGiangVien($full_name, $lecturer_code, $email, $department_id, $username, $password);
             if ($student) {
                 $this->getAllGiangVien();
             } else {
