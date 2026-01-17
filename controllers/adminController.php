@@ -25,8 +25,17 @@ class adminController
         $this->departmentModel = new departmentModel();
     }
 
-    // giao diện danh sách người dùng
+    // giao diện dashboard
     public function index()
+    {
+        $totalSinhVien = $this->studentModel->getAll();
+        $totalGiangVien = $this->lecturerModel->getAll();
+        $totalLopHoc = $this->classesModel->getAll();
+        $totalKhoa = $this->departmentModel->getAll();
+        require_once './../views/admin/dashboard/dashboard.php';
+    }
+    // giao diện danh sách người dùng
+    public function getAllUser()
     {
 
         $users = $this->userModel->getAll();
@@ -41,7 +50,7 @@ class adminController
 
 
     // giao diện danh sách sinh viên 
-    public function getAllSinhVien()
+    public function getAllSinhVien()  
     {
         $students = $this->studentModel->getAll();
         require_once './../views/admin/student/list.php';
