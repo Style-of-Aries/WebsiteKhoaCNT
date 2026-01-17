@@ -1,19 +1,19 @@
 :root {
-  --blue-dark: #1E5FA8;
-  --blue-main: #2F6FB3;
-  --blue-light: #4F8FD8;
+  --blue-dark: #1e5fa8;
+  --blue-main: #2f6fb3;
+  --blue-light: #4f8fd8;
 
-  --green-main: #2FAE60;
-  --green-light: #5BC98A;
+  --green-main: #2fae60;
+  --green-light: #5bc98a;
 
-  --orange-main: #F39C3D;
-  --red-main: #E55353;
+  --orange-main: #f39c3d;
+  --red-main: #e55353;
 
-  --bg-main: #F4F6F9;
-  --bg-card: #FFFFFF;
+  --bg-main: #f4f6f9;
+  --bg-card: #ffffff;
 
-  --text-title: #1F2D3D;
-  --text-main: #34495E;
+  --text-title: #1f2d3d;
+  --text-main: #34495e;
 }
 html,
 body {
@@ -31,6 +31,8 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+  position: fixed;
+  width: 100%;
 }
 
 .header .title {
@@ -47,7 +49,7 @@ body {
   align-items: center;
   gap: 20px;
   font-size: 16px;
-  padding-right: 30px;
+  padding-right: 50px;
   position: relative;
   cursor: pointer;
 }
@@ -79,13 +81,15 @@ body {
 }
 
 .sidebar {
+  margin-top: 60px;
   width: 240px;
+  height: calc(100vh - 60px);
   background-color: var(--blue-light);
-  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   /* canh giữa logo */
+  position: fixed;
 }
 
 .sidebar .logo {
@@ -145,7 +149,8 @@ body {
 
 .main-content {
   flex: 1;
-  /* width: calc(100% - 240px); */
+  margin-left: 240px;
+  margin-top: 60px;
   padding: 20px;
   padding-bottom: 100px;
   background-color: var(--bg-main);
@@ -153,6 +158,19 @@ body {
 
 .main-content h2 {
   margin-bottom: 16px;
+  color: var(--text-title);
+}
+.student {
+  background-color: var(--bg-card);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.student .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .btn-custom {
@@ -204,7 +222,7 @@ img.img-thumbnail {
 }
 
 .edit-btn {
-  background-color: #ffc107;
+  background-color: var(--orange-main);
 }
 
 .yt-btn {
@@ -212,7 +230,7 @@ img.img-thumbnail {
 }
 
 .delete-btn {
-  background-color: #dc3545;
+  background-color: var(--red-main);
 }
 
 .player-bar {
@@ -376,7 +394,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1ca522ff;
+  background-color: var(--green-main);
 }
 
 .add > a {
@@ -388,3 +406,71 @@ a {
   color: #fff;
 }
 
+.student-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  margin-bottom: 20px;
+  /* margin: 20px auto; */
+}
+
+.student-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.student-info {
+  flex: 1;
+  margin-left: 20px;
+}
+.btnManager {
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  border-bottom: 3px solid #eef1f6;
+}
+.btnManager .action-btn {
+  position: absolute;
+  right: 0;
+  margin-left: 12px;
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+.btnManager .edit-btn {
+  right: 80px;
+}
+.student-info h3 {
+  margin: 0 0 12px;
+  color: #1f2d3d;
+  font-size: 20px;
+  font-weight: 600;
+  
+  padding-bottom: 8px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  gap: 10px 40px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: #34495e;
+}
+
+.info-item i {
+  font-size: 18px;
+  color: #2f6fb3;
+  margin-right: 10px;
+}
