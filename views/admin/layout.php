@@ -302,6 +302,11 @@
                     </a>
                 </li> 
                 <li>
+                    <a href="index.php?controller=subject&action=getAllMonHoc" class="menu-link">
+                        <i class="ri-bar-chart-fill"></i> Danh Sách Môn học
+                    </a>
+                </li> 
+                <li>
                     <a href="index.php?controller=auth&action=logout" class="menu-link">
                         🚪 Đăng Xuất
                     </a>
