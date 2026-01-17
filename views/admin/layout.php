@@ -78,6 +78,11 @@ require_once __DIR__ . "/../../config/config.php";
                         <i class="bx bxs-building"></i> Danh Sách Khoa
                     </a>
                 </li>
+                <li>
+                    <a href="index.php?controller=subject&action=getAllMonHoc" class="menu-link">
+                        <i class="bx bxs-book"></i> Danh Sách Môn học
+                    </a>
+                </li> 
             </ul>
 
         </div>
