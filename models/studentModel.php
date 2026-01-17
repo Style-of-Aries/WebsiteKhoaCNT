@@ -28,7 +28,12 @@ class studentModel extends database
     c.class_name
     FROM student s
     LEFT JOIN classes c ON s.class_id = c.id";
-        return $this->__query($sql);
+        $query = $this->__query($sql);
+        $students = [];
+        while ($row = mysqli_fetch_assoc($query)) {
+            $students[] = $row;
+        }
+        return $students;
     }
 
     public function KtMa($id, $student_code)

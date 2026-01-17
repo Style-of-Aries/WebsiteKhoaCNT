@@ -35,7 +35,12 @@ GROUP BY
 
     ";
 
-        return $this->__query($sql);
+        $query = $this->__query($sql);
+        $departments = [];
+        while ($row = mysqli_fetch_assoc($query)) {
+            $departments[] = $row;
+        }
+        return $departments;
     }
     public function getAllGiangVienCuaKhoa($id)
     {

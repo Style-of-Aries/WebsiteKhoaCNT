@@ -28,7 +28,12 @@ class lecturerModel extends database
     c.name
     FROM lecturer s
     LEFT JOIN department c ON s.department_id = c.id";
-        return $this->__query($sql);
+        $query = $this->__query($sql);
+        $lecturers = [];
+        while ($row = mysqli_fetch_assoc($query)) {
+            $lecturers[] = $row;
+        }
+        return $lecturers;
     }
     // end 
 

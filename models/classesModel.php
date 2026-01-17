@@ -55,7 +55,12 @@ class classesModel extends database
     LEFT JOIN department d ON c.department_id = d.id
     LEFT JOIN lecturer l ON c.lecturer_id = l.id
 ";
-        return $this->__query($sql);
+        $query = $this->__query($sql);
+        $classes = [];
+        while ($row = mysqli_fetch_assoc($query)) {
+            $classes[] = $row;
+        }
+        return $classes;
     }
 
     public function getAllSinhVienCuaLop($id)
