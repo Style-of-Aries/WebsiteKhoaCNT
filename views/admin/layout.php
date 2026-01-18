@@ -10,6 +10,7 @@ require_once __DIR__ . "/../../config/config.php";
     <title>AdminNvt</title>
     <!-- Remix Icon: đẹp, phổ biến, hiện đại -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/admin.css">
 </head>
@@ -31,6 +32,7 @@ require_once __DIR__ . "/../../config/config.php";
                 <img src="<?= BASE_URL ?>img/avatar-nu.jpg" alt="avatar" id="avatarBtn">
             <?php endif; ?>
             <?= $name ?>
+            <i class='bx bxs-chevron-down'></i>
             <div class="dropboxAdmin">
                 <a href="index.php?controller=auth&action=logout" class="menu-link">
                     🚪 Đăng Xuất
@@ -47,40 +49,40 @@ require_once __DIR__ . "/../../config/config.php";
             <ul class="menu">
                 <li>
                     <a href="index.php?controller=admin&action=index" class="menu-link">
-                        <i class="ri-bar-chart-fill"></i>Danh Sách Người Dùng
+                        <i class="ri-bar-chart-fill"></i>Tổng quan
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?controller=admin&action=getAllUser" class="menu-link">
+                        <i class="bx bxs-user"></i>Danh Sách Người Dùng
                     </a>
                 </li>
                 <li>
                     <a href="index.php?controller=admin&action=getAllSinhVien" class="menu-link">
-                        <i class="ri-bar-chart-fill"></i> Danh Sách Sinh Viên
+                        <i class="bx bxs-graduation"></i> Danh Sách Sinh Viên
                     </a>
                 </li>
 
                 <li>
                     <a href="index.php?controller=admin&action=getAllGiangVien" class="menu-link">
-                        <i class="ri-bar-chart-fill"></i> Danh Sách Giảng Viên
+                        <i class="bx bxs-user-badge"></i> Danh Sách Giảng Viên
                     </a>
                 </li>
                 <li>
                     <a href="index.php?controller=classes&action=getAllLopHoc" class="menu-link">
-                        <i class="ri-bar-chart-fill"></i> Danh Sách Lớp Học
+                        <i class="bx bxs-group"></i> Danh Sách Lớp Học
                     </a>
                 </li>
                 <li>
                     <a href="index.php?controller=department&action=getAllKhoa" class="menu-link">
-                        <i class="ri-bar-chart-fill"></i> Danh Sách Khoa
+                        <i class="bx bxs-building"></i> Danh Sách Khoa
                     </a>
                 </li>
                 <li>
                     <a href="index.php?controller=subject&action=getAllMonHoc" class="menu-link">
-                        <i class="ri-bar-chart-fill"></i> Danh Sách Môn học
+                        <i class="bx bxs-book"></i> Danh Sách Môn học
                     </a>
                 </li> 
-                <li>
-                    <a href="index.php?controller=auth&action=logout" class="menu-link">
-                        🚪 Đăng Xuất
-                    </a>
-                </li>
             </ul>
 
         </div>
