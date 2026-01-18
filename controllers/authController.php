@@ -127,12 +127,12 @@ class authController
     //     include_once "./../views/auth/register.php";
     // }
     // //Xử lý chức năng đăng nhập
-    // public function logout()
-    // {
-    //     session_start();
-    //     session_unset();
-    //     session_destroy();
-    //     header("Location: index.php?controller=user&action=index");
-    //     exit();
-    // }
+    public function logout()
+    {
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: index.php?controller=auth&action=login");
+        exit();
+    }
 }
