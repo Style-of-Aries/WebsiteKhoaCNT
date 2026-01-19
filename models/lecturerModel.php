@@ -90,18 +90,49 @@ class lecturerModel extends database
     }
     public function KtMagv($lecturer_code, $id)
     {
-        $sql = "Select *from lecturer where lecturer_code='$lecturer_code'AND id != $id
+        $sql = "Select *from lecturer where lecturer_code ='$lecturer_code'AND id != $id
         LIMIT 1";
         $query = $this->__query($sql);
         if (mysqli_num_rows($query) > 0) {
             return true;
         }
     }
-    public function updateGiangVien($id, $full_name, $lecturer_code, $email,$department_id)
-    {
-        $sql = "UPDATE lecturer SET full_name='$full_name',lecturer_code='$lecturer_code', email='$email',department_id='$department_id' WHERE id='$id'";
-        $query = $this->__query($sql);
+    public function isLecturerCodeExists($lecturer_code, $id)
+{
+    $lecturer_code = trim($lecturer_code);
+    $id = trim($id);
+
+    $sql = "SELECT id FROM lecturer
+            WHERE lecturer_code = '$lecturer_code'
+            AND id != '$id'";
+    $query = $this->__query($sql);
+
+    return mysqli_num_rows($query) > 0;
+}
+
+public function updateGiangVien($id, $full_name, $lecturer_code, $email, $department_id)
+{
+    // chuẩn hóa dữ liệu
+    $id = trim($id);
+    $full_name = trim($full_name);
+    $lecturer_code = trim($lecturer_code);
+    $email = trim($email);
+    $department_id = trim($department_id);
+
+    //  chặn trùng trước khi update
+    if ($this->isLecturerCodeExists($lecturer_code, $id)) {
+        return "duplicate_code";
     }
+
+    $sql = "UPDATE lecturer SET
+                full_name = '$full_name',
+                lecturer_code = '$lecturer_code',
+                email = '$email',
+                department_id = '$department_id'
+            WHERE id = '$id'";
+
+    return $this->__query($sql);
+}
 
 
     // xóa giảng viên 

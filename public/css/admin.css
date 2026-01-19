@@ -33,6 +33,7 @@ body {
   padding: 0 20px;
   position: fixed;
   width: 100%;
+  z-index: 100;
 }
 
 .header .title {
@@ -452,7 +453,7 @@ a {
   color: #1f2d3d;
   font-size: 20px;
   font-weight: 600;
-  
+  white-space: nowrap;
   padding-bottom: 8px;
 }
 

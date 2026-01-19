@@ -50,7 +50,7 @@ class adminController
 
 
     // giao diện danh sách sinh viên 
-    public function getAllSinhVien()  
+    public function getAllSinhVien()
     {
         $students = $this->studentModel->getAll();
         require_once './../views/admin/student/list.php';
@@ -178,7 +178,7 @@ class adminController
                 $errorName = "Tài khoản đã tồn tại";
             }
             if ($this->lecturerModel->KtMagv($lecturer_code, $id)) {
-                $errorMaSv = "Mã sinh viên đã tồn tại";
+                $errorMaSv = "Mã giảng viên đã tồn tại";
             }
             if ($this->studentModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
@@ -186,7 +186,10 @@ class adminController
             if ($this->lecturerModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
             }
-            if (empty($errorName) && empty($errorEmail) && empty($errorMaGv)) {
+            if ($this->lecturerModel->isLecturerCodeExists($lecturer_code, $id)) {
+                $errorMaSv = "Mã giảng viên đã tồn tại";
+            }
+            if (empty($errorName) && empty($errorEmail) && empty($errorMaSv)) {
                 $this->lecturerModel->updateGiangVien($id, $full_name, $lecturer_code, $email, $department_id);
                 $this->userModel->updateUser($id, $username, $password);
                 $this->getAllGiangVien();
@@ -204,6 +207,7 @@ class adminController
                     'username' => $username,
                     'password' => $password
                 ];
+                $department = $this->departmentModel->getAll();
             }
         }
         include_once "./../views/admin/lecturer/edit.php";

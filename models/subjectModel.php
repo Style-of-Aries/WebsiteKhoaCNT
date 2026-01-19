@@ -31,35 +31,33 @@ class subjectModel extends database
         return $this->__query($sql);
     }
 
-    public function addKhoa($name, $type, $parent_id){
+    public function addMonHoc($name, $subject_code, $credits,$department_id){
 
         $sql = "
-            INSERT INTO department (name, type, parent_id, created_at)
-            VALUES ('$name', '$type', $parent_id, NOW())
+            INSERT INTO subjects (subject_code, name, credits, department_id)
+            VALUES ('$subject_code', '$name', '$credits','$department_id' )
         ";
-
         return $this->__query($sql);
 
     }
-    public function editKhoa($id,$name, $type, $parent_id){
+    public function editMonHoc($id,$name, $subject_code, $credits,$department_id){
 
         $sql = "
-            UPDATE department
+            UPDATE subjects
         SET 
             name = '$name',
-            type = '$type',
-            parent_id = $parent_id,
-            updated_at = NOW()
+            subject_code = '$subject_code',
+            credits = '$credits',
+            department_id = '$department_id'
         WHERE id = '$id'
         ";
-
         return $this->__query($sql);
 
     }
-    public function checkKhoa($name,$id)
+    public function checkMonHoc($name,$id)
     {
 
-        $sql = "Select *from department where name = '$name'AND id != '$id'
+        $sql = "Select *from subjects where name = '$name'AND id != '$id'
         LIMIT 1";
         $query = $this->__query($sql);
         if (mysqli_num_rows($query) > 0) {
@@ -72,13 +70,13 @@ class subjectModel extends database
         $sql = "SELECT id, name FROM department";
         return $this->__query($sql);
     }
-    public function deleteKhoa($id){
-        $sql= "delete from department where id= '$id'";
+    public function deleteMonHoc($id){
+        $sql= "delete from subjects where id= '$id'";
         return $this->__query($sql);
     }
      public function getById($id)
     {
-        $sql = "SELECT * FROM department WHERE id='$id'";
+        $sql = "SELECT * FROM subjects WHERE id='$id'";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
