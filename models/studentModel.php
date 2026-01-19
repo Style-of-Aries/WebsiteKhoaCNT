@@ -20,14 +20,14 @@ class studentModel extends database
     // lấy toàn bộ thông tin của sinh viên
     public function getAll()
     {
-        $sql = "SELECT 
-    s.id,
-    s.full_name,
+        $sql = "SELECT
     s.student_code,
-    s.email,
+    p.full_name,
+    p.email,
     c.class_name
-    FROM student s
-    LEFT JOIN classes c ON s.class_id = c.id";
+FROM student s
+JOIN student_profiles p ON p.student_id = s.id
+LEFT JOIN classes c ON c.id = s.class_id;";
         $query = $this->__query($sql);
         $students = [];
         while ($row = mysqli_fetch_assoc($query)) {
@@ -45,7 +45,7 @@ class studentModel extends database
             return true;
         }
     }
-    
+
     public function KtEmail($email, $id)
     {
         $sql = "Select *from student where email='$email'AND id != $id
@@ -62,7 +62,7 @@ class studentModel extends database
     }
 
     // thêm mới sinh viên 
-    public function addSinhVien($full_name, $student_code, $email,$class_id, $username, $password)
+    public function addSinhVien($full_name, $student_code, $email, $class_id, $username, $password)
     {
         mysqli_begin_transaction($this->connect);
 
@@ -76,7 +76,7 @@ class studentModel extends database
             '$class_id'
         )
     ";
-    
+
 
         if ($this->__query($sqlStudent) === false) {
             mysqli_rollback($this->connect);

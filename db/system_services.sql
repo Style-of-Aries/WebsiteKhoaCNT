@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 18, 2026 lúc 07:22 AM
+-- Thời gian đã tạo: Th1 19, 2026 lúc 10:25 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -360,20 +360,12 @@ INSERT INTO `semesters` (`id`, `name`, `start_date`, `end_date`, `is_active`) VA
 
 CREATE TABLE `student` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `full_name` varchar(255) NOT NULL,
-  `gender` enum('male','female','other') DEFAULT NULL,
-  `date_of_birth` date DEFAULT NULL,
   `student_code` varchar(50) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `identity_number` varchar(20) DEFAULT NULL,
   `class_id` bigint(20) UNSIGNED DEFAULT NULL,
   `department_id` bigint(20) UNSIGNED DEFAULT NULL,
   `enrollment_year` year(4) DEFAULT NULL,
   `education_type` enum('chinh_quy','lien_thong','tai_chuc') DEFAULT 'chinh_quy',
   `status` enum('studying','paused','dropped','graduated') DEFAULT 'studying',
-  `avatar` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -382,12 +374,44 @@ CREATE TABLE `student` (
 -- Đang đổ dữ liệu cho bảng `student`
 --
 
-INSERT INTO `student` (`id`, `full_name`, `gender`, `date_of_birth`, `student_code`, `email`, `phone`, `address`, `identity_number`, `class_id`, `department_id`, `enrollment_year`, `education_type`, `status`, `avatar`, `created_at`, `updated_at`) VALUES
-(16, 'Nguyễn Văn Tứ', NULL, NULL, 'SV001', 'sv1@gmail.com', NULL, NULL, NULL, 1, 3, NULL, 'chinh_quy', 'studying', NULL, '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(17, 'Lê Thị B', NULL, NULL, 'SV002', 'sv2@gmail.com', NULL, NULL, NULL, 1, 3, NULL, 'chinh_quy', 'studying', NULL, '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(18, 'Phạm Văn C', NULL, NULL, 'SV003', 'sv3@gmail.com', NULL, NULL, NULL, 2, 3, NULL, 'chinh_quy', 'studying', NULL, '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(19, 'Nguyễn Văn Tứ', NULL, NULL, 'msv1234', 'tutue9692@gmail.com4848444', NULL, NULL, NULL, 1, 3, NULL, 'chinh_quy', 'studying', NULL, '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(20, 'Nguyễn Văn Tứ', NULL, NULL, 'sc', 'tutue9692@gmail.comcjhacbjb', NULL, NULL, NULL, 1, 3, NULL, 'chinh_quy', 'studying', NULL, '2026-01-18 05:56:23', '2026-01-18 05:57:05');
+INSERT INTO `student` (`id`, `student_code`, `class_id`, `department_id`, `enrollment_year`, `education_type`, `status`, `created_at`, `updated_at`) VALUES
+(16, 'SV001', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
+(17, 'SV002', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
+(18, 'SV003', 2, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
+(19, 'msv1234', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
+(20, 'sc', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `student_profiles`
+--
+
+CREATE TABLE `student_profiles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `full_name` varchar(255) DEFAULT NULL,
+  `gender` enum('male','female','other') DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `identity_number` varchar(20) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `student_profiles`
+--
+
+INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `created_at`, `updated_at`) VALUES
+(1, 16, 'Nguyễn Văn Tứ', NULL, NULL, 'sv1@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
+(2, 17, 'Lê Thị B', NULL, NULL, 'sv2@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
+(3, 18, 'Phạm Văn C', NULL, NULL, 'sv3@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
+(4, 19, 'Nguyễn Văn Tứ', NULL, NULL, 'tutue9692@gmail.com4848444', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
+(5, 20, 'Nguyễn Văn Tứ', NULL, NULL, 'tutue9692@gmail.comcjhacbjb', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27');
 
 -- --------------------------------------------------------
 
@@ -590,9 +614,15 @@ ALTER TABLE `semesters`
 ALTER TABLE `student`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `student_code` (`student_code`),
-  ADD UNIQUE KEY `email` (`email`),
   ADD KEY `class_id` (`class_id`),
   ADD KEY `student_fk_department` (`department_id`);
+
+--
+-- Chỉ mục cho bảng `student_profiles`
+--
+ALTER TABLE `student_profiles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_profile_student` (`student_id`);
 
 --
 -- Chỉ mục cho bảng `subjects`
@@ -710,6 +740,12 @@ ALTER TABLE `student`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
+-- AUTO_INCREMENT cho bảng `student_profiles`
+--
+ALTER TABLE `student_profiles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT cho bảng `subjects`
 --
 ALTER TABLE `subjects`
@@ -743,9 +779,7 @@ ALTER TABLE `users`
 ALTER TABLE `academic_results`
   ADD CONSTRAINT `academic_results_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `academic_results_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_results_ibfk_3` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_academic_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
-  ADD CONSTRAINT `fk_academic_subject` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`);
+  ADD CONSTRAINT `academic_results_ibfk_3` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `attendance`
@@ -799,6 +833,12 @@ ALTER TABLE `lecturer`
 ALTER TABLE `student`
   ADD CONSTRAINT `student_fk_department` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE SET NULL;
+
+--
+-- Các ràng buộc cho bảng `student_profiles`
+--
+ALTER TABLE `student_profiles`
+  ADD CONSTRAINT `fk_profile_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `subjects`
