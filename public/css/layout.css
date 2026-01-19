@@ -1,0 +1,137 @@
+:root {
+  --blue-dark: #1e5fa8;
+  --blue-main: #2f6fb3;
+  --blue-light: #4f8fd8;
+
+  --green-main: #2fae60;
+  --green-light: #5bc98a;
+
+  --orange-main: #f39c3d;
+  --red-main: #e55353;
+
+  --bg-main: #f4f6f9;
+  --bg-card: #ffffff;
+
+  --text-title: #1f2d3d;
+  --text-main: #34495e;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+.header {
+  background-color: var(--blue-dark);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+}
+
+.header .title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.header .title i {
+  font-size: 40px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.header .avatar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 16px;
+  padding-right: 50px;
+  position: relative;
+  cursor: pointer;
+}
+.header .avatar .dropboxAdmin {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #3a3344;
+  border: 1px solid #555;
+  border-radius: 6px;
+  display: none;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 1000;
+}
+.header .avatar .dropboxAdmin.active {
+  display: flex;
+}
+.header .avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  margin-top: 60px;
+  width: 240px;
+  height: calc(100vh - 60px);
+  background-color: var(--blue-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* canh giữa logo */
+  position: fixed;
+}
+
+.sidebar .logo {
+  width: 120px;
+  height: auto;
+  margin-bottom: 20px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.1));
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.menu li {
+  margin-bottom: 12px;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.menu-link:hover {
+  background-color: #3a3344;
+  opacity: 0.9;
+}
+.menu li.active .menu-link {
+    /* background: rgba(47, 128, 237, 0.25); */
+    /* color: #2f80ed; */
+    font-weight: 600;
+    border-left: 4px solid #2f80ed;
+    background-color: #3a3344;
+    opacity: 0.9;
+}

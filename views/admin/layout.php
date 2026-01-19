@@ -1,5 +1,9 @@
 <?php
 require_once __DIR__ . "/../../config/config.php";
+$currentController = $_GET['controller'] ?? '';
+$currentAction = $_GET['action'] ?? '';
+
+
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -10,9 +14,11 @@ require_once __DIR__ . "/../../config/config.php";
     <title>AdminNvt</title>
     <!-- Remix Icon: đẹp, phổ biến, hiện đại -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
-    
+
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/admin.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/layout.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/user.css">
 </head>
 
 <body>
@@ -44,47 +50,19 @@ require_once __DIR__ . "/../../config/config.php";
     <div class="layout">
 
         <div class="sidebar">
-            <!-- <img src="./../admin/1/img/php.png" alt="logo" class="logo"> -->
-            <h2>Quản lý</h2>
-            <ul class="menu">
-                <li>
-                    <a href="index.php?controller=admin&action=index" class="menu-link">
-                        <i class="ri-bar-chart-fill"></i>Tổng quan
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?controller=admin&action=getAllUser" class="menu-link">
-                        <i class="bx bxs-user"></i>Danh Sách Người Dùng
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?controller=admin&action=getAllSinhVien" class="menu-link">
-                        <i class="bx bxs-graduation"></i> Danh Sách Sinh Viên
-                    </a>
-                </li>
+            <?php
+            $currentController = $_GET['controller'] ?? '';
+            $currentAction = $_GET['action'] ?? '';
 
-                <li>
-                    <a href="index.php?controller=admin&action=getAllGiangVien" class="menu-link">
-                        <i class="bx bxs-user-badge"></i> Danh Sách Giảng Viên
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?controller=classes&action=getAllLopHoc" class="menu-link">
-                        <i class="bx bxs-group"></i> Danh Sách Lớp Học
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?controller=department&action=getAllKhoa" class="menu-link">
-                        <i class="bx bxs-building"></i> Danh Sách Khoa
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?controller=subject&action=getAllMonHoc" class="menu-link">
-                        <i class="bx bxs-book"></i> Danh Sách Môn học
-                    </a>
-                </li> 
-            </ul>
-
+            if (isset($_SESSION['user'])) {
+                $role = $_SESSION['user']['role'];
+                if ($role === 'admin') {
+                    include __DIR__ . '/../sidebar/sidebar_admin.php';
+                } elseif ($role === 'student') {
+                    include __DIR__ . '/../sidebar/sidebar_student.php';
+                }
+            }
+            ?>
         </div>
         <div class="main-content">
             <?php echo $content ?? '' ?>
@@ -93,7 +71,8 @@ require_once __DIR__ . "/../../config/config.php";
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="<?= BASE_URL ?>js/admin.js"></script>
-    
+    <script src="<?= BASE_URL ?>js/user.js"></script>
+
 </body>
 
 </html>

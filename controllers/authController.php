@@ -32,15 +32,18 @@ class authController
             $user = $this->userModel->getByUsername($name);
             $user = mysqli_fetch_assoc($user);
             if ($user) {
-                session_start();
+                // session_start();
                 $_SESSION['user'] = [
                     'id'   => $user['id'],
-                    'role' => $user['role']
+                    'role' => $user['role'],
+                    'ref_id' => $user['ref_id'],
+                    'name' => $user['username'],
                 ];
                 if ($user['role'] == 'student') {
-                    $student = $this->studentModel->getById($user['ref_id']);
-                    $_SESSION['profile'] = $student;
-                    header('Location: index.php?controller=student&action=index');
+                    // $profile = $this->studentModel->getAllProfile($user['ref_id']);
+                    // $_SESSION['profile'] = $profile;
+                    // include_once "./../views/user/profile.php";
+                    header('Location: index.php?controller=student&action=profile');
                 } elseif ($user['role'] == 'lecturer') {
                     $lecturer = $this->lecturerModel->getById($user['ref_id']);
                     $_SESSION['profile'] = $lecturer;
@@ -127,12 +130,12 @@ class authController
     //     include_once "./../views/auth/register.php";
     // }
     // //Xử lý chức năng đăng nhập
-    // public function logout()
-    // {
-    //     session_start();
-    //     session_unset();
-    //     session_destroy();
-    //     header("Location: index.php?controller=user&action=index");
-    //     exit();
-    // }
+    public function logout()
+    {
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: index.php?controller=auth&action=login");
+        exit();
+    }
 }
