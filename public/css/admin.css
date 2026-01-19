@@ -34,19 +34,7 @@
   opacity: 70%;
 }
 
-.main-content {
-  flex: 1;
-  margin-left: 240px;
-  margin-top: 60px;
-  padding: 20px;
-  padding-bottom: 100px;
-  background-color: var(--bg-main);
-}
 
-.main-content h2 {
-  margin-bottom: 16px;
-  color: var(--text-title);
-}
 .student {
   background-color: var(--bg-card);
   padding: 20px;
