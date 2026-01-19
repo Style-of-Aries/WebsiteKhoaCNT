@@ -63,8 +63,8 @@ ob_start();
             <td><?= htmlspecialchars($user['department_name']) ?></td>
             <td>
               <!-- <a href="index.php?controller=subjects&action=getAll&id=<?= $user['id'] ?>&user=<?=$user['name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Danh sách giảng viên</a> -->
-              <a href="index.php?controller=subjects&action=editMonHoc&id=<?= $user['id'] ?>&user=<?=$user['name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-              <a href="index.php?controller=subjects&action=deleteMonHoc&id=<?= $user['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa lớp học này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
+              <a href="index.php?controller=subject&action=editMonHoc&id=<?= $user['id'] ?>&user=<?=$user['name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+              <a href="index.php?controller=subject&action=deleteMonHoc&id=<?= $user['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa lớp học này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
             </td>
           </tr>
           <?php endforeach ?>

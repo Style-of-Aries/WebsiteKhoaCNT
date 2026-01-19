@@ -36,27 +36,28 @@ class subjectController
         $department = $this->departmentModel->getAllGiangVienCuaKhoa($id);
         require_once './../views/admin/department/listGv.php';
     }
-    public function addKhoa()
+    public function addMonHoc()
     {
-        $parents = $this->departmentModel->getParents();
-        require_once './../views/admin/department/add.php';
+        $department = $this->departmentModel->getAll();
+        require_once './../views/admin/subject/add.php';
     }
-    public function editKhoa()
+    public function editMonHoc()
     {
         $id = $_GET['id'];
-        $parents = $this->departmentModel->getParents();
-        $user = $this->departmentModel->getById($id);
-        require_once './../views/admin/department/edit.php';
+        $department = $this->departmentModel->getAll();
+        $subject = $this->subjectModel->getById($id);
+        require_once './../views/admin/subject/edit.php';
     }
     // thêm 
     public function add()
     {
         if ($_POST['btn_add']) {
             $name = $_POST['name'];
-            $type = $_POST['type'];
-            $parent_id = $_POST['parent_id'];
-            $class = $this->departmentModel->addKhoa($name, $type, $parent_id);
-            if ($class) {
+            $subject_code = $_POST['subject_code'];
+            $credits = $_POST['credits'];
+            $department_id = $_POST['department_id'];
+            $subjects = $this->subjectModel->addMonHoc($name, $subject_code, $credits,$department_id);
+            if ($subjects) {
                 $this->getAllMonHoc();
             }
         }
@@ -67,33 +68,35 @@ class subjectController
         if ($_POST['btn_edit']) {
             $id = $_POST['id'];
             $name = $_POST['name'];
-            $type = $_POST['type'];
-            $parent_id = $_POST['parent_id'];
-            if ($this->departmentModel->checkKhoa($id, $name)) {
+            $subject_code = $_POST['subject_code'];
+            $credits = $_POST['credits'];
+            $department_id = $_POST['department_id'];
+            if ($this->subjectModel->checkMonHoc($id, $name)) {
                 $errorMaSv = "Khoa đã tồn tại";
             }
             if (empty($errorMaSv)) {
-                $this->departmentModel->editKhoa($id, $name, $type, $parent_id);
+                $this->subjectModel->editMonHoc($id,$name, $subject_code, $credits,$department_id);
                 $this->getAllMonHoc();
 
                 exit;
             } else {
                 // Gán lại dữ liệu vừa nhập để hiển thị lại form
-                $user = [
+                $subject = [
                     'id' => $id,
                     'name' => $name,
-                    'type' => $type,
-                    'parent_id' => $parent_id
+                    'subject_code' => $subject_code,
+                    'credits' => $credits,
                 ];
+                $department = $this->departmentModel->getAll();
+
             }
         }
-        include_once "./../views/admin/department/edit.php";
+        include_once "./../views/admin/subject/edit.php";
     }
-    public function deleteKhoa()
+    public function deleteMonHoc()
     {
-
         $id = $_GET['id'];
-        $this->departmentModel->deleteKhoa($id);
+        $this->subjectModel->deleteMonHoc($id);
         $this->getAllMonHoc();
     }
 }
