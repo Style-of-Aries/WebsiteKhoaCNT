@@ -24,7 +24,7 @@ class departmentController
     public function getAllKhoa()
     {
 
-        $department = $this->departmentModel->getAll();
+        $departments = $this->departmentModel->getAll();
         require_once './../views/admin/department/list.php';
     }
     public function getAllGiangVienCuaKhoa(){

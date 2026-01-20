@@ -2,72 +2,42 @@
 <?php
 ob_start();
 ?>
-<style>
-    a{
-
-        text-decoration: none;
-        color: white;
-    }
-    
-  .add {
-    width: 200px;
-    height: 30px;
-    border: 1px solid;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-  justify-content: center;
-  background-color: #1ca522ff;
-  }
-  .add>a{
-    width: 100%;  
-    display: inline-block;
-    line-height: 30px;
-    margin: 5px;
-    text-decoration: none;
-    color: #fff;
-  }
-</style>
-
-<h2>Danh sách người dùng</h2>
-
-</style>
-<!-- <h2>Danh sách ngươi dùng</h2> -->
-
-      <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
-      <table>
-        <thead>
+<div class="container-admin">
+  <div class="user-header">
+    <h2>Danh sách người dùng</h2>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên đăng nhập</th>
+          <th>Mật khẩu</th>
+          <th>Vai trò</th>
+          <th>id Sinh viên/Giảng viên</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($users as $index => $user): ?>
           <tr>
-            <th>#</th>
-            <th>id</th>
-            <th>UserName</th>
-            <!-- <th>Email</th> -->
-            <th>PassWord</th>
-            <th>Role</th>
-            <th>id_SinhVien/GiangVien</th>
-            <!-- <th>Hành Động</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($users as $index => $user): ?>
-          <tr>
-            <td><?= $index +1   ?></td>
-            <td><?= $user['id']   ?></td>
-            <td><a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?=$user['username'] ?>"><?= htmlspecialchars($user['username']) ?></a></td>
+            <td><?= $index + 1 ?></td>
+            <td><?= htmlspecialchars($user['username']) ?></td>
             <td><?= htmlspecialchars($user['password']) ?></td>
             <td><?= htmlspecialchars($user['role']) ?></td>
             <td><?= htmlspecialchars($user['ref_id']) ?></td>
-            <!-- <td>
-              <a href="index.php?controller=admin&action=deleteUser&id=<?= $user['id'] ?>&ref_id=<?= $user['ref_id'] ?>&role=<?= $user['role'] ?>"   class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
-            </td> -->
           </tr>
-          <?php endforeach ?>
-        </tbody>
-      </table>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
 
 
-<?php
-$content=ob_get_clean();
-include "../views/admin/layout.php";
-?>
+
+  <!-- <h2>Danh sách ngươi dùng</h2> -->
+
+  <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
+
+
+
+  <?php
+  $content = ob_get_clean();
+  include "../views/admin/layout.php";
+  ?>

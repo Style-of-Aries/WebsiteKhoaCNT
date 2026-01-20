@@ -1,11 +1,8 @@
 <?php
 ob_start();
 ?>
-<style>
-    .error {
-        color: red;
-        /* margin-left: px; */
-    }
+<!-- <style>
+    
 
     form.song-form {
         background-color: #231b2e;
@@ -53,12 +50,13 @@ ob_start();
     input[type="submit"]:hover {
         background-color: #b86aff;
     }
-</style>
+</style> -->
 
 
-<h2>Thêm sinh viên</h2>
 
-<form class="song-form" action="index.php?controller=admin&action=add" method="POST" enctype="multipart/form-data">
+
+<form class="add-form" action="index.php?controller=admin&action=add" method="POST" enctype="multipart/form-data">
+    <h2>Thêm sinh viên</h2>
     <div>
         <label>Họ và tên</label>
         <input type="text" name="full_name" required>
@@ -74,7 +72,7 @@ ob_start();
         <input type="email" name="email" required>
     </div>
     <div>
-        <span>Lớp</span>
+        <label>Lớp</label>
         <select name="class_id" required>
             <option value="">-- Chọn lớp --</option>
 

@@ -40,7 +40,7 @@ $currentAction = $_GET['action'] ?? '';
             <?= $name ?>
             <i class='bx bxs-chevron-down'></i>
             <div class="dropboxAdmin">
-                <a href="index.php?controller=auth&action=logout" class="menu-link">
+                <a href="index.php?controller=auth&action=logout" class="btn-logout">
                     🚪 Đăng Xuất
                 </a>
             </div>

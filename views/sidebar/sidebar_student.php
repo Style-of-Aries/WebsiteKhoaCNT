@@ -1,4 +1,4 @@
-<h2>Quản lý</h2>
+<h2>Trang sinh viên</h2>
 <ul class="menu">
 
     <li class="<?= ($currentController == 'student' && $currentAction == 'profile') ? 'active' : '' ?>">
