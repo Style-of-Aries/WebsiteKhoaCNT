@@ -78,7 +78,7 @@ ob_start();
                 <option
                     value="<?= $class['id'] ?>"
                     <?= ($class['id'] == $user['department_id']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($class['name']) ?>
+                    <?= htmlspecialchars($class['faculty_name']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
