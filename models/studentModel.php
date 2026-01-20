@@ -20,11 +20,7 @@ class studentModel extends database
     // lấy toàn bộ thông tin của sinh viên
     public function getAll()
     {
-        $sql = "SELECT
-    s.student_code,
-    p.full_name,
-    p.email,
-    c.class_name
+        $sql = "SELECT s.*, p.*, c.class_name
 FROM student s
 JOIN student_profiles p ON p.student_id = s.id
 LEFT JOIN classes c ON c.id = s.class_id;";

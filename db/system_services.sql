@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 19, 2026 lúc 10:25 AM
+-- Thời gian đã tạo: Th1 20, 2026 lúc 06:39 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---  
+--
 -- Cơ sở dữ liệu: `system_services`
 --
 
@@ -304,8 +304,7 @@ CREATE TABLE `lecturer` (
 
 INSERT INTO `lecturer` (`id`, `full_name`, `lecturer_code`, `email`, `department_id`) VALUES
 (4, 'Nguyễn Văn Tứ', 'GV001', 'gv1@gmail.com', 3),
-(11, 'Trần Thị A', 'GV002', 'gv2@gmail.com', 3),
-(60, 'df', 'df', 'tutue9692@gmail.comdd', 1);
+(11, 'Trần Thị A', 'GV002', 'gv2@gmail.com', 3);
 
 -- --------------------------------------------------------
 
@@ -375,11 +374,11 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `student_code`, `class_id`, `department_id`, `enrollment_year`, `education_type`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'SV2023001', 1, 1, '2023', 'chinh_quy', 'studying', '2026-01-19 15:04:19', '2026-01-19 15:04:19'),
 (16, 'SV001', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
 (17, 'SV002', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
 (18, 'SV003', 2, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(19, 'msv1234', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(20, 'sc', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05');
+(19, 'msv1234', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05');
 
 -- --------------------------------------------------------
 
@@ -411,7 +410,7 @@ INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date
 (2, 17, 'Lê Thị B', NULL, NULL, 'sv2@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
 (3, 18, 'Phạm Văn C', NULL, NULL, 'sv3@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
 (4, 19, 'Nguyễn Văn Tứ', NULL, NULL, 'tutue9692@gmail.com4848444', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
-(5, 20, 'Nguyễn Văn Tứ', NULL, NULL, 'tutue9692@gmail.comcjhacbjb', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27');
+(77, 1, 'Nguyễn Văn A', 'male', '2004-08-15', 'nguyenvana@sv.bkhn.edu.vn', '0912345678', 'Hà Nội', '012345678901', 'avatars/sv2023001.jpg', '2026-01-19 15:05:02', '2026-01-19 15:05:02');
 
 -- --------------------------------------------------------
 
@@ -510,10 +509,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 (6, 'sv3', '123', 'student', 18),
 (16, 'nvt', '123', 'lecturer', 13),
 (17, 'nvt111', ' 123', 'student', 19),
-(18, 'qq', 'q', 'lecturer', 54),
-(20, 'nvtsssss', ' 123', 'lecturer', 59),
-(21, 'ssjbcs', 's', 'student', 20),
-(22, 'nvtdfdf', 'dfdf', 'lecturer', 60);
+(22, 'trong', '123', 'student', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -743,7 +739,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT cho bảng `student_profiles`
 --
 ALTER TABLE `student_profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT cho bảng `subjects`

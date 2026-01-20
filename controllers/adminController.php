@@ -39,8 +39,8 @@ class adminController
     {
 
         $users = $this->userModel->getAll();
-        // require_once './../views/admin/users/list.php';
-        require_once './../views/user/profile.php';
+        require_once './../views/admin/users/list.php';
+        // require_once './../views/user/profile.php';
     }
 
     public function no_index()
@@ -264,7 +264,7 @@ class adminController
             $this->lecturerModel->deleteLecturer($ref_id);
         }
         $this->userModel->deleteUser($id);
-        $this->index();
+        $this->getAllUser();
     }
 
     public function deleteStudent()

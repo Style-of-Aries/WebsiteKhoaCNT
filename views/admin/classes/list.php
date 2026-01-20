@@ -2,7 +2,7 @@
 <?php
 ob_start();
 ?>
-<style>
+<!-- <style>
     a{
 
         text-decoration: none;
@@ -28,52 +28,47 @@ ob_start();
     text-decoration: none;
     color: #fff;
   }
-</style>
+</style> -->
 
-<h2>Danh sách lớp học</h2>
-<div class="add">
-  <a href="index.php?controller=classes&action=addLopHoc">
-    <i class="ri-add-circle-line"></i> 
-    Thêm Lớp Học Mới</a>
-</div>
-</style>
-<!-- <h2>Danh sách ngươi dùng</h2> -->
-
-      <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
-      <table>
-        <thead>
+<div class="container-admin">
+  <div class="lop-header">
+    <h2>Danh sách lớp học</h2>
+    <div class="add">
+      <a href="index.php?controller=admin&action=addGiangVien">
+        <i class="ri-add-circle-line"></i>
+        Thêm Lớp Học Mới</a>
+    </div>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên lớp</th>
+          <th>Mã lớp</th>
+          <th>Khoa</th>
+          <th>Giáo viên chủ nhiệm</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($classes as $index => $class): ?>
           <tr>
-            <th>#</th>
-            <th>id</th>
-            <th>Tên lớp</th>
-            <th>Mã lớp</th>
-            <th>Khoa</th>
-            <th>Giảng viên chủ nghiệm</th>
-            <th>Hành Động</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($classes as $index => $user): ?>
-          <tr>
-            <td><?= $index +1   ?></td>
-            <td><?= $user['id']   ?></td>
-            <td><a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?=$user['class_name'] ?>"><?= htmlspecialchars($user['class_name']) ?></a></td>
-            <td><?= htmlspecialchars($user['class_code']) ?></td>
-            <td><?= htmlspecialchars($user['department_name']) ?></td>
-            <td><?= htmlspecialchars($user['lecturer_name']) ?></td>
+            <td><?= $index + 1 ?></td>
+            <td><?= htmlspecialchars($class['class_name']) ?></td>
+            <td><?= htmlspecialchars($class['class_code']) ?></td>
+            <td><?= htmlspecialchars($class['department_name']) ?></td>
+            <td><?= htmlspecialchars($class['lecturer_name']) ?></td>
             <td>
-              <!-- <a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?=$user['full_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Danh sách yêu thích</a> -->
-              <a href="index.php?controller=classes&action=getAllSinhVienCuaLop&id=<?= $user['id'] ?>&user=<?=$user['class_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Xem danh sách sinh viên</a>
-              <a href="index.php?controller=classes&action=editLh&id=<?= $user['id'] ?>&user=<?=$user['class_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-              <a href="index.php?controller=classes&action=deleteLh&id=<?= $user['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa lớp học này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
+              <a href="index.php?controller=classes&action=getAllSinhVienCuaLop&id=<?= $class['id'] ?>&user=<?=$class['class_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Xem danh sách sinh viên</a>
+              <a href="index.php?controller=classes&action=editLh&id=<?= $class['id'] ?>&user=<?=$class['class_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+              <a href="index.php?controller=classes&action=deleteLh&id=<?= $class['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa lớp học này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
             </td>
           </tr>
-          <?php endforeach ?>
-        </tbody>
-      </table>
-
-
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
 <?php
-$content=ob_get_clean();
+$content = ob_get_clean();
 include "../views/admin/layout.php";
 ?>

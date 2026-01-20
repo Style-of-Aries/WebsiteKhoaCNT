@@ -5,7 +5,7 @@
 <?php
 ob_start();
 ?>
-<div class="student">
+<div class="container-admin">
   <div class="sv-header">
     <h2>Danh sách sinh viên</h2>
     <div class="add">
@@ -91,6 +91,14 @@ ob_start();
           <div class="info-item">
             <i class='bx bx-phone'></i>
             <span><?= htmlspecialchars($user['phone']) ?></span>
+          </div>
+          <div class="info-item">
+            <i class='bx bx-id-card'></i>
+            <span><?= htmlspecialchars($user['identity_number']) ?></span>
+          </div>
+          <div class="info-item">
+            <i class='bx bx-home'></i>
+            <span><?= htmlspecialchars($user['address']) ?></span>
           </div>
         </div>
       </div>

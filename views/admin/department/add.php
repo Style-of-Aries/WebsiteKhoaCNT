@@ -1,7 +1,7 @@
 <?php
 ob_start();
 ?>
-<style>
+<!-- <style>
     .error {
         color: red;
         /* margin-left: px; */
@@ -53,12 +53,12 @@ ob_start();
     input[type="submit"]:hover {
         background-color: #b86aff;
     }
-</style>
+</style> -->
 
 
 <h2>Thêm Khoa</h2>
 
-<form class="song-form" action="index.php?controller=department&action=add" method="POST" enctype="multipart/form-data">
+<form class="add-form" action="index.php?controller=department&action=add" method="POST" enctype="multipart/form-data">
     <div>
         <label>Tên Khoa</label>
         <input type="text" name="name" required>
