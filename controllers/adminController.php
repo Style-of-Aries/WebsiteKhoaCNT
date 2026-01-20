@@ -31,7 +31,7 @@ class adminController
         $totalSinhVien = $this->studentModel->getAll();
         $totalGiangVien = $this->lecturerModel->getAll();
         $totalLopHoc = $this->classesModel->getAll();
-        $totalKhoa = $this->departmentModel->getAll();
+        $totalKhoa = $this->departmentModel->getAllKhoa();
         require_once './../views/admin/dashboard/dashboard.php';
     }
     // giao diện danh sách người dùng
@@ -39,7 +39,8 @@ class adminController
     {
 
         $users = $this->userModel->getAll();
-        require_once './../views/admin/users/list.php';
+        // require_once './../views/admin/users/list.php';
+        require_once './../views/user/profile.php';
     }
 
     public function no_index()

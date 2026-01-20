@@ -9,15 +9,25 @@ class studentController
     {
         $this->studentModel = new studentModel();
     }
-    
 
-    public function index(){
+
+    public function index()
+    {
         $students = $this->studentModel->getAll();
         require_once './../views/user/student/index.php';
     }
-    
+    public function profile()
+    {
 
-    
+        $user = $_SESSION['user'];
+        $profile = $this->studentModel->getAllProfile($user['ref_id']);
+        $_SESSION['profile'] = $profile;
+        include "./../views/user/profile.php";
+        require_once '../views/user/profile.php';
+    }
 
-    
+
+
+
+
 }

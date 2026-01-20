@@ -1,0 +1,110 @@
+:root {
+  --blue-dark: #1e5fa8;
+  --blue-main: #2f6fb3;
+  --blue-light: #4f8fd8;
+
+  --green-main: #2fae60;
+  --green-light: #5bc98a;
+
+  --orange-main: #f39c3d;
+  --red-main: #e55353;
+
+  --bg-main: #f4f6f9;
+  --bg-card: #ffffff;
+
+  --text-title: #1f2d3d;
+  --text-main: #34495e;
+}
+.profile-info input,
+.profile-info select {
+    width: 60%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+.profile-card label {
+    font-weight: 600;
+    color: #333;
+}
+.actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.btn-save {
+    background: var(--blue-main);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+.profile-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    gap: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+.profile-header .avatar {
+    position: relative;
+    width: 130px;
+    height: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    /* border: 1px solid #ddd; */
+}
+.profile-header .avatar-img {
+    width: 110px;
+    height: 130px;
+    /* border-radius: 50%; */
+    object-fit: cover;
+    border: 4px solid var(--blue-main);
+}
+.profile-header .nameAndbtn .btn-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid var(--blue-main);
+    color: var(--blue-main);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+.profile-header .nameAndbtn .btn-upload:hover {
+    background: var(--blue-main);
+    color: #fff;
+}
+.profile-info {
+    margin-top: 20px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.info-row span {
+    color: #666;
+    font-weight: 500;
+}
+
+.info-row strong {
+    color: var(--blue-main);
+}
+

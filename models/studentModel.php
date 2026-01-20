@@ -35,6 +35,16 @@ LEFT JOIN classes c ON c.id = s.class_id;";
         }
         return $students;
     }
+    public function getAllProfile($id)
+    {
+        $sql = "SELECT *
+FROM student s
+JOIN student_profiles sp
+    ON s.id = sp.student_id
+WHERE s.id = $id;";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
+    }
 
     public function KtMa($id, $student_code)
     {
