@@ -14,7 +14,7 @@ ob_start();
 <!-- <h2>Danh sách ngươi dùng</h2> -->
 
       <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
-    <table class="admin-table">
+    <table class="main-table">
       <thead>
         <tr>
           <th>STT</th>

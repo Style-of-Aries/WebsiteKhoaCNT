@@ -108,3 +108,76 @@
     color: var(--blue-main);
 }
 
+.card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-title {
+        font-size: 20px;
+        margin-bottom: 16px;
+        color: #2f80ed;
+    }
+
+    .week-select {
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid #cfd9ec;
+        min-width: 320px;
+        margin: 0 0 20px auto;
+        display: block;
+        font-size: 14px;
+        color: #333;
+        background: #f9fbff;
+        cursor: pointer;
+        transition: border-color 0.3s;
+    }
+
+    /* Grid */
+    .tkb-grid {
+        display: grid;
+        grid-template-columns: 140px repeat(7, 1fr);
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #e6ebf5;
+    }
+
+    .tkb-header {
+        background: var(--bg-main);
+        padding: 12px;
+        text-align: center;
+        font-weight: 600;
+        border-right: 1px solid #e6ebf5;
+    }
+
+    .tkb-time {
+        background: var(--bg-main);
+        padding: 12px;
+        font-weight: 500;
+        border-top: 1px solid #e6ebf5;
+    }
+
+    .tkb-cell {
+        min-height: 180px;
+        padding: 10px;
+        border-left: 1px solid #e6ebf5;
+        border-top: 1px solid #e6ebf5;
+    }
+
+    .tkb-cell.has-class {
+        background: rgba(47, 128, 237, 0.12);
+        border-left: 4px solid #2f80ed;
+    }
+
+    .tkb-cell strong {
+        display: block;
+        font-size: 14px;
+        color: var(--blue-main);
+    }
+
+    .tkb-cell span {
+        font-size: 13px;
+        color: var(--text-main);
+    }

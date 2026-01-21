@@ -401,28 +401,3 @@ a {
   background-color: var(--blue-dark);
 }
 
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.admin-table th,
-.admin-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-}
-
-.admin-table th {
-    background-color: var(--blue-main);
-    color: var(--bg-card);
-}
-
-.admin-table tr:nth-child(even) {
-    background-color: var(--bg-card);
-}
-
-.admin-table tr:hover {
-    background-color: var(--bg-main);
-}

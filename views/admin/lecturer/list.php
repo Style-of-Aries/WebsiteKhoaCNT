@@ -11,7 +11,7 @@ ob_start();
         <i class="ri-add-circle-line"></i>
         Thêm Giảng Viên Mới</a>
     </div>
-    <table class="admin-table">
+    <table class="main-table">
       <thead>
         <tr>
           <th>STT</th>

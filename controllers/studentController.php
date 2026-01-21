@@ -18,7 +18,6 @@ class studentController
     }
     public function profile()
     {
-
         $user = $_SESSION['user'];
         $profile = $this->studentModel->getAllProfile($user['ref_id']);
         $_SESSION['profile'] = $profile;
@@ -26,8 +25,17 @@ class studentController
         require_once '../views/user/profile.php';
     }
 
+    public function getAllResult()
+    {
+        include './../views/user/result.php';
+    }
 
+    public function getSchedule()
+    {
+        include "./../views/user/schedule.php";
+    }
 
+    
 
 
 }

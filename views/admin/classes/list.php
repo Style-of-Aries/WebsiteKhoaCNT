@@ -38,7 +38,7 @@ ob_start();
         <i class="ri-add-circle-line"></i>
         Thêm Lớp Học Mới</a>
     </div>
-    <table class="admin-table">
+    <table class="main-table">
       <thead>
         <tr>
           <th>STT</th>

@@ -5,7 +5,7 @@ ob_start();
 <div class="container-admin">
   <div class="user-header">
     <h2>Danh sách người dùng</h2>
-    <table class="admin-table">
+    <table class="main-table">
       <thead>
         <tr>
           <th>STT</th>

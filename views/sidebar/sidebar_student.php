@@ -7,8 +7,8 @@
         </a>
     </li>
 
-    <li class="<?= ($currentController == 'student' && $currentAction == 'getAllUser') ? 'active' : '' ?>">
-        <a href="index.php?controller=student&action=getAllUser" class="menu-link">
+    <li class="<?= ($currentController == 'student' && $currentAction == 'getSchedule') ? 'active' : '' ?>">
+        <a href="index.php?controller=student&action=getSchedule" class="menu-link">
             <i class='bx bx-calendar'></i>Thời khóa biểu
         </a>
     </li>
@@ -19,8 +19,8 @@
         </a>
     </li>
 
-    <li class="<?= ($currentController == 'admin' && $currentAction == 'getAllGiangVien') ? 'active' : '' ?>">
-        <a href="index.php?controller=admin&action=getAllGiangVien" class="menu-link">
+    <li class="<?= ($currentController == 'student' && $currentAction == 'getAllResult') ? 'active' : '' ?>">
+        <a href="index.php?controller=student&action=getAllResult" class="menu-link">
            <i class='bx bx-bar-chart-alt-2'></i> Kết quả học tập
         </a>
     </li>
