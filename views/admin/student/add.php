@@ -1,100 +1,107 @@
 <?php
 ob_start();
 ?>
-<!-- <style>
-    
-
-    form.song-form {
-        background-color: #231b2e;
-        padding: 24px;
-        border-radius: 8px;
-        /* max-width: 600px; */
-        width: 50%;
-        /* height: 70%; */
-        /* margin: auto; */
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="file"],
-    input[type="password"],
-    select {
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #2e253a;
-        color: white;
-        width: 100%;
-        outline: none;
-    }
-
-    input[type="submit"] {
-        padding: 12px;
-        background-color: #9b4de0;
-        border: none;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-        outline: none;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #b86aff;
-    }
-</style> -->
 
 
+<form class="add-form" action="index.php?controller=admin&action=addStudent" method="POST" enctype="multipart/form-data">
+    <h2>Thêm sinh viên mới</h2> 
 
+    <!-- Avatar -->
+    <div>
+        <label>Ảnh đại diện</label>
+        <input type="file" name="avatar" accept="image/*">
+    </div>
 
-<form class="add-form" action="index.php?controller=admin&action=add" method="POST" enctype="multipart/form-data">
-    <h2>Thêm sinh viên</h2>
+    <!-- Họ tên -->
     <div>
         <label>Họ và tên</label>
         <input type="text" name="full_name" required>
-        <!-- <i class="fa-solid fa-user"></i> -->
-        <!-- <small class="error" id="error-title"></small> -->
     </div>
+
+    <!-- Mã sinh viên -->
     <div>
         <label>Mã sinh viên</label>
         <input type="text" name="student_code" required>
     </div>
+
+    <!-- Ngày sinh -->
     <div>
-        <label>Email</label>
-        <input type="email" name="email" required>
+        <label>Ngày sinh</label>
+        <input type="date" name="date_of_birth">
     </div>
+
+    <!-- Lớp -->
     <div>
         <label>Lớp</label>
         <select name="class_id" required>
             <option value="">-- Chọn lớp --</option>
-
             <?php foreach ($classes as $class): ?>
                 <option value="<?= $class['id'] ?>">
                     <?= htmlspecialchars($class['class_name']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
-        <i class="fa-solid fa-school"></i>
     </div>
 
+    <!-- Hệ đào tạo -->
+    <div>
+        <label>Hệ đào tạo</label>
+        <select name="education_type" required>
+            <option value="chinh_quy">Chính quy</option>
+            <option value="lien_thong">Liên thông</option>
+            <option value="tai_chuc">Tại chức</option>
+        </select>
+    </div>
+
+    <!-- Trạng thái -->
+    <div>
+        <label>Trạng thái</label>
+        <select name="status" required>
+            <option value="studying">Đang học</option>
+            <option value="paused">Tạm dừng</option>
+            <option value="dropped">Thôi học</option>
+            <option value="graduated">Tốt nghiệp</option>
+        </select>
+    </div>
+
+    <!-- Email -->
+    <div>
+        <label>Email</label>
+        <input type="email" name="email">
+    </div>
+
+    <!-- Số điện thoại -->
+    <div>
+        <label>Số điện thoại</label>
+        <input type="text" name="phone">
+    </div>
+
+    <!-- CCCD -->
+    <div>
+        <label>Số CCCD</label>
+        <input type="text" name="identity_number">
+    </div>
+
+    <!-- Địa chỉ -->
+    <div>
+        <label>Địa chỉ</label>
+        <input type="text" name="address">
+    </div>
+
+    <!-- Tài khoản -->
     <div>
         <label>Tên đăng nhập</label>
         <input type="text" name="username" required>
     </div>
-    <div class="form-group">
+
+    <div>
         <label>Mật khẩu</label>
         <input type="password" name="password" required>
     </div>
+
     <input type="submit" value="Thêm sinh viên" name="btn_add">
 </form>
+
 <?php
 $content = ob_get_clean();
 include "../views/admin/layout.php";

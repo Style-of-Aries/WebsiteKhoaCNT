@@ -401,3 +401,41 @@ a {
   background-color: var(--blue-dark);
 }
 
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin-table th,
+.admin-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.admin-table th {
+    background-color: var(--blue-main);
+    color: var(--bg-card);
+}
+
+.admin-table tr:nth-child(even) {
+    background-color: var(--bg-card);
+}
+
+.admin-table tr:hover {
+    background-color: var(--bg-main);
+}
+.tooltip {
+    position: absolute;
+    background: #333;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }

@@ -14,49 +14,10 @@ ob_start();
         Thêm Sinh Viên Mới</a>
     </div>
   </div>
-  <!-- <h2>Danh sách ngươi dùng</h2> -->
-
-  <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
-  <!-- <table>
-    <thead>
-      <tr>
-
-        <th>#</th>
-        <th>id</th>
-        <th>Họ và tên</th>
-        <th>Mã Sinh Viên</th>
-        <th>Email</th>
-        <th>Lớp</th>
-        <th>Hành Động</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($students as $index => $user): ?>
-        <tr>
-          <td><?= $index + 1 ?></td>
-          <td><?= $user['id'] ?></td>
-          <td><a
-              href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?= $user['full_name'] ?>"><?= htmlspecialchars($user['full_name']) ?></a>
-          </td>
-          <td><?= htmlspecialchars($user['student_code']) ?></td>
-          <td><?= htmlspecialchars($user['email']) ?></td>
-          <td><?= htmlspecialchars($user['class_name']) ?></td>
-          <td>
-            
-            <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>"
-              class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-            <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>" class="action-btn delete-btn"
-              onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
-
-          </td>
-        </tr>
-      <?php endforeach ?>
-    </tbody>
-  </table> -->
   <?php foreach ($students as $index => $user): ?>
     <div class="student-card">
       <div class="student-avatar">
-        <img src="<?= BASE_URL ?>img/male.jpg" alt="avatar">
+        <img src="<?= BASE_URL ?>/upload/avatar/<?= $user['avatar'] ?>" alt="avatar">
       </div>
 
       <div class="student-info">
@@ -66,47 +27,61 @@ ob_start();
             class="action-btn edit-btn"><i class="ri-bar-chart-line"></i>Bảng điểm</a>
           <a href="index.php?controller=admin&action=editSv&id=<?= $user['student_code'] ?>&full_name=<?= $user['full_name'] ?>"
             class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-          <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['student_code'] ?>" class="action-btn delete-btn"
+          <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>" class="action-btn delete-btn"
             onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
         </div>
         <div class="info-grid">
           <div class="info-item">
-            <i class='bx bx-user'></i>
+            <i class='bx bx-user' data-label="Mã sinh viên"></i>
             <span><?= htmlspecialchars($user['student_code']) ?></span>
           </div>
 
           <div class="info-item">
-            <i class='bx bx-calendar'></i>
+            <i class='bx bx-calendar' data-label="Ngày sinh"></i>
             <span><?= htmlspecialchars($user['date_of_birth']) ?></span>
           </div>
 
           <div class="info-item">
-            <i class='bx bx-book'></i>
+            <i class='bx bx-book' data-label="Lớp"></i>
             <span><?= htmlspecialchars($user['class_name']) ?></span>
           </div>
 
           <div class="info-item">
-            <i class='bx bx-envelope'></i>
+            <i class='bx bx-envelope' data-label="Email"></i>
             <span><?= htmlspecialchars($user['email']) ?></span>
           </div>
 
           <div class="info-item">
-            <i class='bx bx-phone'></i>
+            <i class='bx bx-phone' data-label="Số điện thoại"></i>
             <span><?= htmlspecialchars($user['phone']) ?></span>
           </div>
+
           <div class="info-item">
-            <i class='bx bx-id-card'></i>
+            <i class='bx bx-id-card' data-label="CCCD / CMND"></i>
             <span><?= htmlspecialchars($user['identity_number']) ?></span>
           </div>
+
           <div class="info-item">
-            <i class='bx bx-home'></i>
+            <i class='bx bxs-graduation' data-label="Hệ đào tạo"></i>
+            <span><?= htmlspecialchars($user['education_type']) ?></span>
+          </div>
+
+          <div class="info-item">
+            <i class='bx bx-check-circle' data-label="Trạng thái"></i>
+            <span><?= htmlspecialchars($user['status']) ?></span>
+          </div>
+
+          <div class="info-item">
+            <i class='bx bx-home' data-label="Địa chỉ"></i>
             <span><?= htmlspecialchars($user['address']) ?></span>
           </div>
+
         </div>
       </div>
     </div>
   <?php endforeach ?>
 </div>
+
 
 <?php
 $content = ob_get_clean();

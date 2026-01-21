@@ -14,7 +14,7 @@ class studentController
     public function index()
     {
         $students = $this->studentModel->getAll();
-        require_once './../views/admin/student/list.php';
+        require_once './../views/user/student/index.php';
     }
     public function profile()
     {
