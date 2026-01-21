@@ -31,8 +31,8 @@ ob_start();
             <td><?= htmlspecialchars($lecture['email']) ?></td>
             <td><?= htmlspecialchars($lecture['name']) ?></td>
             <td>
-              <a href="index.php?controller=lecturer&action=editGV&id=<?= $lecture['id'] ?>&user=<?=$lecture['full_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-              <a href="index.php?controller=lecturer&action=deleteGV&id=<?= $lecture['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa giảng viên này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
+              <a href="index.php?controller=admin&action=editGV&id=<?= $lecture['id'] ?>&user=<?=$lecture['full_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+              <a href="index.php?controller=admin&action=deleteLecturer&id=<?= $lecture['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa giảng viên này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
             </td>
           </tr>
         <?php endforeach; ?>

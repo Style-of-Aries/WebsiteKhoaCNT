@@ -28,7 +28,7 @@ class adminController
     // giao diện dashboard
     public function index()
     {
-        $totalSinhVien = $this->studentModel->getAll();
+        $totalSinhVien = $this->studentModel->getAllds();
         $totalGiangVien = $this->lecturerModel->getAll();
         $totalLopHoc = $this->classesModel->getAll();
         $totalKhoa = $this->departmentModel->getAllKhoa();
@@ -271,8 +271,9 @@ class adminController
     {
         $ref_id = $_GET['id'];
         $id = $_GET['id'];
-        $this->studentModel->deleteStudent($ref_id);
-        $this->userModel->deleteUser($id);
+        $this->studentModel->deleteStudent($id);
+        $this->studentModel->deleteSprofiles($id);
+        $this->userModel->deleteUser($ref_id);
         $this->getAllSinhVien();
     }
     public function deleteLecturer()

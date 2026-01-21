@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 20, 2026 lúc 06:39 AM
+-- Thời gian đã tạo: Th1 21, 2026 lúc 07:05 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -49,7 +49,6 @@ CREATE TABLE `academic_results` (
 INSERT INTO `academic_results` (`id`, `student_id`, `subject_id`, `semester_id`, `process_score`, `midterm_score`, `final_exam_score`, `final_grade`, `grade_letter`, `result`, `created_at`, `updated_at`) VALUES
 (2, 16, 2, 1, NULL, NULL, NULL, NULL, 'F', 'fail', '2026-01-18 06:03:45', '2026-01-18 06:16:11'),
 (3, 17, 1, 1, NULL, NULL, NULL, NULL, 'F', 'fail', '2026-01-18 06:03:45', '2026-01-18 06:16:11'),
-(4, 18, 3, 1, NULL, NULL, NULL, NULL, 'F', 'fail', '2026-01-18 06:03:45', '2026-01-18 06:16:11'),
 (8, 16, 1, 1, 7.00, 8.00, 9.00, 8.40, 'B', 'pass', '2026-01-18 06:21:23', '2026-01-18 06:21:23');
 
 --
@@ -123,8 +122,7 @@ CREATE TABLE `attendance` (
 INSERT INTO `attendance` (`id`, `student_id`, `subject_id`, `date`, `status`) VALUES
 (1, 16, 1, '2025-10-01', 'present'),
 (2, 16, 1, '2025-10-08', 'late'),
-(3, 17, 2, '2025-10-03', 'present'),
-(4, 18, 3, '2025-10-05', 'absent');
+(3, 17, 2, '2025-10-03', 'present');
 
 -- --------------------------------------------------------
 
@@ -192,11 +190,9 @@ CREATE TABLE `classes` (
 --
 
 INSERT INTO `classes` (`id`, `class_name`, `class_code`, `department_id`, `lecturer_id`) VALUES
-(1, 'CNTT K19A', 'CNTT19A', 3, 4),
-(2, 'CNTT K19B', 'CNTT19B', 3, 11),
-(3, 'cnt03', 'cnt04', 2, 4),
-(4, '', '', 2, 4),
-(10, 'e', 'e', 2, 4);
+(1, 'CNTT K19A', 'CNTT19Aa', 3, 4),
+(2, 'CNTT K19B', 'CNTT19a', 3, 11),
+(3, 'cnt03', 'cnt04', 2, 4);
 
 -- --------------------------------------------------------
 
@@ -304,7 +300,8 @@ CREATE TABLE `lecturer` (
 
 INSERT INTO `lecturer` (`id`, `full_name`, `lecturer_code`, `email`, `department_id`) VALUES
 (4, 'Nguyễn Văn Tứ', 'GV001', 'gv1@gmail.com', 3),
-(11, 'Trần Thị A', 'GV002', 'gv2@gmail.com', 3);
+(11, 'Trần Thị A', 'GV002', 'gv2@gmail.com', 3),
+(60, 'df', 'df', 'tutue9692@gmail.comdd', 1);
 
 -- --------------------------------------------------------
 
@@ -362,23 +359,16 @@ CREATE TABLE `student` (
   `student_code` varchar(50) NOT NULL,
   `class_id` bigint(20) UNSIGNED DEFAULT NULL,
   `department_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `enrollment_year` year(4) DEFAULT NULL,
-  `education_type` enum('chinh_quy','lien_thong','tai_chuc') DEFAULT 'chinh_quy',
-  `status` enum('studying','paused','dropped','graduated') DEFAULT 'studying',
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `enrollment_year` year(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `student`
 --
 
-INSERT INTO `student` (`id`, `student_code`, `class_id`, `department_id`, `enrollment_year`, `education_type`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'SV2023001', 1, 1, '2023', 'chinh_quy', 'studying', '2026-01-19 15:04:19', '2026-01-19 15:04:19'),
-(16, 'SV001', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(17, 'SV002', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(18, 'SV003', 2, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05'),
-(19, 'msv1234', 1, 3, NULL, 'chinh_quy', 'studying', '2026-01-18 05:56:23', '2026-01-18 05:57:05');
+INSERT INTO `student` (`id`, `student_code`, `class_id`, `department_id`, `enrollment_year`) VALUES
+(16, 'SV001', 1, 3, NULL),
+(17, 'SV002', 1, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -398,19 +388,18 @@ CREATE TABLE `student_profiles` (
   `identity_number` varchar(20) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `education_type` enum('Chính quy','Liên thông','Tại chức') DEFAULT 'Chính quy',
+  `status` enum('Đang học','Tạm dừng','Thôi học','Đã tốt nghiệp') DEFAULT 'Đang học'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `student_profiles`
 --
 
-INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `created_at`, `updated_at`) VALUES
-(1, 16, 'Nguyễn Văn Tứ', NULL, NULL, 'sv1@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
-(2, 17, 'Lê Thị B', NULL, NULL, 'sv2@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
-(3, 18, 'Phạm Văn C', NULL, NULL, 'sv3@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
-(4, 19, 'Nguyễn Văn Tứ', NULL, NULL, 'tutue9692@gmail.com4848444', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27'),
-(77, 1, 'Nguyễn Văn A', 'male', '2004-08-15', 'nguyenvana@sv.bkhn.edu.vn', '0912345678', 'Hà Nội', '012345678901', 'avatars/sv2023001.jpg', '2026-01-19 15:05:02', '2026-01-19 15:05:02');
+INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `created_at`, `updated_at`, `education_type`, `status`) VALUES
+(1, 16, 'Nguyễn Văn Tứ', 'male', '2005-06-19', 'sv1@gmail.com', '0372016584', 'Vu hoi - vu thu - thai binh', '034205009263', 'nvt.jpg', '2026-01-19 07:04:27', '2026-01-21 05:35:20', 'Chính quy', 'Đang học'),
+(2, 17, 'Lê Thị B', NULL, NULL, 'sv2@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27', 'Chính quy', 'Đang học');
 
 -- --------------------------------------------------------
 
@@ -433,7 +422,7 @@ CREATE TABLE `subjects` (
 INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`) VALUES
 (1, 'CT101', 'Lập trình C', 3, 3),
 (2, 'CT202', 'Lập trình PHP', 3, 3),
-(3, 'CT303', 'Cơ sở dữ liệu', 3, 3);
+(3, 'CT30', 'Cơ sở dữ liệud', 3, 3);
 
 -- --------------------------------------------------------
 
@@ -479,8 +468,7 @@ CREATE TABLE `training_points` (
 
 INSERT INTO `training_points` (`id`, `student_id`, `semester_id`, `point`) VALUES
 (1, 16, 1, 85),
-(2, 17, 1, 78),
-(3, 18, 1, 90);
+(2, 17, 1, 78);
 
 -- --------------------------------------------------------
 
@@ -501,15 +489,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
-(1, 'admin', 'admin123', 'admin', 0),
+(1, 'admin123', '123', 'admin', 0),
 (2, 'gv1', '123', 'lecturer', 4),
 (3, 'gv2', '123', 'lecturer', 11),
-(4, 'sv1', '123', 'student', 16),
+(4, 'nvt', '123', 'student', 16),
 (5, 'sv2', '123', 'student', 17),
-(6, 'sv3', '123', 'student', 18),
-(16, 'nvt', '123', 'lecturer', 13),
-(17, 'nvt111', ' 123', 'student', 19),
-(22, 'trong', '123', 'student', 1);
+(18, 'qq', 'q', 'lecturer', 54),
+(20, 'nvtsssss', ' 123', 'lecturer', 59),
+(22, 'nvtdfdf', 'dfdf', 'lecturer', 60);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -739,7 +726,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT cho bảng `student_profiles`
 --
 ALTER TABLE `student_profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `subjects`

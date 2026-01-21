@@ -30,14 +30,14 @@ ob_start();
         <?php foreach ($departments as $index => $department): ?>
           <tr>
             <td><?= $index + 1 ?></td>
-            <td><a href="index.php?controller=admin&action=yeuThich&id=<?= $department['id'] ?>&user=<?=$department['faculty_name'] ?>"><?= htmlspecialchars($department['faculty_name']) ?></a></td>
+            <td><?= htmlspecialchars($department['faculty_name']) ?></td>
             <td><?= htmlspecialchars($department['type']) ?></td>
             <td><?= htmlspecialchars($department['parent_name']) ?></td>
             <td><?= htmlspecialchars($department['staff_count']) ?></td>
             <td><?= htmlspecialchars($department['created_at']) ?></td>
             <td>
-              <a href="index.php?controller=classes&action=getAllSinhVienCuaLop&id=<?= $department['id'] ?>&user=<?=$department['department_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Xem danh sách sinh viên</a>
-              <a href="index.php?controller=classes&action=editLh&id=<?= $department['id'] ?>&user=<?=$department['department_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+              <a href="index.php?controller=classes&action=getAllSinhVienCuaLop&id=<?= $department['id'] ?>&user=<?=$department['faculty_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Xem danh sách sinh viên</a>
+              <a href="index.php?controller=classes&action=editLh&id=<?= $department['id'] ?>&user=<?=$department['faculty_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
               <a href="index.php?controller=classes&action=deleteLh&id=<?= $department['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa lớp học này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
             </td>
           </tr>

@@ -45,9 +45,9 @@ class userModel extends database
         return false;
     }
 
-    public function deleteUser($id)
+    public function deleteUser($ref_id)
     {
-        $sql = "delete from users where id= $id";
+        $sql = "delete from users where ref_id= '$ref_id'";
         return $this->__query($sql);
     }
     public function KtUserName($username, $id)

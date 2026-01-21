@@ -13,17 +13,68 @@ class studentModel extends database
     // lấy thông tin user theo id
     public function getById($id)
     {
-        $sql = "select * from student where id='$id'";
+        $sql = "SELECT
+    sp.avatar,
+    sp.full_name,
+    s.id,
+    s.student_code,
+    sp.education_type,
+    sp.status,
+    sp.date_of_birth,
+    c.class_name,
+    sp.email,
+    sp.phone,
+    sp.identity_number,
+    sp.address
+    FROM student s
+    JOIN student_profiles sp ON sp.student_id = s.id
+    LEFT JOIN classes c ON c.id = s.class_id
+    WHERE s.id = '$id';
+";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
     // lấy toàn bộ thông tin của sinh viên
     public function getAll()
     {
-        $sql = "SELECT s.*, p.*, c.class_name
-FROM student s
-JOIN student_profiles p ON p.student_id = s.id
-LEFT JOIN classes c ON c.id = s.class_id;";
+        $sql = "SELECT
+    sp.avatar,
+    sp.full_name,
+    s.id,
+    s.student_code,
+    sp.education_type,
+    sp.status,
+    sp.date_of_birth,
+    c.class_name,
+    sp.email,
+    sp.phone,
+    sp.identity_number,
+    sp.address
+    FROM student s
+    JOIN student_profiles sp ON sp.student_id = s.id
+    LEFT JOIN classes c ON c.id = s.class_id;
+    ";
+        return $this->__query($sql);
+    }
+    public function getAllds()
+    {
+        $sql = "SELECT
+    sp.avatar,
+    sp.full_name,
+    s.id,
+    s.student_code,
+    sp.education_type,
+    sp.status,
+    sp.date_of_birth,
+    c.class_name,
+    sp.email,
+    sp.phone,
+    sp.identity_number,
+    sp.address
+    FROM student s
+    JOIN student_profiles sp ON sp.student_id = s.id
+    LEFT JOIN classes c ON c.id = s.class_id;
+    ";
         $query = $this->__query($sql);
         $students = [];
         while ($row = mysqli_fetch_assoc($query)) {
@@ -119,9 +170,13 @@ WHERE s.id = $id;";
 
 
     // xóa sinh viên 
-    public function deleteStudent($ref_id)
+    public function deleteSprofiles($id){
+        $sql = "delete from student_profiles where student_id= $id";
+        return $this->__query($sql);
+    }
+    public function deleteStudent($id)
     {
-        $sql = "delete from student where id= $ref_id";
+        $sql = "delete from student where id= $id";
         return $this->__query($sql);
     }
     public function __query($sql)
