@@ -30,13 +30,9 @@ $currentAction = $_GET['action'] ?? '';
         </div>
         <div class="avatar">
             <?php
-            $name = $_SESSION['user']['name'] ?? 'Admin';
-            $gender = $_SESSION['user']['gender'] ?? 'Nam';
-            if ($gender === 'Nam'): ?>
-                <img src="<?= BASE_URL ?>img/male.jpg" alt="avatar" id="avatarBtn">
-            <?php else: ?>
-                <img src="<?= BASE_URL ?>img/avatar-nu.jpg" alt="avatar" id="avatarBtn">
-            <?php endif; ?>
+            $name = $_SESSION['user']['name']
+            ?>
+                <img src="<?= BASE_URL ?>/upload/avatar/<?= $profile['avatar']?>" alt="avatar" id="avatarBtn">
             <?= $name ?>
             <i class='bx bxs-chevron-down'></i>
             <div class="dropboxAdmin">

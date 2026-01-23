@@ -15,7 +15,7 @@ ob_start();
     <button type="button" onclick="openFile()">Choose File</button>
 
     <div class="file-info">
-        <img id="avatarPreview"
+        <img id="xemTrc"
              src="<?= !empty($studentprf['avatar']) 
                     ? BASE_URL.'upload/avatar/'.$studentprf['avatar'] 
                     : BASE_URL.'uploads/avatars/default.png' ?>"
