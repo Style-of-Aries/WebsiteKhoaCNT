@@ -63,7 +63,6 @@
   background-color: #b86aff;
 }
 
-
 img.img-thumbnail {
   border-radius: 4px;
   width: 60px;
@@ -346,6 +345,12 @@ a {
   right: 80px;
 }
 
+.btnManager .view-btn {
+  right: 160px;
+  background-color: var(--blue-light);
+  padding: 6px 12px;
+  /* font-size: 12px; */
+}
 .student-info h3 {
   margin: 0 0 12px;
   color: #1f2d3d;

@@ -4,7 +4,7 @@ ob_start();
 
 
 <form class="add-form" action="index.php?controller=admin&action=add" method="POST" enctype="multipart/form-data">
-    <h2>Thêm sinh viên mới</h2> 
+    <h2>Thêm sinh viên mới</h2>
 
     <!-- Avatar -->
     <div>
@@ -46,6 +46,16 @@ ob_start();
             <?php endforeach; ?>
         </select>
         <i class="fa-solid fa-school"></i>
+    </div>
+
+    <!-- Giới tính -->
+    <div>
+        <label>Giới tính</label>
+        <div class="gender-group">
+            <input type="radio" name="gender" value="male" required>Nam
+            <input type="radio" name="gender" value="female">Nữ
+            <!-- <input type="radio" name="gender" value="other"> -->
+        </div>
     </div>
 
     <!-- Lớp -->

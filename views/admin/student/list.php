@@ -24,7 +24,7 @@ ob_start();
         <div class="btnManager">
           <h3><?= htmlspecialchars($user['full_name']) ?></h3>
           <a href="index.php?controller=user&action=getAllResult&id=<?= $user['student_code'] ?>&full_name=<?= $user['full_name'] ?>"
-            class="action-btn edit-btn"><i class="ri-bar-chart-line"></i>Bảng điểm</a>
+            class="action-btn view-btn"><i class="ri-bar-chart-line"></i>Bảng điểm</a> 
           <a href="index.php?controller=admin&action=editSv&id=<?= $user['student_code'] ?>&full_name=<?= $user['full_name'] ?>"
             class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
           <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>" class="action-btn delete-btn"

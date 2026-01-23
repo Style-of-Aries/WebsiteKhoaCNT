@@ -115,6 +115,7 @@ WHERE s.id = '$id';
     }
     public function getAllProfile($id)
     {
+
         $sql = "SELECT *
 FROM student s
 JOIN student_profiles sp
@@ -123,7 +124,6 @@ WHERE s.id = $id;";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
-
     public function KtMa($id, $student_code)
     {
         $sql = "Select *from student where student_code='$student_code'AND id != $id
@@ -254,4 +254,41 @@ WHERE s.id = $id;";
     {
         return mysqli_query($this->connect, $sql);
     }
+    // Sửa thông tin ở trang của sinh viên
+    public function updateProfile($student_id, array $data)
+    {
+        if (empty($data)) {
+            return true;
+        }
+
+        mysqli_begin_transaction($this->connect);
+
+        $fields = [];
+        foreach ($data as $column => $value) {
+            if ($value !== null) {
+                $safeValue = mysqli_real_escape_string($this->connect, $value);
+                $fields[] = "$column = '$safeValue'";
+            }
+        }
+
+        if (empty($fields)) {
+            mysqli_commit($this->connect);
+            return true;
+        }
+
+        $sql = "UPDATE student_profiles 
+            SET " . implode(', ', $fields) . "
+            WHERE student_id = " . intval($student_id);
+
+        if ($this->__query($sql) === false) {
+            mysqli_rollback($this->connect);
+            return false;
+        }
+
+        mysqli_commit($this->connect);
+        return true;
+    }
+
+
 }
+
