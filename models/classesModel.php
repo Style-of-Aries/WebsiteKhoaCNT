@@ -65,17 +65,40 @@ class classesModel extends database
 
     public function getAllSinhVienCuaLop($id)
     {
-        $sql = "
-        SELECT 
-            s.id,
-            s.full_name,
-            s.student_code,
-            s.email,
-            c.class_name
-        FROM student s
-        LEFT JOIN classes c ON s.class_id = c.id
-        WHERE s.class_id = $id
-    ";
+        $sql = "SELECT
+    s.id,
+    s.student_code,
+    s.created_at,
+    s.class_id,
+    s.department_id,
+
+    sp.full_name,
+    sp.gender,
+    sp.date_of_birth,
+    sp.email,
+    sp.phone,
+    sp.identity_number,
+    sp.address,
+    sp.avatar,
+    sp.education_type,
+    sp.status,
+
+    c.class_name,
+    d.name AS department_name
+
+FROM student s
+JOIN student_profiles sp 
+    ON sp.student_id = s.id
+
+LEFT JOIN classes c 
+    ON c.id = s.class_id
+
+LEFT JOIN department d 
+    ON d.id = s.department_id
+
+WHERE c.id = '$id';
+
+";
         return $this->__query($sql);
     }
     public function __query($sql)
