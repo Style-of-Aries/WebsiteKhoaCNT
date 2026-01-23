@@ -70,21 +70,37 @@ class adminController
         $errorEmail = $errorMaSv = $errorName = "";
         $id = $_GET['id'];
         $classes = $this->classesModel->getAll();
-        $user = $this->studentModel->getById($id);
+        $department=$this->departmentModel->getAll();
+        $student = $this->studentModel->getById($id);
+        $studentprf = $this->studentModel->getById($id);
         $userNd = $this->userModel->getByRef_id($id);
+        
         require_once './../views/admin/student/edit.php';
     }
     public function editSinhVien()
     {
 
         if (isset($_POST['btn_edit'])) {
-            $id = $_POST['id'];
-            $full_name = $_POST['full_name'];
+            $id=$_POST['id'];
             $student_code = $_POST['student_code'];
-            $email = $_POST['email'];
             $class_id = $_POST['class_id'];
+            $department_id = $_POST['department_id'];
+            $created_at= $_POST['created_at'];
+
+            $full_name = $_POST['full_name'];
+            $gender = $_POST['gender'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+            $date_of_birth = $_POST['date_of_birth'];
+            $address = $_POST['address'];
+            $identity_number = $_POST['identity_number'];
+            $education_type =$_POST['education_type'];
+            $status = $_POST['status'];
+
             $username = $_POST['username'];
             $password = $_POST['password'];
+            $avatar = $_POST['old_avatar']; // giữ nguyên avatar
+
             // $sdtRegister = $_POST['phone'];
             if ($this->studentModel->KtMa($id, $student_code)) {
                 $errorMaSv = "Mã sinh viên đã tồn tại";
@@ -98,26 +114,43 @@ class adminController
             if ($this->lecturerModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
             }
+            if ($this->studentModel->isStudentCodeExists($student_code, $id)) {
+                $errorMaSv = "Mã sinh viên đã tồn tại";
+            }
 
             if (empty($errorName) && empty($errorEmail) && empty($errorMaSv)) {
-                $this->studentModel->updateSinhVien($id, $full_name, $student_code, $email, $class_id);
+                $this->studentModel->updateStudent($id,$student_code,$class_id,$department_id);
+                $this->studentModel->updateStudent_profiles($id,$gender, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar);
                 $this->userModel->updateUser($id, $username, $password);
                 $this->getAllSinhVien();
                 exit;
             } else {
                 // Gán lại dữ liệu vừa nhập để hiển thị lại form
-                $user = [
+                $student = [
                     'id' => $id,
-                    'full_name' => $full_name,
                     'student_code' => $student_code,
-                    'email' => $email,
-                    'class_id' => null
+                    'department_name' =>$department_id,
+                    'class_name' =>$class_id,
+                    'created_at'=> $created_at,
+                ];
+                $studentprf= [
+                    'full_name' =>$full_name,
+                    'gender' =>$gender,
+                    'date_of_birth' =>$date_of_birth,
+                    'email' =>$email,
+                    'phone' =>$phone,
+                    'address' =>$address,
+                    'identity_number' =>$identity_number,
+                    'education_type' =>$education_type	,
+                    'status' =>$status,
+                    'avatar' =>$avatar
                 ];
                 $userNd = [
                     'username' => $username,
                     'password' => $password
                 ];
                 $classes = $this->classesModel->getAll();
+                $department = $this->departmentModel->getAll();
             }
         }
         include_once "./../views/admin/student/edit.php";
@@ -132,20 +165,41 @@ class adminController
     {
         $classes = $this->classesModel->getAll();
 
+                $department = $this->departmentModel->getAll();
+
         require_once './../views/admin/student/add.php';
     }
     // thêm mới sinh Đ
     public function add()
     {
         if ($_POST['btn_add']) {
-            $full_name = $_POST['full_name'];
             $student_code = $_POST['student_code'];
-            $email = $_POST['email'];
             $class_id = $_POST['class_id'];
+            $department_id = $_POST['department_id'];
+            $year= date('Y');
+
+            $full_name = $_POST['full_name'];
+            $gender = $_POST['gender'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+            $date_of_birth = $_POST['date_of_birth'];
+            $address = $_POST['address'];
+            $identity_number = $_POST['identity_number'];
+
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $student = $this->studentModel->addSinhVien($full_name, $student_code, $email, $class_id, $username, $password);
+            // upload avatar
+            $avatar = null;
+            if (!empty($_FILES['avatar']['name'])) {
+                $avatar = time() . '_' . $_FILES['avatar']['name'];
+                move_uploaded_file(
+                    $_FILES['avatar']['tmp_name'],
+                    'upload/avatar/' . $avatar
+                );
+            }
+
+            $student = $this->studentModel->addSinhVien($student_code, $class_id,$gender, $department_id,$year, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password);
             if ($student) {
                 $this->getAllSinhVien();
             } else {

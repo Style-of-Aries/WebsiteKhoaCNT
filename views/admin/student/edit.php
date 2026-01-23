@@ -1,108 +1,158 @@
 <?php
 ob_start();
 ?>
-<style>
-    .error {
-        color: red;
-        /* margin-left: px; */
-    }
-
-    form.song-form {
-        background-color: #231b2e;
-        padding: 24px;
-        border-radius: 8px;
-        /* max-width: 600px; */
-        width: 50%;
-        /* height: 70%; */
-        /* margin: auto; */
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="file"],
-    input[type="password"],
-    select {
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #2e253a;
-        color: white;
-        width: 100%;
-        outline: none;
-    }
-
-    input[type="submit"] {
-        padding: 12px;
-        background-color: #9b4de0;
-        border: none;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-        outline: none;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #b86aff;
-    }
-</style>
 
 
-<h2>Sửa thông tin sinh viên:<?= $user['full_name'] ?> </h2>
+<form class="add-form" action="index.php?controller=admin&action=editSinhVien" method="POST" enctype="multipart/form-data">
+    <h2>Sửa thông tin sinh viên: <?php echo $studentprf['full_name'] ?></h2>
+    <input type="hidden" name="id" value=" <?= $student['id'] ?>">
 
-<form class="song-form" action="index.php?controller=admin&action=editSinhVien" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="id" value=" <?= $user['id'] ?>">
+
+    <!-- Avatar -->
+<label>Ảnh đại diện</label>
+
+<div class="fake-file">
+    <button type="button" onclick="openFile()">Choose File</button>
+
+    <div class="file-info">
+        <img id="avatarPreview"
+             src="<?= !empty($studentprf['avatar']) 
+                    ? BASE_URL.'upload/avatar/'.$studentprf['avatar'] 
+                    : BASE_URL.'uploads/avatars/default.png' ?>"
+             alt="Avatar">
+
+        <span id="fileName">
+            <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'No file chosen' ?>
+        </span>
+    </div>
+</div>
+
+<input type="file" name="avatar" id="realFile" hidden accept="image/*" onchange="updateFileName(this)">
+<input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
+
+
+
+
+    <!-- Họ tên -->
     <div>
-        <span>Họ và tên</span>
-        <input type="text" name="full_name" placeholder="Họ và tên" value="<?= $user['full_name'] ?>" required>
+        <label>Họ và tên</label>
+        <input type="text" name="full_name" value="<?= $studentprf['full_name'] ?>" required>
+    </div>
+
+    <!-- Giới tính -->
+    <div>
+        <label>Giới tính</label>
+        <select name="gender" required>
+            <option value="Nam" <?= $studentprf['gender'] == 'Nam' ? 'selected' : '' ?>>Nam</option>
+            <option value="Nữ" <?= $studentprf['gender'] == 'Nữ' ? 'selected' : '' ?>>Nữ</option>
+            <option value="Khác" <?= $studentprf['gender'] == 'Khác' ? 'selected' : '' ?>>Khác</option>
+        </select>
+    </div>
+    <!-- Mã sinh viên -->
+    <div>
+        <label>Mã sinh viên</label>
+        <input type="text" name="student_code" value="<?= $student['student_code'] ?>" required>
+          <?php if (!empty($errorMaSv)) echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
+    </div>
+
+    <!-- Ngày sinh -->
+    <div>
+        <label>Ngày sinh</label>
+        <input type="date" name="date_of_birth" value="<?= $studentprf['date_of_birth'] ?>" required>
     </div>
     <div>
-        <span>Mã sinh viên</span>
-        <input type="text" name="student_code" placeholder="Mã sinh viên" value="<?= $user['student_code'] ?>" required>
-        <?php if (!empty($errorMaSv)) echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
+        <label>Thời gian nhập học</label>
+        <input type="text" name="created_at" value="<?= $student['created_at'] ?>" required>
     </div>
     <div>
-        <span>Email</span>
-        <input type="text" name="email" placeholder="Email" value="<?= htmlspecialchars($user['email']) ?>" required>
-        <i class="fa-solid fa-envelope"></i>
-        <?php if (!empty($errorEmail)) echo "<span style='color:red;'>$errorEmail</span><br>"; ?>
-    </div>
-    <div>
-        <span>Lớp</span>
-        <select name="class_id" required>
-            <option value="">-- Chọn lớp --</option>
-
-            <?php foreach ($classes as $class): ?>
+        <label>Khoa</label>
+        <select name="department_id" required>
+            <?php foreach ($department as $department): ?>
                 <option
-                    value="<?= $class['id'] ?>"
-                    <?= ($class['id'] == $user['class_id']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($class['class_name']) ?>
+                    value="<?= $department['faculty_name'] ?>"
+                    <?= ($department['faculty_name'] == $student['department_name']) ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($department['faculty_name']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
         <i class="fa-solid fa-school"></i>
     </div>
 
+    <!-- Lớp -->
+    <div>
+        <label>Lớp</label>
+        <select name="class_id" required>
+            <?php foreach ($classes as $class): ?>
+                <option
+                    value="<?= $class['class_name'] ?>"
+                    <?= ($class['class_name'] == $student['class_name']) ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($class['class_name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <!-- Hệ đào tạo -->
+    <div>
+        <label>Hệ đào tạo</label>
+        <select name="education_type">
+            <option <?= $studentprf['education_type'] == 'Chính quy' ? 'selected' : '' ?>>Chính quy</option>
+            <option <?= $studentprf['education_type'] == 'Liên thông' ? 'selected' : '' ?>>Liên thông</option>
+            <option <?= $studentprf['education_type'] == 'Tại chức' ? 'selected' : '' ?>>Tại chức</option>
+        </select>
+    </div>
+
+
+    <!-- Trạng thái -->
+    <div>
+        <label>Trạng thái</label>
+        <select name="status">
+            <option <?= $studentprf['status'] == 'Đang học' ? 'selected' : '' ?>>Đang học</option>
+            <option <?= $studentprf['status'] == 'Tạm dừng' ? 'selected' : '' ?>>Tạm dừng</option>
+            <option <?= $studentprf['status'] == 'Thôi học' ? 'selected' : '' ?>>Thôi học</option>
+            <option <?= $studentprf['status'] == 'Đã tốt nghiệp' ? 'selected' : '' ?>>Đã tốt nghiệp</option>
+        </select>
+    </div>
+
+    <!-- Email -->
+    <div>
+        <label>Email</label>
+        <input type="email" name="email" value="<?= $studentprf['email'] ?>" required>
+    </div>
+
+    <!-- Số điện thoại -->
+    <div>
+        <label>Số điện thoại</label>
+        <input type="text" name="phone" value="<?= $studentprf['phone'] ?>" required>
+    </div>
+
+    <!-- CCCD -->
+    <div>
+        <label>Số CCCD</label>
+        <input type="text" name="identity_number" value="<?= $studentprf['identity_number'] ?>" required>
+    </div>
+
+    <!-- Địa chỉ -->
+    <div>
+        <label>Địa chỉ</label>
+        <input type="text" name="address" value="<?= $studentprf['address'] ?>" required>
+    </div>
+
+    <!-- Tài khoản -->
     <div>
         <label>Tên đăng nhập</label>
         <input type="text" name="username" placeholder="Tài khoản" value="<?= $userNd['username'] ?>" required>
         <?php if (!empty($errorName)) echo "<span style='color:red;'>$errorName</span><br>"; ?>
     </div>
+
     <div>
-        <span>Mật khẩu:</span>
+        <label>Mật khẩu</label>
         <input type="text" name="password" placeholder="Mật khẩu" value="<?= $userNd['password'] ?>" required>
-        <i class="fa-solid fa-lock"></i>
     </div>
-    <input type="submit" value="Sửa thông tin" name="btn_edit">
+
+    <input type="submit" value="Lưu" name="btn_edit">
 </form>
+
 <?php
 $content = ob_get_clean();
 include "../views/admin/layout.php";

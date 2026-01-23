@@ -36,9 +36,9 @@ ob_start();
             <td><?= htmlspecialchars($department['staff_count']) ?></td>
             <td><?= htmlspecialchars($department['created_at']) ?></td>
             <td>
-              <a href="index.php?controller=classes&action=getAllSinhVienCuaLop&id=<?= $department['id'] ?>&user=<?=$department['faculty_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Xem danh sách sinh viên</a>
-              <a href="index.php?controller=classes&action=editLh&id=<?= $department['id'] ?>&user=<?=$department['faculty_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-              <a href="index.php?controller=classes&action=deleteLh&id=<?= $department['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa lớp học này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
+              <a href="index.php?controller=department&action=getAllGiangVienCuaKhoa&id=<?= $department['id'] ?>&user=<?=$department['faculty_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Xem danh sách sinh viên</a>
+              <a href="index.php?controller=department&action=editKhoa&id=<?= $department['id'] ?>&user=<?=$department['faculty_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+              <a href="index.php?controller=department&action=deleteKhoa&id=<?= $department['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa lớp học này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
             </td>
           </tr>
         <?php endforeach; ?>

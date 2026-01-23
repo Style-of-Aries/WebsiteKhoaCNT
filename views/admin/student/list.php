@@ -38,7 +38,15 @@ ob_start();
             <i class='bx bx-calendar' data-label="Ngày sinh"></i>
             <span><?= htmlspecialchars($user['date_of_birth']) ?></span>
           </div>
+          <div class="info-item">
+            <i class='bx bx-male-female' data-label="Giới tính"></i>
+            <span><?= htmlspecialchars($user['gender']) ?></span>
+          </div>
 
+          <div class="info-item">
+            <i class='bx bx-sitemap' data-label="Khoa"></i>
+            <span><?= htmlspecialchars($user['department_name']) ?></span>
+          </div>
           <div class="info-item">
             <i class='bx bx-book' data-label="Lớp"></i>
             <span><?= htmlspecialchars($user['class_name']) ?></span>
@@ -67,6 +75,10 @@ ob_start();
           <div class="info-item">
             <i class='bx bx-check-circle' data-label="Trạng thái"></i>
             <span><?= htmlspecialchars($user['status']) ?></span>
+          </div>
+          <div class="info-item">
+            <i class='bx bx-calendar-event' data-label="Thời gian nhập học"></i>
+            <span><?= htmlspecialchars($user['created_at']) ?></span>
           </div>
 
           <div class="info-item">
