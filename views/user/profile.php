@@ -3,13 +3,26 @@ ob_start();
 $title = "Hồ sơ cá nhân";
 ?>
 <!-- <link rel="stylesheet" href="<?= BASE_URL ?>css/user.css"> -->
-<form action="update_profile.php" method="POST" enctype="multipart/form-data" class="profile-card">
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success" id="autoHideAlert">
+        <?= htmlspecialchars($_SESSION['success']) ?>
+    </div>
+    <?php unset($_SESSION['success']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-error" id="autoHideAlert">
+        <?= htmlspecialchars($_SESSION['error']) ?>
+    </div>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+<form action="index.php?controller=student&action=updateProfile" method="POST" enctype="multipart/form-data"
+    class="profile-card">
 
     <div class="profile-header">
         <!-- <label class="avatar-label">Ảnh thẻ</label> -->
 
-        <img id="avatarPreview" src="<?= $profile['avatar'] ?: 'public/images/default-avatar.png' ?>"
-            class="avatar-img">
+        <img id="avatarPreview" src="<?= BASE_URL ?>/upload/avatar/<?= $profile['avatar'] ?>" class="avatar-img">
 
         <!-- input file ẩn -->
         <input type="file" id="avatarInput" name="avatar" accept="image/*" hidden onchange="previewAvatar(event)">

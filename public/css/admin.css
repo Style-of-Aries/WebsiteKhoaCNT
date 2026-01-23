@@ -62,7 +62,6 @@
   background-color: #b86aff;
 }
 
-
 img.img-thumbnail {
   border-radius: 4px;
   width: 60px;
@@ -333,6 +332,13 @@ a {
 .btnManager .edit-btn {
   right: 80px;
 }
+
+.btnManager .view-btn {
+  right: 160px;
+  background-color: var(--blue-light);
+  padding: 6px 12px;
+  /* font-size: 12px; */
+}
 .student-info h3 {
   margin: 0 0 12px;
   color: #1f2d3d;
@@ -402,40 +408,48 @@ a {
 }
 
 .admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .admin-table th,
 .admin-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
 }
 
 .admin-table th {
-    background-color: var(--blue-main);
-    color: var(--bg-card);
+  background-color: var(--blue-main);
+  color: var(--bg-card);
 }
 
 .admin-table tr:nth-child(even) {
-    background-color: var(--bg-card);
+  background-color: var(--bg-card);
 }
 
 .admin-table tr:hover {
-    background-color: var(--bg-main);
+  background-color: var(--bg-main);
 }
 .tooltip {
-    position: absolute;
-    background: #333;
-    color: #fff;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s ease;
-  }
+  position: absolute;
+  background: #333;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.gender-group {
+  width: 100px;
+  display: flex;
+}
+.gender-group label {
+  cursor: pointer;
+}
