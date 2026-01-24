@@ -43,6 +43,18 @@ GROUP BY
         // return $departments;
         return $this->__query($sql);
     }
+    public function getAlledit()
+{
+    $sql = "SELECT id, name AS faculty_name FROM department";
+    $query = $this->__query($sql);
+
+    $data = [];
+    while ($row = mysqli_fetch_assoc($query)) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
     public function getAllKhoa()
     {
         $sql = "
@@ -92,7 +104,8 @@ GROUP BY
         return $this->__query($sql);
     }
 
-    public function addKhoa($name, $type, $parent_id){
+    public function addKhoa($name, $type, $parent_id)
+    {
 
         $sql = "
             INSERT INTO department (name, type, parent_id, created_at)
@@ -100,9 +113,9 @@ GROUP BY
         ";
 
         return $this->__query($sql);
-
     }
-    public function editKhoa($id,$name, $type, $parent_id){
+    public function editKhoa($id, $name, $type, $parent_id)
+    {
 
         $sql = "
             UPDATE department
@@ -115,9 +128,8 @@ GROUP BY
         ";
 
         return $this->__query($sql);
-
     }
-    public function checkKhoa($name,$id)
+    public function checkKhoa($name, $id)
     {
 
         $sql = "Select *from department where name = '$name'AND id != '$id'
@@ -133,11 +145,12 @@ GROUP BY
         $sql = "SELECT id, name FROM department";
         return $this->__query($sql);
     }
-    public function deleteKhoa($id){
-        $sql= "delete from department where id= '$id'";
+    public function deleteKhoa($id)
+    {
+        $sql = "delete from department where id= '$id'";
         return $this->__query($sql);
     }
-     public function getById($id)
+    public function getById($id)
     {
         $sql = "SELECT * FROM department WHERE id='$id'";
         $query = $this->__query($sql);

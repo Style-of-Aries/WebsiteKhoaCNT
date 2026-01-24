@@ -82,7 +82,7 @@ WHERE s.id = '$id';
     ON c.id = s.class_id
 
     LEFT JOIN department d 
-    ON d.id = s.department_id";  
+    ON d.id = s.department_id";
 
         return $this->__query($sql);
     }
@@ -155,58 +155,65 @@ WHERE s.id = $id;";
 
         return mysqli_num_rows($query) > 0;
     }
-    public function updateStudent($id, $student_code,$department_id, $class_id)
+    public function updateStudent($id, $student_code, $department_id, $class_id)
     {
         if ($this->isStudentCodeExists($student_code, $id)) {
             return "duplicate_code";
         }
-        $sql = "UPDATE student SET student_code='$student_code,class_id=$class_id ,department_id=$department_id, WHERE id='$id'";
-        $query = $this->__query($sql);
+        $sql = "UPDATE student SET student_code='$student_code',class_id='$class_id',department_id='$department_id' WHERE id='$id'";
+        return $this->__query($sql);
     }
-    public function updateStudent_profiles($id,$gender, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar)
+    public function updateStudent_profiles($id, $gender, $full_name, $email, $phone, $date_of_birth, $address, $education_type, $status, $identity_number, $avatar)
     {
-        $sql = "UPDATE student_profiles SET gender='$gender',full_name='$full_name' ,email='$email',phone='$phone',date_of_birth='$date_of_birth' ,address='$address',identity_number='$identity_number' ,avatar='$avatar' WHERE student_id='$id'";
-        $query = $this->__query($sql);
+        $sql = "UPDATE student_profiles SET gender='$gender',full_name='$full_name',email='$email',phone='$phone',date_of_birth='$date_of_birth' ,address='$address',identity_number='$identity_number' ,avatar='$avatar',education_type='$education_type',status = '$status' WHERE student_id='$id'";
+        return $this->__query($sql);
     }
 
     // thêm mới sinh viên 
-    public function addSinhVien($student_code, $class_id, $gender, $department_id, $year, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password)
+    public function addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password)
     {
         mysqli_begin_transaction($this->connect); //bắt đầu nhưng CHƯA được ghi hẳn vào CSDL
 
         // 1. Insert student
         $sqlStudent = "
-        INSERT INTO student( student_code, class_id,department_id,created_at)
+        INSERT INTO student(student_code, class_id,department_id,created_at)
         VALUES (
             '$student_code',
             '$class_id',
             '$department_id',
-            'NOW()'
+            NOW()
         )
     ";
         if ($this->__query($sqlStudent) === false) {
             mysqli_rollback($this->connect);
             return false;
         }
+        // echo $sqlStudent;
+        // die;
 
         // 2. Lấy ID sinh viên vừa insert
         $studentId = mysqli_insert_id($this->connect);
 
         $sqlProfile = "
         INSERT INTO student_profiles
-                (student_id, full_name,gender, email, phone, date_of_birth, address, identity_number, avatar)
+                (student_id, full_name,gender, email, phone, date_of_birth, address, identity_number, avatar,education_type,status)
                 VALUES (
                     '$studentId',
                     '$full_name',
-                    '$gender'
+                    '$gender',
                     '$email',
                     '$phone',
                     '$date_of_birth',
                     '$address',
                     '$identity_number',
-                    '$avatar'
+                    '$avatar',
+                    '$education_type',
+                    '$status'
                 )
             ";
+
+        // echo $sqlProfile;
+        // die;
 
         if ($this->__query($sqlProfile) === false) {
             mysqli_rollback($this->connect);
@@ -222,10 +229,12 @@ WHERE s.id = $id;";
             '$username',
             '$password',
             'student',
-            $studentId
+            '$studentId'
         )
     ";
 
+        // echo $sqlUser;
+        // die;
         if ($this->__query($sqlUser) === false) {
             mysqli_rollback($this->connect);
             return false;

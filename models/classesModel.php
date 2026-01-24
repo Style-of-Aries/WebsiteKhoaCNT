@@ -56,12 +56,24 @@ class classesModel extends database
     LEFT JOIN lecturer l ON c.lecturer_id = l.id
 ";
         $query = $this->__query($sql);
-        $classes = [];
-        while ($row = mysqli_fetch_assoc($query)) {
-            $classes[] = $row;
-        }
-        return $classes;
+        // $classes = [];
+        // while ($row = mysqli_fetch_assoc($query)) {
+        //     $classes[] = $row;
+        // }
+        return $query;
     }
+    public function getAlledit()
+{
+    $sql = "SELECT id, class_name FROM classes";
+    $query = $this->__query($sql);
+
+    $data = [];
+    while ($row = mysqli_fetch_assoc($query)) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
 
     public function getAllSinhVienCuaLop($id)
     {

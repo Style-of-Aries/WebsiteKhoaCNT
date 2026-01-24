@@ -9,26 +9,27 @@ ob_start();
 
 
     <!-- Avatar -->
-<label>Ảnh đại diện</label>
+    <label>Ảnh đại diện</label>
 
-<div class="fake-file">
-    <button type="button" onclick="openFile()">Choose File</button>
 
-    <div class="file-info">
-        <img id="avatarPreview"
-             src="<?= !empty($studentprf['avatar']) 
-                    ? BASE_URL.'upload/avatar/'.$studentprf['avatar'] 
-                    : BASE_URL.'uploads/avatars/default.png' ?>"
-             alt="Avatar">
+    <div class="fake-file">
+        <button type="button" onclick="openFile()">Choose File</button>
 
-        <span id="fileName">
-            <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'No file chosen' ?>
-        </span>
+        <div class="file-info">
+            <img id="avatarPreview"
+                src="<?= !empty($studentprf['avatar'])
+                            ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
+                            : BASE_URL . 'uploads/avatars/default.png' ?>"
+                alt="Avatar">
+
+            <span id="fileName">
+                <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'No file chosen' ?>
+            </span>
+        </div>
     </div>
-</div>
 
-<input type="file" name="avatar" id="realFile" hidden accept="image/*" onchange="updateFileName(this)">
-<input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
+    <input type="file" name="avatar" id="realFile" hidden accept="image/*" onchange="updateFileName(this)">
+    <input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
 
 
 
@@ -38,7 +39,6 @@ ob_start();
         <label>Họ và tên</label>
         <input type="text" name="full_name" value="<?= $studentprf['full_name'] ?>" required>
     </div>
-
     <!-- Giới tính -->
     <div>
         <label>Giới tính</label>
@@ -52,7 +52,7 @@ ob_start();
     <div>
         <label>Mã sinh viên</label>
         <input type="text" name="student_code" value="<?= $student['student_code'] ?>" required>
-          <?php if (!empty($errorMaSv)) echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
+        <?php if (!empty($errorMaSv)) echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
     </div>
 
     <!-- Ngày sinh -->
@@ -69,8 +69,8 @@ ob_start();
         <select name="department_id" required>
             <?php foreach ($department as $department): ?>
                 <option
-                    value="<?= $department['faculty_name'] ?>"
-                    <?= ($department['faculty_name'] == $student['department_name']) ? 'selected' : '' ?>>
+                    value="<?= $department['id'] ?>"
+                    <?= ($department['id'] == $student['department_id']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($department['faculty_name']) ?>
                 </option>
             <?php endforeach; ?>
@@ -84,8 +84,8 @@ ob_start();
         <select name="class_id" required>
             <?php foreach ($classes as $class): ?>
                 <option
-                    value="<?= $class['class_name'] ?>"
-                    <?= ($class['class_name'] == $student['class_name']) ? 'selected' : '' ?>>
+                    value="<?= $class['id'] ?>"
+                    <?= ($class['id'] == $student['class_id']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($class['class_name']) ?>
                 </option>
             <?php endforeach; ?>
@@ -118,6 +118,7 @@ ob_start();
     <div>
         <label>Email</label>
         <input type="email" name="email" value="<?= $studentprf['email'] ?>" required>
+        <?php if (!empty($errorEmail)) echo "<span style='color:red;'>$errorEmail</span><br>"; ?>
     </div>
 
     <!-- Số điện thoại -->
