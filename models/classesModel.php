@@ -57,12 +57,23 @@ class classesModel extends database
 ";
         $query = $this->__query($sql);
         $classes = [];
-        // while ($row = mysqli_fetch_assoc($query)) {
-        //     $classes[] = $row;
-        // }
-        // return $classes;
-        return $query;
+        while ($row = mysqli_fetch_assoc($query)) {
+            $classes[] = $row;
+        }
+        return $classes;
     }
+    public function getAlledit()
+{
+    $sql = "SELECT id, class_name FROM classes";
+    $query = $this->__query($sql);
+
+    $data = [];
+    while ($row = mysqli_fetch_assoc($query)) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
 
     public function getAllSinhVienCuaLop($id)
     {
