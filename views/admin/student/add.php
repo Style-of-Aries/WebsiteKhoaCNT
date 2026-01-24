@@ -7,10 +7,25 @@ ob_start();
     <h2>Thêm sinh viên mới</h2>
 
     <!-- Avatar -->
-    <div>
-        <label>Ảnh đại diện</label>
-        <input type="file" name="avatar" accept="image/*">
+    <label>Ảnh đại diện</label>
+
+    <div class="fake-file">
+        <button type="button" onclick="openFile()">Choose File</button>
+
+        <div class="file-info">
+            <img id="avatarPreview" src="<?= !empty($studentprf['avatar'])
+                ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
+                : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
+
+            <span id="fileName">
+                <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'No file chosen' ?>
+            </span>
+        </div>
     </div>
+
+    <input type="file" name="avatar" id="realFile" hidden accept="image/*" onchange="updateFileName(this)">
+    <input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
+
 
     <!-- Họ tên -->
     <div>
@@ -34,7 +49,7 @@ ob_start();
         <label>Ngày sinh</label>
         <input type="date" name="date_of_birth">
     </div>
-     <div>
+    <div>
         <label>Khoa</label>
         <select name="department_id" required>
             <option value="">-- Chọn khoa --</option>
@@ -48,15 +63,6 @@ ob_start();
         <i class="fa-solid fa-school"></i>
     </div>
 
-    <!-- Giới tính -->
-    <div>
-        <label>Giới tính</label>
-        <div class="gender-group">
-            <input type="radio" name="gender" value="male" required>Nam
-            <input type="radio" name="gender" value="female">Nữ
-            <!-- <input type="radio" name="gender" value="other"> -->
-        </div>
-    </div>
 
     <!-- Lớp -->
     <div>

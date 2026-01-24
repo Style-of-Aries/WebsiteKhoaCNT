@@ -3,32 +3,31 @@ ob_start();
 ?>
 
 
-<form class="add-form" action="index.php?controller=admin&action=editSinhVien" method="POST" enctype="multipart/form-data">
+<form class="add-form" action="index.php?controller=admin&action=editSinhVien" method="POST"
+    enctype="multipart/form-data">
     <h2>Sửa thông tin sinh viên: <?php echo $studentprf['full_name'] ?></h2>
     <input type="hidden" name="id" value=" <?= $student['id'] ?>">
 
 
     <!-- Avatar -->
-<label>Ảnh đại diện</label>
+    <label>Ảnh đại diện</label>
 
-<div class="fake-file">
-    <button type="button" onclick="openFile()">Choose File</button>
+    <div class="fake-file">
+        <button type="button" onclick="openFile()">Choose File</button>
 
-    <div class="file-info">
-        <img id="avatarPreview"
-             src="<?= !empty($studentprf['avatar']) 
-                    ? BASE_URL.'upload/avatar/'.$studentprf['avatar'] 
-                    : BASE_URL.'uploads/avatars/default.png' ?>"
-             alt="Avatar">
+        <div class="file-info">
+            <img id="avatarPreview" src="<?= !empty($studentprf['avatar'])
+                ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
+                : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
 
-        <span id="fileName">
-            <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'No file chosen' ?>
-        </span>
+            <span id="fileName">
+                <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'No file chosen' ?>
+            </span>
+        </div>
     </div>
-</div>
 
-<input type="file" name="avatar" id="realFile" hidden accept="image/*" onchange="updateFileName(this)">
-<input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
+    <input type="file" name="avatar" id="realFile" hidden accept="image/*" onchange="updateFileName(this)">
+    <input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
 
 
 
@@ -52,7 +51,8 @@ ob_start();
     <div>
         <label>Mã sinh viên</label>
         <input type="text" name="student_code" value="<?= $student['student_code'] ?>" required>
-          <?php if (!empty($errorMaSv)) echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
+        <?php if (!empty($errorMaSv))
+            echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
     </div>
 
     <!-- Ngày sinh -->
@@ -68,8 +68,7 @@ ob_start();
         <label>Khoa</label>
         <select name="department_id" required>
             <?php foreach ($department as $department): ?>
-                <option
-                    value="<?= $department['faculty_name'] ?>"
+                <option value="<?= $department['faculty_name'] ?>"
                     <?= ($department['faculty_name'] == $student['department_name']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($department['faculty_name']) ?>
                 </option>
@@ -83,14 +82,13 @@ ob_start();
         <label>Lớp</label>
         <select name="class_id" required>
             <?php foreach ($classes as $class): ?>
-                <option
-                    value="<?= $class['class_name'] ?>"
-                    <?= ($class['class_name'] == $student['class_name']) ? 'selected' : '' ?>>
+                <option value="<?= $class['id'] ?>" <?= ($class['id'] == $student['class_id']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($class['class_name']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
     </div>
+
 
     <!-- Hệ đào tạo -->
     <div>
@@ -142,7 +140,8 @@ ob_start();
     <div>
         <label>Tên đăng nhập</label>
         <input type="text" name="username" placeholder="Tài khoản" value="<?= $userNd['username'] ?>" required>
-        <?php if (!empty($errorName)) echo "<span style='color:red;'>$errorName</span><br>"; ?>
+        <?php if (!empty($errorName))
+            echo "<span style='color:red;'>$errorName</span><br>"; ?>
     </div>
 
     <div>

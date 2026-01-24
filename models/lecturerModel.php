@@ -145,4 +145,19 @@ class lecturerModel extends database
     {
         return mysqli_query($this->connect, $sql);
     }
+
+    public function sidebarSubjects($lecturer_id)
+    {
+        // $lecturer_id = $_SESSION['lecturer_id'];
+
+        $sql = "
+        SELECT DISTINCT s.id, s.name
+        FROM lecturer_subjects ls
+        JOIN subjects s ON ls.subject_id = s.id
+        WHERE ls.lecturer_id = $lecturer_id";
+
+        return $this->__query($sql);
+    }
+
 }
+

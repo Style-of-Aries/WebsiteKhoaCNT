@@ -41,6 +41,8 @@ CREATE TABLE `academic_results` (
 
 -- --------------------------------------------------------
 
+
+
 --
 -- Cấu trúc bảng cho bảng `attendance`
 --
@@ -54,7 +56,55 @@ CREATE TABLE `attendance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
+--
+-- Bẫy `academic_results`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_calc_final_grade_insert` BEFORE INSERT ON `academic_results` FOR EACH ROW BEGIN
+    IF NEW.process_score IS NOT NULL
+       AND NEW.midterm_score IS NOT NULL
+       AND NEW.final_exam_score IS NOT NULL THEN
 
+        SET NEW.final_grade =
+            NEW.final_exam_score * 0.6
+          + ((NEW.process_score + NEW.midterm_score) / 2) * 0.4;
+
+        SET NEW.grade_letter = CASE
+            WHEN NEW.final_grade >= 8.5 THEN 'A'
+            WHEN NEW.final_grade >= 7.0 THEN 'B'
+            WHEN NEW.final_grade >= 5.5 THEN 'C'
+            WHEN NEW.final_grade >= 4.0 THEN 'D'
+            ELSE 'F'
+        END;
+
+        SET NEW.result = IF(NEW.final_grade >= 4.0, 'pass', 'fail');
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `trg_calc_final_grade_update` BEFORE UPDATE ON `academic_results` FOR EACH ROW BEGIN
+    IF NEW.process_score IS NOT NULL
+       AND NEW.midterm_score IS NOT NULL
+       AND NEW.final_exam_score IS NOT NULL THEN
+
+        SET NEW.final_grade =
+            NEW.final_exam_score * 0.6
+          + ((NEW.process_score + NEW.midterm_score) / 2) * 0.4;
+
+        SET NEW.grade_letter = CASE
+            WHEN NEW.final_grade >= 8.5 THEN 'A'
+            WHEN NEW.final_grade >= 7.0 THEN 'B'
+            WHEN NEW.final_grade >= 5.5 THEN 'C'
+            WHEN NEW.final_grade >= 4.0 THEN 'D'
+            ELSE 'F'
+        END;
+
+        SET NEW.result = IF(NEW.final_grade >= 4.0, 'pass', 'fail');
+    END IF;
+END
+$$
+DELIMITER ;
 --
 -- Cấu trúc bảng cho bảng `audit_logs`
 --

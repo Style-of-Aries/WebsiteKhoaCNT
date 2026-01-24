@@ -160,7 +160,7 @@ WHERE s.id = $id;";
         if ($this->isStudentCodeExists($student_code, $id)) {
             return "duplicate_code";
         }
-        $sql = "UPDATE student SET student_code='$student_code,class_id=$class_id ,department_id=$department_id, WHERE id='$id'";
+        $sql = "UPDATE student SET student_code='$student_code',class_id='$class_id' ,department_id='$department_id' WHERE id='$id'";
         $query = $this->__query($sql);
     }
     public function updateStudent_profiles($id,$gender, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar)
@@ -288,7 +288,5 @@ WHERE s.id = $id;";
         mysqli_commit($this->connect);
         return true;
     }
-
-
 }
 

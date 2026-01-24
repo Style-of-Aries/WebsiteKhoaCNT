@@ -12,8 +12,10 @@ class lecturerController
     
 
     public function index(){
-        $students = $this->lecturerModel->getAll();
-        require_once './../views/admin/lecturer/list.php';
+        $user = $_SESSION['user'];
+        $lecturer = $this->lecturerModel->getById($user['ref_id']);
+        $subjectsTeaching = $this->lecturerModel->sidebarSubjects($user['ref_id']);
+        require_once './../views/user/lecturer/index.php';
     }
 
     

@@ -476,7 +476,7 @@ a {
     align-items: center;
     gap: 6px;
 }
-
+/* 
 #avatarPreview {
     width: 120px;
     height: 120px;
@@ -484,7 +484,7 @@ a {
     border-radius: 8px;
     border: 1px solid #ddd;
     cursor: pointer;
-}
+} */
 
 #fileName {
     font-size: 13px;

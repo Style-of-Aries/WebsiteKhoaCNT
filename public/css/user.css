@@ -70,7 +70,7 @@
   cursor: pointer;
   /* border: 1px solid #ddd; */
 }
-.profile-header .avatar-img {
+#avatarPreview {
   width: 110px;
   height: 130px;
   /* border-radius: 50%; */
@@ -215,4 +215,41 @@
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
+}
+
+.welcome-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;   /* căn ngang */
+    align-items: center;       /* căn dọc */
+    background-color: #f4f6f9;
+}
+
+/* .welcome-text {
+    font-size: 36px;
+    font-weight: 600;
+    color: #2c3e50;
+} */
+
+.welcome-text span {
+    color: #2f80ed;            /* làm nổi tên */
+    font-weight: 700;
+}
+.welcome-text {
+    font-size: 50px;
+    font-weight: 600;
+    color: #2c3e50;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
