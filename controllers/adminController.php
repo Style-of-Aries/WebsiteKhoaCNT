@@ -88,7 +88,7 @@ class adminController
 
         if (isset($_POST['btn_edit'])) {
             $id = $_POST['id'];
-            $student_code = trim($_POST['student_code']);
+            $student_code = $_POST['student_code'];
             $class_id = $_POST['class_id'];
             $department_id = $_POST['department_id'];
             $created_at = $_POST['created_at'];
@@ -105,7 +105,10 @@ class adminController
 
             $username = $_POST['username'];
             $password = $_POST['password'];
-            $avatar = $_POST['old_avatar']; // giữ nguyên avatar
+            $avatar_old = $_POST['old_avatar']; // giữ nguyên avatar
+
+            $avatarupdate =  basename($_FILES['avatar']['name']);
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $avatarupdate);
 
             // $sdtRegister = $_POST['phone'];
             if ($this->studentModel->KtMa($id, $student_code)) {
@@ -126,8 +129,8 @@ class adminController
 
 
             if (empty($errorName) && empty($errorEmail) && empty($errorMaSv)) {
-                $this->studentModel->updateStudent($id,$student_code,$department_id,$class_id);
-                $this->studentModel->updateStudent_profiles($id,$gender, $full_name, $email, $phone, $date_of_birth, $address,$education_type,$status, $identity_number, $avatar);
+                $this->studentModel->updateStudent($id, $student_code, $department_id, $class_id);
+                $this->studentModel->updateStudent_profiles($id, $gender, $full_name, $email, $phone, $date_of_birth, $address, $education_type, $status, $identity_number, $avatarupdate);
                 $this->userModel->updateUser($id, $username, $password);
                 // header('index.php?controller=admin&action=getAllSinhVien');
                 $this->getAllSinhVien();
@@ -138,9 +141,9 @@ class adminController
                 $student = [
                     'id' => $id,
                     'student_code' => $student_code,
-                    'department_id' =>$department_id,
-                    'class_id' =>$class_id,
-                    'created_at'=> $created_at,
+                    'department_id' => $department_id,
+                    'class_id' => $class_id,
+                    'created_at' => $created_at,
                 ];
                 $studentprf = [
                     'full_name' => $full_name,
@@ -152,7 +155,7 @@ class adminController
                     'identity_number' => $identity_number,
                     'education_type' => $education_type,
                     'status' => $status,
-                    'avatar' => $avatar
+                    'avatar' => $avatar_old
                 ];
                 $userNd = [
                     'username' => $username,
@@ -187,7 +190,7 @@ class adminController
             $department_id = $_POST['department_id'];
             // $year= date('dd/mm/YYYY');
 
-            
+
             $full_name = $_POST['full_name'];
             $gender = $_POST['gender'];
             $email = $_POST['email'];
@@ -195,8 +198,8 @@ class adminController
             $date_of_birth = $_POST['date_of_birth'];
             $address = $_POST['address'];
             $identity_number = $_POST['identity_number'];
-            $education_type= $_POST['education_type'];
-            $status= $_POST['status'];
+            $education_type = $_POST['education_type'];
+            $status = $_POST['status'];
 
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -211,7 +214,7 @@ class adminController
                 );
             }
 
-            $student = $this->studentModel->addSinhVien($student_code, $class_id,$gender,$education_type,$status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password);
+            $student = $this->studentModel->addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password);
             if ($student) {
                 $this->getAllSinhVien();
             } else {

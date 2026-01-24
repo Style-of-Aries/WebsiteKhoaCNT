@@ -163,11 +163,11 @@ WHERE s.id = $id;";
         $sql = "UPDATE student SET student_code='$student_code',class_id='$class_id',department_id='$department_id' WHERE id='$id'";
         return $this->__query($sql);
     }
-    public function updateStudent_profiles($id, $gender, $full_name, $email, $phone, $date_of_birth, $address, $education_type, $status, $identity_number, $avatar)
+    public function updateStudent_profiles($id, $gender, $full_name, $email, $phone, $date_of_birth, $address, $education_type, $status, $identity_number,$avatarupdate)
     {
-        $sql = "UPDATE student_profiles SET gender='$gender',full_name='$full_name',email='$email',phone='$phone',date_of_birth='$date_of_birth' ,address='$address',identity_number='$identity_number' ,avatar='$avatar',education_type='$education_type',status = '$status' WHERE student_id='$id'";
+        $sql = "UPDATE student_profiles SET gender='$gender',full_name='$full_name',email='$email',phone='$phone',date_of_birth='$date_of_birth' ,address='$address',identity_number='$identity_number' ,avatar ='$avatarupdate',education_type='$education_type',status = '$status' WHERE student_id='$id'";
         return $this->__query($sql);
-    }
+        }
 
     // thêm mới sinh viên 
     public function addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password)
