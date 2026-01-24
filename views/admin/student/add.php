@@ -23,11 +23,29 @@ ob_start();
         <label>Mã sinh viên</label>
         <input type="text" name="student_code" required>
     </div>
+    <!-- Giới tính -->
+    <div>
+        <label>Giới tính</label>
+        <input type="text" name="gender" required>
+    </div>
 
     <!-- Ngày sinh -->
     <div>
         <label>Ngày sinh</label>
         <input type="date" name="date_of_birth">
+    </div>
+     <div>
+        <label>Khoa</label>
+        <select name="department_id" required>
+            <option value="">-- Chọn khoa --</option>
+
+            <?php foreach ($department as $department): ?>
+                <option value="<?= $department['id'] ?>">
+                    <?= htmlspecialchars($department['faculty_name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <i class="fa-solid fa-school"></i>
     </div>
 
     <!-- Giới tính -->

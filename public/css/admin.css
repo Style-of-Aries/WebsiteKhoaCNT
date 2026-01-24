@@ -15,6 +15,7 @@
   --text-title: #1f2d3d;
   --text-main: #34495e;
 }
+
 .create-playlist {
   padding: 12px;
   margin-top: 20px;
@@ -213,6 +214,7 @@ img.img-thumbnail {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: left;
 }
+
 .card h3 {
   color: #fff;
   margin-bottom: 12px;
@@ -221,10 +223,12 @@ img.img-thumbnail {
   align-items: center;
   display: flex;
 }
+
 .card i {
   font-size: 35px;
   /* margin-right: 10px; */
 }
+
 .card p {
   font-size: 50px;
   font-weight: bold;
@@ -237,12 +241,15 @@ img.img-thumbnail {
 #totalSV {
   background-color: var(--blue-main);
 }
+
 #totalGV {
   background-color: var(--green-main);
 }
+
 #totalLop {
   background-color: var(--orange-main);
 }
+
 #totalKhoa {
   background-color: var(--red-main);
 }
@@ -258,10 +265,12 @@ a {
   background-color: var(--bg-card);
   border-radius: 8px;
 }
+
 .studentChart h3 {
   color: var(--text-title);
   margin-bottom: 20px;
 }
+
 .add {
   width: 200px;
   height: 30px;
@@ -277,11 +286,12 @@ a {
   transition: background 0.2s;
   margin: 0 0 20px auto;
 }
+
 .add:hover {
   background-color: var(--green-light);
 }
 
-.add > a {
+.add>a {
   width: 100%;
   display: inline-block;
   line-height: 30px;
@@ -313,6 +323,7 @@ a {
   flex: 1;
   margin-left: 20px;
 }
+
 .btnManager {
   position: relative;
   display: flex;
@@ -321,6 +332,7 @@ a {
   border-bottom: 3px solid #eef1f6;
   margin-bottom: 10px;
 }
+
 .btnManager .action-btn {
   position: absolute;
   right: 0;
@@ -374,17 +386,20 @@ a {
   max-width: 1000px;
   margin: 20px auto;
 }
+
 .add-form h2 {
   color: var(--text-title);
   margin-bottom: 20px;
   text-align: center;
 }
+
 .add-form label {
   color: var(--text-title);
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
 }
+
 .add-form input,
 .add-form select {
   width: 100%;
@@ -394,6 +409,7 @@ a {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
 .add-form input[type="submit"] {
   background-color: var(--blue-light);
   color: #fff;
@@ -403,6 +419,7 @@ a {
   cursor: pointer;
   font-size: 16px;
 }
+
 .add-form input[type="submit"]:hover {
   background-color: var(--blue-dark);
 }
@@ -432,6 +449,7 @@ a {
 .admin-table tr:hover {
   background-color: var(--bg-main);
 }
+
 .tooltip {
   position: absolute;
   background: #333;
@@ -446,10 +464,32 @@ a {
   transition: opacity 0.15s ease;
 }
 
-.gender-group {
-  width: 100px;
-  display: flex;
+.fake-file {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
 }
-.gender-group label {
-  cursor: pointer;
+
+.file-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+#avatarPreview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+#fileName {
+    font-size: 13px;
+    color: #555;
+    max-width: 120px;
+    text-align: center;
+    word-break: break-all;
 }

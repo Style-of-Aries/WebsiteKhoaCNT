@@ -14,22 +14,38 @@ class studentModel extends database
     public function getById($id)
     {
         $sql = "SELECT
-    sp.avatar,
-    sp.full_name,
     s.id,
     s.student_code,
-    sp.education_type,
-    sp.status,
+    s.created_at,
+    s.class_id,
+    s.department_id,
+
+    sp.full_name,
+    sp.gender,
     sp.date_of_birth,
-    c.class_name,
     sp.email,
     sp.phone,
     sp.identity_number,
-    sp.address
-    FROM student s
-    JOIN student_profiles sp ON sp.student_id = s.id
-    LEFT JOIN classes c ON c.id = s.class_id
-    WHERE s.id = '$id';
+    sp.address,
+    sp.avatar,
+    sp.education_type,
+    sp.status,
+
+    c.class_name,
+    d.name AS department_name
+
+FROM student s
+JOIN student_profiles sp 
+    ON sp.student_id = s.id
+
+LEFT JOIN classes c 
+    ON c.id = s.class_id
+
+LEFT JOIN department d 
+    ON d.id = s.department_id
+
+WHERE s.id = '$id';
+
 ";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
@@ -38,22 +54,36 @@ class studentModel extends database
     public function getAll()
     {
         $sql = "SELECT
-    sp.avatar,
-    sp.full_name,
     s.id,
     s.student_code,
-    sp.education_type,
-    sp.status,
+    s.created_at,
+    s.class_id,
+    s.department_id,
+
+    sp.full_name,
+    sp.gender,
     sp.date_of_birth,
-    c.class_name,
     sp.email,
     sp.phone,
     sp.identity_number,
-    sp.address
+    sp.address,
+    sp.avatar,
+    sp.education_type,
+    sp.status,
+
+    c.class_name,
+    d.name AS department_name
+
     FROM student s
-    JOIN student_profiles sp ON sp.student_id = s.id
-    LEFT JOIN classes c ON c.id = s.class_id;
-    ";
+    JOIN student_profiles sp 
+    ON sp.student_id = s.id
+
+    LEFT JOIN classes c 
+    ON c.id = s.class_id
+
+    LEFT JOIN department d 
+    ON d.id = s.department_id";  
+
         return $this->__query($sql);
     }
     public function getAllds()
@@ -66,6 +96,7 @@ class studentModel extends database
     sp.education_type,
     sp.status,
     sp.date_of_birth,
+    sp.gender,
     c.class_name,
     sp.email,
     sp.phone,
@@ -105,36 +136,54 @@ WHERE s.id = $id;";
 
     public function KtEmail($email, $id)
     {
-        $sql = "Select *from student where email='$email'AND id != $id
+        $sql = "Select *from student_profiles where email='$email'AND id != $id
         LIMIT 1";
         $query = $this->__query($sql);
         if (mysqli_num_rows($query) > 0) {
             return true;
         }
     }
-    public function updateSinhVien($id, $full_name, $student_code, $email, $class_id)
+    public function isStudentCodeExists($student_code, $id)
     {
-        $sql = "UPDATE student SET full_name='$full_name',student_code='$student_code', email='$email',class_id=$class_id WHERE id='$id'";
+        $student_code = trim($student_code);
+        $id = trim($id);
+
+        $sql = "SELECT id FROM student
+            WHERE student_code = '$student_code'
+            AND id != '$id'";
+        $query = $this->__query($sql);
+
+        return mysqli_num_rows($query) > 0;
+    }
+    public function updateStudent($id, $student_code,$department_id, $class_id)
+    {
+        if ($this->isStudentCodeExists($student_code, $id)) {
+            return "duplicate_code";
+        }
+        $sql = "UPDATE student SET student_code='$student_code,class_id=$class_id ,department_id=$department_id, WHERE id='$id'";
+        $query = $this->__query($sql);
+    }
+    public function updateStudent_profiles($id,$gender, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar)
+    {
+        $sql = "UPDATE student_profiles SET gender='$gender',full_name='$full_name' ,email='$email',phone='$phone',date_of_birth='$date_of_birth' ,address='$address',identity_number='$identity_number' ,avatar='$avatar' WHERE student_id='$id'";
         $query = $this->__query($sql);
     }
 
     // thêm mới sinh viên 
-    public function addSinhVien($full_name, $student_code, $email, $class_id, $username, $password)
+    public function addSinhVien($student_code, $class_id, $gender, $department_id, $year, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password)
     {
-        mysqli_begin_transaction($this->connect);
+        mysqli_begin_transaction($this->connect); //bắt đầu nhưng CHƯA được ghi hẳn vào CSDL
 
         // 1. Insert student
         $sqlStudent = "
-        INSERT INTO student(full_name, student_code, email, class_id)
+        INSERT INTO student( student_code, class_id,department_id,created_at)
         VALUES (
-            '$full_name',
             '$student_code',
-            '$email',
-            '$class_id'
+            '$class_id',
+            '$department_id',
+            'NOW()'
         )
     ";
-
-
         if ($this->__query($sqlStudent) === false) {
             mysqli_rollback($this->connect);
             return false;
@@ -142,6 +191,27 @@ WHERE s.id = $id;";
 
         // 2. Lấy ID sinh viên vừa insert
         $studentId = mysqli_insert_id($this->connect);
+
+        $sqlProfile = "
+        INSERT INTO student_profiles
+                (student_id, full_name,gender, email, phone, date_of_birth, address, identity_number, avatar)
+                VALUES (
+                    '$studentId',
+                    '$full_name',
+                    '$gender'
+                    '$email',
+                    '$phone',
+                    '$date_of_birth',
+                    '$address',
+                    '$identity_number',
+                    '$avatar'
+                )
+            ";
+
+        if ($this->__query($sqlProfile) === false) {
+            mysqli_rollback($this->connect);
+            return false;
+        }
 
         // 3. Insert users
         // $passwordHash = password_hash($password, PASSWORD_BCRYPT);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 21, 2026 lúc 07:05 AM
+-- Thời gian đã tạo: Th1 24, 2026 lúc 02:33 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -30,76 +30,14 @@ SET time_zone = "+00:00";
 CREATE TABLE `academic_results` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `student_id` bigint(20) UNSIGNED NOT NULL,
-  `subject_id` bigint(20) UNSIGNED NOT NULL,
-  `semester_id` bigint(20) UNSIGNED NOT NULL,
+  `course_class_id` bigint(20) UNSIGNED NOT NULL,
   `process_score` decimal(4,2) DEFAULT NULL,
   `midterm_score` decimal(4,2) DEFAULT NULL,
   `final_exam_score` decimal(4,2) DEFAULT NULL,
   `final_grade` decimal(5,2) DEFAULT NULL,
   `grade_letter` char(2) DEFAULT NULL,
-  `result` enum('pass','fail') DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `result` enum('pass','fail') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `academic_results`
---
-
-INSERT INTO `academic_results` (`id`, `student_id`, `subject_id`, `semester_id`, `process_score`, `midterm_score`, `final_exam_score`, `final_grade`, `grade_letter`, `result`, `created_at`, `updated_at`) VALUES
-(2, 16, 2, 1, NULL, NULL, NULL, NULL, 'F', 'fail', '2026-01-18 06:03:45', '2026-01-18 06:16:11'),
-(3, 17, 1, 1, NULL, NULL, NULL, NULL, 'F', 'fail', '2026-01-18 06:03:45', '2026-01-18 06:16:11'),
-(8, 16, 1, 1, 7.00, 8.00, 9.00, 8.40, 'B', 'pass', '2026-01-18 06:21:23', '2026-01-18 06:21:23');
-
---
--- Bẫy `academic_results`
---
-DELIMITER $$
-CREATE TRIGGER `trg_calc_final_grade_insert` BEFORE INSERT ON `academic_results` FOR EACH ROW BEGIN
-    IF NEW.process_score IS NOT NULL
-       AND NEW.midterm_score IS NOT NULL
-       AND NEW.final_exam_score IS NOT NULL THEN
-
-        SET NEW.final_grade =
-            NEW.final_exam_score * 0.6
-          + ((NEW.process_score + NEW.midterm_score) / 2) * 0.4;
-
-        SET NEW.grade_letter = CASE
-            WHEN NEW.final_grade >= 8.5 THEN 'A'
-            WHEN NEW.final_grade >= 7.0 THEN 'B'
-            WHEN NEW.final_grade >= 5.5 THEN 'C'
-            WHEN NEW.final_grade >= 4.0 THEN 'D'
-            ELSE 'F'
-        END;
-
-        SET NEW.result = IF(NEW.final_grade >= 4.0, 'pass', 'fail');
-    END IF;
-END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `trg_calc_final_grade_update` BEFORE UPDATE ON `academic_results` FOR EACH ROW BEGIN
-    IF NEW.process_score IS NOT NULL
-       AND NEW.midterm_score IS NOT NULL
-       AND NEW.final_exam_score IS NOT NULL THEN
-
-        SET NEW.final_grade =
-            NEW.final_exam_score * 0.6
-          + ((NEW.process_score + NEW.midterm_score) / 2) * 0.4;
-
-        SET NEW.grade_letter = CASE
-            WHEN NEW.final_grade >= 8.5 THEN 'A'
-            WHEN NEW.final_grade >= 7.0 THEN 'B'
-            WHEN NEW.final_grade >= 5.5 THEN 'C'
-            WHEN NEW.final_grade >= 4.0 THEN 'D'
-            ELSE 'F'
-        END;
-
-        SET NEW.result = IF(NEW.final_grade >= 4.0, 'pass', 'fail');
-    END IF;
-END
-$$
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -110,19 +48,10 @@ DELIMITER ;
 CREATE TABLE `attendance` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `student_id` bigint(20) UNSIGNED NOT NULL,
-  `subject_id` bigint(20) UNSIGNED NOT NULL,
+  `course_class_id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
   `status` enum('present','absent','late') DEFAULT 'present'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `attendance`
---
-
-INSERT INTO `attendance` (`id`, `student_id`, `subject_id`, `date`, `status`) VALUES
-(1, 16, 1, '2025-10-01', 'present'),
-(2, 16, 1, '2025-10-08', 'late'),
-(3, 17, 2, '2025-10-03', 'present');
 
 -- --------------------------------------------------------
 
@@ -151,29 +80,6 @@ INSERT INTO `audit_logs` (`id`, `user_id`, `action`, `target_type`, `target_id`,
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `career_opportunities`
---
-
-CREATE TABLE `career_opportunities` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `company_name` varchar(255) DEFAULT NULL,
-  `content` longtext DEFAULT NULL,
-  `deadline` date DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `career_opportunities`
---
-
-INSERT INTO `career_opportunities` (`id`, `title`, `company_name`, `content`, `deadline`, `created_at`) VALUES
-(1, 'Thực tập PHP', 'Công ty ABC', 'Tuyển thực tập sinh PHP Backend', '2026-03-01', '2026-01-07 11:15:57'),
-(2, 'Junior Web Dev', 'Công ty XYZ', 'Yêu cầu HTML, CSS, PHP', '2026-04-01', '2026-01-07 11:15:57');
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `classes`
 --
 
@@ -197,6 +103,21 @@ INSERT INTO `classes` (`id`, `class_name`, `class_code`, `department_id`, `lectu
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `course_classes`
+--
+
+CREATE TABLE `course_classes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `subject_id` bigint(20) UNSIGNED NOT NULL,
+  `lecturer_id` bigint(20) UNSIGNED NOT NULL,
+  `semester_id` bigint(20) UNSIGNED NOT NULL,
+  `class_code` varchar(50) DEFAULT NULL,
+  `max_students` int(11) DEFAULT 60
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `department`
 --
 
@@ -215,47 +136,9 @@ CREATE TABLE `department` (
 --
 
 INSERT INTO `department` (`id`, `name`, `type`, `parent_id`, `staff_count`, `created_at`, `updated_at`) VALUES
-(1, 'Trường Đại học CNTT', 'school', 2, 200, '2026-01-07 11:41:17', '2026-01-07 11:41:17'),
+(1, 'Trường Đại học CNTT', 'faculty', 2, 200, '2026-01-07 11:41:17', '2026-01-23 05:44:37'),
 (2, 'Khoa Công nghệ Thông tin', 'faculty', 1, 80, '2026-01-07 11:41:17', '2026-01-07 11:41:17'),
-(3, 'Bộ môn Phần mềm', 'department', 2, 40, '2026-01-07 11:41:17', '2026-01-07 11:41:17'),
-(4, 'Pokemon', 'faculty', 1, NULL, '2026-01-08 03:59:50', NULL);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `equipment`
---
-
-CREATE TABLE `equipment` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `room_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `status` enum('new','used','broken','repairing') DEFAULT 'new'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `exam_schedules`
---
-
-CREATE TABLE `exam_schedules` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `subject_id` bigint(20) UNSIGNED NOT NULL,
-  `room_id` bigint(20) UNSIGNED NOT NULL,
-  `semester_id` bigint(20) UNSIGNED NOT NULL,
-  `exam_date` datetime NOT NULL,
-  `duration` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `exam_schedules`
---
-
-INSERT INTO `exam_schedules` (`id`, `subject_id`, `room_id`, `semester_id`, `exam_date`, `duration`) VALUES
-(1, 1, 3, 1, '2026-01-05 08:00:00', 90),
-(2, 2, 3, 1, '2026-01-10 13:30:00', 90),
-(3, 3, 3, 1, '2026-01-15 08:00:00', 90);
+(3, 'Bộ môn Phần mềm', 'department', 2, 40, '2026-01-07 11:41:17', '2026-01-07 11:41:17');
 
 -- --------------------------------------------------------
 
@@ -301,7 +184,8 @@ CREATE TABLE `lecturer` (
 INSERT INTO `lecturer` (`id`, `full_name`, `lecturer_code`, `email`, `department_id`) VALUES
 (4, 'Nguyễn Văn Tứ', 'GV001', 'gv1@gmail.com', 3),
 (11, 'Trần Thị A', 'GV002', 'gv2@gmail.com', 3),
-(60, 'df', 'df', 'tutue9692@gmail.comdd', 1);
+(60, 'df', 'df', 'tutue9692@gmail.comdd', 1),
+(61, 'Nguyễn Đức Trọng', '342005', 'ductrong34end@gmail.com', 2);
 
 -- --------------------------------------------------------
 
@@ -359,16 +243,28 @@ CREATE TABLE `student` (
   `student_code` varchar(50) NOT NULL,
   `class_id` bigint(20) UNSIGNED DEFAULT NULL,
   `department_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `enrollment_year` year(4) DEFAULT NULL
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `student`
 --
 
-INSERT INTO `student` (`id`, `student_code`, `class_id`, `department_id`, `enrollment_year`) VALUES
-(16, 'SV001', 1, 3, NULL),
-(17, 'SV002', 1, 3, NULL);
+INSERT INTO `student` (`id`, `student_code`, `class_id`, `department_id`, `created_at`, `updated_at`) VALUES
+(16, 'SV001', 1, 3, '2026-01-19 07:04:27', '2026-01-23 02:47:57'),
+(22, '2326CNT05', 3, 2, '2026-01-23 02:27:52', '2026-01-23 03:45:36');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `student_course_classes`
+--
+
+CREATE TABLE `student_course_classes` (
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `course_class_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -380,15 +276,13 @@ CREATE TABLE `student_profiles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `student_id` bigint(20) UNSIGNED NOT NULL,
   `full_name` varchar(255) DEFAULT NULL,
-  `gender` enum('male','female','other') DEFAULT NULL,
+  `gender` enum('Nam','Nữ','Khác') DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `identity_number` varchar(20) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `education_type` enum('Chính quy','Liên thông','Tại chức') DEFAULT 'Chính quy',
   `status` enum('Đang học','Tạm dừng','Thôi học','Đã tốt nghiệp') DEFAULT 'Đang học'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -397,9 +291,9 @@ CREATE TABLE `student_profiles` (
 -- Đang đổ dữ liệu cho bảng `student_profiles`
 --
 
-INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `created_at`, `updated_at`, `education_type`, `status`) VALUES
-(1, 16, 'Nguyễn Văn Tứ', 'male', '2005-06-19', 'sv1@gmail.com', '0372016584', 'Vu hoi - vu thu - thai binh', '034205009263', 'nvt.jpg', '2026-01-19 07:04:27', '2026-01-21 05:35:20', 'Chính quy', 'Đang học'),
-(2, 17, 'Lê Thị B', NULL, NULL, 'sv2@gmail.com', NULL, NULL, NULL, NULL, '2026-01-19 07:04:27', '2026-01-19 07:04:27', 'Chính quy', 'Đang học');
+INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `education_type`, `status`) VALUES
+(1, 16, 'Nguyễn Văn Tứ', 'Nam', '2005-06-19', 'sv1@gmail.com', '0372016584', 'Vu hoi - vu thu - thai binh', '034205009263', 'nvt.jpg', 'Chính quy', 'Đang học'),
+(13, 22, 'Nguyễn Đức Trọng', 'Nam', '2005-04-04', 'nguyenductrong@gmail.com', '0976483819', 'Xã Thư Lâm - Tỉnh Hà Nội', '034205009275', 'student_22_1769152633.jpg', 'Chính quy', 'Tạm dừng');
 
 -- --------------------------------------------------------
 
@@ -432,43 +326,11 @@ INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`
 
 CREATE TABLE `timetables` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `class_id` bigint(20) UNSIGNED NOT NULL,
-  `subject_id` bigint(20) UNSIGNED NOT NULL,
-  `lecturer_id` bigint(20) UNSIGNED NOT NULL,
+  `course_class_id` bigint(20) UNSIGNED NOT NULL,
   `room_id` bigint(20) UNSIGNED NOT NULL,
   `day_of_week` tinyint(4) NOT NULL,
   `slot` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `timetables`
---
-
-INSERT INTO `timetables` (`id`, `class_id`, `subject_id`, `lecturer_id`, `room_id`, `day_of_week`, `slot`) VALUES
-(1, 1, 1, 4, 1, 2, 1),
-(2, 1, 2, 11, 2, 4, 3),
-(3, 2, 3, 4, 1, 5, 2);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `training_points`
---
-
-CREATE TABLE `training_points` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `student_id` bigint(20) UNSIGNED NOT NULL,
-  `semester_id` bigint(20) UNSIGNED NOT NULL,
-  `point` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `training_points`
---
-
-INSERT INTO `training_points` (`id`, `student_id`, `semester_id`, `point`) VALUES
-(1, 16, 1, 85),
-(2, 17, 1, 78);
 
 -- --------------------------------------------------------
 
@@ -493,10 +355,11 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 (2, 'gv1', '123', 'lecturer', 4),
 (3, 'gv2', '123', 'lecturer', 11),
 (4, 'nvt', '123', 'student', 16),
-(5, 'sv2', '123', 'student', 17),
 (18, 'qq', 'q', 'lecturer', 54),
 (20, 'nvtsssss', ' 123', 'lecturer', 59),
-(22, 'nvtdfdf', 'dfdf', 'lecturer', 60);
+(22, 'nvtdfdf', 'dfdf', 'lecturer', 60),
+(23, 'nguyenductrong', '123', 'student', 22),
+(24, 'ductrong', '123', 'lecturer', 61);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -507,9 +370,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 --
 ALTER TABLE `academic_results`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `student_id` (`student_id`,`subject_id`,`semester_id`),
-  ADD KEY `subject_id` (`subject_id`),
-  ADD KEY `semester_id` (`semester_id`);
+  ADD UNIQUE KEY `student_id` (`student_id`,`course_class_id`),
+  ADD KEY `course_class_id` (`course_class_id`);
 
 --
 -- Chỉ mục cho bảng `attendance`
@@ -517,18 +379,12 @@ ALTER TABLE `academic_results`
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`),
   ADD KEY `student_id` (`student_id`),
-  ADD KEY `subject_id` (`subject_id`);
+  ADD KEY `course_class_id` (`course_class_id`);
 
 --
 -- Chỉ mục cho bảng `audit_logs`
 --
 ALTER TABLE `audit_logs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Chỉ mục cho bảng `career_opportunities`
---
-ALTER TABLE `career_opportunities`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -541,27 +397,20 @@ ALTER TABLE `classes`
   ADD KEY `lecturer_id` (`lecturer_id`);
 
 --
+-- Chỉ mục cho bảng `course_classes`
+--
+ALTER TABLE `course_classes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `subject_id` (`subject_id`),
+  ADD KEY `lecturer_id` (`lecturer_id`),
+  ADD KEY `semester_id` (`semester_id`);
+
+--
 -- Chỉ mục cho bảng `department`
 --
 ALTER TABLE `department`
   ADD PRIMARY KEY (`id`),
   ADD KEY `parent_id` (`parent_id`);
-
---
--- Chỉ mục cho bảng `equipment`
---
-ALTER TABLE `equipment`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `room_id` (`room_id`);
-
---
--- Chỉ mục cho bảng `exam_schedules`
---
-ALTER TABLE `exam_schedules`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `subject_id` (`subject_id`),
-  ADD KEY `room_id` (`room_id`),
-  ADD KEY `semester_id` (`semester_id`);
 
 --
 -- Chỉ mục cho bảng `learning_materials`
@@ -601,6 +450,13 @@ ALTER TABLE `student`
   ADD KEY `student_fk_department` (`department_id`);
 
 --
+-- Chỉ mục cho bảng `student_course_classes`
+--
+ALTER TABLE `student_course_classes`
+  ADD PRIMARY KEY (`student_id`,`course_class_id`),
+  ADD KEY `course_class_id` (`course_class_id`);
+
+--
 -- Chỉ mục cho bảng `student_profiles`
 --
 ALTER TABLE `student_profiles`
@@ -620,18 +476,8 @@ ALTER TABLE `subjects`
 --
 ALTER TABLE `timetables`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `class_id` (`class_id`),
-  ADD KEY `subject_id` (`subject_id`),
-  ADD KEY `lecturer_id` (`lecturer_id`),
+  ADD KEY `course_class_id` (`course_class_id`),
   ADD KEY `room_id` (`room_id`);
-
---
--- Chỉ mục cho bảng `training_points`
---
-ALTER TABLE `training_points`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `student_id` (`student_id`,`semester_id`),
-  ADD KEY `semester_id` (`semester_id`);
 
 --
 -- Chỉ mục cho bảng `users`
@@ -648,24 +494,18 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `academic_results`
 --
 ALTER TABLE `academic_results`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `audit_logs`
 --
 ALTER TABLE `audit_logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT cho bảng `career_opportunities`
---
-ALTER TABLE `career_opportunities`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
@@ -675,22 +515,16 @@ ALTER TABLE `classes`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT cho bảng `course_classes`
+--
+ALTER TABLE `course_classes`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT cho bảng `department`
 --
 ALTER TABLE `department`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT cho bảng `equipment`
---
-ALTER TABLE `equipment`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT cho bảng `exam_schedules`
---
-ALTER TABLE `exam_schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `learning_materials`
@@ -702,7 +536,7 @@ ALTER TABLE `learning_materials`
 -- AUTO_INCREMENT cho bảng `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT cho bảng `rooms`
@@ -720,13 +554,13 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT cho bảng `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `student_profiles`
 --
 ALTER TABLE `student_profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `subjects`
@@ -738,19 +572,13 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT cho bảng `timetables`
 --
 ALTER TABLE `timetables`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT cho bảng `training_points`
---
-ALTER TABLE `training_points`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -761,15 +589,14 @@ ALTER TABLE `users`
 --
 ALTER TABLE `academic_results`
   ADD CONSTRAINT `academic_results_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_results_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_results_ibfk_3` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `academic_results_ibfk_2` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `attendance`
 --
 ALTER TABLE `attendance`
   ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `classes`
@@ -779,24 +606,18 @@ ALTER TABLE `classes`
   ADD CONSTRAINT `classes_ibfk_2` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`id`) ON DELETE SET NULL;
 
 --
+-- Các ràng buộc cho bảng `course_classes`
+--
+ALTER TABLE `course_classes`
+  ADD CONSTRAINT `course_classes_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `course_classes_ibfk_2` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `course_classes_ibfk_3` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE;
+
+--
 -- Các ràng buộc cho bảng `department`
 --
 ALTER TABLE `department`
   ADD CONSTRAINT `department_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `department` (`id`) ON DELETE SET NULL;
-
---
--- Các ràng buộc cho bảng `equipment`
---
-ALTER TABLE `equipment`
-  ADD CONSTRAINT `equipment_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE SET NULL;
-
---
--- Các ràng buộc cho bảng `exam_schedules`
---
-ALTER TABLE `exam_schedules`
-  ADD CONSTRAINT `exam_schedules_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`),
-  ADD CONSTRAINT `exam_schedules_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`),
-  ADD CONSTRAINT `exam_schedules_ibfk_3` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`);
 
 --
 -- Các ràng buộc cho bảng `learning_materials`
@@ -818,6 +639,13 @@ ALTER TABLE `student`
   ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE SET NULL;
 
 --
+-- Các ràng buộc cho bảng `student_course_classes`
+--
+ALTER TABLE `student_course_classes`
+  ADD CONSTRAINT `student_course_classes_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `student_course_classes_ibfk_2` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE;
+
+--
 -- Các ràng buộc cho bảng `student_profiles`
 --
 ALTER TABLE `student_profiles`
@@ -833,17 +661,8 @@ ALTER TABLE `subjects`
 -- Các ràng buộc cho bảng `timetables`
 --
 ALTER TABLE `timetables`
-  ADD CONSTRAINT `timetables_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`),
-  ADD CONSTRAINT `timetables_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`),
-  ADD CONSTRAINT `timetables_ibfk_3` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`id`),
-  ADD CONSTRAINT `timetables_ibfk_4` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
-
---
--- Các ràng buộc cho bảng `training_points`
---
-ALTER TABLE `training_points`
-  ADD CONSTRAINT `training_points_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `training_points_ibfk_2` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `timetables_ibfk_1` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `timetables_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

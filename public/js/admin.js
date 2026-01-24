@@ -61,3 +61,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+document.querySelector('.fake-file button').addEventListener('click', function () {
+    document.getElementById('realFile').click();
+});
+
+function updateFileName(input) {
+    if (input.files && input.files[0]) {
+        // đổi tên file
+        document.getElementById('fileName').innerText = input.files[0].name;
+
+        // preview ảnh avatar
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const img = document.getElementById('avatarPreview');
+            if (img) {
+                img.src = e.target.result;
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}

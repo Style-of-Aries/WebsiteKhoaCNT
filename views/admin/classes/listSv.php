@@ -1,79 +1,96 @@
 <!-- views/admin/songs/list.php -->
 <?php
+//  require_once "./../../../config/config.php";
+?>
+<?php
 ob_start();
 ?>
-<style>
-  a {
+<div class="container-admin">
+  <div class="sv-header">
+    <h2>Danh sách sinh viên của lớp: <?php echo $_GET['user']?></h2>
+    <div class="add">
+      <a href="index.php?controller=admin&action=addSinhVien">
+        <i class="ri-add-circle-line"></i>
+        Thêm Sinh Viên Mới</a>
+    </div>
+  </div>
+  <?php foreach ($students as $index => $user): ?>
+    <div class="student-card">
+      <div class="student-avatar">
+        <img src="<?= BASE_URL ?>/upload/avatar/<?= $user['avatar'] ?>" alt="avatar">
+      </div>
 
-    text-decoration: none;
-    color: white;
-  }
+      <div class="student-info">
+        <div class="btnManager">
+          <h3><?= htmlspecialchars($user['full_name']) ?></h3>
+          <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>"
+            class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+          <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>" class="action-btn delete-btn"
+            onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <i class='bx bx-user' data-label="Mã sinh viên"></i>
+            <span><?= htmlspecialchars($user['student_code']) ?></span>
+          </div>
 
-  .add {
-    width: 200px;
-    height: 30px;
-    border: 1px solid;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #1ca522ff;
-  }
+          <div class="info-item">
+            <i class='bx bx-calendar' data-label="Ngày sinh"></i>
+            <span><?= htmlspecialchars($user['date_of_birth']) ?></span>
+          </div>
+          <div class="info-item">
+            <i class='bx bx-male-female' data-label="Giới tính"></i>
+            <span><?= htmlspecialchars($user['gender']) ?></span>
+          </div>
 
-  .add>a {
-    width: 100%;
-    display: inline-block;
-    line-height: 30px;
-    margin: 5px;
-    text-decoration: none;
-    color: #fff;
-  }
-</style>
+          <div class="info-item">
+            <i class='bx bx-sitemap' data-label="Khoa"></i>
+            <span><?= htmlspecialchars($user['department_name']) ?></span>
+          </div>
+          <div class="info-item">
+            <i class='bx bx-book' data-label="Lớp"></i>
+            <span><?= htmlspecialchars($user['class_name']) ?></span>
+          </div>
 
-<h2>Danh sách sinh viên lớp: <?php echo $_GET['user'] ?></h2>
-<div class="add">
-  <a href="index.php?controller=admin&action=addSinhVien">
-    <i class="ri-add-circle-line"></i>
-    Thêm Sinh Viên Mới</a>
+          <div class="info-item">
+            <i class='bx bx-envelope' data-label="Email"></i>
+            <span><?= htmlspecialchars($user['email']) ?></span>
+          </div>
+
+          <div class="info-item">
+            <i class='bx bx-phone' data-label="Số điện thoại"></i>
+            <span><?= htmlspecialchars($user['phone']) ?></span>
+          </div>
+
+          <div class="info-item">
+            <i class='bx bx-id-card' data-label="CCCD / CMND"></i>
+            <span><?= htmlspecialchars($user['identity_number']) ?></span>
+          </div>
+
+          <div class="info-item">
+            <i class='bx bxs-graduation' data-label="Hệ đào tạo"></i>
+            <span><?= htmlspecialchars($user['education_type']) ?></span>
+          </div>
+
+          <div class="info-item">
+            <i class='bx bx-check-circle' data-label="Trạng thái"></i>
+            <span><?= htmlspecialchars($user['status']) ?></span>
+          </div>
+          <div class="info-item">
+            <i class='bx bx-calendar-event' data-label="Thời gian nhập học"></i>
+            <span><?= htmlspecialchars($user['created_at']) ?></span>
+          </div>
+
+          <div class="info-item">
+            <i class='bx bx-home' data-label="Địa chỉ"></i>
+            <span><?= htmlspecialchars($user['address']) ?></span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  <?php endforeach ?>
 </div>
-</style>
-<!-- <h2>Danh sách ngươi dùng</h2> -->
-
-<!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
-<table>
-  <thead>
-    <tr>
-      
-      <th>#</th>
-      <th>id</th>
-      <th>Họ và tên</th>
-      <!-- <th>Email</th> -->
-      <th>Mã Sinh Viên</th>
-      <th>Email</th>
-      <th>Lớp</th>
-      <th>Hành Động</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($students as $index => $user): ?>
-      <tr>
-        <td><?= $index + 1   ?></td>
-        <td><?= $user['id']   ?></td>
-        <td><a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?= $user['full_name'] ?>"><?= htmlspecialchars($user['full_name']) ?></a></td>
-        <td><?= htmlspecialchars($user['student_code']) ?></td>
-        <td><?= htmlspecialchars($user['email']) ?></td>
-        <td><?= htmlspecialchars($user['class_name']) ?></td>
-        <td>
-          <!-- <a href="index.php?controller=admin&action=yeuThich&id=<?= $user['id'] ?>&user=<?= $user['full_name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Danh sách yêu thích</a> -->
-          <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>" class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-          <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>" class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
-
-        </td>
-      </tr>
-    <?php endforeach ?>
-  </tbody>
-</table>
 
 
 <?php
