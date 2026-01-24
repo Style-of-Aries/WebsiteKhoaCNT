@@ -20,7 +20,7 @@ ob_start();
             <img id="avatarPreview"
                 src="<?= !empty($studentprf['avatar'])
                             ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
-                            : BASE_URL . 'uploads/avatars/default.png' ?>"
+                            : BASE_URL . 'upload/avatar/default.png' ?>"
                 alt="Avatar">
 
             <span id="fileName">

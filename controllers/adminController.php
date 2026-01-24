@@ -108,7 +108,7 @@ class adminController
             $avatar_old = $_POST['old_avatar']; // giữ nguyên avatar
 
             $avatarupdate =  basename($_FILES['avatar']['name']);
-            move_uploaded_file($_FILES['avatar']['tmp_name'], $avatarupdate);
+            move_uploaded_file($_FILES['avatar']['tmp_name'],'upload/avatar/'. $avatarupdate);
 
             // $sdtRegister = $_POST['phone'];
             if ($this->studentModel->KtMa($id, $student_code)) {
