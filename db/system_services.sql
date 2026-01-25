@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 24, 2026 lúc 02:33 PM
+-- Thời gian đã tạo: Th1 25, 2026 lúc 12:56 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -39,23 +39,6 @@ CREATE TABLE `academic_results` (
   `result` enum('pass','fail') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
-
-
---
--- Cấu trúc bảng cho bảng `attendance`
---
-
-CREATE TABLE `attendance` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `student_id` bigint(20) UNSIGNED NOT NULL,
-  `course_class_id` bigint(20) UNSIGNED NOT NULL,
-  `date` date NOT NULL,
-  `status` enum('present','absent','late') DEFAULT 'present'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
 --
 -- Bẫy `academic_results`
 --
@@ -105,6 +88,23 @@ CREATE TRIGGER `trg_calc_final_grade_update` BEFORE UPDATE ON `academic_results`
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `course_class_id` bigint(20) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `status` enum('present','absent','late') DEFAULT 'present'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
 --
 -- Cấu trúc bảng cho bảng `audit_logs`
 --
@@ -165,6 +165,13 @@ CREATE TABLE `course_classes` (
   `max_students` int(11) DEFAULT 60
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `course_classes`
+--
+
+INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`) VALUES
+(1, 2, 61, 1, 'PHP1', 60);
+
 -- --------------------------------------------------------
 
 --
@@ -188,7 +195,8 @@ CREATE TABLE `department` (
 INSERT INTO `department` (`id`, `name`, `type`, `parent_id`, `staff_count`, `created_at`, `updated_at`) VALUES
 (1, 'Trường Đại học CNTT', 'faculty', 2, 200, '2026-01-07 11:41:17', '2026-01-23 05:44:37'),
 (2, 'Khoa Công nghệ Thông tin', 'faculty', 1, 80, '2026-01-07 11:41:17', '2026-01-07 11:41:17'),
-(3, 'Bộ môn Phần mềm', 'department', 2, 40, '2026-01-07 11:41:17', '2026-01-07 11:41:17');
+(3, 'Bộ môn Phần mềm', 'department', 2, 40, '2026-01-07 11:41:17', '2026-01-07 11:41:17'),
+(5, 'dsffsdg', 'school', 2, NULL, '2026-01-24 17:11:35', NULL);
 
 -- --------------------------------------------------------
 
@@ -269,6 +277,8 @@ INSERT INTO `rooms` (`id`, `room_name`, `building`, `capacity`, `type`) VALUES
 CREATE TABLE `semesters` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
+  `academic_year` varchar(20) NOT NULL,
+  `semester_number` tinyint(4) NOT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT 1
@@ -278,9 +288,9 @@ CREATE TABLE `semesters` (
 -- Đang đổ dữ liệu cho bảng `semesters`
 --
 
-INSERT INTO `semesters` (`id`, `name`, `start_date`, `end_date`, `is_active`) VALUES
-(1, 'Học kỳ 1 - 2025', '2025-09-01', '2026-01-15', 1),
-(2, 'Học kỳ 2 - 2025', '2026-02-01', '2026-06-01', 0);
+INSERT INTO `semesters` (`id`, `name`, `academic_year`, `semester_number`, `start_date`, `end_date`, `is_active`) VALUES
+(1, 'Học kỳ 1', '2025-2026', 1, '2025-09-01', '2026-02-15', 1),
+(2, 'Học kỳ 2', '2025-2026', 2, '2026-02-24', '2026-06-01', 0);
 
 -- --------------------------------------------------------
 
@@ -342,8 +352,8 @@ CREATE TABLE `student_profiles` (
 --
 
 INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `education_type`, `status`) VALUES
-(1, 16, 'Nguyễn Văn Tứ', 'Nam', '2005-06-19', 'sv1@gmail.com', '0372016584', 'Vu hoi - vu thu - thai binh', '034205009263', 'nvt.jpg', 'Chính quy', 'Đang học'),
-(13, 22, 'Nguyễn Đức Trọng', 'Nam', '2005-04-04', 'nguyenductrong@gmail.com', '0976483819', 'Xã Thư Lâm - Tỉnh Hà Nội', '034205009275', 'student_22_1769152633.jpg', 'Chính quy', 'Tạm dừng');
+(1, 16, 'Nguyễn Văn Tứ', '', '2005-06-19', 'sv1@gmail.com', '03720165', 'Vu hoi - vu thu - thai binh', '034205009263', 'nvt.jpg', 'Chính quy', 'Đang học'),
+(13, 22, 'Nguyễn Đức Trọng', 'Nam', '2005-04-04', 'nguyenductrong@ffsdfsd.comdf', '0976483819', 'Xã Thư Lâm - Tỉnh Hà Nội', '034205009275', 'profile.jpg', 'Liên thông', 'Tạm dừng');
 
 -- --------------------------------------------------------
 
@@ -364,7 +374,7 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`) VALUES
-(1, 'CT101', 'Lập trình C', 3, 3),
+(1, 'CT101', 'Lập trình C', 6, 3),
 (2, 'CT202', 'Lập trình PHP', 3, 3),
 (3, 'CT30', 'Cơ sở dữ liệud', 3, 3);
 
@@ -451,6 +461,8 @@ ALTER TABLE `classes`
 --
 ALTER TABLE `course_classes`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_subject_lecturer_semester` (`subject_id`,`lecturer_id`,`semester_id`),
+  ADD UNIQUE KEY `class_code` (`class_code`,`semester_id`),
   ADD KEY `subject_id` (`subject_id`),
   ADD KEY `lecturer_id` (`lecturer_id`),
   ADD KEY `semester_id` (`semester_id`);
@@ -568,13 +580,13 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `learning_materials`
@@ -604,7 +616,7 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT cho bảng `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT cho bảng `student_profiles`
@@ -713,6 +725,21 @@ ALTER TABLE `subjects`
 ALTER TABLE `timetables`
   ADD CONSTRAINT `timetables_ibfk_1` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `timetables_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
+
+DELIMITER $$
+--
+-- Sự kiện
+--
+CREATE DEFINER=`root`@`localhost` EVENT `ev_update_semester_status` ON SCHEDULE EVERY 1 DAY STARTS '2026-01-25 16:47:31' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+    UPDATE semesters
+    SET is_active = IF(
+        CURDATE() BETWEEN start_date AND end_date,
+        1,
+        0
+    );
+END$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
