@@ -42,9 +42,9 @@ $title = "Hồ sơ cá nhân";
             <label>Giới tính</label>
             <select name="gender">
                 <option value="">-- Xóa / Chưa xác định --</option>
-                <option value="male" <?= $profile['gender'] == 'male' ? 'selected' : '' ?>>Nam</option>
-                <option value="female" <?= $profile['gender'] == 'female' ? 'selected' : '' ?>>Nữ</option>
-                <option value="other" <?= $profile['gender'] == 'other' ? 'selected' : '' ?>>Khác</option>
+                <option value="Nam" <?= $profile['gender'] == 'Nam' ? 'selected' : '' ?>>Nam</option>
+                <option value="Nữ" <?= $profile['gender'] == 'Nữ' ? 'selected' : '' ?>>Nữ</option>
+                <option value="Khác" <?= $profile['gender'] == 'Khác' ? 'selected' : '' ?>>Khác</option>
             </select>
         </div>
 
