@@ -40,7 +40,7 @@ class course_classesController
         $course_classes = $this->course_classesModel->getAll();
         require_once './../views/admin/course_classes/list.php';
     }
-
+    
 
     public function lichHoc()
     {

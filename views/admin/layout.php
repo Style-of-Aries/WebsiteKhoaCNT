@@ -22,6 +22,22 @@ $currentAction = $_GET['action'] ?? '';
 </head>
 
 <body>
+    <div class="flash-message">
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success" id="autoHideAlert">
+                <?= htmlspecialchars($_SESSION['success']) ?>
+            </div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-error" id="autoHideAlert">
+                <?= htmlspecialchars($_SESSION['error']) ?>
+            </div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+    </div>
+
     <div class="header">
         <!-- <p>Hệ thống quản lý sinh viên</p> -->
         <div class="title">

@@ -188,41 +188,14 @@
   color: var(--text-main);
 }
 
-.alert {
-  padding: 12px;
-  position: fixed;
-  /* margin-bottom: 20px; */
-  right: 0;
-  border-radius: 6px;
-  font-size: 14px;
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
-}
 
-.alert.hide {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.alert-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
 
 .welcome-container {
     height: 100%;
     display: flex;
     justify-content: center;   /* căn ngang */
     align-items: center;       /* căn dọc */
-    background-color: #f4f6f9;
+    background-color: var(--bg-main);
 }
 
 /* .welcome-text {
@@ -232,13 +205,13 @@
 } */
 
 .welcome-text span {
-    color: #2f80ed;            /* làm nổi tên */
+    color: var(--blue-main);            /* làm nổi tên */
     font-weight: 700;
 }
 .welcome-text {
     font-size: 50px;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--text-main);
     text-shadow: 0 2px 6px rgba(0,0,0,0.1);
     animation: fadeIn 0.8s ease-in-out;
 }
@@ -253,3 +226,143 @@
         transform: translateY(0);
     }
 }
+
+.badge-slot {
+    display: inline-block;
+    min-width: 42px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 999px;
+}
+
+/* Còn trống */
+.badge.bg-success {
+    background-color: var(--green-main) !important;
+    color: #ffffff;
+}
+
+/* Đã đầy */
+.badge.bg-warning {
+    background-color: var(--orange-main) !important;
+    color: var(--text-main);
+}
+
+/* ===== Nút Đăng ký ===== */
+.btn.btn-primary.btn-sm {
+    background-color: var(--blue-main);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn.btn-primary.btn-sm:hover {
+    background-color: var(--blue-main);
+}
+
+/* ===== Nút Đã đầy ===== */
+.btn.btn-secondary.btn-sm {
+    background-color: var(--bg-main);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+/* Ô nhập điểm */
+.score-input {
+    width: 80px;
+    padding: 6px 8px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    transition: all 0.2s ease;
+    background-color: var(--bg-main);
+}
+
+/* Khi focus */
+.score-input:focus {
+    outline: none;
+    border-color: var(--blue-light);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+/* Điểm hợp lệ */
+.score-input:valid {
+    border-color: var(--green-main);
+    background-color: var(--bg-main);
+}
+
+/* Điểm không hợp lệ */
+.score-input:invalid {
+    border-color: var(--red-main);
+    background-color: var(--bg-main);
+}
+
+/* Disable */
+.score-input:disabled {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    cursor: not-allowed;
+}
+
+/* Căn giữa bảng cho đẹp */
+.main-table td {
+    vertical-align: middle;
+}
+
+/* Nút lưu điểm */
+.btn-save-score {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 6px 14px rgba(40, 167, 69, 0.25);
+}
+
+/* Hover */
+.btn-save-score:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.35);
+    background: linear-gradient(135deg, #218838, #1abc9c);
+}
+
+/* Khi click */
+.btn-save-score:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+/* Disable */
+.btn-save-score:disabled {
+    background: var(--bg-main);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Căn nút đẹp */
+.save-score-wrapper {
+    margin-top: 20px;
+    text-align: right;
+}
+
+/* Chỉ invalid khi CÓ nhập */
+.score-input:invalid:not(:placeholder-shown) {
+    border-color: var(--red-main);
+}
+

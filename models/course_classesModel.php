@@ -90,7 +90,7 @@ class course_classesModel extends database
         return $year . $deptCode . $newNumber;
     }
 
-    public function editHocPhan($id,$subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
+    public function editHocPhan($id, $subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
     {
 
         $sql = "
@@ -140,5 +140,131 @@ class course_classesModel extends database
     public function __query($sql)
     {
         return mysqli_query($this->connect, $sql);
+    }
+
+    public function getCoureClassSV($studentId)
+    {
+
+        $sql = "
+        SELECT 
+            cc.id,
+            cc.class_code,
+            s.name AS subject_name,
+            cc.max_students,
+
+            COUNT(scc_all.student_id) AS current_students,
+
+            CASE 
+                WHEN scc_me.student_id IS NULL THEN 0
+                ELSE 1
+            END AS is_registered
+
+        FROM course_classes cc
+        JOIN semesters sem ON cc.semester_id = sem.id
+        JOIN subjects s ON cc.subject_id = s.id
+
+        LEFT JOIN student_course_classes scc_all 
+               ON cc.id = scc_all.course_class_id
+
+        LEFT JOIN student_course_classes scc_me
+               ON cc.id = scc_me.course_class_id
+              AND scc_me.student_id = $studentId
+
+        WHERE sem.is_active = 1
+        GROUP BY cc.id
+    ";
+
+        return $this->__query($sql);
+    }
+
+    // Kiểm tra sinh viên đã đăng ký chưa
+    public function isRegistered($studentId, $classId)
+    {
+        $sql = "
+        SELECT 1
+        FROM student_course_classes
+        WHERE student_id = '$studentId'
+          AND course_class_id = '$classId'
+        LIMIT 1
+    ";
+
+        $query = $this->__query($sql);
+
+        return mysqli_num_rows($query) > 0;
+    }
+
+    // Đăng ký lớp học phần
+    public function register($studentId, $classId)
+    {
+        $sql = "
+            INSERT INTO student_course_classes (student_id, course_class_id)
+            VALUES ($studentId, $classId)
+        ";
+        return $this->__query($sql);
+    }
+
+    // Đếm số SV đã đăng ký
+    public function countStudents($classId)
+    {
+        $sql = "
+            SELECT COUNT(*) as total
+            FROM student_course_classes
+            WHERE course_class_id = $classId
+        ";
+        return $this->__query($sql);
+    }
+
+    //Lấy lớp học phần giảng viên đảm nhiệm
+    public function getCourseClassGV($lecturerId)
+    {
+        $sql = "
+        SELECT 
+    cc.id,
+    cc.class_code,
+    s.name AS subject_name,
+    se.name AS semester_name,
+    cc.max_students,
+    COUNT(scc.student_id) AS total_students
+FROM course_classes cc
+JOIN subjects s ON cc.subject_id = s.id
+JOIN semesters se ON cc.semester_id = se.id
+LEFT JOIN student_course_classes scc 
+       ON cc.id = scc.course_class_id
+WHERE cc.lecturer_id = $lecturerId
+GROUP BY cc.id
+ORDER BY se.id DESC, cc.class_code;
+";
+        return $this->__query($sql);
+    }
+
+    public function getStudentByCourseClass($classId)
+    {
+        $sql = "
+            SELECT 
+                st.id AS student_id,
+                st.student_code,
+                sp.full_name,
+
+                ar.process_score,
+                ar.midterm_score,
+                ar.final_exam_score,
+                ar.final_grade,
+                ar.grade_letter,
+                ar.result
+
+            FROM student_course_classes scc
+            JOIN student st 
+                 ON scc.student_id = st.id
+            LEFT JOIN student_profiles sp 
+                 ON sp.student_id = st.id
+            LEFT JOIN academic_results ar
+                 ON ar.student_id = st.id
+                AND ar.course_class_id = scc.course_class_id
+
+            WHERE scc.course_class_id = '$classId'
+            ORDER BY st.student_code
+        ";
+
+        return $this->__query($sql);
     }
 }

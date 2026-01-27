@@ -7,7 +7,7 @@
         </a>
     </li>
 
-    <li class="<?= ($currentController == 'student' && $currentAction == 'getSchedule') ? 'active' : '' ?>">
+    <li class="<?= ($currentController == 'student' && $currentAction == 'lichHoc') ? 'active' : '' ?>">
         <a href="index.php?controller=student&action=lichHoc" class="menu-link">
             <i class='bx bx-calendar'></i>Thời khóa biểu
         </a>
@@ -31,9 +31,9 @@
         </a>
     </li>
 
-    <li class="<?= ($currentController == 'department' && $currentAction == 'getAllKhoa') ? 'active' : '' ?>">
-        <a href="index.php?controller=department&action=getAllKhoa" class="menu-link">
-            <i class="bx bx-wallet"></i> Học phí
+    <li class="<?= ($currentController == 'student' && $currentAction == 'getCourseClass') ? 'active' : '' ?>">
+        <a href="index.php?controller=student&action=getCourseClass" class="menu-link">
+            <i class="bx bx-wallet"></i> Đăng ký lớp
         </a>
     </li>
 

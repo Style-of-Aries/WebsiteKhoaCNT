@@ -2,15 +2,18 @@
 require_once '../models/userModel.php';
 require_once '../models/studentModel.php';
 require_once '../models/timetableModel.php';
+require_once '../models/course_classesModel.php';
 require_once '../config/config.php';  
 class studentController
-{
+{   
+    private $courseClassModel;
     private $studentModel;
     private $timetableModel;
     public function __construct()
     {
         $this->studentModel = new studentModel();
         $this->timetableModel = new timetableModel();
+        $this->courseClassModel = new course_classesModel();
     }
 
 
@@ -24,8 +27,8 @@ class studentController
         $user = $_SESSION['user'];
         $profile = $this->studentModel->getAllProfile($user['ref_id']);
         $_SESSION['profile'] = $profile;
-        include "./../views/user/profile.php";
-        require_once '../views/user/profile.php';
+        // include "./../views/user/profile.php";
+        require_once '../views/user/student/profile.php';
     }
 
     public function getAllResult()
@@ -43,7 +46,7 @@ class studentController
         // $user = $_SESSION['user'];
         // $id =$_SESSION['user']['id'];
         $timetables=$this->timetableModel->lichHocSv($id);
-        include "./../views/user/lichHoc.php";
+        include "./../views/user/student/lichHoc.php";
     }
 
     public function updateProfile()
@@ -146,6 +149,30 @@ class studentController
         exit;
     }
 
+    public function getCourseClass() {
+        $studentId = $_SESSION['user']['ref_id'];
+        $classes = $this->courseClassModel->getCoureClassSV($studentId);
+        require_once '../views/user/student/dangKyLop.php';
+    }
+    public function registerCourseClass()
+    {
+        $studentId = $_SESSION['user']['ref_id'];
+        $classId   = $_GET['class_id'];
+        // var_dump($studentId);
+        // var_dump($classId);
+        // die;
+        // 1. Đã đăng ký rồi thì không cho nữa
+        if ($this->courseClassModel->isRegistered($studentId, $classId)!=0) {
+            $_SESSION['error'] = 'Bạn đã đăng ký lớp này rồi';
+            // header('Location: index.php?controller=student&action=course');
+            $this->getCourseClass();
+            exit;
+        }
 
+        // 2. Thực hiện đăng ký
+        $this->courseClassModel->register($studentId, $classId);
 
+        $_SESSION['success'] = 'Đăng ký thành công';
+        $this->getCourseClass();
+    }
 }

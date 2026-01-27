@@ -218,3 +218,33 @@ body {
 .main-table tr:hover {
   background-color: var(--bg-main);
 }
+
+.flash-message {
+    position: fixed;
+    top: 80px;           /* dưới header */
+    right: 20px;
+    z-index: 9999;
+}
+
+.alert {
+    padding: 14px 20px;
+    position: fixed;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    animation: slideIn 0.3s ease;
+    right: 10px;
+}
+
+.alert-success {
+    background-color: var(--green-light);
+    color: #fff;
+}
+
+.alert-error {
+    background-color: var(--red-main);
+    color: #fff;
+}
+
+
