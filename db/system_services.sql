@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 27, 2026 lúc 09:31 AM
+-- Thời gian đã tạo: Th1 27, 2026 lúc 09:54 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -38,6 +38,15 @@ CREATE TABLE `academic_results` (
   `grade_letter` char(2) DEFAULT NULL,
   `result` enum('pass','fail') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `academic_results`
+--
+
+INSERT INTO `academic_results` (`id`, `student_id`, `course_class_id`, `process_score`, `midterm_score`, `final_exam_score`, `final_grade`, `grade_letter`, `result`) VALUES
+(1, 22, 1, 10.00, 10.00, 10.00, 10.00, 'A', 'pass'),
+(2, 25, 1, 10.00, 10.00, 10.00, 10.00, 'A', 'pass'),
+(3, 16, 1, 6.00, 7.00, 8.00, 7.40, 'B', 'pass');
 
 --
 -- Bẫy `academic_results`
@@ -171,8 +180,9 @@ CREATE TABLE `course_classes` (
 
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`) VALUES
 (1, 2, 61, 1, 'PHP1', 60),
-(3, 3, 4, 1, '2026BMPM000001', 60),
-(4, 2, 4, 1, '2026BMPM000002', 60);
+(3, 3, 4, 1, '2026BMPM000001', 40),
+(4, 2, 4, 1, '2026BMPM000002', 60),
+(5, 4, 61, 2, '2026KCNTT000001', 30);
 
 -- --------------------------------------------------------
 
@@ -315,7 +325,8 @@ CREATE TABLE `student` (
 
 INSERT INTO `student` (`id`, `student_code`, `class_id`, `department_id`, `created_at`, `updated_at`) VALUES
 (16, 'SV001', 1, 3, '2026-01-19 07:04:27', '2026-01-23 02:47:57'),
-(22, '2326CNT05', 3, 2, '2026-01-23 02:27:52', '2026-01-23 03:45:36');
+(22, '2326CNT05', 3, 2, '2026-01-23 02:27:52', '2026-01-23 03:45:36'),
+(25, '312312', 1, 2, '2026-01-27 20:30:59', '2026-01-27 20:30:59');
 
 -- --------------------------------------------------------
 
@@ -333,7 +344,12 @@ CREATE TABLE `student_course_classes` (
 --
 
 INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
-(22, 3);
+(16, 1),
+(22, 1),
+(22, 3),
+(22, 4),
+(22, 5),
+(25, 1);
 
 -- --------------------------------------------------------
 
@@ -362,7 +378,8 @@ CREATE TABLE `student_profiles` (
 
 INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `education_type`, `status`) VALUES
 (1, 16, 'Nguyễn Văn Tứ', 'Nam', '2005-06-19', 'sv1@gmail.comgg', '03720165', 'Vu hoi - vu thu - thai binh', '034205009263', '1.jpg', 'Chính quy', 'Đang học'),
-(13, 22, 'Nguyễn Đức Trọng', 'Nam', '2005-04-04', 'nguyenductrong@ffsdfsd.comdf', '0976483819', 'Xã Thư Lâm - Tỉnh Hà Nội', '034205009275', 'profile.jpg', 'Liên thông', 'Tạm dừng');
+(13, 22, 'Nguyễn Đức Trọng', 'Nam', '2005-04-03', 'ductrong34end@gmail.com', '0968843380', 'Xã Thư Lâm - Tỉnh Hà Nội', '001205022394', 'profile.jpg', 'Liên thông', 'Tạm dừng'),
+(14, 25, 'Trong', 'Nam', '2026-01-15', 'ductrong34@gmail.com', '03720165', 'Đông Anh - Hà Nội2', '034205009275', '1769545859_850661-anime-classroom-of-the-elite-group-of-people-full.jpg', '', '');
 
 -- --------------------------------------------------------
 
@@ -385,7 +402,8 @@ CREATE TABLE `subjects` (
 INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`) VALUES
 (1, 'CT101', 'Lập trình C', 6, 3),
 (2, 'CT202', 'Lập trình PHP', 3, 3),
-(3, 'CT30', 'Cơ sở dữ liệud', 3, 3);
+(3, 'CT30', 'Cơ sở dữ liệud', 3, 3),
+(4, 'TK3D', 'Thiết kế 3D', 6, 2);
 
 -- --------------------------------------------------------
 
@@ -437,7 +455,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 (20, 'nvtsssss', ' 123', 'lecturer', 59),
 (22, 'nvtdfdf', 'dfdf', 'lecturer', 60),
 (23, 'nguyenductrong', '123', 'student', 22),
-(24, 'ductrong', '123', 'lecturer', 61);
+(24, 'ductrong', '123', 'lecturer', 61),
+(25, 'trong', '123', 'student', 25);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -576,7 +595,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `academic_results`
 --
 ALTER TABLE `academic_results`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `attendance`
@@ -600,7 +619,7 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
@@ -636,19 +655,19 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT cho bảng `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT cho bảng `student_profiles`
 --
 ALTER TABLE `student_profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `timetables`
@@ -660,7 +679,7 @@ ALTER TABLE `timetables`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
