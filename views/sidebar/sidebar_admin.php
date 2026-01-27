@@ -42,6 +42,11 @@
             <i class="bx bxs-book"></i> Danh Sách Môn học
         </a>
     </li>
+    <li class="<?= ($currentController=='course_classes' && $currentAction=='getAllHocPhan') ? 'active' : '' ?>">
+        <a href="index.php?controller=course_classes&action=getAllHocPhan" class="menu-link">
+            <i class="bx bxs-book"></i> Danh Sách Học Phần
+        </a>
+    </li>
 
 </ul>
 

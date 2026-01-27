@@ -1,13 +1,16 @@
 <?php
 require_once '../models/userModel.php';
 require_once '../models/studentModel.php';
-require_once '../config/config.php';
+require_once '../models/timetableModel.php';
+require_once '../config/config.php';  
 class studentController
 {
     private $studentModel;
+    private $timetableModel;
     public function __construct()
     {
         $this->studentModel = new studentModel();
+        $this->timetableModel = new timetableModel();
     }
 
 
@@ -33,6 +36,13 @@ class studentController
     public function getSchedule()
     {
         include "./../views/user/schedule.php";
+    }
+    public function lichHoc()
+    {
+        $user = $_SESSION['user'];
+        $id =$_SESSION['user']['id'];
+        $timetables=$this->timetableModel->lichHocSv($id);
+        include "./../views/user/lichHoc.php";
     }
 
     public function updateProfile()

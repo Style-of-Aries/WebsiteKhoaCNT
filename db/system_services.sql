@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 25, 2026 lúc 12:56 PM
+-- Thời gian đã tạo: Th1 27, 2026 lúc 09:31 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -170,7 +170,9 @@ CREATE TABLE `course_classes` (
 --
 
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`) VALUES
-(1, 2, 61, 1, 'PHP1', 60);
+(1, 2, 61, 1, 'PHP1', 60),
+(3, 3, 4, 1, '2026BMPM000001', 60),
+(4, 2, 4, 1, '2026BMPM000002', 60);
 
 -- --------------------------------------------------------
 
@@ -326,6 +328,13 @@ CREATE TABLE `student_course_classes` (
   `course_class_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `student_course_classes`
+--
+
+INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
+(22, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -352,7 +361,7 @@ CREATE TABLE `student_profiles` (
 --
 
 INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `education_type`, `status`) VALUES
-(1, 16, 'Nguyễn Văn Tứ', '', '2005-06-19', 'sv1@gmail.com', '03720165', 'Vu hoi - vu thu - thai binh', '034205009263', 'nvt.jpg', 'Chính quy', 'Đang học'),
+(1, 16, 'Nguyễn Văn Tứ', 'Nam', '2005-06-19', 'sv1@gmail.comgg', '03720165', 'Vu hoi - vu thu - thai binh', '034205009263', '1.jpg', 'Chính quy', 'Đang học'),
 (13, 22, 'Nguyễn Đức Trọng', 'Nam', '2005-04-04', 'nguyenductrong@ffsdfsd.comdf', '0976483819', 'Xã Thư Lâm - Tỉnh Hà Nội', '034205009275', 'profile.jpg', 'Liên thông', 'Tạm dừng');
 
 -- --------------------------------------------------------
@@ -389,8 +398,17 @@ CREATE TABLE `timetables` (
   `course_class_id` bigint(20) UNSIGNED NOT NULL,
   `room_id` bigint(20) UNSIGNED NOT NULL,
   `day_of_week` tinyint(4) NOT NULL,
-  `slot` int(11) NOT NULL
+  `session` enum('Sáng','Chiều') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `timetables`
+--
+
+INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `session`) VALUES
+(1, 1, 1, 2, 'Sáng'),
+(2, 3, 2, 3, 'Chiều'),
+(3, 4, 1, 4, 'Sáng');
 
 -- --------------------------------------------------------
 
@@ -538,6 +556,8 @@ ALTER TABLE `subjects`
 --
 ALTER TABLE `timetables`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_room_day_session` (`room_id`,`day_of_week`,`session`),
+  ADD UNIQUE KEY `uq_class_day_session` (`course_class_id`,`day_of_week`,`session`),
   ADD KEY `course_class_id` (`course_class_id`),
   ADD KEY `room_id` (`room_id`);
 
@@ -580,7 +600,7 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
@@ -634,7 +654,7 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT cho bảng `timetables`
 --
 ALTER TABLE `timetables`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `users`

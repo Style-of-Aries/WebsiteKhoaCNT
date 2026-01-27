@@ -8,7 +8,7 @@
     </li>
 
     <li class="<?= ($currentController == 'student' && $currentAction == 'getSchedule') ? 'active' : '' ?>">
-        <a href="index.php?controller=student&action=getSchedule" class="menu-link">
+        <a href="index.php?controller=student&action=lichHoc" class="menu-link">
             <i class='bx bx-calendar'></i>Thời khóa biểu
         </a>
     </li>
