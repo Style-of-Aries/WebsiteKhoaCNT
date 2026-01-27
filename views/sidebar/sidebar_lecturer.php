@@ -1,19 +1,49 @@
 <h2>Trang giảng viên</h2>
-
 <ul class="menu">
-    <?php if (!empty($subjectsTeaching)): ?>
-        <?php foreach ($subjectsTeaching as $subject): ?>
-            <li>
-                <a href="index.php?controller=lecturer&action=getSubjectSchedule&subject_id=<?= $subject['id'] ?>"
-                   class="menu-link">
-                    <i class="bx bxs-book"></i>
-                    <?= htmlspecialchars($subject['name']) ?>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <li class="empty">
-            <span>Chưa được phân công môn học</span>
-        </li>
-    <?php endif; ?>
+
+    <li class="<?= ($currentController == 'student' && $currentAction == 'profile') ? 'active' : '' ?>">
+        <a href="index.php?controller=student&action=profile" class="menu-link">
+            <i class='bx bx-id-card'></i>Thông tin lý lịch
+        </a>
+    </li>
+
+    <li class="<?= ($currentController == 'lecturer' && $currentAction == 'lichDayGv') ? 'active' : '' ?>">
+        <a href="index.php?controller=lecturer&action=lichDayGv" class="menu-link">
+            <i class='bx bx-calendar'></i>Lịch dạy
+        </a>
+    </li>
+
+    <!-- <li class="<?= ($currentController == 'admin' && $currentAction == 'getAllSinhVien') ? 'active' : '' ?>">
+        <a href="index.php?controller=admin&action=getAllSinhVien" class="menu-link">
+            <i class="bx bx-calendar-event"></i> Lịch coi thi
+        </a>
+    </li> -->
+
+    <li class="<?= ($currentController == 'student' && $currentAction == 'getAllResult') ? 'active' : '' ?>">
+        <a href="index.php?controller=student&action=getAllResult" class="menu-link">
+           <i class='bx bx-bar-chart-alt-2'></i> Kết quả học tập
+        </a>
+    </li>
+
+    <!-- <li class="<?= ($currentController == 'classes' && $currentAction == 'getAllLopHoc') ? 'active' : '' ?>">
+        <a href="index.php?controller=classes&action=getAllLopHoc" class="menu-link">
+            <i class="bx bx-medal"></i> Điểm rèn luyện
+        </a>
+    </li>
+
+    <li class="<?= ($currentController == 'department' && $currentAction == 'getAllKhoa') ? 'active' : '' ?>">
+        <a href="index.php?controller=department&action=getAllKhoa" class="menu-link">
+            <i class="bx bx-wallet"></i> Học phí
+        </a>
+    </li>
+
+    <li class="<?= ($currentController == 'subject' && $currentAction == 'getAllMonHoc') ? 'active' : '' ?>">
+        <a href="index.php?controller=subject&action=getAllMonHoc" class="menu-link">
+            <i class="bx bxs-book"></i> Danh Sách Môn học
+        </a>
+    </li> -->
+
 </ul>
+<!-- <?php
+echo $currentController . ' - ' . $currentAction;
+?> -->

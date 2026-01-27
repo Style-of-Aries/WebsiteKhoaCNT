@@ -39,8 +39,9 @@ class studentController
     }
     public function lichHoc()
     {
-        $user = $_SESSION['user'];
-        $id =$_SESSION['user']['id'];
+        $id = $_SESSION['user']['ref_id'];
+        // $user = $_SESSION['user'];
+        // $id =$_SESSION['user']['id'];
         $timetables=$this->timetableModel->lichHocSv($id);
         include "./../views/user/lichHoc.php";
     }

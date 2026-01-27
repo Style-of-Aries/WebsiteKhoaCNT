@@ -38,16 +38,17 @@ class timetableModel extends database
     public function lichHocSv($id)
     {
         $sql = "
-            SELECT
-    s.id AS student_id,
+    SELECT
+    s.id                AS student_id,
     s.student_code,
 
     sb.subject_code,
-    sb.name AS subject_name,
+    sb.name             AS subject_name,
 
-    cc.class_code AS course_class_code,
+    cc.id               AS course_class_id,
+    cc.class_code       AS course_class_code,
 
-    se.name AS semester_name,
+    se.name             AS semester_name,
     se.academic_year,
 
     t.day_of_week,
@@ -56,23 +57,66 @@ class timetableModel extends database
     r.room_name,
     r.building,
 
-    l.full_name AS lecturer_name
-FROM student s
-JOIN student_course_classes scc 
-    ON s.id = scc.student_id
-JOIN course_classes cc 
-    ON scc.course_class_id = cc.id
-JOIN subjects sb 
-    ON cc.subject_id = sb.id
-JOIN semesters se 
-    ON cc.semester_id = se.id
-JOIN timetables t 
-    ON cc.id = t.course_class_id
-JOIN rooms r 
-    ON t.room_id = r.id
-JOIN lecturer l 
-    ON cc.lecturer_id = l.id
+    l.full_name         AS lecturer_name
+FROM student AS s
+INNER JOIN student_course_classes AS scc
+        ON scc.student_id = s.id
+INNER JOIN course_classes AS cc
+        ON cc.id = scc.course_class_id
+INNER JOIN subjects AS sb
+        ON sb.id = cc.subject_id
+INNER JOIN semesters AS se
+        ON se.id = cc.semester_id
+INNER JOIN timetables AS t
+        ON t.course_class_id = cc.id
+INNER JOIN rooms AS r
+        ON r.id = t.room_id
+INNER JOIN lecturer AS l
+        ON l.id = cc.lecturer_id
 WHERE s.id = $id";
+
+        return $this->__query($sql);
+    }
+    public function lichDayGv($id)
+    {
+        $sql = "
+    SELECT
+    s.id                AS student_id,
+    s.student_code,
+
+    sb.subject_code,
+    sb.name             AS subject_name,
+
+    cc.id               AS course_class_id,
+    cc.class_code       AS course_class_code,
+
+    se.name             AS semester_name,
+    se.academic_year,
+
+    t.day_of_week,
+    t.session,
+
+    r.room_name,
+    r.building,
+
+    l.full_name         AS lecturer_name
+FROM student AS s
+INNER JOIN student_course_classes AS scc
+        ON scc.student_id = s.id
+INNER JOIN course_classes AS cc
+        ON cc.id = scc.course_class_id
+INNER JOIN subjects AS sb
+        ON sb.id = cc.subject_id
+INNER JOIN semesters AS se
+        ON se.id = cc.semester_id
+INNER JOIN timetables AS t
+        ON t.course_class_id = cc.id
+INNER JOIN rooms AS r
+        ON r.id = t.room_id
+INNER JOIN lecturer AS l
+        ON l.id = cc.lecturer_id
+WHERE s.id = $id";
+
         return $this->__query($sql);
     }
 
