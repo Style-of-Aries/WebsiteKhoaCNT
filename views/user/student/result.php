@@ -2,7 +2,8 @@
 ob_start();
 ?>
 <div class="container-admin">
-    <h2>Bảng điểm học tập</h2>
+    <h2>📊 Bảng điểm học tập</h2>
+
     <table class="main-table">
         <thead>
             <tr>
@@ -17,74 +18,38 @@ ob_start();
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Lập trình C++</td>
-                <td>CT001</td>
-                <td>3</td>
-                <td>
-                    TX: 8.5<br>
-                    GK: 7.5
-                </td>
-                <td>8.0</td>
-                <td><b>8.1</b></td>
-                <td>A</td>
-            </tr>
+            <?php
+            $stt = 1;
+            while ($row = mysqli_fetch_assoc($result)):
+                ?>
+                <tr>
+                    <td><?= $stt++ ?></td>
 
-            <tr>
-                <td>2</td>
-                <td>Cơ sở dữ liệu</td>
-                <td>CT002</td>
-                <td>3</td>
-                <td>
-                    TX: 7.0<br>
-                    GK: 7.5
-                </td>
-                <td>7.0</td>
-                <td><b>7.2</b></td>
-                <td>B</td>
-            </tr>
+                    <td><?= htmlspecialchars($row['subject_name']) ?></td>
+                    <td><?= $row['subject_code'] ?></td>
+                    <td><?= $row['credits'] ?></td>
 
-            <tr>
-                <td>3</td>
-                <td>Lập trình Web</td>
-                <td>CT003</td>
-                <td>4</td>
-                <td>
-                    TX: 9.0<br>
-                    GK: 8.5
-                </td>
-                <td>9.0</td>
-                <td><b>8.9</b></td>
-                <td>A</td>
-            </tr>
+                    <td>
+                        TX: <?= $row['process_score'] ?? '-' ?><br>
+                        GK: <?= $row['midterm_score'] ?? '-' ?>
+                    </td>
 
-            <tr>
-                <td>4</td>
-                <td>Toán cao cấp A1</td>
-                <td>MT001</td>
-                <td>3</td>
-                <td>
-                    TX: 6.5<br>
-                    GK: 7.0
-                </td>
-                <td>6.5</td>
-                <td><b>6.7</b></td>
-                <td>C</td>
-            </tr>
+                    <td><?= $row['final_exam_score'] ?? '-' ?></td>
+
+                    <td>
+                        <?php if ($row['final_grade'] !== null): ?>
+                            <b><?= $row['final_grade'] ?></b>
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
+                    </td>
+
+                    <td>
+                        <?= $row['grade_letter'] ?? '-' ?>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
         </tbody>
-
-        <!-- <tbody>
-        <?php foreach ($users as $index => $user): ?>
-            <tr>
-                <td><?= $index + 1 ?></td>
-                <td><?= htmlspecialchars($user['username']) ?></td>
-                <td><?= htmlspecialchars($user['password']) ?></td>
-                <td><?= htmlspecialchars($user['role']) ?></td>
-                <td><?= htmlspecialchars($user['ref_id']) ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody> -->
     </table>
 </div>
 
