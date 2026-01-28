@@ -39,8 +39,8 @@ class lecturerController
         $id = $_SESSION['user']['ref_id'];
         // $user = $_SESSION['user'];
         // $id =$_SESSION['user']['id'];
-        $timetables = $this->timetableModel->lichDayGv($id);
-        require_once "./../views/user/lecturer/lichDay.php";
+        $timetables=$this->timetableModel->lichDayGv($id);
+        require_once './../views/user/lecturer/lichDay.php';
     }
     public function getStudentsByCourseClass()
     {

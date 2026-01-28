@@ -87,11 +87,6 @@ WHERE s.id = $id";
     sb.subject_code,
     sb.name             AS subject_name,
 
-    cc.id               AS course_class_id,
-    cc.class_code       AS course_class_code,
-
-    se.name             AS semester_name,
-    se.academic_year,
 
     t.day_of_week,
     t.session,
@@ -100,15 +95,11 @@ WHERE s.id = $id";
     r.building,
 
     l.full_name         AS lecturer_name
-FROM student AS s
-INNER JOIN student_course_classes AS scc
-        ON scc.student_id = s.id
+FROM semester AS s
 INNER JOIN course_classes AS cc
         ON cc.id = scc.course_class_id
 INNER JOIN subjects AS sb
         ON sb.id = cc.subject_id
-INNER JOIN semesters AS se
-        ON se.id = cc.semester_id
 INNER JOIN timetables AS t
         ON t.course_class_id = cc.id
 INNER JOIN rooms AS r
