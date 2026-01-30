@@ -35,6 +35,35 @@ class lecturerModel extends database
         }
         return $lecturers;
     }
+    public function searchLecturers($keyword)
+{
+    $keyword = trim($keyword);
+
+    $sql = "
+        SELECT 
+            s.id,
+            s.full_name,
+            s.lecturer_code,
+            s.email,
+            c.name
+        FROM lecturer s
+        LEFT JOIN department c ON s.department_id = c.id
+        WHERE 
+            s.full_name LIKE '%$keyword%'
+            OR s.lecturer_code LIKE '%$keyword%'
+            OR s.email LIKE '%$keyword%'
+            OR c.name LIKE '%$keyword%'
+    ";
+
+    $query = $this->__query($sql);
+
+    $lecturers = [];
+    while ($row = mysqli_fetch_assoc($query)) {
+        $lecturers[] = $row;
+    }
+    return $lecturers;
+}
+
     // end 
 
 

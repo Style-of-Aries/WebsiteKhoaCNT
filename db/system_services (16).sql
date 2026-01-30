@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 27, 2026 lúc 09:54 PM
+-- Thời gian đã tạo: Th1 28, 2026 lúc 04:51 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -182,7 +182,8 @@ INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, 
 (1, 2, 61, 1, 'PHP1', 60),
 (3, 3, 4, 1, '2026BMPM000001', 40),
 (4, 2, 4, 1, '2026BMPM000002', 60),
-(5, 4, 61, 2, '2026KCNTT000001', 30);
+(5, 4, 61, 2, '2026KCNTT000001', 30),
+(6, 1, 4, 1, '2026BMPM000003', 60);
 
 -- --------------------------------------------------------
 
@@ -416,17 +417,19 @@ CREATE TABLE `timetables` (
   `course_class_id` bigint(20) UNSIGNED NOT NULL,
   `room_id` bigint(20) UNSIGNED NOT NULL,
   `day_of_week` tinyint(4) NOT NULL,
-  `session` enum('Sáng','Chiều') NOT NULL
+  `session` enum('Sáng','Chiều') NOT NULL,
+  `start_week` int(11) NOT NULL,
+  `end_week` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `timetables`
 --
 
-INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `session`) VALUES
-(1, 1, 1, 2, 'Sáng'),
-(2, 3, 2, 3, 'Chiều'),
-(3, 4, 1, 4, 'Sáng');
+INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `session`, `start_week`, `end_week`) VALUES
+(1, 1, 1, 2, 'Sáng', 1, 15),
+(2, 3, 2, 3, 'Chiều', 3, 10),
+(3, 4, 1, 4, 'Sáng', 5, 12);
 
 -- --------------------------------------------------------
 
@@ -619,7 +622,7 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `department`

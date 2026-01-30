@@ -124,6 +124,35 @@ WHERE s.id = $id;";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
+
+    public function searchStudents($keyword)
+{
+    $keyword = mysqli_real_escape_string($this->connect, $keyword);
+
+    $sql = "
+        SELECT 
+            s.id,
+            s.student_code,
+            sp.full_name,
+            sp.email,
+            c.class_name,
+            d.name AS department_name
+        FROM student s
+        JOIN student_profiles sp ON sp.student_id = s.id
+        LEFT JOIN classes c ON c.id = s.class_id
+        LEFT JOIN department d ON d.id = s.department_id
+        WHERE
+            sp.full_name LIKE '%$keyword%'
+            OR s.student_code LIKE '%$keyword%'
+            OR sp.email LIKE '%$keyword%'
+            OR c.class_name LIKE '%$keyword%'
+            OR d.name LIKE '%$keyword%'
+        ORDER BY s.id DESC
+    ";
+
+    return $this->__query($sql);
+}
+
     public function KtMa($id, $student_code)
     {
         $sql = "Select *from student where student_code='$student_code'AND id != $id

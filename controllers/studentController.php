@@ -1,14 +1,16 @@
 <?php
 
 use LDAP\Result;
+
 require_once '../models/userModel.php';
 require_once '../models/studentModel.php';
 require_once '../models/timetableModel.php';
 require_once '../models/course_classesModel.php';
 require_once '../models/resultModel.php';
-require_once '../config/config.php';  
+require_once '../config/config.php';
 class studentController
-{   private $resultModel;
+{
+    private $resultModel;
     private $courseClassModel;
     private $studentModel;
     private $timetableModel;
@@ -48,12 +50,20 @@ class studentController
     }
     public function lichHoc()
     {
-        $id = $_SESSION['user']['ref_id'];
-        // $user = $_SESSION['user'];
-        // $id =$_SESSION['user']['id'];
-        $timetables=$this->timetableModel->lichHocSv($id);
+        $studentId = $_SESSION['user']['ref_id'];
+        $weeks = $this->timetableModel->getWeeksOfActiveSemester();
+
+        $week = isset($_GET['week']) ? (int)$_GET['week'] : null;
+
+        if ($week) {
+            $timetables = $this->timetableModel->lichHocSvTheoTuan($studentId, $week);
+        } else {
+            $timetables = [];
+        }
+
         include "./../views/user/student/lichHoc.php";
     }
+
 
     public function updateProfile()
     {
@@ -155,7 +165,8 @@ class studentController
         exit;
     }
 
-    public function getCourseClass() {
+    public function getCourseClass()
+    {
         $studentId = $_SESSION['user']['ref_id'];
         $classes = $this->courseClassModel->getCoureClassSV($studentId);
         require_once '../views/user/student/dangKyLop.php';
@@ -168,7 +179,7 @@ class studentController
         // var_dump($classId);
         // die;
         // 1. Đã đăng ký rồi thì không cho nữa
-        if ($this->courseClassModel->isRegistered($studentId, $classId)!=0) {
+        if ($this->courseClassModel->isRegistered($studentId, $classId) != 0) {
             $_SESSION['error'] = 'Bạn đã đăng ký lớp này rồi';
             // header('Location: index.php?controller=student&action=course');
             $this->getCourseClass();

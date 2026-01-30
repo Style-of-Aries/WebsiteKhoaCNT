@@ -35,6 +35,29 @@ class timetableModel extends database
     FIELD(t.session, 'Sáng', 'Chiều')";
         return $this->__query($sql);
     }
+    public function lichHocSvTheoTuan($studentId, $week)
+{
+    $sql = "
+    SELECT
+        sb.name       AS subject_name,
+        t.day_of_week,
+        t.session,
+        r.room_name,
+        l.full_name   AS lecturer_name
+    FROM student_course_classes scc
+    JOIN course_classes cc ON cc.id = scc.course_class_id
+    JOIN subjects sb       ON sb.id = cc.subject_id
+    JOIN timetables t      ON t.course_class_id = cc.id
+    JOIN rooms r           ON r.id = t.room_id
+    JOIN lecturer l        ON l.id = cc.lecturer_id
+    WHERE scc.student_id = $studentId
+      AND t.start_week <= $week
+      AND t.end_week >= $week
+    ";
+
+    return $this->__query($sql);
+}
+
     public function lichHocSv($id)
     {
         $sql = "
@@ -77,57 +100,75 @@ WHERE s.id = $id";
 
         return $this->__query($sql);
     }
-    public function lichDayGv($id)
-    {
-        $sql = "
+    public function lichDayGvTheoTuan($lecturerId, $week)
+{
+    $sql = "
     SELECT
-    s.id                AS student_id,
-    s.student_code,
-
-    sb.subject_code,
-    sb.name             AS subject_name,
-
-
-    t.day_of_week,
-    t.session,
-
-    r.room_name,
-    r.building,
-
-    l.full_name         AS lecturer_name
-FROM semester AS s
-INNER JOIN course_classes AS cc
-        ON cc.id = scc.course_class_id
-INNER JOIN subjects AS sb
-        ON sb.id = cc.subject_id
-INNER JOIN timetables AS t
-        ON t.course_class_id = cc.id
-INNER JOIN rooms AS r
-        ON r.id = t.room_id
-INNER JOIN lecturer AS l
-        ON l.id = cc.lecturer_id
-WHERE s.id = $id";
-
-        return $this->__query($sql);
-    }
-
-
-
-    
-    public function getAllGiangVienCuaKhoa($id)
-    {
-        $sql = "SELECT 
-    s.id,
-    s.full_name,
-    s.lecturer_code,
-    s.email,
-    c.name
-    FROM lecturer s
-    LEFT JOIN department c ON s.department_id = c.id
-    WHERE s.department_id = $id
+        sb.name         AS subject_name,
+        cc.class_code   AS class_code,
+        t.day_of_week,
+        t.session,
+        r.room_name,
+        r.building
+    FROM course_classes cc
+    JOIN subjects sb   ON sb.id = cc.subject_id
+    JOIN timetables t  ON t.course_class_id = cc.id
+    JOIN rooms r       ON r.id = t.room_id
+    WHERE cc.lecturer_id = $lecturerId
+      AND t.start_week <= $week
+      AND t.end_week >= $week
+    ORDER BY 
+        t.day_of_week,
+        FIELD(t.session, 'Sáng', 'Chiều')
     ";
-        return $this->__query($sql);
+
+    return $this->__query($sql);
+}
+
+
+    public function getWeeksOfActiveSemester()
+    {
+    $sql = "
+        SELECT start_date, end_date
+        FROM semesters
+        WHERE is_active = 1
+        LIMIT 1
+    ";
+
+    $semester = $this->__query($sql)->fetch_assoc();
+    if (!$semester) return [];
+
+    $start = new DateTime($semester['start_date']);
+    $end   = new DateTime($semester['end_date']);
+
+    $weeks = [];
+    $week = 1;
+
+    while ($start <= $end) {
+        $weekStart = clone $start;
+        $weekEnd = clone $start;
+        $weekEnd->modify('+6 days');
+
+        if ($weekEnd > $end) {
+            $weekEnd = $end;
+        }
+
+        $weeks[] = [
+            'from'  => $weekStart->format('Y-m-d'),
+            'to'    => $weekEnd->format('Y-m-d'),
+            'label' => 'Tuần ' . $week . ' (' .
+                       $weekStart->format('d/m/Y') . ' - ' .
+                       $weekEnd->format('d/m/Y  ') . ')'
+        ];
+
+        $start->modify('+7 days');
+        $week++;
     }
+
+    return $weeks;
+}
+
+
 
     public function addHocPhan($subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
     {

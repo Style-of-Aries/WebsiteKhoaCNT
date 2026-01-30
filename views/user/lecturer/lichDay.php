@@ -13,20 +13,28 @@ foreach ($timetables as $row) {
 <div class="card">
     <h2 class="card-title">Thời khóa biểu</h2>
 
-    <!-- Select chọn tuần -->
-    <select id="weekSelect" class="week-select">
-        <option value="">--- Chọn tuần ---</option>
-        <?php foreach ($weeks as $w): ?>
-            <option value="<?= $w['from'] . '|' . $w['to'] ?>">
-                <?= $w['label'] ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+    <form method="get">
+        <input type="hidden" name="controller" value="lecturer">
+        <input type="hidden" name="action" value="lichDayGv">
+
+        <select name="week" class="week-select">
+            <option value="">--- Chọn tuần ---</option>
+            <?php foreach ($weeks as $index => $w): ?>
+                <?php $weekNumber = $index + 1; ?>
+                <option value="<?= $weekNumber ?>"
+                    <?= (isset($_GET['week']) && $_GET['week'] == $weekNumber) ? 'selected' : '' ?>>
+                    <?= $w['label'] ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
+        <button type="submit">Tìm kiếm</button>
+    </form>
+
+
 
     <div class="tkb-grid">
 
-        <!-- Header -->
-        <div class="tkb-header"></div>
         <?php
         $days = [
             2 => 'Thứ 2',
@@ -37,45 +45,46 @@ foreach ($timetables as $row) {
             7 => 'Thứ 7',
             8 => 'Chủ nhật'
         ];
-        foreach ($days as $d):
         ?>
+
+        <div class="tkb-header"></div>
+        <?php foreach ($days as $d): ?>
             <div class="tkb-header"><?= $d ?></div>
         <?php endforeach; ?>
 
-        <!-- ===== CA SÁNG ===== -->
+        <!-- ===== SÁNG ===== -->
         <div class="tkb-time">07:30 - 11:30</div>
         <?php foreach ($days as $dayKey => $dayLabel): ?>
-            <div class="tkb-cell <?= !empty($schedule['Sáng'][$dayKey]) ? 'has-class' : '' ?>">
+            <div class="tkb-cell">
                 <?php if (!empty($schedule['Sáng'][$dayKey])): ?>
                     <?php foreach ($schedule['Sáng'][$dayKey] as $item): ?>
                         <strong><?= htmlspecialchars($item['subject_name']) ?></strong>
-                        <strong><?= htmlspecialchars($item['lecturer_name']) ?></strong>
-                        <span><?= htmlspecialchars($item['room_name']) ?></span>
+                        <!-- <div>Lớp: <?= htmlspecialchars($item['class_code']) ?></div> -->
+                        <div>Phòng: <?= htmlspecialchars($item['room_name']) ?></div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
 
-        <!-- ===== CA CHIỀU ===== -->
+        <!-- ===== CHIỀU ===== -->
         <div class="tkb-time">12:30 - 16:30</div>
         <?php foreach ($days as $dayKey => $dayLabel): ?>
-            <div class="tkb-cell <?= !empty($schedule['Chiều'][$dayKey]) ? 'has-class' : '' ?>">
+            <div class="tkb-cell">
                 <?php if (!empty($schedule['Chiều'][$dayKey])): ?>
                     <?php foreach ($schedule['Chiều'][$dayKey] as $item): ?>
                         <strong><?= htmlspecialchars($item['subject_name']) ?></strong>
-                        <strong>Gv: <?= htmlspecialchars($item['lecturer_name']) ?></strong>
-                        <span><?= htmlspecialchars($item['room_name']) ?></span>
+                        <!-- <div>Lớp: <?= htmlspecialchars($item['class_code']) ?></div> -->
+                        <div>Phòng: <?= htmlspecialchars($item['room_name']) ?></div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
 
-    </div>
+    </div>  
+
 </div>
 
 <?php
 $content = ob_get_clean();
-// include __DIR__ . '/../admin/layout.php';
-include "../views/admin/layout.php";
-
+include __DIR__ . '/../../admin/layout.php';
 ?>

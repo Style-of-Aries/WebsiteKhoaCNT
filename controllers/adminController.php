@@ -52,16 +52,32 @@ class adminController
 
     // giao diện danh sách sinh viên 
     public function getAllSinhVien()
-    {
+{
+    $keyword = $_GET['keyword'] ?? '';
+
+    if (!empty($keyword)) {
+        $students = $this->studentModel->searchStudents($keyword);
+    } else {
         $students = $this->studentModel->getAll();
-        require_once './../views/admin/student/list.php';
     }
+
+    require_once './../views/admin/student/list.php';
+}
+
     // giao diện danh sách giảng viên 
     public function getAllGiangVien()
-    {
+{
+    $keyword = $_GET['keyword'] ?? '';
+
+    if (!empty($keyword)) {
+        $lecturers = $this->lecturerModel->searchLecturers($keyword);
+    } else {
         $lecturers = $this->lecturerModel->getAll();
-        require_once './../views/admin/lecturer/list.php';
     }
+
+    require_once './../views/admin/lecturer/list.php';
+}
+
 
     // sửa sv 
 
@@ -76,6 +92,18 @@ class adminController
         $userNd = $this->userModel->getByRef_id($id);
 
         require_once './../views/admin/student/edit.php';
+    }
+    public function chiTiet()
+    {
+        $errorEmail = $errorMaSv = $errorName = "";
+        $id = $_GET['id'];
+        $classes = $this->classesModel->getAll();
+        $department = $this->departmentModel->getAll();
+        $student = $this->studentModel->getById($id);
+        $studentprf = $this->studentModel->getById($id);
+        $userNd = $this->userModel->getByRef_id($id);
+
+        require_once './../views/admin/student/chitiet.php';
     }
     public function editSinhVien()
     {

@@ -13,15 +13,24 @@ foreach ($timetables as $row) {
 <div class="card">
     <h2 class="card-title">Thời khóa biểu</h2>
 
-    <!-- Select chọn tuần -->
-    <select id="weekSelect" class="week-select">
+    <form method="get" action="">
+    <input type="hidden" name="controller" value="student">
+    <input type="hidden" name="action" value="lichHoc">
+
+    <select name="week" class="week-select">
         <option value="">--- Chọn tuần ---</option>
-        <?php foreach ($weeks as $w): ?>
-            <option value="<?= $w['from'] . '|' . $w['to'] ?>">
+        <?php foreach ($weeks as $index => $w): ?>
+            <?php $weekNumber = $index + 1; ?>
+            <option value="<?= $weekNumber ?>"
+                <?= (isset($_GET['week']) && $_GET['week'] == $weekNumber) ? 'selected' : '' ?>>
                 <?= $w['label'] ?>
             </option>
         <?php endforeach; ?>
     </select>
+
+    <button type="submit" class="btn-search">Tìm kiếm</button>
+</form>
+
 
     <div class="tkb-grid">
 

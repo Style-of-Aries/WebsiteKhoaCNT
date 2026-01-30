@@ -36,12 +36,22 @@ class lecturerController
     }
     public function lichDayGv()
     {
-        $id = $_SESSION['user']['ref_id'];
-        // $user = $_SESSION['user'];
-        // $id =$_SESSION['user']['id'];
-        $timetables=$this->timetableModel->lichDayGv($id);
+        $lecturerId = $_SESSION['user']['ref_id'];
+
+        $weeks = $this->timetableModel->getWeeksOfActiveSemester();
+
+        $week = isset($_GET['week']) ? (int)$_GET['week'] : null;
+
+        if ($week) {
+            $timetables = $this->timetableModel->lichDayGvTheoTuan($lecturerId, $week);
+        } else {
+            $timetables = [];
+        }
+
         require_once './../views/user/lecturer/lichDay.php';
     }
+
+
     public function getStudentsByCourseClass()
     {
         if (!isset($_SESSION['user']['ref_id'])) {
@@ -98,4 +108,3 @@ class lecturerController
         exit;
     }
 }
-
