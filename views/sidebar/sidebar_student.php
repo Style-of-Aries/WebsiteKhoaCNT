@@ -13,11 +13,11 @@
         </a>
     </li>
 
-    <li class="<?= ($currentController == 'admin' && $currentAction == 'getAllSinhVien') ? 'active' : '' ?>">
+    <!-- <li class="<?= ($currentController == 'admin' && $currentAction == 'getAllSinhVien') ? 'active' : '' ?>">
         <a href="index.php?controller=admin&action=getAllSinhVien" class="menu-link">
             <i class="bx bx-calendar-event"></i> Lịch thi
         </a>
-    </li>
+    </li> -->
 
     <li class="<?= ($currentController == 'student' && $currentAction == 'getAllResult') ? 'active' : '' ?>">
         <a href="index.php?controller=student&action=getAllResult" class="menu-link">
@@ -25,11 +25,11 @@
         </a>
     </li>
 
-    <li class="<?= ($currentController == 'classes' && $currentAction == 'getAllLopHoc') ? 'active' : '' ?>">
+    <!-- <li class="<?= ($currentController == 'classes' && $currentAction == 'getAllLopHoc') ? 'active' : '' ?>">
         <a href="index.php?controller=classes&action=getAllLopHoc" class="menu-link">
             <i class="bx bx-medal"></i> Điểm rèn luyện
         </a>
-    </li>
+    </li> -->
 
     <li class="<?= ($currentController == 'student' && $currentAction == 'getCourseClass') ? 'active' : '' ?>">
         <a href="index.php?controller=student&action=getCourseClass" class="menu-link">
@@ -37,11 +37,11 @@
         </a>
     </li>
 
-    <li class="<?= ($currentController == 'subject' && $currentAction == 'getAllMonHoc') ? 'active' : '' ?>">
+    <!-- <li class="<?= ($currentController == 'subject' && $currentAction == 'getAllMonHoc') ? 'active' : '' ?>">
         <a href="index.php?controller=subject&action=getAllMonHoc" class="menu-link">
             <i class="bx bxs-book"></i> Danh Sách Môn học
         </a>
-    </li>
+    </li> -->
 
 </ul>
 <!-- <?php

@@ -142,36 +142,38 @@ class course_classesModel extends database
         return mysqli_query($this->connect, $sql);
     }
 
-    public function getCoureClassSV($studentId)
+    public function getCourseClassSV($studentId)
     {
 
         $sql = "
         SELECT 
-            cc.id,
-            cc.class_code,
-            s.name AS subject_name,
-            cc.max_students,
-
-            COUNT(scc_all.student_id) AS current_students,
-
-            CASE 
-                WHEN scc_me.student_id IS NULL THEN 0
-                ELSE 1
-            END AS is_registered
-
-        FROM course_classes cc
-        JOIN semesters sem ON cc.semester_id = sem.id
-        JOIN subjects s ON cc.subject_id = s.id
-
-        LEFT JOIN student_course_classes scc_all 
-               ON cc.id = scc_all.course_class_id
-
-        LEFT JOIN student_course_classes scc_me
-               ON cc.id = scc_me.course_class_id
-              AND scc_me.student_id = $studentId
-
-        WHERE sem.is_active = 1
-        GROUP BY cc.id
+    cc.id,
+    cc.class_code,
+    s.name AS subject_name,
+    cc.max_students,
+    COUNT(scc.student_id) AS current_students,
+    CASE t.day_of_week
+        WHEN 2 THEN 'Thứ 2'
+        WHEN 3 THEN 'Thứ 3'
+        WHEN 4 THEN 'Thứ 4'
+        WHEN 5 THEN 'Thứ 5'
+        WHEN 6 THEN 'Thứ 6'
+        WHEN 7 THEN 'Thứ 7'
+        ELSE 'CN'
+    END AS day_of_week,
+    CONCAT('Tuần ', t.start_week, ' - ', t.end_week, ' (', t.session, ')') AS time_range,
+    EXISTS (
+        SELECT 1 FROM student_course_classes sc2 
+        WHERE sc2.course_class_id = cc.id 
+        AND sc2.student_id = '$studentId'
+    ) AS is_registered
+FROM course_classes cc
+JOIN subjects s ON cc.subject_id = s.id
+JOIN semesters sem ON cc.semester_id = sem.id AND sem.is_active = 1
+LEFT JOIN timetables t ON cc.id = t.course_class_id
+LEFT JOIN student_course_classes scc ON cc.id = scc.course_class_id
+GROUP BY cc.id, t.day_of_week, t.session, t.start_week, t.end_week
+ORDER BY S.name
     ";
 
         return $this->__query($sql);

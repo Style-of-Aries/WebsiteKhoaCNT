@@ -39,20 +39,56 @@ class timetableModel extends database
 {
     $sql = "
     SELECT
-        sb.name       AS subject_name,
-        t.day_of_week,
-        t.session,
-        r.room_name,
-        l.full_name   AS lecturer_name
-    FROM student_course_classes scc
-    JOIN course_classes cc ON cc.id = scc.course_class_id
-    JOIN subjects sb       ON sb.id = cc.subject_id
-    JOIN timetables t      ON t.course_class_id = cc.id
-    JOIN rooms r           ON r.id = t.room_id
-    JOIN lecturer l        ON l.id = cc.lecturer_id
-    WHERE scc.student_id = $studentId
-      AND t.start_week <= $week
-      AND t.end_week >= $week
+    sb.name AS subject_name,
+    t.day_of_week,
+    t.session,
+    r.room_name,
+    l.full_name AS lecturer_name,
+
+    -- Gộp các lớp hành chính học chung
+    GROUP_CONCAT(DISTINCT c.class_name ORDER BY c.class_name SEPARATOR '+') 
+        AS admin_classes
+
+FROM student_course_classes scc
+JOIN course_classes cc 
+    ON cc.id = scc.course_class_id
+
+JOIN subjects sb 
+    ON sb.id = cc.subject_id
+
+JOIN timetables t 
+    ON t.course_class_id = cc.id
+
+JOIN rooms r 
+    ON r.id = t.room_id
+
+JOIN lecturer l 
+    ON l.id = cc.lecturer_id
+
+-- Lấy toàn bộ sinh viên trong học phần
+JOIN student_course_classes scc2 
+    ON scc2.course_class_id = cc.id
+
+JOIN student st 
+    ON st.id = scc2.student_id
+
+JOIN classes c 
+    ON c.id = st.class_id
+
+WHERE scc.student_id = $studentId
+  AND t.start_week <= $week
+  AND t.end_week >= $week
+
+GROUP BY 
+    sb.name,
+    t.day_of_week,
+    t.session,
+    r.room_name,
+    l.full_name
+
+ORDER BY 
+    t.day_of_week,
+    FIELD(t.session, 'Sáng', 'Chiều');
     ";
 
     return $this->__query($sql);
@@ -104,22 +140,55 @@ WHERE s.id = $id";
 {
     $sql = "
     SELECT
-        sb.name         AS subject_name,
-        cc.class_code   AS class_code,
-        t.day_of_week,
-        t.session,
-        r.room_name,
-        r.building
-    FROM course_classes cc
-    JOIN subjects sb   ON sb.id = cc.subject_id
-    JOIN timetables t  ON t.course_class_id = cc.id
-    JOIN rooms r       ON r.id = t.room_id
-    WHERE cc.lecturer_id = $lecturerId
-      AND t.start_week <= $week
-      AND t.end_week >= $week
-    ORDER BY 
-        t.day_of_week,
-        FIELD(t.session, 'Sáng', 'Chiều')
+    sb.name AS subject_name,
+    t.day_of_week,
+    t.session,
+    r.room_name,
+    l.full_name AS lecturer_name,
+
+    -- Gộp các lớp hành chính học chung
+    GROUP_CONCAT(DISTINCT c.class_name ORDER BY c.class_name SEPARATOR '+') 
+        AS admin_classes
+
+FROM course_classes cc
+
+JOIN subjects sb 
+    ON sb.id = cc.subject_id
+
+JOIN timetables t 
+    ON t.course_class_id = cc.id
+
+JOIN rooms r 
+    ON r.id = t.room_id
+
+JOIN lecturer l 
+    ON l.id = cc.lecturer_id
+
+-- Lấy toàn bộ sinh viên trong học phần
+JOIN student_course_classes scc 
+    ON scc.course_class_id = cc.id
+
+JOIN student st 
+    ON st.id = scc.student_id
+
+JOIN classes c 
+    ON c.id = st.class_id
+
+WHERE cc.lecturer_id = $lecturerId
+  AND t.start_week <= $week
+  AND t.end_week >= $week
+
+GROUP BY 
+    sb.name,
+    t.day_of_week,
+    t.session,
+    r.room_name,
+    l.full_name
+
+ORDER BY 
+    t.day_of_week,
+    FIELD(t.session, 'Sáng', 'Chiều');
+
     ";
 
     return $this->__query($sql);

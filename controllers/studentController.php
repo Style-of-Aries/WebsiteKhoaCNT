@@ -168,7 +168,7 @@ class studentController
     public function getCourseClass()
     {
         $studentId = $_SESSION['user']['ref_id'];
-        $classes = $this->courseClassModel->getCoureClassSV($studentId);
+        $classes = $this->courseClassModel->getCourseClassSV($studentId);
         require_once '../views/user/student/dangKyLop.php';
     }
     public function registerCourseClass()

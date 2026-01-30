@@ -11,6 +11,8 @@ ob_start();
             <tr>
                 <th>Mã Lớp</th>
                 <th>Tên Môn Học</th>
+                <th>Thứ</th>
+                <th>Thời Gian</th>
                 <th>Sĩ Số Tối Đa</th>
                 <th>Đã Đăng Ký</th>
                 <th>Còn Trống</th>
@@ -18,13 +20,14 @@ ob_start();
             </tr>
         </thead>
         <tbody>
-
             <?php foreach ($classes as $row):
                 $remaining = $row['max_students'] - $row['current_students'];
                 ?>
                 <tr>
                     <td><?= htmlspecialchars($row['class_code']) ?></td>
                     <td><?= htmlspecialchars($row['subject_name']) ?></td>
+                    <td class="text-center"><?= $row['day_of_week'] ?></td>
+                    <td class="text-center"><?= $row['time_range'] ?></td>
                     <td class="text-center"><?= $row['max_students'] ?></td>
                     <td class="text-center"><?= $row['current_students'] ?></td>
                     <td class="text-center">
@@ -38,6 +41,7 @@ ob_start();
                             </span>
                         <?php endif; ?>
                     </td>
+
                     <td class="text-center">
                         <?php if ($row['is_registered']): ?>
 

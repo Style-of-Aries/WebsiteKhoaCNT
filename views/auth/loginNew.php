@@ -14,12 +14,12 @@
     
 <body>
     <header class="header">
-        <!-- <nav class="navbar">
+        <nav class="navbar">
             <a href="#" class="nav-link">Home</a>
             <a href="#" class="nav-link">About</a>
             <a href="#" class="nav-link">Services</a>
             <a href="#" class="nav-link">Contact</a>
-        </nav> -->
+        </nav>
 
         <form action="#" class="search-bar">
             <input type="text" placeholder="Search.....">

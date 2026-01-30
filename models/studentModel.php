@@ -113,23 +113,86 @@ WHERE s.id = '$id';
         }
         return $students;
     }
-    public function getAllProfile($id)
+    public function getAllProfile($studentId)
     {
 
-        $sql = "SELECT *
-FROM student s
-JOIN student_profiles sp
-    ON s.id = sp.student_id
-WHERE s.id = $id;";
+        //         $sql = "SELECT *
+// FROM student s
+// JOIN student_profiles sp
+//     ON s.id = sp.student_id
+// WHERE s.id = $id;";
+//         $query = $this->__query($sql);
+//         return mysqli_fetch_assoc($query);
+        $sql = "
+        SELECT 
+    st.id AS student_id,
+    st.student_code,
+
+    -- Thông tin cá nhân
+    sp.full_name,
+    sp.gender,
+    sp.date_of_birth,
+    sp.email,
+    sp.phone,
+    sp.address,
+    sp.identity_number,
+    sp.avatar,
+    sp.education_type,
+    sp.status,
+
+    -- Lớp hành chính
+    c.class_name,
+    c.class_code,
+
+    -- Khoa / bộ môn
+    d.name AS department_name,
+    d.type AS department_type,
+
+    -- GPA + tín chỉ + số môn
+    stats.gpa,
+    stats.total_credits,
+    stats.total_courses,
+
+    -- Thời gian tạo
+    st.created_at
+
+FROM student st
+
+LEFT JOIN student_profiles sp 
+    ON sp.student_id = st.id
+
+LEFT JOIN classes c 
+    ON st.class_id = c.id
+
+LEFT JOIN department d 
+    ON st.department_id = d.id
+
+LEFT JOIN (
+    SELECT 
+        ar.student_id,
+        ROUND(AVG(ar.final_grade), 2) AS gpa,
+        SUM(sb.credits) AS total_credits,
+        COUNT(ar.course_class_id) AS total_courses
+    FROM academic_results ar
+    JOIN course_classes cc 
+        ON cc.id = ar.course_class_id
+    JOIN subjects sb 
+        ON sb.id = cc.subject_id
+    GROUP BY ar.student_id
+) stats 
+    ON stats.student_id = st.id
+
+WHERE st.id = $studentId;
+";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
 
     public function searchStudents($keyword)
-{
-    $keyword = mysqli_real_escape_string($this->connect, $keyword);
+    {
+        $keyword = mysqli_real_escape_string($this->connect, $keyword);
 
-    $sql = "
+        $sql = "
         SELECT 
             s.id,
             s.student_code,
@@ -150,8 +213,8 @@ WHERE s.id = $id;";
         ORDER BY s.id DESC
     ";
 
-    return $this->__query($sql);
-}
+        return $this->__query($sql);
+    }
 
     public function KtMa($id, $student_code)
     {
@@ -192,11 +255,11 @@ WHERE s.id = $id;";
         $sql = "UPDATE student SET student_code='$student_code',class_id='$class_id',department_id='$department_id' WHERE id='$id'";
         return $this->__query($sql);
     }
-    public function updateStudent_profiles($id, $gender, $full_name, $email, $phone, $date_of_birth, $address, $education_type, $status, $identity_number,$avatarupdate)
+    public function updateStudent_profiles($id, $gender, $full_name, $email, $phone, $date_of_birth, $address, $education_type, $status, $identity_number, $avatarupdate)
     {
         $sql = "UPDATE student_profiles SET gender='$gender',full_name='$full_name',email='$email',phone='$phone',date_of_birth='$date_of_birth' ,address='$address',identity_number='$identity_number' ,avatar ='$avatarupdate',education_type='$education_type',status = '$status' WHERE student_id='$id'";
         return $this->__query($sql);
-        }
+    }
 
     // thêm mới sinh viên 
     public function addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password)
