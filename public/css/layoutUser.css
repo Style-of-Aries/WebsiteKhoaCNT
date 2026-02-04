@@ -30,6 +30,11 @@ body {
   color: #fff;
   overflow-x: hidden;
 }
+
+a {
+    text-decoration: none;
+    color: var(--bg-card);
+}
 /* ================= HEADER ================= */
 .portal-header {
   height: 70px;
@@ -192,7 +197,7 @@ body {
 /* ================= CONTENT ================= */
 .portal-content {
   flex: 1;
-  margin-top: 88px;
+  margin-top: 70px;
   padding: 26px;
   /* min-height: calc(100vh - 88px); */
   background: var(--bg-main);

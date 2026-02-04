@@ -13,8 +13,8 @@
   </style>
 </head>
 
-<body >
-  
+<body>
+
   <div class="khung">
     <!-- <div class="logoWeb">
       <img src="<?= BASE_URL ?>img/logoMusic.jpg" alt="">
@@ -26,16 +26,22 @@
         <i class="fa-solid fa-envelope"></i>
       </div> -->
       <div class="input-box">
-        <input type="text" name="username" placeholder="Tài Khoản" required>
+        <input
+          type="text"
+          name="username"
+          placeholder="Tài Khoản"
+          required
+          value="<?= isset($oldUsername) ? htmlspecialchars($oldUsername) : '' ?>">
         <i class="fa-solid fa-envelope"></i>
       </div>
+
 
       <div class="input-box">
         <input type="password" name="password" placeholder="Mật khẩu" required>
         <i class="fa-solid fa-lock"></i>
       </div>
 
-      <span  class="error"><?php echo $errorLogin ?></span>
+      <span class="error"><?php echo $errorLogin ?></span>
 
       <div class="remember-forgot">
         <label><input type="checkbox" name="remember"> Nhớ mật khẩu</label>

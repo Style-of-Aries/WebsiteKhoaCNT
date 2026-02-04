@@ -17,7 +17,7 @@ foreach ($timetables as $row) {
         <input type="hidden" name="controller" value="student">
         <input type="hidden" name="action" value="lichHoc">
 
-        <select name="week" class="week-select">
+        <select name="week" class="week-select" onchange="this.form.submit()">
             <option value="">--- Chọn tuần ---</option>
             <?php foreach ($weeks as $index => $w): ?>
                 <?php $weekNumber = $index + 1; ?>
@@ -26,7 +26,7 @@ foreach ($timetables as $row) {
                 </option>
             <?php endforeach; ?>
         </select>
-        <button type="submit" class="btn-search">Tìm kiếm</button>
+        <!-- <button type="submit" class="btn-search">Tìm kiếm</button> -->
     </form>
 
 

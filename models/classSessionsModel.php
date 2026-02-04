@@ -26,15 +26,14 @@ class classSessionsModel extends database
     // ✅ SINH BUỔI HỌC TỰ ĐỘNG
     public function generateSessions($courseClassId)
     {
-        // Lấy timetable + semester
         $sql = "
-            SELECT t.*, s.start_date 
-            FROM timetables t
-            JOIN course_classes cc ON t.course_class_id = cc.id
-            JOIN semesters s ON cc.semester_id = s.id
-            WHERE t.course_class_id = $courseClassId
-            LIMIT 1
-        ";
+        SELECT t.*, s.start_date 
+        FROM timetables t
+        JOIN course_classes cc ON t.course_class_id = cc.id
+        JOIN semesters s ON cc.semester_id = s.id
+        WHERE t.course_class_id = $courseClassId
+        LIMIT 1
+    ";
 
         $result = $this->__query($sql);
         if (!$result || mysqli_num_rows($result) == 0) {
@@ -42,46 +41,53 @@ class classSessionsModel extends database
         }
 
         $timetable = mysqli_fetch_assoc($result);
-        
-        $startWeek = $timetable['start_week'];
-        $endWeek   = $timetable['end_week'];
-        $targetDow = $timetable['day_of_week']; // 1 = Thứ 2
-        $session   = $timetable['session'];
+
+        $startWeek = (int) $timetable['start_week'];
+        $endWeek = (int) $timetable['end_week'];
+        $targetDow = (int) $timetable['day_of_week']; // 1 = Thứ 2
+        $session = $timetable['session'];
         $semesterStart = $timetable['start_date'];
 
-        // 🔹 Tính ngày buổi đầu tiên đúng thứ
-        $currentDow = date('N', strtotime($semesterStart));
-        $offset = $targetDow - $currentDow;
-        if ($offset < 0) $offset += 7;
+        // 🔹 Tìm ngày học đầu tiên đúng thứ trong tuần 1
+        $date = new DateTime($semesterStart);
 
-        $firstSessionDate = strtotime("+$offset days", strtotime($semesterStart));
+        while ($date->format('N') != $targetDow) {
+            $date->modify('+1 day');
+        }
 
-        // 🔹 Loop sinh từng tuần
+        // 🔹 Nhảy đến tuần startWeek
+        $date->modify('+' . (($startWeek - 1) * 7) . ' days');
+
+        // 🔹 Sinh từng buổi
         for ($week = $startWeek; $week <= $endWeek; $week++) {
 
-            $sessionDate = date('Y-m-d', strtotime("+".($week - 1)." weeks", $firstSessionDate));
+            $sessionDate = $date->format('Y-m-d');
 
-            // ❌ Check trùng buổi
+            // Check trùng
             $checkSql = "
-                SELECT id FROM class_sessions 
-                WHERE course_class_id = $courseClassId 
-                AND session_date = '$sessionDate'
-            ";
-
+            SELECT id FROM class_sessions 
+            WHERE course_class_id = $courseClassId 
+            AND session_date = '$sessionDate'
+        ";
             $exists = $this->__query($checkSql);
 
             if (mysqli_num_rows($exists) == 0) {
 
-                // ✅ Insert session
                 $insertSql = "
-                    INSERT INTO class_sessions 
-                    (course_class_id, session_date, day_of_week, session, week_number)
-                    VALUES ($courseClassId, '$sessionDate', $targetDow, '$session', $week)
-                ";
+                INSERT INTO class_sessions 
+                (course_class_id, session_date, day_of_week, session, week_number)
+                VALUES ($courseClassId, '$sessionDate', $targetDow, '$session', $week)
+            ";
 
                 $this->__query($insertSql);
             }
+
+            // ➕ sang tuần tiếp theo
+            $date->modify('+7 days');
         }
+
         return true;
     }
+
+
 }
