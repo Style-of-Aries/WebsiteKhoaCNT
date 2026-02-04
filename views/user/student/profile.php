@@ -131,5 +131,5 @@ $title = "Hồ sơ cá nhân";
 
 <?php
 $content = ob_get_clean();
-include __DIR__ . '/../../admin/layout.php';
+include __DIR__ . '/../layout.php';
 ?>

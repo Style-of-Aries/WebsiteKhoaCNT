@@ -389,5 +389,6 @@ WHERE st.id = $studentId;
         mysqli_commit($this->connect);
         return true;
     }
+    
 }
 

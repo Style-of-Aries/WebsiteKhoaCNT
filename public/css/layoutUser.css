@@ -1,0 +1,343 @@
+:root {
+  --blue-dark: #1e5fa8;
+  --blue-main: #2f6fb3;
+  --blue-light: #4f8fd8;
+
+  --green-main: #2fae60;
+  --green-light: #5bc98a;
+
+  --orange-main: #f39c3d;
+  --red-main: #e55353;
+
+  --bg-main: #f4f6f9;
+  --bg-card: #ffffff;
+
+  --text-title: #1f2d3d;
+  --text-main: #34495e;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: Arial, sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+}
+/* ================= HEADER ================= */
+.portal-header {
+  height: 70px;
+  background: linear-gradient(90deg, var(--blue-main), var(--blue-light));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* LEFT */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.header-left i {
+  font-size: 22px;
+}
+
+/* ================= NAV MENU ================= */
+.header-nav {
+  display: flex;
+  gap: 22px;
+}
+
+.header-nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px 2px;
+  position: relative;
+  transition: opacity 0.15s ease;
+}
+
+.header-nav a:hover {
+  opacity: 0.85;
+}
+
+/* Active underline */
+.header-nav a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 100%;
+  height: 3px;
+  background: white;
+  border-radius: 8px;
+}
+
+/* ================= RIGHT ================= */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.header-right i {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ================= USER MENU ================= */
+/* USER MENU */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.user-menu:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Avatar */
+.user-menu img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+}
+
+/* Dropdown */
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: linear-gradient(180deg, var(--blue-main), var(--blue-dark));
+  border: 1px solid var(--blue-light);
+  min-width: 210px;
+  /* border-radius: 14px; */
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(0.98);
+  pointer-events: none;
+  transition: all 0.18s ease;
+  z-index: 9999;
+}
+
+/* VÙNG ĐỆM CHỐNG MẤT HOVER */
+.user-menu::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 220px;
+  height: 18px;
+}
+
+/* Hover avatar hoặc dropdown thì mở */
+.user-menu:hover .user-dropdown,
+.user-dropdown:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Dropdown item */
+.user-dropdown a {
+  color: #fff;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  transition:
+    background 0.15s ease,
+    padding-left 0.15s ease;
+}
+
+.user-dropdown a:hover {
+  background: rgba(255, 255, 255, 0.18);
+  padding-left: 20px;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ================= CONTENT ================= */
+.portal-content {
+  flex: 1;
+  margin-top: 88px;
+  padding: 26px;
+  /* min-height: calc(100vh - 88px); */
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 900px) {
+  .header-nav {
+    display: none;
+  }
+
+  .portal-header {
+    padding: 0 14px;
+  }
+}
+/* ================= TABLE STYLES ================= */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+/* Thanh scroll mượt */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f1f3f5;
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--blue-main);
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--blue-light);
+}
+
+.main-table {
+  width: 100%;
+  /* min-width: 1300px; */
+  border-collapse: collapse;
+}
+
+.main-table th,
+.main-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  min-width: 100px;
+}
+
+.main-table .thName,
+.main-table .tdName {
+  min-width: 240px;
+}
+
+.main-table .action-btn .btn-sm {
+  margin-right: 5px;
+}
+.main-table th {
+  background-color: var(--blue-main);
+  color: var(--bg-card);
+}
+
+.main-table tr:nth-child(even) {
+  background-color: var(--bg-card);
+}
+
+.main-table tr:hover {
+  background-color: var(--bg-main);
+}
+
+/* Header sticky */
+.main-table thead th {
+  position: sticky;
+  top: 0;
+  background: #2f6fb3;
+  color: white;
+  z-index: 5;
+}
+
+/* Cột MSSV */
+.main-table th:nth-child(1),
+.main-table td:nth-child(1) {
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 4;
+  min-width: 130px;
+  border-right: 1px solid #ddd;
+}
+
+/* Cột Họ tên */
+.main-table th:nth-child(2),
+.main-table td:nth-child(2) {
+  position: sticky;
+  left: 130px; /* PHẢI = width cột MSSV */
+  background: white;
+  z-index: 4;
+  min-width: 240px;
+  border-right: 2px solid #ddd;
+}
+
+/* Đổ bóng đẹp */
+.main-table th:nth-child(2),
+.main-table td:nth-child(2) {
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.06);
+}
+.main-table thead th:nth-child(1),
+.main-table thead th:nth-child(2) {
+  background: var(--blue-main);
+  z-index: 999;
+}
+
+.flash-message {
+  position: fixed;
+  top: 80px; /* dưới header */
+  right: 20px;
+  z-index: 9999;
+}
+
+.alert {
+  padding: 14px 20px;
+  position: fixed;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s ease;
+  right: 10px;
+}
+
+.alert-success {
+  background-color: var(--green-light);
+  color: #fff;
+}
+
+.alert-error {
+  background-color: var(--red-main);
+  color: #fff;
+}

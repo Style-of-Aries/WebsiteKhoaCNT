@@ -239,34 +239,103 @@ ORDER BY se.id DESC, cc.class_code;
         return $this->__query($sql);
     }
 
-    public function getStudentByCourseClass($classId)
+    public function updateResultByCourseClass($classId)
     {
         $sql = "
-            SELECT 
-                st.id AS student_id,
-                st.student_code,
-                sp.full_name,
+        SELECT 
+            st.id AS student_id,
+            st.student_code,
+            sp.full_name,
+            sp.date_of_birth,
 
-                ar.process_score,
-                ar.midterm_score,
-                ar.final_exam_score,
-                ar.final_grade,
-                ar.grade_letter,
-                ar.result
+            sub.id AS subject_id,
+            sub.credits AS subject_credits,
 
-            FROM student_course_classes scc
-            JOIN student st 
-                 ON scc.student_id = st.id
-            LEFT JOIN student_profiles sp 
-                 ON sp.student_id = st.id
-            LEFT JOIN academic_results ar
-                 ON ar.student_id = st.id
-                AND ar.course_class_id = scc.course_class_id
+            ar.frequent_scores,   -- ✅ SỬA Ở ĐÂY
+            ar.process_score,
+            ar.midterm_score,
+            ar.final_exam_score,
+            ar.final_grade,
+            ar.grade_letter,
+            ar.result
 
-            WHERE scc.course_class_id = '$classId'
-            ORDER BY st.student_code
-        ";
+        FROM student_course_classes scc
+
+        JOIN student st 
+            ON scc.student_id = st.id
+
+        LEFT JOIN student_profiles sp 
+            ON sp.student_id = st.id
+
+        JOIN course_classes cc
+            ON cc.id = scc.course_class_id
+
+        JOIN subjects sub
+            ON sub.id = cc.subject_id
+
+        LEFT JOIN academic_results ar
+            ON ar.student_id = st.id
+            AND ar.course_class_id = scc.course_class_id
+
+        WHERE scc.course_class_id = '$classId'
+        ORDER BY 
+SUBSTRING_INDEX(full_name, ' ', -1) ASC,
+student_code ASC
+        
+    ";
 
         return $this->__query($sql);
     }
+
+    public function getStudents($classId)
+    {
+        $sql = "
+        SELECT s.id, s.student_code, sp.full_name, sp.date_of_birth
+FROM student_course_classes scc
+JOIN student s ON s.id = scc.student_id
+LEFT JOIN student_profiles sp ON sp.student_id = s.id
+WHERE scc.course_class_id = $classId
+ORDER BY 
+SUBSTRING_INDEX(full_name, ' ', -1) ASC,
+student_code ASC
+;";
+        return $this->__query($sql);
+    }
+    public function getStudentsWithExamConditions($courseClassId)
+    {
+        $sql = "
+         SELECT 
+            s.id AS student_id,
+            s.student_code,
+            sp.full_name,
+
+            COUNT(a.id) AS total_sessions,
+            SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) AS attended_sessions,
+
+            IFNULL(ar.process_score, 0) AS process_score,
+            IFNULL(ar.midterm_score, 0) AS midterm_score,
+
+            ROUND((IFNULL(ar.process_score, 0) + IFNULL(ar.midterm_score, 0)) / 2, 2) AS avg_score
+
+        FROM student_course_classes scc
+        JOIN student s ON s.id = scc.student_id
+        JOIN student_profiles sp ON sp.student_id = s.id
+
+        LEFT JOIN attendance a 
+            ON a.student_id = s.id 
+            AND a.course_class_id = scc.course_class_id
+
+        LEFT JOIN academic_results ar 
+            ON ar.student_id = s.id 
+            AND ar.course_class_id = scc.course_class_id
+
+        WHERE scc.course_class_id = $courseClassId
+
+        GROUP BY s.id, ar.process_score, ar.midterm_score
+    ";
+
+    
+        return $this->__query($sql);
+    }
+
 }

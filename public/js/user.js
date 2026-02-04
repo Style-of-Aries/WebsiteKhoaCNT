@@ -20,3 +20,50 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 3000);
     }
 });
+document.querySelectorAll('.score-input').forEach(input => {
+    function updateColor() {
+        input.classList.remove('score-zero', 'score-high');
+
+        if (input.value === '') return;
+
+        let val = parseFloat(input.value);
+
+        if (val === 0) input.classList.add('score-zero');
+        else if (val >= 8) input.classList.add('score-high');
+    }
+
+    input.addEventListener('input', updateColor);
+    updateColor();
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const box = document.querySelector(".stats-box");
+    if (!box) return;
+
+    const allowed = parseInt(box.dataset.allowed);
+    const banned = parseInt(box.dataset.banned);
+
+    document.getElementById("count-allowed").innerText = allowed;
+    document.getElementById("count-banned").innerText = banned;
+
+    new Chart(document.getElementById("examChart"), {
+        type: "doughnut",
+        data: {
+            labels: ["Đủ điều kiện", "Cấm thi"],
+            datasets: [{ data: [allowed, banned] }]
+        },
+        options: { responsive: true }
+    });
+});
+
+// Export Excel
+function exportTable() {
+    let table = document.querySelector(".main-table");
+    let html = table.outerHTML.replace(/ /g, "%20");
+
+    let link = document.createElement("a");
+    link.href = "data:application/vnd.ms-excel," + html;
+    link.download = "DanhSachXetThi.xls";
+    link.click();
+}
+
+

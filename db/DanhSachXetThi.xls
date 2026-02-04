@@ -1,0 +1,74 @@
+<table class="main-table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã SV</th>
+                <th>Họ tên</th>
+                <th>Buổi học</th>
+                <th>Đi học</th>
+                <th>% CC</th>
+                <th>TX</th>
+                <th>GK</th>
+                <th>TB</th>
+                <th>Trạng thái</th>
+                <th>Lý do</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            
+                <tr class="row-banned">
+                    <td>1</td>
+                    <td>SV001</td>
+                    <td>Nguyễn Văn Tứ</td>
+                    <td>15</td>
+                    <td>0</td>
+                    <td>0%</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td><b>0</b></td>
+
+                    <td>
+                        <span class="status banned">❌ Cấm thi</span>                    </td>
+
+                    <td>Thiếu CC, Điểm thấp</td>
+                </tr>
+
+            
+                <tr class="">
+                    <td>2</td>
+                    <td>2326CNT05</td>
+                    <td>Nguyễn Đức Trọng</td>
+                    <td>15</td>
+                    <td>13</td>
+                    <td>86.7%</td>
+                    <td>10</td>
+                    <td>10</td>
+                    <td><b>10</b></td>
+
+                    <td>
+                        <span class="status allowed">✅ Được thi</span>                    </td>
+
+                    <td>Hợp lệ</td>
+                </tr>
+
+            
+                <tr class="row-banned">
+                    <td>3</td>
+                    <td>312312</td>
+                    <td>Trong</td>
+                    <td>15</td>
+                    <td>0</td>
+                    <td>0%</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td><b>0</b></td>
+
+                    <td>
+                        <span class="status banned">❌ Cấm thi</span>                    </td>
+
+                    <td>Thiếu CC, Điểm thấp</td>
+                </tr>
+
+                    </tbody>
+    </table>

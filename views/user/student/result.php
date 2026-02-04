@@ -30,15 +30,15 @@ ob_start();
                     <td><?= $row['credits'] ?></td>
 
                     <td>
-                        TX: <?= $row['process_score'] ?? '-' ?><br>
-                        GK: <?= $row['midterm_score'] ?? '-' ?>
+                        TX: <?= round($row['process_score'] ?? 0, 1) ?? '-' ?><br>
+                        ĐK: <?= round($row['midterm_score'] ?? 0, 1) ?? '-' ?>
                     </td>
 
-                    <td><?= $row['final_exam_score'] ?? '-' ?></td>
+                    <td><?= round($row['final_exam_score'] ?? 0, 1) ?? '-' ?></td>
 
                     <td>
                         <?php if ($row['final_grade'] !== null): ?>
-                            <b><?= $row['final_grade'] ?></b>
+                            <b><?= round($row['final_grade'], 1) ?></b>
                         <?php else: ?>
                             -
                         <?php endif; ?>
@@ -55,5 +55,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include __DIR__ . '/../../admin/layout.php';
+include __DIR__ . '/../layout.php';
 ?>

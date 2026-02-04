@@ -42,8 +42,13 @@ class resultModel extends database
         return $this->__query($sql);
     }
 
-    public function saveScore($studentId, $classId, $process, $mid, $final)
+
+    public function saveScore($studentId, $classId, $frequentJson, $process, $mid)
     {
+        // Convert NULL đúng SQL
+        $processSql = ($process === null || $process === '') ? "NULL" : $process;
+        $midSql = ($mid === null || $mid === '') ? "NULL" : $mid;
+
         $check = $this->__query("
         SELECT id FROM academic_results
         WHERE student_id = '$studentId'
@@ -55,21 +60,22 @@ class resultModel extends database
             $sql = "
             UPDATE academic_results
             SET
-                process_score = '$process',
-                midterm_score = '$mid',
-                final_exam_score = '$final'
+                frequent_scores = '$frequentJson',
+                process_score = $processSql,
+                midterm_score = $midSql
             WHERE student_id = '$studentId'
               AND course_class_id = '$classId'
         ";
         } else {
             $sql = "
             INSERT INTO academic_results
-            (student_id, course_class_id, process_score, midterm_score, final_exam_score)
-            VALUES ('$studentId', '$classId', '$process', '$mid', '$final')
+            (student_id, course_class_id, frequent_scores, process_score, midterm_score)
+            VALUES ('$studentId', '$classId', '$frequentJson', $processSql, $midSql)
         ";
         }
 
         return $this->__query($sql);
     }
+
 
 }

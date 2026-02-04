@@ -16,17 +16,20 @@
   --text-main: #34495e;
 }
 
+
+
+
 .profile-info input {
   width: 60%;
-  pointer-events: none;   /* không cho nhập */
-  background: #f5f6f8; 
+  pointer-events: none; /* không cho nhập */
+  background: #f5f6f8;
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 6px;
 }
 .profile-info select {
-  pointer-events: none;   /* không cho nhập */
-  background: #f5f6f8; 
+  pointer-events: none; /* không cho nhập */
+  background: #f5f6f8;
   width: 63%;
   padding: 8px 12px;
   border: 1px solid #ddd;
@@ -52,157 +55,156 @@
 }
 /* CARD */
 .profile-card {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 28px 32px;
-    max-width: 1050px;
-    margin: 20px auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 32px;
+  max-width: 1050px;
+  margin: 20px auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 /* HEADER */
 .profile-header {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 25px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 25px;
 }
 
 .avatar-img {
-    width: 130px;
-    height: 170px;
-    object-fit: cover;
-    border-radius: 14px;
-    border: 4px solid #2f6fdc;
-    background: #f5f7fa;
+  width: 130px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 4px solid #2f6fdc;
+  background: #f5f7fa;
 }
 
 .nameAndbtn h2 {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .student-code {
-    font-size: 14px;
-    color: #667085;
-    margin: 4px 0 10px;
+  font-size: 14px;
+  color: #667085;
+  margin: 4px 0 10px;
 }
 
 /* BUTTON UPLOAD */
 .btn-upload {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    font-size: 14px;
-    color: #2f6fdc;
-    border: 1.5px solid #2f6fdc;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s ease;
-    opacity: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+  color: #2f6fdc;
+  border: 1.5px solid #2f6fdc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  opacity: 0;
 }
 .btn-upload:hover {
-    background: #2f6fdc;
-    color: white;
+  background: #2f6fdc;
+  color: white;
 }
 
 /* SECTION */
 .profile-section {
-    margin-bottom: 26px;
+  margin-bottom: 26px;
 }
 
 .profile-section h3 {
-    font-size: 16px;
-    font-weight: 700;
-    color: #2f6fdc;
-    margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2f6fdc;
+  margin-bottom: 14px;
 }
 
 /* GRID FORM */
 .profile-info {
-    display: grid;
-    gap: 16px;
+  display: grid;
+  gap: 16px;
 }
 
 .info-row {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 14px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 14px;
+  align-items: center;
 }
 
 .info-row label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #344054;
+  font-size: 14px;
+  font-weight: 600;
+  color: #344054;
 }
 
 /* INPUT */
 .profile-card input,
 .profile-card select {
-    /* width: 100%; */
-    padding: 10px 14px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: 1.4px solid #d0d5dd;
-    background: #ffffff;
-    transition: 0.2s ease;
+  /* width: 100%; */
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1.4px solid #d0d5dd;
+  background: #ffffff;
+  transition: 0.2s ease;
 }
 
 .profile-card input:focus,
 .profile-card select:focus {
-    outline: none;
-    border-color: #2f6fdc;
-    box-shadow: 0 0 0 2px rgba(47,111,220,0.15);
+  outline: none;
+  border-color: #2f6fdc;
+  box-shadow: 0 0 0 2px rgba(47, 111, 220, 0.15);
 }
 
 /* READONLY STYLE */
 .profile-card input[readonly] {
-    background: #f8fafc;
-    color: #475467;
-    border-style: dashed;
+  background: #f8fafc;
+  color: #475467;
+  border-style: dashed;
 }
 
 /* ACTIONS */
 .actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 22px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 22px;
 }
 
 .btn-save {
-    padding: 10px 22px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(135deg, #2f6fdc, #5a8dee);
-    color: white;
-    cursor: pointer;
-    transition: 0.2s ease;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #2f6fdc, #5a8dee);
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .btn-save:hover {
-    transform: translateY(-1px);
-    opacity: 0.95;
+  transform: translateY(-1px);
+  opacity: 0.95;
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .info-row {
-        grid-template-columns: 1fr;
-    }
+  .info-row {
+    grid-template-columns: 1fr;
+  }
 }
-
 
 .card {
   background: #fff;
@@ -461,41 +463,40 @@
 
 /* Ô nhập điểm */
 .score-input {
-    border-radius: 12px;
-    padding: 6px 10px;
-    text-align: center;
-    font-weight: 600;
-    border: 2px solid #e5e7eb;
-    transition: 0.2s ease;
+  border-radius: 12px;
+  padding: 6px 10px;
+  text-align: center;
+  font-weight: 600;
+  border: 2px solid #e5e7eb;
+  transition: 0.2s ease;
 }
 
 /* Ô chưa nhập */
 .score-input:placeholder-shown {
-    color: #999;
-    border-color: #ddd;
-    background: #fafafa;
+  color: #999;
+  border-color: #ddd;
+  background: #fafafa;
 }
 
 /* Ô đang focus */
 .score-input:focus {
-    border-color: #2563eb;
-    background: #fff;
+  border-color: #2563eb;
+  background: #fff;
 }
 
 /* Điểm = 0 */
 .score-zero {
-    background: #fff1f2;
-    border-color: #ef4444;
-    color: #b91c1c;
+  background: #fff1f2;
+  border-color: #ef4444;
+  color: #b91c1c;
 }
 
 /* Điểm cao */
 .score-high {
-    background: #ecfdf5;
-    border-color: #22c55e;
-    color: #15803d;
+  background: #ecfdf5;
+  border-color: #22c55e;
+  color: #15803d;
 }
-
 
 /* Căn giữa bảng cho đẹp */
 .main-table td {
@@ -561,143 +562,157 @@
 
 /* SELECT - Attendance */
 .att-select {
-    padding: 5px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
-    background-color: #ffffff;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    outline: none;
-    min-width: 100px;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  min-width: 100px;
 }
 
 .att-select:hover {
-    border-color: #4f46e5;
+  border-color: #4f46e5;
 }
 
 .att-select:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
 }
-
 
 /* BUTTON - Attendance */
 .att-btn {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-    display: block;
-    margin-left: auto;
-    margin-top: 20px;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  display: block;
+  margin-left: auto;
+  margin-top: 20px;
 }
 
 .att-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
-    opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
+  opacity: 0.95;
 }
 
 .att-btn:active {
-    transform: scale(0.97);
+  transform: scale(0.97);
 }
-
 
 /* LABEL đẹp */
 .att-label {
-    font-weight: 600;
-    margin-right: 10px;
+  font-weight: 600;
+  margin-right: 10px;
 }
-
 
 /* FORM spacing */
 .att-form {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 .att-form-right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
 }
 
 .att-present {
-    background-color: #d4edda;
-    color: #155724;
-    font-weight: 600;
+  background-color: #d4edda;
+  color: #155724;
+  font-weight: 600;
 }
 
 .att-late {
-    background-color: #fff3cd;
-    color: #856404;
-    font-weight: 600;
+  background-color: #fff3cd;
+  color: #856404;
+  font-weight: 600;
 }
 
 .att-absent {
-    background-color: #f8d7da;
-    color: #721c24;
-    font-weight: 600;
+  background-color: #f8d7da;
+  color: #721c24;
+  font-weight: 600;
 }
 
 .att-empty {
-    background-color: #f1f3f5;
-    color: #6c757d;
+  background-color: #f1f3f5;
+  color: #6c757d;
 }
-
 
 .filter-form {
-    margin-bottom: 15px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-.filter-form select, 
+.filter-form select,
 .filter-form button {
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 .status.allowed {
-    color: #2e7d32;
-    font-weight: bold;
+  color: #2e7d32;
+  font-weight: bold;
 }
 
 .status.banned {
-    color: #c62828;
-    font-weight: bold;
+  color: #c62828;
+  font-weight: bold;
 }
 
 .stats-box {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
 .stat {
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
 }
 
-.stat.total { background: #eef2ff; }
-.stat.allowed { background: #e8f5e9; color: #2e7d32; }
-.stat.banned { background: #ffebee; color: #c62828; }
+.stat.total {
+  background: #eef2ff;
+}
+.stat.allowed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.stat.banned {
+  background: #ffebee;
+  color: #c62828;
+}
 
-.status.allowed { color: #2e7d32; font-weight: bold; }
-.status.banned { color: #c62828; font-weight: bold; }
+.status.allowed {
+  color: #2e7d32;
+  font-weight: bold;
+}
+.status.banned {
+  color: #c62828;
+  font-weight: bold;
+}
 
 .reason {
-    font-size: 13px;
-    color: #555;
+  font-size: 13px;
+  color: #555;
 }
 
-
+.container-admin {
+  background-color: var(--bg-card);
+  padding: 20px;
+  border-radius: 8px;
+}

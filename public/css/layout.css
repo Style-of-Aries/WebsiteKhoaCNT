@@ -97,7 +97,6 @@ body {
   height: 15px;
 }
 
-
 /* .header .avatar .dropboxAdmin.active {
   display: flex;
 } */
@@ -187,16 +186,42 @@ body {
   padding-bottom: 100px;
   background-color: var(--bg-main);
   color: var(--text-main);
+  overflow-x: hidden;
 }
 
 .main-content h2 {
   color: var(--text-title);
 }
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+/* Thanh scroll mượt */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f1f3f5;
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--blue-main);
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--blue-light);
+}
 
 .main-table {
   width: 100%;
+  /* min-width: 1300px; */
   border-collapse: collapse;
-  margin-top: 20px;
 }
 
 .main-table th,
@@ -204,8 +229,18 @@ body {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
+  transition: background-color 0.3s ease;
+  min-width: 100px;
 }
 
+.main-table .thName,
+.main-table .tdName {
+  min-width: 240px;
+}
+
+.main-table .action-btn .btn-sm {
+  margin-right: 5px;
+}
 .main-table th {
   background-color: var(--blue-main);
   color: var(--bg-card);
@@ -219,32 +254,74 @@ body {
   background-color: var(--bg-main);
 }
 
+/* Header sticky */
+.main-table thead th {
+    position: sticky;
+    top: 0;
+    background: #2f6fb3;
+    color: white;
+    z-index: 5;
+}
+
+/* Cột MSSV */
+.main-table th:nth-child(1),
+.main-table td:nth-child(1) {
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 4;
+    min-width: 130px;
+    border-right: 1px solid #ddd;
+}
+
+/* Cột Họ tên */
+.main-table th:nth-child(2),
+.main-table td:nth-child(2) {
+    position: sticky;
+    left: 130px; /* PHẢI = width cột MSSV */
+    background: white;
+    z-index: 4;
+    min-width: 240px;
+    border-right: 2px solid #ddd;
+}
+
+/* Đổ bóng đẹp */
+.main-table th:nth-child(2),
+.main-table td:nth-child(2) {
+    box-shadow: 4px 0 8px rgba(0,0,0,0.06);
+}
+.main-table thead th:nth-child(1),
+.main-table thead th:nth-child(2) {
+  background: var(--blue-main);
+  z-index: 999;
+}
+
 .flash-message {
-    position: fixed;
-    top: 80px;           /* dưới header */
-    right: 20px;
-    z-index: 9999;
+  position: fixed;
+  top: 80px; /* dưới header */
+  right: 20px;
+  z-index: 9999;
 }
 
 .alert {
-    padding: 14px 20px;
-    position: fixed;
-    border-radius: 8px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    animation: slideIn 0.3s ease;
-    right: 10px;
+  padding: 14px 20px;
+  position: fixed;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s ease;
+  right: 10px;
 }
 
 .alert-success {
-    background-color: var(--green-light);
-    color: #fff;
+  background-color: var(--green-light);
+  color: #fff;
 }
 
 .alert-error {
-    background-color: var(--red-main);
-    color: #fff;
+  background-color: var(--red-main);
+  color: #fff;
 }
 
 .search-form {
@@ -288,4 +365,3 @@ body {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
 }
-
