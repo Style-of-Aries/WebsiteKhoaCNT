@@ -20,18 +20,21 @@ class authController
     public function login() //trang đăng nhập
     {
         $errorLogin = "";
+        $oldUsername = "";
         include_once "./../views/auth/login.php";
     }
     // function xử lý chức năng đăng nhập
     public function auth_login()
     {
         $errorLogin = "";
+        $oldUsername = "";
         if (isset($_POST['btn_login'])) {
             $name = $_POST['username'];
+            $oldUsername = $name;
             $password = $_POST['password'];
             $user = $this->userModel->getByUsername($name);
             $user = mysqli_fetch_assoc($user);
-            if ($user) {
+            if ($user && trim($user['password']) === $password) {
                 // session_start();
                 $_SESSION['user'] = [
                     'id'   => $user['id'],

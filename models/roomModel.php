@@ -1,6 +1,6 @@
 <?php
 require_once "./../config/database.php";
-class timetableModel extends database
+class roomModel extends database
 {
 
     private $connect;
@@ -9,35 +9,15 @@ class timetableModel extends database
     {
         $this->connect = $this->connect();
     }
-    public function getAll($id)
+    public function getAll()
     {
         $sql = "
-            SELECT
-    cc.class_code        AS ma_hoc_phan,
-    s.name               AS ten_hoc_phan,
-    l.full_name          AS giang_vien,
-    t.day_of_week        AS thu,
-    t.session            AS buoi_hoc,
-    r.room_name          AS phong_hoc,
-    se.name   AS ky_hoc,
-    se.academic_year   AS nam_hoc
-    FROM timetables t
-    JOIN course_classes cc ON t.course_class_id = cc.id
-    JOIN subjects s        ON cc.subject_id = s.id
-    JOIN lecturer l       ON cc.lecturer_id = l.id
-    JOIN rooms r           ON t.room_id = r.id
-    JOIN semesters se      ON cc.semester_id = se.id
-    WHERE t.course_class_id = $id
-    ORDER BY 
-    se.academic_year,
-    se.name,
-    t.day_of_week,
-    FIELD(t.session, 'Sáng', 'Chiều')";
+            SELECT * from rooms";
         return $this->__query($sql);
     }
     public function lichHocSvTheoTuan($studentId, $week)
-    {
-        $sql = "
+{
+    $sql = "
     SELECT
     sb.name AS subject_name,
     t.day_of_week,
@@ -91,8 +71,8 @@ ORDER BY
     FIELD(t.session, 'Sáng', 'Chiều');
     ";
 
-        return $this->__query($sql);
-    }
+    return $this->__query($sql);
+}
 
     public function lichHocSv($id)
     {
@@ -137,8 +117,8 @@ WHERE s.id = $id";
         return $this->__query($sql);
     }
     public function lichDayGvTheoTuan($lecturerId, $week)
-    {
-        $sql = "
+{
+    $sql = "
     SELECT
     sb.name AS subject_name,
     t.day_of_week,
@@ -191,78 +171,51 @@ ORDER BY
 
     ";
 
-        return $this->__query($sql);
-    }
-
-    public function phongDaCoLich($room_id, $day, $session)
-    {
-        $sql = "SELECT id FROM timetables
-            WHERE room_id = $room_id
-            AND day_of_week = $day
-            AND session = '$session'";
-        return mysqli_num_rows($this->__query($sql)) > 0;
-    }
-
-    public function lopDaCoLich($course_class_id, $day, $session)
-    {
-        $sql = "SELECT id FROM timetables
-            WHERE course_class_id = $course_class_id
-            AND day_of_week = $day
-            AND session = '$session'";
-        return mysqli_num_rows($this->__query($sql)) > 0;
-    }
-
-    public function themThoiKhoaBieu($course_class_id, $room_id, $day, $session, $start_week, $end_week)
-    {
-        $sql = "INSERT INTO timetables
-            (course_class_id, room_id, day_of_week, session, start_week, end_week)
-            VALUES
-            ($course_class_id, $room_id, $day, '$session', $start_week, $end_week)";
-        $this->__query($sql);
-    }
+    return $this->__query($sql);
+}
 
 
     public function getWeeksOfActiveSemester()
     {
-        $sql = "
+    $sql = "
         SELECT start_date, end_date
         FROM semesters
         WHERE is_active = 1
         LIMIT 1
     ";
 
-        $semester = $this->__query($sql)->fetch_assoc();
-        if (!$semester) return [];
+    $semester = $this->__query($sql)->fetch_assoc();
+    if (!$semester) return [];
 
-        $start = new DateTime($semester['start_date']);
-        $end   = new DateTime($semester['end_date']);
+    $start = new DateTime($semester['start_date']);
+    $end   = new DateTime($semester['end_date']);
 
-        $weeks = [];
-        $week = 1;
+    $weeks = [];
+    $week = 1;
 
-        while ($start <= $end) {
-            $weekStart = clone $start;
-            $weekEnd = clone $start;
-            $weekEnd->modify('+6 days');
+    while ($start <= $end) {
+        $weekStart = clone $start;
+        $weekEnd = clone $start;
+        $weekEnd->modify('+6 days');
 
-            if ($weekEnd > $end) {
-                $weekEnd = $end;
-            }
-
-            $weeks[] = [
-                'from'  => $weekStart->format('Y-m-d'),
-                'to'    => $weekEnd->format('Y-m-d'),
-                'label' => 'Tuần ' . $week . ' (' .
-                    $weekStart->format('d/m/Y') . ' - ' .
-                    $weekEnd->format('d/m/Y  ') . ')'
-            ];
-
-            $start->modify('+7 days');
-            $week++;
+        if ($weekEnd > $end) {
+            $weekEnd = $end;
         }
 
-        return $weeks;
+        $weeks[] = [
+            'from'  => $weekStart->format('Y-m-d'),
+            'to'    => $weekEnd->format('Y-m-d'),
+            'label' => 'Tuần ' . $week . ' (' .
+                       $weekStart->format('d/m/Y') . ' - ' .
+                       $weekEnd->format('d/m/Y  ') . ')'
+        ];
+
+        $start->modify('+7 days');
+        $week++;
     }
+
+    return $weeks;
+}
 
 
 

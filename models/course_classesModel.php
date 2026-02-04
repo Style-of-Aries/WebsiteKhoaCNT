@@ -178,6 +178,25 @@ ORDER BY S.name
 
         return $this->__query($sql);
     }
+    public function tonTaiHocPhan($subject_id, $lecturer_id, $semester_id)
+{
+    $sql = "SELECT id FROM course_classes
+            WHERE subject_id = $subject_id
+            AND lecturer_id = $lecturer_id
+            AND semester_id = $semester_id";
+    return mysqli_num_rows($this->__query($sql)) > 0;
+}
+
+public function themHocPhan($subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
+{
+    $sql = "INSERT INTO course_classes
+            (subject_id, lecturer_id, semester_id, class_code, max_students)
+            VALUES
+            ($subject_id, $lecturer_id, $semester_id, '$class_code', $max_students)";
+    $this->__query($sql);
+    return mysqli_insert_id($this->connect);
+}
+
 
     // Kiểm tra sinh viên đã đăng ký chưa
     public function isRegistered($studentId, $classId)
@@ -238,6 +257,7 @@ ORDER BY se.id DESC, cc.class_code;
 ";
         return $this->__query($sql);
     }
+
 
     public function getStudentByCourseClass($classId)
     {

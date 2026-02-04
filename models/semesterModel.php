@@ -17,20 +17,19 @@ class semesterModel extends database
 
         return $this->__query($sql);
     }
-    public function getAllGiangVienCuaKhoa($id)
+    public function getActiveSemester()
     {
-        $sql = "SELECT 
-    s.id,
-    s.full_name,
-    s.lecturer_code,
-    s.email,
-    c.name
-    FROM lecturer s
-    LEFT JOIN department c ON s.department_id = c.id
-    WHERE s.department_id = $id
-    ";
-        return $this->__query($sql);
+        $sql = "SELECT * FROM semesters WHERE is_active = 1 LIMIT 1";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
     }
+
+    public function layHocKyDangHoatDong()
+{
+    $sql = "SELECT * FROM semesters WHERE is_active = 1 LIMIT 1";
+    return mysqli_fetch_assoc($this->__query($sql));
+}
+
 
     public function addMonHoc($name, $subject_code, $credits, $department_id)
     {
