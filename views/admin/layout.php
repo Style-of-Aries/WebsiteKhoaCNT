@@ -76,8 +76,12 @@ $currentAction = $_GET['action'] ?? '';
                     include __DIR__ . '/../sidebar/sidebar_admin.php';
                 } elseif ($role === 'student') {
                     include __DIR__ . '/../sidebar/sidebar_student.php';
-                } else {
+                } elseif($role === 'leturer') {
                     include __DIR__ . '/../sidebar/sidebar_lecturer.php';
+                }
+                else{
+                    include __DIR__ . '/../sidebar/sidebar_trainningOffice.php';
+
                 }
             }
             ?>

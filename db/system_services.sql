@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 06, 2026 lúc 08:28 AM
+-- Thời gian đã tạo: Th2 06, 2026 lúc 09:21 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -521,6 +521,29 @@ INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `se
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `training_office`
+--
+
+CREATE TABLE `training_office` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `office_code` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `training_office`
+--
+
+INSERT INTO `training_office` (`id`, `full_name`, `office_code`, `email`, `phone`, `created_at`) VALUES
+(1, 'Phòng Đào Tạo Khoa Công Nghệ Thông Tin', 'PDT_CNTT', 'daotao_cntt@university.edu.vn', '02438889999', '2026-02-06 07:42:38'),
+(2, 'Nguyễn Thị Hương – Cán bộ đào tạo', 'CB_DT_01', 'huongdt@university.edu.vn', '0988777666', '2026-02-06 07:42:38');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `users`
 --
 
@@ -528,7 +551,7 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('admin','lecturer','student') NOT NULL,
+  `role` enum('admin','lecturer','student','training_office') NOT NULL,
   `ref_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -546,7 +569,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 (22, 'nvtdfdf', 'dfdf', 'lecturer', 60),
 (23, 'nguyenductrong', '123', 'student', 22),
 (24, 'ductrong', '123', 'lecturer', 61),
-(25, 'trong', '123', 'student', 25);
+(25, 'trong', '123', 'student', 25),
+(26, 'pdt', '123', 'training_office', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -680,6 +704,14 @@ ALTER TABLE `timetables`
   ADD KEY `room_id` (`room_id`);
 
 --
+-- Chỉ mục cho bảng `training_office`
+--
+ALTER TABLE `training_office`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `office_code` (`office_code`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
@@ -781,10 +813,16 @@ ALTER TABLE `timetables`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT cho bảng `training_office`
+--
+ALTER TABLE `training_office`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -865,7 +903,7 @@ ALTER TABLE `student_course_classes`
 ALTER TABLE `student_profiles`
   ADD CONSTRAINT `fk_profile_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE;
 
---git
+--
 -- Các ràng buộc cho bảng `subjects`
 --
 ALTER TABLE `subjects`

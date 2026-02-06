@@ -2,12 +2,14 @@
 require_once "./../models/userModel.php";
 require_once "./../models/studentModel.php";
 require_once "./../models/lecturerModel.php";
+require_once "./../models/trainningOfficeModel.php";
 
 class authController
 {
     private $userModel;
     private $studentModel;
     private $lecturerModel;
+    private $trainningOfficeModel;
 
     public function __construct()
     {
@@ -51,6 +53,11 @@ class authController
                     $lecturer = $this->lecturerModel->getById($user['ref_id']);
                     $_SESSION['profile'] = $lecturer;
                     header('Location: index.php?controller=lecturer&action=index');
+                }  
+                 elseif ($user['role'] == 'training_office') {
+                    // $trainningOffice = $this->trainningOfficeModel->getById($user['ref_id']);
+                    // $_SESSION['profile'] = $trainningOffice;
+                    header('Location: index.php?controller=trainningOffice&action=getAll');
                 } else {
                     header('Location: index.php?controller=admin&action=index');
                 }
