@@ -179,23 +179,23 @@ ORDER BY S.name
         return $this->__query($sql);
     }
     public function tonTaiHocPhan($subject_id, $lecturer_id, $semester_id)
-{
-    $sql = "SELECT id FROM course_classes
+    {
+        $sql = "SELECT id FROM course_classes
             WHERE subject_id = $subject_id
             AND lecturer_id = $lecturer_id
             AND semester_id = $semester_id";
-    return mysqli_num_rows($this->__query($sql)) > 0;
-}
+        return mysqli_num_rows($this->__query($sql)) > 0;
+    }
 
-public function themHocPhan($subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
-{
-    $sql = "INSERT INTO course_classes
+    public function themHocPhan($subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
+    {
+        $sql = "INSERT INTO course_classes
             (subject_id, lecturer_id, semester_id, class_code, max_students)
             VALUES
             ($subject_id, $lecturer_id, $semester_id, '$class_code', $max_students)";
-    $this->__query($sql);
-    return mysqli_insert_id($this->connect);
-}
+        $this->__query($sql);
+        return mysqli_insert_id($this->connect);
+    }
 
 
     // Kiểm tra sinh viên đã đăng ký chưa
@@ -324,37 +324,65 @@ student_code ASC
     {
         $sql = "
          SELECT 
-            s.id AS student_id,
-            s.student_code,
-            sp.full_name,
+    s.id AS student_id,
+    s.student_code,
+    sp.full_name,
 
-            COUNT(a.id) AS total_sessions,
-            SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) AS attended_sessions,
+    COUNT(a.id) AS total_sessions,
+    SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) AS attended_sessions,
 
-            IFNULL(ar.process_score, 0) AS process_score,
-            IFNULL(ar.midterm_score, 0) AS midterm_score,
+    IFNULL(ar.process_score, 0) AS process_score,
+    IFNULL(ar.midterm_score, 0) AS midterm_score,
 
-            ROUND((IFNULL(ar.process_score, 0) + IFNULL(ar.midterm_score, 0)) / 2, 2) AS avg_score
+    ROUND((IFNULL(ar.process_score, 0) + IFNULL(ar.midterm_score, 0)) / 2, 2) AS avg_score
 
-        FROM student_course_classes scc
-        JOIN student s ON s.id = scc.student_id
-        JOIN student_profiles sp ON sp.student_id = s.id
+FROM student_course_classes scc
+JOIN student s ON s.id = scc.student_id
+JOIN student_profiles sp ON sp.student_id = s.id
 
-        LEFT JOIN attendance a 
-            ON a.student_id = s.id 
-            AND a.course_class_id = scc.course_class_id
+LEFT JOIN attendance a 
+    ON a.student_id = s.id 
+    AND a.course_class_id = scc.course_class_id
 
-        LEFT JOIN academic_results ar 
-            ON ar.student_id = s.id 
-            AND ar.course_class_id = scc.course_class_id
+LEFT JOIN academic_results ar 
+    ON ar.student_id = s.id 
+    AND ar.course_class_id = scc.course_class_id
 
-        WHERE scc.course_class_id = $courseClassId
+WHERE scc.course_class_id = $courseClassId
 
-        GROUP BY s.id, ar.process_score, ar.midterm_score
+GROUP BY 
+    s.id,
+    s.student_code,
+    sp.full_name,
+    ar.process_score,
+    ar.midterm_score
     ";
 
-    
+
         return $this->__query($sql);
     }
 
+    // public function deleteStudentCourseClass($id)
+    // {
+    //     $sql = "DELETE FROM student_course_classes WHERE course_class_id = $id";
+    //     return $this->__query($sql);
+    // }
+
+    // public function deleteAcademicResults($id)
+    // {
+    //     $sql = "DELETE FROM academic_results WHERE course_class_id = $id";
+    //     return $this->__query($sql);
+    // }
+
+    // public function deleteAttendance($id)
+    // {
+    //     $sql = "DELETE FROM attendance WHERE course_class_id = $id";
+    //     return $this->__query($sql);
+    // }
+
+    public function deleteHocPhanOnly($id)
+    {
+        $sql = "DELETE FROM course_classes WHERE id = $id";
+        return $this->__query($sql);
+    }
 }

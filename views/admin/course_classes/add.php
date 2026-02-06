@@ -2,23 +2,37 @@
 <form class="add-form" action="index.php?controller=course_classes&action=add" method="POST">
     <h2>Thêm học phần mới</h2>
 
-    <!-- Môn học -->
-    <label>Môn học</label>
-    <select name="subject_id" required>
+    <!-- môn học  -->
+    <select name="subject_id">
         <option value="">-- Chọn môn học --</option>
         <?php foreach ($subject as $s): ?>
-            <option value="<?= $s['id'] ?>"><?= $s['name'] ?></option>
+            <option value="<?= $s['id'] ?>"
+                <?= ($old['subject_id'] ?? '') == $s['id'] ? 'selected' : '' ?>>
+                <?= $s['name'] ?>
+            </option>
         <?php endforeach; ?>
     </select>
+    <?php if (!empty($errors['subject_id'])): ?>
+        <small style="color:red"><?= $errors['subject_id'] ?></small>
+    <?php endif; ?>
 
-    <!-- Giảng viên -->
-    <label>Giảng viên</label>
-    <select name="lecturer_id" required>
+
+
+    <!-- giảng viên  -->
+    <select name="lecturer_id">
         <option value="">-- Chọn giảng viên --</option>
         <?php foreach ($lecturer as $l): ?>
-            <option value="<?= $l['id'] ?>"><?= $l['full_name'] ?></option>
+            <option value="<?= $l['id'] ?>"
+                <?= ($old['lecturer_id'] ?? '') == $l['id'] ? 'selected' : '' ?>>
+                <?= $l['full_name'] ?>
+            </option>
         <?php endforeach; ?>
     </select>
+    <?php if (!empty($errors['lecturer_id'])): ?>
+        <small style="color:red" ><?= $errors['lecturer_id'] ?></small>
+    <?php endif; ?>
+
+
 
     <!-- Học kỳ -->
     <!-- <label>Học kỳ</label>
@@ -29,95 +43,117 @@
         <?php endforeach; ?>
     </select> -->
 
-    <!-- Sĩ số -->
-    <label>Sĩ số tối đa</label>
-    <input type="number" name="max_students" min="1" max="300" value="60" required>
+    <!-- sĩ só  -->
+    <input type="number"
+        name="max_students"
+        value="<?= $old['max_students'] ?? 60 ?>">
+    <?php if (!empty($errors['max_students'])): ?>
+        <small style="color:red"><?= $errors['max_students'] ?></small>
+    <?php endif; ?>
 
-    
+
+
     <!-- Thứ -->
-    <label>Thứ</label>
-    <select name="day_of_week" required>
+    <select name="day_of_week">
         <option value="">-- Chọn thứ --</option>
-        <option value="2">Thứ 2</option>
-        <option value="3">Thứ 3</option>
-        <option value="4">Thứ 4</option>
-        <option value="5">Thứ 5</option>
-        <option value="6">Thứ 6</option>
-        <option value="7">Thứ 7</option>
+        <?php for ($i = 2; $i <= 7; $i++): ?>
+            <option value="<?= $i ?>"
+                <?= ($old['day_of_week'] ?? '') == $i ? 'selected' : '' ?>>
+                Thứ <?= $i ?>
+            </option>
+        <?php endfor; ?>
     </select>
+    <?php if (!empty($errors['day_of_week'])): ?>
+        <small style="color:red"><?= $errors['day_of_week'] ?></small>
+    <?php endif; ?>
+
+
 
     <!-- Buổi -->
-    <label>Buổi</label>
-    <select name="session" required>
+    <select name="session">
         <option value="">-- Chọn buổi --</option>
-        <option value="Sáng">Sáng</option>
-        <option value="Chiều">Chiều</option>
+        <option value="Sáng" <?= ($old['session'] ?? '') == 'Sáng' ? 'selected' : '' ?>>Sáng</option>
+        <option value="Chiều" <?= ($old['session'] ?? '') == 'Chiều' ? 'selected' : '' ?>>Chiều</option>
     </select>
+    <?php if (!empty($errors['session'])): ?>
+        <small style="color:red"><?= $errors['session'] ?></small>
+    <?php endif; ?>
+
+
 
     <!-- Phòng -->
-    <label>Phòng học</label>
-    <select name="room_id" required>
+    <select name="room_id">
         <option value="">-- Chọn phòng --</option>
         <?php foreach ($rooms as $r): ?>
-            <option value="<?= $r['id'] ?>">
+            <option value="<?= $r['id'] ?>"
+                <?= ($old['room_id'] ?? '') == $r['id'] ? 'selected' : '' ?>>
                 <?= $r['room_name'] ?> (<?= $r['building'] ?>)
             </option>
         <?php endforeach; ?>
     </select>
-<!-- <h3>
+    <?php if (!empty($errors['room_id'])): ?>
+        <small style="color:red"><?= $errors['room_id'] ?></small>
+    <?php endif; ?>
+
+
+    <!-- <h3>
     Học kỳ:
     <?= date('d/m/Y', strtotime($semesterStart)) ?>
     -
     <?= date('d/m/Y', strtotime($semesterEnd)) ?>
 </h3> -->
 
-<label>Từ tuần</label>
-<select name="start_week" required>
-    <?php
-    $start = new DateTime($semesterStart);
+    <label>Từ tuần</label>
+    <select name="start_week" required>
+        <?php
+        $start = new DateTime($semesterStart);
 
-    for ($i = 1; $i <= $totalWeeks-1; $i++) {
-        $weekStart = clone $start;
-        $weekStart->modify('+' . ($i - 1) * 7 . ' days');
+        for ($i = 1; $i <= $totalWeeks - 1; $i++) {
+            $weekStart = clone $start;
+            $weekStart->modify('+' . ($i - 1) * 7 . ' days');
 
-        $weekEnd = clone $weekStart;
-        $weekEnd->modify('+6 days');
+            $weekEnd = clone $weekStart;
+            $weekEnd->modify('+6 days');
         ?>
-        <option value="<?= $i ?>">
-            Tuần <?= $i ?>
-            (<?= $weekStart->format('d/m/Y') ?>
-            –
-            <?= $weekEnd->format('d/m/Y') ?>)
-        </option>
-    <?php } ?>
-</select>
+            <option value="<?= $i ?>"
+                <?= (!empty($old['start_week']) && $old['start_week'] == $i) ? 'selected' : '' ?>>
 
-<br><br>
+                Tuần <?= $i ?>
+                (<?= $weekStart->format('d/m/Y') ?>
+                –
+                <?= $weekEnd->format('d/m/Y') ?>)
+            </option>
+        <?php } ?>
+    </select>
 
-<label>Đến tuần</label>
-<select name="end_week" required>
-    <?php
-    for ($i = 1; $i <= $totalWeeks-1; $i++) {
-        $weekStart = clone $start;
-        $weekStart->modify('+' . ($i - 1) * 7 . ' days');
+    <br><br>
 
-        $weekEnd = clone $weekStart;
-        $weekEnd->modify('+6 days');
+    <label>Đến tuần</label>
+    <select name="end_week" required>
+        <?php
+        for ($i = 1; $i <= $totalWeeks - 1; $i++) {
+            $weekStart = clone $start;
+            $weekStart->modify('+' . ($i - 1) * 7 . ' days');
+
+            $weekEnd = clone $weekStart;
+            $weekEnd->modify('+6 days');
         ?>
-        <option value="<?= $i ?>">
-            Tuần <?= $i ?>
-            (<?= $weekStart->format('d/m/Y') ?>
-            –
-            <?= $weekEnd->format('d/m/Y') ?>)
-        </option>
-    <?php } ?>
-</select>
+            <option value="<?= $i ?>"
+                <?= (!empty($old['end_week']) && $old['end_week'] == $i) ? 'selected' : '' ?>>
 
-
-
-    <?php if (!empty($errorHocPhan)): ?>
-        <p style="color:red"><?= $errorHocPhan ?></p>
+                Tuần <?= $i ?>
+                (<?= $weekStart->format('d/m/Y') ?>
+                –
+                <?= $weekEnd->format('d/m/Y') ?>)
+            </option>
+        <?php } ?>
+    </select>
+    <?php if (!empty($errors['week'])): ?>
+        <small style="color:red"><?= $errors['week'] ?></small>
     <?php endif; ?>
+
+
+
 
     <input type="submit" name="btn_add" value="Thêm học phần">
 </form>
@@ -126,4 +162,3 @@
 $content = ob_get_clean();
 include "../views/admin/layout.php";
 ?>
-

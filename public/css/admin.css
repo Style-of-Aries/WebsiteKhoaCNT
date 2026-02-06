@@ -141,9 +141,9 @@ img.img-thumbnail {
   z-index: 99;
 }
 
-/* .more-actions:hover .more-menu {
+.more-actions:hover .more-menu {
   display: block;
-} */
+}
 
 .more-menu a {
   display: flex;

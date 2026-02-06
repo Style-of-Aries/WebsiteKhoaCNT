@@ -328,6 +328,45 @@ ORDER BY
         ";
         return $this->__query($sql);
     }
+    public function getByCourseClassId($course_class_id)
+    {
+        $sql = "SELECT * FROM timetables WHERE course_class_id = $course_class_id LIMIT 1";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
+    }
+    public function phongDaCoLichEdit($room_id, $day, $session, $course_class_id)
+{
+    $sql = "
+        SELECT id FROM timetables
+        WHERE room_id = $room_id
+          AND day_of_week = $day
+          AND session = '$session'
+          AND course_class_id != $course_class_id
+    ";
+    return mysqli_num_rows($this->__query($sql)) > 0;
+}
+
+    public function updateTimetable(
+        $course_class_id,
+        $room_id,
+        $day,
+        $session,
+        $start_week,
+        $end_week
+    ) {
+        $sql = "
+        UPDATE timetables
+        SET
+            room_id = $room_id,
+            day_of_week = $day,
+            session = '$session',
+            start_week = $start_week,
+            end_week = $end_week
+        WHERE course_class_id = $course_class_id
+    ";
+        return $this->__query($sql);
+    }
+
     public function checkHocPhan($subject_id, $lecturer_id, $semester_id)
     {
 
@@ -364,4 +403,10 @@ ORDER BY
     {
         return mysqli_query($this->connect, $sql);
     }
+    public function deleteByCourseClassId($course_class_id)
+    {
+        $sql = "DELETE FROM timetables WHERE course_class_id = $course_class_id";
+        return $this->__query($sql);
+    }
 }
+

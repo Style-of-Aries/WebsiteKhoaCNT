@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 04, 2026 lúc 06:42 PM
+-- Thời gian đã tạo: Th2 06, 2026 lúc 09:21 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -45,10 +45,9 @@ CREATE TABLE `academic_results` (
 --
 
 INSERT INTO `academic_results` (`id`, `student_id`, `course_class_id`, `process_score`, `midterm_score`, `final_exam_score`, `final_grade`, `grade_letter`, `result`, `frequent_scores`) VALUES
-(1, 22, 1, 9.83, 10.00, NULL, 4.00, 'D', 'pass', '[\"10\",\"9.5\",\"10\"]'),
-(2, 25, 1, NULL, NULL, NULL, 6.00, 'C', 'pass', '[]'),
-(3, 16, 1, 5.33, 7.00, NULL, 4.80, 'D', 'pass', '[\"5\",\"5\",\"6\"]'),
-(4, 22, 5, 9.75, 8.00, NULL, NULL, NULL, NULL, '[\"10\",\"10\",\"10\",\"9\"]');
+(1, 22, 1, 5.00, 9.50, 10.00, 8.90, 'A', 'pass', '[\"5\",\"5\",\"5\"]'),
+(2, 25, 1, 0.00, 0.00, 10.00, 6.00, 'C', 'pass', '[]'),
+(3, 16, 1, 0.00, 0.00, 8.00, 4.80, 'D', 'pass', '[]');
 
 --
 -- Bẫy `academic_results`
@@ -111,7 +110,7 @@ CREATE TABLE `attendance` (
   `student_id` bigint(20) UNSIGNED NOT NULL,
   `course_class_id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `status` enum('present','absent','late') DEFAULT NULL,
+  `status` enum('present','absent','late') DEFAULT 'present',
   `session_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -120,51 +119,51 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `student_id`, `course_class_id`, `date`, `status`, `session_id`) VALUES
-(1, 16, 1, '2025-09-02', 'late', 1),
-(2, 16, 1, '2025-09-09', NULL, 2),
-(3, 16, 1, '2025-09-16', NULL, 3),
-(4, 16, 1, '2025-09-23', NULL, 4),
-(5, 16, 1, '2025-09-30', NULL, 5),
-(6, 16, 1, '2025-10-07', NULL, 6),
-(7, 16, 1, '2025-10-14', NULL, 7),
-(8, 16, 1, '2025-10-21', NULL, 8),
-(9, 16, 1, '2025-10-28', NULL, 9),
-(10, 16, 1, '2025-11-04', NULL, 10),
-(11, 16, 1, '2025-11-11', NULL, 11),
-(12, 16, 1, '2025-11-18', NULL, 12),
-(13, 16, 1, '2025-11-25', NULL, 13),
-(14, 16, 1, '2025-12-02', NULL, 14),
-(15, 16, 1, '2025-12-09', NULL, 15),
-(16, 22, 1, '2025-09-02', 'present', 1),
-(17, 22, 1, '2025-09-09', 'present', 2),
-(18, 22, 1, '2025-09-16', 'present', 3),
-(19, 22, 1, '2025-09-23', 'present', 4),
-(20, 22, 1, '2025-09-30', 'present', 5),
-(21, 22, 1, '2025-10-07', 'present', 6),
-(22, 22, 1, '2025-10-14', 'present', 7),
-(23, 22, 1, '2025-10-21', 'present', 8),
-(24, 22, 1, '2025-10-28', 'present', 9),
-(25, 22, 1, '2025-11-04', 'present', 10),
-(26, 22, 1, '2025-11-11', 'present', 11),
-(27, 22, 1, '2025-11-18', 'present', 12),
-(28, 22, 1, '2025-11-25', 'present', 13),
-(29, 22, 1, '2025-12-02', 'present', 14),
-(30, 22, 1, '2025-12-09', 'present', 15),
+(1, 16, 1, '2025-09-02', 'present', 1),
+(2, 16, 1, '2025-09-09', 'absent', 2),
+(3, 16, 1, '2025-09-16', 'absent', 3),
+(4, 16, 1, '2025-09-23', 'absent', 4),
+(5, 16, 1, '2025-09-30', 'absent', 5),
+(6, 16, 1, '2025-10-07', 'absent', 6),
+(7, 16, 1, '2025-10-14', 'absent', 7),
+(8, 16, 1, '2025-10-21', 'absent', 8),
+(9, 16, 1, '2025-10-28', 'absent', 9),
+(10, 16, 1, '2025-11-04', 'absent', 10),
+(11, 16, 1, '2025-11-11', 'absent', 11),
+(12, 16, 1, '2025-11-18', 'absent', 12),
+(13, 16, 1, '2025-11-25', 'absent', 13),
+(14, 16, 1, '2025-12-02', 'absent', 14),
+(15, 16, 1, '2025-12-09', 'absent', 15),
+(16, 22, 1, '2025-09-02', 'absent', 1),
+(17, 22, 1, '2025-09-09', 'absent', 2),
+(18, 22, 1, '2025-09-16', 'absent', 3),
+(19, 22, 1, '2025-09-23', 'absent', 4),
+(20, 22, 1, '2025-09-30', 'absent', 5),
+(21, 22, 1, '2025-10-07', 'absent', 6),
+(22, 22, 1, '2025-10-14', 'absent', 7),
+(23, 22, 1, '2025-10-21', 'absent', 8),
+(24, 22, 1, '2025-10-28', 'absent', 9),
+(25, 22, 1, '2025-11-04', 'absent', 10),
+(26, 22, 1, '2025-11-11', 'absent', 11),
+(27, 22, 1, '2025-11-18', 'absent', 12),
+(28, 22, 1, '2025-11-25', 'absent', 13),
+(29, 22, 1, '2025-12-02', 'absent', 14),
+(30, 22, 1, '2025-12-09', 'absent', 15),
 (31, 25, 1, '2025-09-02', 'absent', 1),
-(32, 25, 1, '2025-09-09', NULL, 2),
-(33, 25, 1, '2025-09-16', NULL, 3),
-(34, 25, 1, '2025-09-23', NULL, 4),
-(35, 25, 1, '2025-09-30', NULL, 5),
-(36, 25, 1, '2025-10-07', NULL, 6),
-(37, 25, 1, '2025-10-14', NULL, 7),
-(38, 25, 1, '2025-10-21', NULL, 8),
-(39, 25, 1, '2025-10-28', NULL, 9),
-(40, 25, 1, '2025-11-04', NULL, 10),
-(41, 25, 1, '2025-11-11', NULL, 11),
-(42, 25, 1, '2025-11-18', NULL, 12),
-(43, 25, 1, '2025-11-25', NULL, 13),
-(44, 25, 1, '2025-12-02', NULL, 14),
-(45, 25, 1, '2025-12-09', NULL, 15);
+(32, 25, 1, '2025-09-09', 'absent', 2),
+(33, 25, 1, '2025-09-16', 'absent', 3),
+(34, 25, 1, '2025-09-23', 'absent', 4),
+(35, 25, 1, '2025-09-30', 'absent', 5),
+(36, 25, 1, '2025-10-07', 'absent', 6),
+(37, 25, 1, '2025-10-14', 'absent', 7),
+(38, 25, 1, '2025-10-21', 'absent', 8),
+(39, 25, 1, '2025-10-28', 'absent', 9),
+(40, 25, 1, '2025-11-04', 'absent', 10),
+(41, 25, 1, '2025-11-11', 'absent', 11),
+(42, 25, 1, '2025-11-18', 'absent', 12),
+(43, 25, 1, '2025-11-25', 'absent', 13),
+(44, 25, 1, '2025-12-02', 'absent', 14),
+(45, 25, 1, '2025-12-09', 'absent', 15);
 
 -- --------------------------------------------------------
 
@@ -235,21 +234,21 @@ CREATE TABLE `class_sessions` (
 --
 
 INSERT INTO `class_sessions` (`id`, `course_class_id`, `session_date`, `day_of_week`, `session`, `week_number`, `room_id`, `created_at`) VALUES
-(1, 1, '2025-09-01', 2, 'Sáng', 1, 1, '2026-02-03 09:05:16'),
-(2, 1, '2025-09-08', 2, 'Sáng', 2, 1, '2026-02-03 09:05:16'),
-(3, 1, '2025-09-15', 2, 'Sáng', 3, 1, '2026-02-03 09:05:16'),
-(4, 1, '2025-09-22', 2, 'Sáng', 4, 1, '2026-02-03 09:05:16'),
-(5, 1, '2025-09-29', 2, 'Sáng', 5, 1, '2026-02-03 09:05:16'),
-(6, 1, '2025-10-06', 2, 'Sáng', 6, 1, '2026-02-03 09:05:16'),
-(7, 1, '2025-10-13', 2, 'Sáng', 7, 1, '2026-02-03 09:05:16'),
-(8, 1, '2025-10-20', 2, 'Sáng', 8, 1, '2026-02-03 09:05:16'),
-(9, 1, '2025-10-27', 2, 'Sáng', 9, 1, '2026-02-03 09:05:16'),
-(10, 1, '2025-11-03', 2, 'Sáng', 10, 1, '2026-02-03 09:05:16'),
-(11, 1, '2025-11-10', 2, 'Sáng', 11, 1, '2026-02-03 09:05:16'),
-(12, 1, '2025-11-17', 2, 'Sáng', 12, 1, '2026-02-03 09:05:16'),
-(13, 1, '2025-11-24', 2, 'Sáng', 13, 1, '2026-02-03 09:05:16'),
-(14, 1, '2025-12-01', 2, 'Sáng', 14, 1, '2026-02-03 09:05:16'),
-(15, 1, '2025-12-08', 2, 'Sáng', 15, 1, '2026-02-03 09:05:16');
+(1, 1, '2025-09-02', 2, 'Sáng', 1, 1, '2026-02-03 09:05:16'),
+(2, 1, '2025-09-09', 2, 'Sáng', 2, 1, '2026-02-03 09:05:16'),
+(3, 1, '2025-09-16', 2, 'Sáng', 3, 1, '2026-02-03 09:05:16'),
+(4, 1, '2025-09-23', 2, 'Sáng', 4, 1, '2026-02-03 09:05:16'),
+(5, 1, '2025-09-30', 2, 'Sáng', 5, 1, '2026-02-03 09:05:16'),
+(6, 1, '2025-10-07', 2, 'Sáng', 6, 1, '2026-02-03 09:05:16'),
+(7, 1, '2025-10-14', 2, 'Sáng', 7, 1, '2026-02-03 09:05:16'),
+(8, 1, '2025-10-21', 2, 'Sáng', 8, 1, '2026-02-03 09:05:16'),
+(9, 1, '2025-10-28', 2, 'Sáng', 9, 1, '2026-02-03 09:05:16'),
+(10, 1, '2025-11-04', 2, 'Sáng', 10, 1, '2026-02-03 09:05:16'),
+(11, 1, '2025-11-11', 2, 'Sáng', 11, 1, '2026-02-03 09:05:16'),
+(12, 1, '2025-11-18', 2, 'Sáng', 12, 1, '2026-02-03 09:05:16'),
+(13, 1, '2025-11-25', 2, 'Sáng', 13, 1, '2026-02-03 09:05:16'),
+(14, 1, '2025-12-02', 2, 'Sáng', 14, 1, '2026-02-03 09:05:16'),
+(15, 1, '2025-12-09', 2, 'Sáng', 15, 1, '2026-02-03 09:05:16');
 
 -- --------------------------------------------------------
 
@@ -273,9 +272,7 @@ CREATE TABLE `course_classes` (
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`) VALUES
 (1, 2, 61, 1, 'PHP1', 60),
 (3, 3, 4, 1, '2026BMPM000001', 40),
-(5, 4, 61, 2, '2026KCNTT000001', 30),
-(6, 1, 4, 1, '2026BMPM000003', 60),
-(7, 4, 4, 1, '2026KCNTT000002', 60);
+(8, 1, 11, 1, '2026BMPM000004', 20);
 
 -- --------------------------------------------------------
 
@@ -440,8 +437,6 @@ INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
 (16, 1),
 (22, 1),
 (22, 3),
-(22, 5),
-(22, 7),
 (25, 1);
 
 -- --------------------------------------------------------
@@ -520,7 +515,31 @@ CREATE TABLE `timetables` (
 
 INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `session`, `start_week`, `end_week`) VALUES
 (1, 1, 1, 2, 'Sáng', 1, 15),
-(2, 3, 2, 3, 'Chiều', 3, 10);
+(2, 3, 2, 3, 'Chiều', 3, 10),
+(4, 8, 2, 2, 'Sáng', 1, 19);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `training_office`
+--
+
+CREATE TABLE `training_office` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `office_code` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `training_office`
+--
+
+INSERT INTO `training_office` (`id`, `full_name`, `office_code`, `email`, `phone`, `created_at`) VALUES
+(1, 'Phòng Đào Tạo Khoa Công Nghệ Thông Tin', 'PDT_CNTT', 'daotao_cntt@university.edu.vn', '02438889999', '2026-02-06 07:42:38'),
+(2, 'Nguyễn Thị Hương – Cán bộ đào tạo', 'CB_DT_01', 'huongdt@university.edu.vn', '0988777666', '2026-02-06 07:42:38');
 
 -- --------------------------------------------------------
 
@@ -532,7 +551,7 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('admin','lecturer','student') NOT NULL,
+  `role` enum('admin','lecturer','student','training_office') NOT NULL,
   `ref_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -550,7 +569,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 (22, 'nvtdfdf', 'dfdf', 'lecturer', 60),
 (23, 'nguyenductrong', '123', 'student', 22),
 (24, 'ductrong', '123', 'lecturer', 61),
-(25, 'trong', '123', 'student', 25);
+(25, 'trong', '123', 'student', 25),
+(26, 'pdt', '123', 'training_office', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -684,6 +704,14 @@ ALTER TABLE `timetables`
   ADD KEY `room_id` (`room_id`);
 
 --
+-- Chỉ mục cho bảng `training_office`
+--
+ALTER TABLE `training_office`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `office_code` (`office_code`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
@@ -698,13 +726,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `academic_results`
 --
 ALTER TABLE `academic_results`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT cho bảng `audit_logs`
@@ -722,13 +750,13 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT cho bảng `class_sessions`
 --
 ALTER TABLE `class_sessions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
@@ -782,13 +810,19 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT cho bảng `timetables`
 --
 ALTER TABLE `timetables`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `training_office`
+--
+ALTER TABLE `training_office`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -806,6 +840,7 @@ ALTER TABLE `academic_results`
 --
 ALTER TABLE `attendance`
   ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_attendance_session` FOREIGN KEY (`session_id`) REFERENCES `class_sessions` (`id`) ON DELETE CASCADE;
 
 --

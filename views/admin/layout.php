@@ -70,7 +70,20 @@ $currentAction = $_GET['action'] ?? '';
             $currentController = $_GET['controller'] ?? '';
             $currentAction = $_GET['action'] ?? '';
 
-            include __DIR__ . '/../sidebar/sidebar_admin.php';
+            if (isset($_SESSION['user'])) {
+                $role = $_SESSION['user']['role'];
+                if ($role === 'admin') {
+                    include __DIR__ . '/../sidebar/sidebar_admin.php';
+                } elseif ($role === 'student') {
+                    include __DIR__ . '/../sidebar/sidebar_student.php';
+                } elseif($role === 'lecturer') {
+                    include __DIR__ . '/../sidebar/sidebar_lecturer.php';
+                }
+                else{
+                    include __DIR__ . '/../sidebar/sidebar_trainningOffice.php';
+
+                }
+            }
             ?>
         </div>
         <div class="main-content">
