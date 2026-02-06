@@ -179,23 +179,23 @@ ORDER BY S.name
         return $this->__query($sql);
     }
     public function tonTaiHocPhan($subject_id, $lecturer_id, $semester_id)
-{
-    $sql = "SELECT id FROM course_classes
+    {
+        $sql = "SELECT id FROM course_classes
             WHERE subject_id = $subject_id
             AND lecturer_id = $lecturer_id
             AND semester_id = $semester_id";
-    return mysqli_num_rows($this->__query($sql)) > 0;
-}
+        return mysqli_num_rows($this->__query($sql)) > 0;
+    }
 
-public function themHocPhan($subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
-{
-    $sql = "INSERT INTO course_classes
+    public function themHocPhan($subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
+    {
+        $sql = "INSERT INTO course_classes
             (subject_id, lecturer_id, semester_id, class_code, max_students)
             VALUES
             ($subject_id, $lecturer_id, $semester_id, '$class_code', $max_students)";
-    $this->__query($sql);
-    return mysqli_insert_id($this->connect);
-}
+        $this->__query($sql);
+        return mysqli_insert_id($this->connect);
+    }
 
 
     // Kiểm tra sinh viên đã đăng ký chưa
@@ -287,6 +287,29 @@ ORDER BY se.id DESC, cc.class_code;
             ORDER BY st.student_code
         ";
 
+        return $this->__query($sql);
+    }
+    public function deleteStudentCourseClass($id)
+    {
+        $sql = "DELETE FROM student_course_classes WHERE course_class_id = $id";
+        return $this->__query($sql);
+    }
+
+    public function deleteAcademicResults($id)
+    {
+        $sql = "DELETE FROM academic_results WHERE course_class_id = $id";
+        return $this->__query($sql);
+    }
+
+    public function deleteAttendance($id)
+    {
+        $sql = "DELETE FROM attendance WHERE course_class_id = $id";
+        return $this->__query($sql);
+    }
+
+    public function deleteHocPhanOnly($id)
+    {
+        $sql = "DELETE FROM course_classes WHERE id = $id";
         return $this->__query($sql);
     }
 }
