@@ -1,4 +1,4 @@
-<h2>Trang phòng đào tạo</h2>
+<h2>Phòng đào tạo</h2>
 <ul class="menu">
 
     <li class="<?= ($currentController == 'trainningOffice' && $currentAction == 'getAll') ? 'active' : '' ?>">
