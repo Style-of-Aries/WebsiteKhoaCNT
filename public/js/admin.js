@@ -81,3 +81,26 @@ function updateFileName(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+document.querySelectorAll(".more-btn").forEach(btn => {
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+
+    const parent = this.closest(".more-actions");
+
+    // đóng dropdown khác
+    document.querySelectorAll(".more-actions").forEach(menu => {
+      if (menu !== parent) menu.classList.remove("active");
+    });
+
+    // toggle menu hiện tại
+    parent.classList.toggle("active");
+  });
+});
+
+// click ra ngoài => đóng menu
+document.addEventListener("click", () => {
+  document.querySelectorAll(".more-actions").forEach(menu => {
+    menu.classList.remove("active");
+  });
+});

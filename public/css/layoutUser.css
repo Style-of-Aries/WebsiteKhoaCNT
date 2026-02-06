@@ -28,7 +28,7 @@ body {
 
   font-family: Arial, sans-serif;
   color: #fff;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 a {
@@ -202,6 +202,7 @@ a {
   /* min-height: calc(100vh - 88px); */
   background: var(--bg-main);
   color: var(--text-main);
+  overflow-x: hidden;
 }
 
 /* ================= MOBILE ================= */

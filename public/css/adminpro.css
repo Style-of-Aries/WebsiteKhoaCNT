@@ -1,0 +1,322 @@
+/* =====================
+   ADMIN PRO THEME
+===================== */
+
+* {
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f6f8fb;
+  color: #2c3e50;
+}
+
+/* FLASH */
+.pro-flash {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 999;
+}
+
+.pro-alert {
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: white;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.pro-alert.success { background: #2ecc71; }
+.pro-alert.error { background: #e74c3c; }
+
+/* LAYOUT */
+.pro-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.pro-sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: white;
+  padding: 18px 14px;
+}
+
+.pro-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.pro-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pro-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #cbd5e1;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.pro-menu li.active a,
+.pro-menu li a:hover {
+  background: #2563eb;
+  color: white;
+}
+
+/* MAIN */
+.pro-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.pro-header {
+  height: 64px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pro-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* USER */
+.pro-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.pro-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Dropdown */
+.pro-user-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 120%;
+  background: white;
+  border-radius: 10px;
+  min-width: 160px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+.pro-user:hover .pro-user-menu {
+  display: block;
+}
+
+.pro-user-menu a {
+  display: block;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: #374151;
+}
+
+.pro-user-menu a:hover {
+  background: #f3f4f6;
+}
+
+/* CONTENT */
+.pro-content {
+  padding: 20px;
+}
+
+/* ================================
+   PROFESSIONAL ADMIN TABLE UI
+================================ */
+
+/* Table base */
+.ui-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+  font-size: 14px;
+}
+
+/* Header */
+.ui-table thead {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: white;
+}
+
+.ui-table th {
+  padding: 14px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13.5px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+/* Body */
+.ui-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f3f5;
+  vertical-align: middle;
+}
+
+.ui-table tbody tr:hover {
+  background: #f8fafc;
+  transition: 0.15s;
+}
+
+/* Code badge */
+.ui-code {
+  font-weight: 700;
+  color: #2980b9;
+}
+
+/* Title */
+.ui-title {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Number */
+.ui-number {
+  font-weight: 600;
+  color: #27ae60;
+}
+
+/* ================================
+   ACTION BUTTON UI
+================================ */
+
+.ui-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Button */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  transition: 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+/* Primary */
+.ui-btn-primary {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+/* Success */
+.ui-btn-success {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+/* Hover */
+.ui-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.18);
+}
+
+/* ================================
+   MORE MENU
+================================ */
+
+.ui-more {
+  position: relative;
+}
+
+.ui-more-btn {
+  border: none;
+  background: #f1f3f5;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.ui-more-btn:hover {
+  background: #e5e9ee;
+}
+
+.ui-more-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background: white;
+  border-radius: 12px;
+  min-width: 170px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+  overflow: hidden;
+  z-index: 99;
+}
+
+.ui-more:hover .ui-more-menu {
+  display: block;
+}
+
+.ui-more-menu a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.ui-more-menu a:hover {
+  background: #f6f8fb;
+}
+
+/* Danger */
+.ui-danger {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .ui-btn {
+    font-size: 11.8px;
+    padding: 5px 9px;
+  }
+}

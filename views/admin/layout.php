@@ -70,16 +70,7 @@ $currentAction = $_GET['action'] ?? '';
             $currentController = $_GET['controller'] ?? '';
             $currentAction = $_GET['action'] ?? '';
 
-            if (isset($_SESSION['user'])) {
-                $role = $_SESSION['user']['role'];
-                if ($role === 'admin') {
-                    include __DIR__ . '/../sidebar/sidebar_admin.php';
-                } elseif ($role === 'student') {
-                    include __DIR__ . '/../sidebar/sidebar_student.php';
-                } else {
-                    include __DIR__ . '/../sidebar/sidebar_lecturer.php';
-                }
-            }
+            include __DIR__ . '/../sidebar/sidebar_admin.php';
             ?>
         </div>
         <div class="main-content">

@@ -66,17 +66,10 @@ $currentAction = $_GET['action'] ?? '';
             <?php endif; ?>
 
             <?php if ($role === 'lecturer'): ?>
-                <a href="index.php">Trang chủ</a>
-                <a href="?controller=lecturer&action=classes">Lớp học</a>
-                <a href="?controller=lecturer&action=grading">Chấm điểm</a>
-                <a href="?controller=lecturer&action=stats">Thống kê</a>
-            <?php endif; ?>
-
-            <?php if ($role === 'admin'): ?>
-                <a href="index.php">Dashboard</a>
-                <a href="?controller=admin&action=users">Người dùng</a>
-                <a href="?controller=admin&action=students">Sinh viên</a>
-                <a href="?controller=admin&action=settings">Cài đặt</a>
+                <!-- <a href="index.php">Trang chủ</a> -->
+                <a href="?controller=lecturer&action=getCourseClass">Lớp dạy</a>
+                <!-- <a href="?controller=lecturer&action=updateResultByCourseClass">Chấm điểm</a> -->
+                <a href="?controller=lecturer&action=lichDayGv">Lịch dạy</a>
             <?php endif; ?>
         </nav>
 
