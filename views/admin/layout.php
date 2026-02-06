@@ -76,7 +76,7 @@ $currentAction = $_GET['action'] ?? '';
                     include __DIR__ . '/../sidebar/sidebar_admin.php';
                 } elseif ($role === 'student') {
                     include __DIR__ . '/../sidebar/sidebar_student.php';
-                } elseif($role === 'leturer') {
+                } elseif($role === 'lecturer') {
                     include __DIR__ . '/../sidebar/sidebar_lecturer.php';
                 }
                 else{
