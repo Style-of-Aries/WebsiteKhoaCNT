@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+body { background: #f4f6f9; }
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: #212529;
+}
+.sidebar a {
+  color: #adb5bd;
+  text-decoration: none;
+  padding: 12px 20px;
+  display: block;
+}
+.sidebar a:hover {
+  background: #343a40;
+  color: white;
+}
+.card-stat {
+  border-left: 5px solid #0d6efd;
+}
+</style>
+</head>
+
+<body>
+<div class="d-flex">
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h4 class="text-white text-center py-3">🎓 Student Admin</h4>
+  <a href="#"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+  <a href="#"><i class="bi bi-people me-2"></i> Sinh viên</a>
+  <a href="#"><i class="bi bi-building me-2"></i> Lớp học phần</a>
+  <a href="#"><i class="bi bi-clipboard-check me-2"></i> Điểm danh</a>
+  <a href="#"><i class="bi bi-award me-2"></i> Nhập điểm</a>
+  <a href="#"><i class="bi bi-gear me-2"></i> Cài đặt</a>
+</div>
+
+<!-- Main -->
+<div class="flex-fill p-4">
+
+<!-- Navbar -->
+<nav class="navbar navbar-light bg-white shadow-sm rounded mb-4 px-3">
+  <span class="navbar-brand fw-bold">Dashboard</span>
+  <div>
+    <span class="me-3">Admin</span>
+    <img src="https://i.pravatar.cc/40" class="rounded-circle">
+  </div>
+</nav>
+
+<!-- Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm card-stat p-3">
+      <h6>Sinh viên</h6>
+      <h3 class="text-primary">1,250</h3>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm card-stat p-3 border-success">
+      <h6>Lớp học phần</h6>
+      <h3 class="text-success">45</h3>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm card-stat p-3 border-warning">
+      <h6>Môn học</h6>
+      <h3 class="text-warning">28</h3>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm card-stat p-3 border-danger">
+      <h6>Sinh viên cảnh báo</h6>
+      <h3 class="text-danger">12</h3>
+    </div>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="card shadow-sm">
+  <div class="card-header fw-bold">
+    Danh sách sinh viên mới
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>MSSV</th>
+          <th>Tên</th>
+          <th>Lớp</th>
+          <th>Điểm TB</th>
+          <th>Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SV001</td>
+          <td>Nguyễn Văn A</td>
+          <td>CTK42</td>
+          <td>8.5</td>
+          <td><span class="badge bg-success">Tốt</span></td>
+        </tr>
+        <tr>
+          <td>SV002</td>
+          <td>Trần Thị B</td>
+          <td>CTK41</td>
+          <td>5.9</td>
+          <td><span class="badge bg-warning">Trung bình</span></td>
+        </tr>
+        <tr>
+          <td>SV003</td>
+          <td>Lê Văn C</td>
+          <td>CTK40</td>
+          <td>3.2</td>
+          <td><span class="badge bg-danger">Cảnh báo</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+</div>
+</body>
+</html>

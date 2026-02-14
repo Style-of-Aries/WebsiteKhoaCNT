@@ -2,26 +2,32 @@
 <?php
 ob_start();
 ?>
-<div class="container-admin">
-  <div class="subject-header">
-<h2>Danh sách môn học</h2>
-<div class="add">
+<div class="admin-table-wrapper">
+  <div class="table-toolbar">
+    <h2>Danh sách Môn học</h2>
+    <input type="text" id="searchTable" placeholder="Tìm kiếm môn học, mã môn học...">
+  </div>
+<!-- <div class="add">
   <a href="index.php?controller=subject&action=addMonHoc">
     <i class="ri-add-circle-line"></i> 
     Thêm Môn Học Mới</a>
-</div>
+</div> -->
+  <button class="add-button" onclick="location.href='index.php?controller=subject&action=addMonHoc'">
+    <div class="sign">+</div>
+    <div class="text">Thêm Môn Học Mới</div>
+  </button>
 </style>
 <!-- <h2>Danh sách ngươi dùng</h2> -->
 
       <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
-    <table class="main-table">
+    <table class="main-table" id="mainTable">
       <thead>
         <tr>
-          <th>STT</th>
-          <th>Tên môn học</th>
-          <th>Mã môn học</th>
-          <th>Số tín chỉ</th>
-          <th>Ban quản lý</th>
+          <th onclick="sortTable(0)">STT</th>
+          <th onclick="sortTable(1)">Tên môn học</th>
+          <th onclick="sortTable(2)">Mã môn học</th>
+          <th onclick="sortTable(3)">Số tín chỉ</th>
+          <th onclick="sortTable(4)">Ban quản lý</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -46,5 +52,5 @@ ob_start();
 </div>
 <?php
 $content=ob_get_clean();
-include "../views/admin/layout.php";
+include "../views/admin/layoutNew.php";
 ?>

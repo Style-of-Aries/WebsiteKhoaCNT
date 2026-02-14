@@ -3,37 +3,30 @@
 ob_start();
 ?>
 
-<div class="container-admin">
-  <div class="gv-header">
-    <h2>Danh sách sinh viên</h2>
-    <form method="GET" action="index.php" class="search-form">
-      <input type="hidden" name="controller" value="admin">
-      <input type="hidden" name="action" value="getAllSinhVien">
-
-      <input type="text" name="keyword" placeholder="Tìm theo tên, mã SV, email, khoa, lớp..."
-        value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
-
-      <button type="submit">
-        <i class="ri-search-line"></i> Tìm kiếm
-      </button>
-    </form>
-
-
-    <div class="add">
-      <a href="index.php?controller=admin&action=addSinhVien">
-        <i class="ri-add-circle-line"></i> Thêm Sinh Viên Mới
-      </a>
-    </div>
+<div class="admin-table-wrapper">
+  <div class="table-toolbar">
+    <h2>Danh sách Sinh viên</h2>
+    <input type="text" id="searchTable" placeholder="Tìm kiếm sinh viên, mã sinh viên, email...">
   </div>
+  <!-- <div class="add">
+    <a href="index.php?controller=admin&action=addSinhVien">
+      <i class="ri-add-circle-line"></i> Thêm Sinh Viên Mới
+    </a>
+  </div> -->
 
-  <table class="main-table">
+  <button class="add-button" onclick="location.href='index.php?controller=admin&action=addSinhVien'">
+    <div class="sign">+</div>
+    <div class="text">Thêm Sinh Viên Mới</div>
+  </button>
+
+  <table class="main-table" id="mainTable">
     <thead>
       <tr>
-        <th>STT</th>
-        <th>Tên sinh viên</th>
-        <th>Mã sinh viên</th>
-        <th>Email</th>
-        <th>Khoa</th>
+        <th onclick="sortTable(0)">STT</th>
+        <th onclick="sortTable(1)">Tên sinh viên</th>
+        <th onclick="sortTable(2)">Mã sinh viên</th>
+        <th onclick="sortTable(3)">Email</th>
+        <th onclick="sortTable(4)">Khoa</th>
         <th>Hành động</th>
       </tr>
     </thead>
@@ -64,5 +57,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include "../views/admin/layout.php";
+include "../views/admin/layoutNew.php";
 ?>
