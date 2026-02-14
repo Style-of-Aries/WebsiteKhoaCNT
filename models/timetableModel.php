@@ -330,7 +330,7 @@ ORDER BY
     }
     public function getByCourseClassId($course_class_id)
     {
-        $sql = "SELECT * FROM timetables WHERE course_class_id = $course_class_id LIMIT 1";
+        $sql = "SELECT * FROM timetables WHERE course_class_id = $course_class_id ";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
@@ -408,5 +408,30 @@ ORDER BY
         $sql = "DELETE FROM timetables WHERE course_class_id = $course_class_id";
         return $this->__query($sql);
     }
+    public function checkRoomConflict(
+    $room_id,
+    $day,
+    $session,
+    $startWeek,
+    $endWeek
+) {
+    $sql = "
+        SELECT id FROM timetables
+        WHERE room_id = $room_id
+        AND day_of_week = $day
+        AND session = '$session'
+        AND (
+            ($startWeek BETWEEN start_week AND end_week)
+            OR
+            ($endWeek BETWEEN start_week AND end_week)
+            OR
+            (start_week BETWEEN $startWeek AND $endWeek)
+        )
+    ";
+
+    return mysqli_num_rows($this->__query($sql)) > 0;
+}
+
+
 }
 

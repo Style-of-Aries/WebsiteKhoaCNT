@@ -32,7 +32,7 @@ class classSessionsModel extends database
         JOIN course_classes cc ON t.course_class_id = cc.id
         JOIN semesters s ON cc.semester_id = s.id
         WHERE t.course_class_id = $courseClassId
-        LIMIT 1
+        ORDER BY t.day_of_week
     ";
 
         $result = $this->__query($sql);

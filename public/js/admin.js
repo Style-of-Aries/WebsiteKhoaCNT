@@ -62,24 +62,24 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 document.querySelector('.fake-file button').addEventListener('click', function () {
-    document.getElementById('realFile').click();
+  document.getElementById('realFile').click();
 });
 
 function updateFileName(input) {
-    if (input.files && input.files[0]) {
-        // đổi tên file
-        document.getElementById('fileName').innerText = input.files[0].name;
+  if (input.files && input.files[0]) {
+    // đổi tên file
+    document.getElementById('fileName').innerText = input.files[0].name;
 
-        // preview ảnh avatar
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const img = document.getElementById('avatarPreview');
-            if (img) {
-                img.src = e.target.result;
-            }
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+    // preview ảnh avatar
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = document.getElementById('avatarPreview');
+      if (img) {
+        img.src = e.target.result;
+      }
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
 }
 
 document.querySelectorAll(".more-btn").forEach(btn => {
@@ -104,3 +104,33 @@ document.addEventListener("click", () => {
     menu.classList.remove("active");
   });
 });
+function addSchedule() {
+
+    let wrapper = document.getElementById("schedule-wrapper");
+    let firstItem = wrapper.querySelector(".schedule-item");
+
+    let clone = firstItem.cloneNode(true);
+
+    // Reset value
+    clone.querySelectorAll("select").forEach(select => {
+        select.selectedIndex = 0;
+    });
+
+    // Thêm nút X nếu chưa có
+    if (!clone.querySelector("button")) {
+        let btn = document.createElement("button");
+        btn.type = "button";
+        btn.innerText = "X";
+        btn.onclick = function () {
+            removeSchedule(this);
+        };
+        clone.appendChild(btn);
+    }
+
+    wrapper.appendChild(clone);
+}
+
+function removeSchedule(btn) {
+    btn.parentElement.remove();
+}
+

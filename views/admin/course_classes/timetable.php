@@ -20,12 +20,12 @@ ob_start();
           <th>Mã học phần</th>
           <th>Tên học phần</th>
           <th>Giảng viên</th>
-          <th>Thứ</th>
-          <th>Buổi</th>
+          <!-- <th>Thứ</th> -->
+          <!-- <th>Buổi</th>   -->
           <th>Kỳ học</th>
           <th>Năm học</th>
           <th>Phòng học</th>
-          <!-- <th>Hành động</th> -->
+          <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
@@ -35,12 +35,20 @@ ob_start();
             <td><?= htmlspecialchars($subject['ma_hoc_phan']) ?></td>
             <td><?= htmlspecialchars($subject['ten_hoc_phan']) ?></td>
             <td><?= htmlspecialchars($subject['giang_vien']) ?></td>
-            <td><?= htmlspecialchars($subject['thu']) ?></td>
-            <td><?= htmlspecialchars($subject['buoi_hoc']) ?></td>
+            <!-- <td><?= htmlspecialchars($subject['thu']) ?></td> -->
+            <!-- <td><?= htmlspecialchars($subject['buoi_hoc']) ?></td> -->
             <td><?= htmlspecialchars($subject['ky_hoc']) ?></td>
             <td><?= htmlspecialchars($subject['nam_hoc']) ?></td>
             <td><?= htmlspecialchars($subject['phong_hoc']) ?></td>
-            
+            <td>
+              <a href="index.php?controller=admin&action=editGV&id=<?= $subject['ma_hoc_phan'] ?>&user=<?= $subject['ten_hoc_phan'] ?>"
+                class="action-btn edit-btn"><i class="ri-pencil-line"></i>Chi tiết</a>
+              <a href="index.php?controller=admin&action=editGV&id=<?= $subject['ma_hoc_phan'] ?>&user=<?= $subject['ten_hoc_phan'] ?>"
+                class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+              <a href="index.php?controller=admin&action=deleteLecturer&id=<?= $subject['ma_hoc_phan'] ?>"
+                class="action-btn delete-btn" onclick="return confirm('Xóa giảng viên này?')"><i
+                  class="ri-delete-bin-line"></i> Xóa</a>
+            </td>
           </tr>
         <?php endforeach; ?>
       </tbody>
