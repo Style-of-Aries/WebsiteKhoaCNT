@@ -104,3 +104,32 @@ document.addEventListener("click", () => {
     menu.classList.remove("active");
   });
 });
+function addSchedule() {
+
+    let wrapper = document.getElementById("schedule-wrapper");
+    let firstItem = wrapper.querySelector(".schedule-item");
+
+    let clone = firstItem.cloneNode(true);
+
+    // Reset value
+    clone.querySelectorAll("select").forEach(select => {
+        select.selectedIndex = 0;
+    });
+
+    // Thêm nút X nếu chưa có
+    if (!clone.querySelector("button")) {
+        let btn = document.createElement("button");
+        btn.type = "button";
+        btn.innerText = "X";
+        btn.onclick = function () {
+            removeSchedule(this);
+        };
+        clone.appendChild(btn);
+    }
+
+    wrapper.appendChild(clone);
+}
+
+function removeSchedule(btn) {
+    btn.parentElement.remove();
+}
