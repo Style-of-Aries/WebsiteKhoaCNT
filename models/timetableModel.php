@@ -335,16 +335,16 @@ ORDER BY
         return mysqli_fetch_assoc($query);
     }
     public function phongDaCoLichEdit($room_id, $day, $session, $course_class_id)
-{
-    $sql = "
+    {
+        $sql = "
         SELECT id FROM timetables
         WHERE room_id = $room_id
           AND day_of_week = $day
           AND session = '$session'
           AND course_class_id != $course_class_id
     ";
-    return mysqli_num_rows($this->__query($sql)) > 0;
-}
+        return mysqli_num_rows($this->__query($sql)) > 0;
+    }
 
     public function updateTimetable(
         $course_class_id,
@@ -409,13 +409,13 @@ ORDER BY
         return $this->__query($sql);
     }
     public function checkRoomConflict(
-    $room_id,
-    $day,
-    $session,
-    $startWeek,
-    $endWeek
-) {
-    $sql = "
+        $room_id,
+        $day,
+        $session,
+        $startWeek,
+        $endWeek
+    ) {
+        $sql = "
         SELECT id FROM timetables
         WHERE room_id = $room_id
         AND day_of_week = $day
@@ -429,9 +429,6 @@ ORDER BY
         )
     ";
 
-    return mysqli_num_rows($this->__query($sql)) > 0;
+        return mysqli_num_rows($this->__query($sql)) > 0;
+    }
 }
-
-
-}
-
