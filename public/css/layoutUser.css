@@ -426,14 +426,14 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
   background: var(--blue-light);
 }
 
-.main-table {
+.attendance-table {
   width: 100%;
   /* min-width: 1300px; */
   border-collapse: collapse;
 }
 
-.main-table th,
-.main-table td {
+.attendance-table th,
+.attendance-table td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
@@ -441,29 +441,29 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
   min-width: 100px;
 }
 
-.main-table .thName,
-.main-table .tdName {
+.attendance-table .thName,
+.attendance-table .tdName {
   min-width: 240px;
 }
 
-.main-table .action-btn .btn-sm {
+.attendance-table .action-btn .btn-sm {
   margin-right: 5px;
 }
-.main-table th {
+.attendance-table th {
   background-color: var(--blue-main);
   color: var(--bg-card);
 }
 
-.main-table tr:nth-child(even) {
+.attendance-table tr:nth-child(even) {
   background-color: var(--bg-card);
 }
 
-.main-table tr:hover {
+.attendance-table tr:hover {
   background-color: var(--bg-main);
 }
 
 /* Header sticky */
-.main-table thead th {
+.attendance-table thead th {
   position: sticky;
   top: 0;
   background: #2f6fb3;
@@ -472,8 +472,8 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
 }
 
 /* Cột MSSV */
-.main-table th:nth-child(1),
-.main-table td:nth-child(1) {
+.attendance-table th:nth-child(1),
+.attendance-table td:nth-child(1) {
   position: sticky;
   left: 0;
   background: white;
@@ -483,8 +483,8 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
 }
 
 /* Cột Họ tên */
-.main-table th:nth-child(2),
-.main-table td:nth-child(2) {
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2) {
   position: sticky;
   left: 130px; /* PHẢI = width cột MSSV */
   background: white;
@@ -494,12 +494,12 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
 }
 
 /* Đổ bóng đẹp */
-.main-table th:nth-child(2),
-.main-table td:nth-child(2) {
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2) {
   box-shadow: 4px 0 8px rgba(0, 0, 0, 0.06);
 }
-.main-table thead th:nth-child(1),
-.main-table thead th:nth-child(2) {
+.attendance-table thead th:nth-child(1),
+.attendance-table thead th:nth-child(2) {
   background: var(--blue-main);
   z-index: 999;
 }

@@ -358,6 +358,7 @@ a {
   border-radius: 16px;
   box-shadow: 0 12px 28px rgba(16, 24, 40, 0.08);
   overflow: hidden;
+  
 }
 
 /* Scrollbar tổng thể */
@@ -415,7 +416,7 @@ a {
   max-height: 600px;
   overflow-y: auto;
   border-radius: 14px;
-  /* border: 1px solid #e6ecf5; */
+  border: 1px solid #e6ecf5;
   box-shadow: 0 6px 18px rgba(0,0,0,0.06);
   margin-top: 10px;
 }
@@ -449,6 +450,7 @@ a {
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
   transition: 0.2s ease;
+  cursor: pointer;
 }
 
 .main-table tbody tr:hover {
@@ -483,6 +485,97 @@ a {
   justify-content: start;
   gap: 5px;
   width: 320px;
+}
+/* Name column*/
+.main-table .thName,
+.main-table .tdName {
+  min-width: 240px;
+}
+
+/* ================= Bảng điểm danh ================= */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.attendance-table {
+  width: 100%;
+  /* min-width: 1300px; */
+  border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  min-width: 100px;
+}
+
+.attendance-table .thName,
+.attendance-table .tdName {
+  min-width: 240px;
+}
+
+.attendance-table .action-btn .btn-sm {
+  margin-right: 5px;
+}
+.attendance-table th {
+  background-color: var(--sidebar-bg-color);
+  color: var(--bg-card);
+}
+
+.attendance-table tr:nth-child(even) {
+  background-color: var(--bg-card);
+}
+
+.attendance-table tr:hover {
+  background-color: var(--bg-main);
+}
+
+/* Header sticky */
+.attendance-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--sidebar-bg-color);
+  color: white;
+  z-index: 5;
+}
+
+/* Cột MSSV */
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2) {
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 4;
+  min-width: 130px;
+  border-right: 1px solid #ddd;
+}
+
+/* Cột Họ tên */
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3) {
+  position: sticky;
+  left: 130px; /* PHẢI = width cột MSSV */
+  background: white;
+  z-index: 4;
+  min-width: 240px;
+  border-right: 2px solid #ddd;
+}
+
+/* Đổ bóng đẹp */
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3) {
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.06);
+}
+.attendance-table thead th:nth-child(2),
+.attendance-table thead th:nth-child(3) {
+  background: var(--sidebar-bg-color);
+  z-index: 999;
 }
 
 .count-badge {

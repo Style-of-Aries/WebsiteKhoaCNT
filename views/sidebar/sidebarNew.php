@@ -90,7 +90,7 @@ $role = $_SESSION['user']['role'];
         <ul class="submenu">
 
             <li class="<?= PermissionService::has($role, 'attendance') ? 'dropdown' : 'locked' ?>">
-                <a href="#">Điểm danh</a>
+                <a href="index.php?controller=lecturer&action=getCourseClass">Điểm danh</a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'score') ? 'dropdown' : 'locked' ?>">

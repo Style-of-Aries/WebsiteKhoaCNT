@@ -2,10 +2,12 @@
 ob_start();
 ?>
 
-<div class="container-admin">
-    <h2>Danh sách lớp dạy</h2>
-    <div class="table-wrapper">
-        <table class="main-table">
+<div class="admin-table-wrapper">
+  <div class="table-toolbar">
+    <h2>Danh sách Giảng viên</h2>
+    <input type="text" id="searchTable" placeholder="Tìm kiếm giảng viên, mã giảng viên, email...">
+  </div>
+        <table class="main-table" id="mainTable">
             <thead>
                 <tr>
                     <th>Mã lớp</th>
@@ -17,12 +19,12 @@ ob_start();
             </thead>
             <tbody>
                 <?php while ($row = mysqli_fetch_assoc($classes)): ?>
-                    <tr>
+                    <tr onclick="window.location='index.php?controller=attendance&action=sessions&course_class_id=<?= $row['id'] ?>'">
                         <td><?= $row['class_code'] ?></td>
                         <td><?= $row['subject_name'] ?></td>
                         <td><?= $row['semester_name'] ?></td>
                         <td><?= $row['total_students'] ?>/<?= $row['max_students'] ?></td>
-                        <td class="action-btn">
+                        <!-- <td class="action-btn">
                             <a href="index.php?controller=lecturer&action=getStudentsWithExamConditions&course_class_id=<?= $row['id'] ?>"
                                 class="btn btn-primary btn-sm">
                                 Danh sách lớp
@@ -35,8 +37,7 @@ ob_start();
                                 class="btn btn-primary btn-sm">
                                 Điểm danh
                             </a>
-                        </td>
-
+                        </td> -->
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -46,5 +47,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include __DIR__ . '/../layout.php';
+include __DIR__ . '/../layoutNew.php';
 ?>

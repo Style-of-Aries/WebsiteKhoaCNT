@@ -48,7 +48,7 @@ class attendanceController
         //     }
         // }
 
-        require_once "./../views/user/lecturer/sessions.php";
+        require_once "./../views/admin/lecturer/sessions.php";
     }
 
 
