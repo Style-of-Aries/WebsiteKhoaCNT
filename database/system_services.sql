@@ -58,9 +58,9 @@ CREATE TABLE IF NOT EXISTS `academic_results` (
 -- Dumping data for table system_services.academic_results: ~3 rows (approximately)
 DELETE FROM `academic_results`;
 INSERT INTO `academic_results` (`id`, `student_id`, `course_class_id`, `process_score`, `midterm_score`, `final_exam_score`, `final_grade`, `grade_letter`, `result`, `frequent_scores`) VALUES
-	(1, 22, 1, 10.00, 9.50, 10.00, 9.90, 'A', 'pass', '["10","10","10"]'),
-	(2, 25, 1, 10.00, 10.00, 10.00, 10.00, 'A', 'pass', '["10","10","10"]'),
-	(3, 16, 1, 10.00, NULL, 8.00, 4.80, 'D', 'pass', '["10"]');
+	(1, 22, 1, 10.00, 10.00, 10.00, 10.00, 'A', 'pass', '["10","10","10"]'),
+	(2, 25, 1, 7.50, NULL, 5.00, 10.00, 'A', 'pass', '["10","5"]'),
+	(3, 16, 1, NULL, NULL, NULL, 4.80, 'D', 'pass', '[]');
 
 -- Dumping structure for table system_services.attendance
 CREATE TABLE IF NOT EXISTS `attendance` (
@@ -112,8 +112,8 @@ INSERT INTO `attendance` (`id`, `student_id`, `course_class_id`, `date`, `status
 	(28, 22, 1, '2025-11-25', 'present', 13),
 	(29, 22, 1, '2025-12-02', 'present', 14),
 	(30, 22, 1, '2025-12-09', 'present', 15),
-	(31, 25, 1, '2025-09-02', 'absent', 1),
-	(32, 25, 1, '2025-09-09', 'absent', 2),
+	(31, 25, 1, '2025-09-02', 'present', 1),
+	(32, 25, 1, '2025-09-09', 'present', 2),
 	(33, 25, 1, '2025-09-16', 'absent', 3),
 	(34, 25, 1, '2025-09-23', 'absent', 4),
 	(35, 25, 1, '2025-09-30', 'absent', 5),
@@ -555,7 +555,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table system_services.users: ~13 rows (approximately)
+-- Dumping data for table system_services.users: ~11 rows (approximately)
 DELETE FROM `users`;
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 	(1, 'admin123', '123', 'admin', 0),

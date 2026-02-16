@@ -30,7 +30,7 @@ $role = $_SESSION['user']['role'];
                 </thead>
                 <tbody>
                     <?php $stt = 1; ?>
-                    <?php while ($row = mysqli_fetch_assoc($students)): ?>
+                    <?php foreach ($students as $row): ?>
 
                         <?php
                         $credits = $row['subject_credits'] ?? 2;
@@ -96,7 +96,7 @@ $role = $_SESSION['user']['role'];
 
                         </tr>
 
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
 
                 </tbody>
             </table>
