@@ -1,6 +1,5 @@
 <h2>Quản lý</h2>
 <ul class="menu">
-
     <li class="<?= ($currentController=='admin' && $currentAction=='index') ? 'active' : '' ?>">
         <a href="index.php?controller=admin&action=index" class="menu-link">
             <i class="ri-bar-chart-fill"></i> Tổng quan
@@ -47,6 +46,5 @@
             <i class="bx bxs-book"></i> Danh Sách Học Phần
         </a>
     </li>
-
 </ul>
 

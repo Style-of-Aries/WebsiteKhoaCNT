@@ -2,17 +2,20 @@
 <?php
 ob_start();
 ?>
-<div class="container-admin">
-  <div class="user-header">
-    <h2>Danh sách người dùng</h2>
-    <table class="main-table">
+<div class="admin-table-wrapper">
+  <div class="table-toolbar">
+    <h2>Danh sách Người dùng</h2>
+    <input type="text" id="searchTable" placeholder="Tìm kiếm người dùng, tên đăng nhập, vai trò...">
+  </div>
+  <div class="table-wrap">
+    <table class="main-table" id="mainTable">
       <thead>
         <tr>
-          <th>STT</th>
-          <th>Tên đăng nhập</th>
-          <th>Mật khẩu</th>
-          <th>Vai trò</th>
-          <th>id Sinh viên/Giảng viên</th>
+          <th onclick="sortTable(0)">STT</th>
+          <th onclick="sortTable(1)">Tên đăng nhập</th>
+          <th onclick="sortTable(2)">Mật khẩu</th>
+          <th onclick="sortTable(3)">Vai trò</th>
+          <th onclick="sortTable(4)">ID tham chiếu</th>
         </tr>
       </thead>
       <tbody>
@@ -22,22 +25,23 @@ ob_start();
             <td><?= htmlspecialchars($user['username']) ?></td>
             <td><?= htmlspecialchars($user['password']) ?></td>
             <td><?= htmlspecialchars($user['role']) ?></td>
-            <td><?= htmlspecialchars($user['ref_id']) ?></td>
+            <td class="ref_id"><?= htmlspecialchars($user['ref_id']) ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
     </table>
   </div>
+</div>
 
 
 
-  <!-- <h2>Danh sách ngươi dùng</h2> -->
+<!-- <h2>Danh sách ngươi dùng</h2> -->
 
-  <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
+<!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
 
 
 
-  <?php
-  $content = ob_get_clean();
-  include "../views/admin/layout.php";
-  ?>
+<?php
+$content = ob_get_clean();
+include "../views/admin/layoutNew.php";
+?>

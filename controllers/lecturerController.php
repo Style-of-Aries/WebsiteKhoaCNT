@@ -32,7 +32,7 @@ class lecturerController
     {
         $lecturerId = $_SESSION['user']['ref_id'];
         $classes = $this->courseClassModel->getCourseClassGV($lecturerId);
-        require_once '../views/user/lecturer/listCourseClass.php';
+        require_once '../views/admin/lecturer/listCourseClass.php';
     }
     public function getStudentsWithExamConditions()
 {

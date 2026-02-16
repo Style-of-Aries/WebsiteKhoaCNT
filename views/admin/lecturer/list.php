@@ -3,32 +3,30 @@
 ob_start();
 ?>
 
-<div class="container-admin">
-  <div class="gv-header">
-    <h2>Danh sách giảng viên</h2>
-    <form method="GET" action="index.php" class="search-form">
-      <input type="hidden" name="controller" value="admin">
-      <input type="hidden" name="action" value="getAllGiangVien">
-      <input type="text" name="keyword" placeholder="Tìm theo tên, mã GV, email, khoa..."
-        value="<?= $_GET['keyword'] ?? '' ?>">
-      <button type="submit">
-        <i class="ri-search-line"></i> Tìm kiếm
-      </button>
-    </form>
+<div class="admin-table-wrapper">
+  <div class="table-toolbar">
+    <h2>Danh sách Giảng viên</h2>
+    <input type="text" id="searchTable" placeholder="Tìm kiếm giảng viên, mã giảng viên, email...">
+  </div>
 
-    <div class="add">
-      <a href="index.php?controller=admin&action=addGiangVien">
-        <i class="ri-add-circle-line"></i>
-        Thêm Giảng Viên Mới</a>
-    </div>
-    <table class="main-table">
+  <!-- <div class="add">
+    <a href="index.php?controller=admin&action=addGiangVien">
+      <i class="ri-add-circle-line"></i>
+      Thêm Giảng Viên Mới</a>
+  </div> -->
+  <button class="add-button" onclick="location.href='index.php?controller=admin&action=addGiangVien'">
+    <div class="sign">+</div>
+    <div class="text">Thêm Giảng Viên Mới</div>
+  </button>
+  <div class="table-wrap">
+    <table class="main-table" id="mainTable">
       <thead>
         <tr>
-          <th>STT</th>
-          <th>Tên giảng viên</th>
-          <th>Mã giảng viên</th>
-          <th>Email</th>
-          <th>Khoa</th>
+          <th onclick="sortTable(0)">STT</th>
+          <th onclick="sortTable(1)">Tên giảng viên</th>
+          <th onclick="sortTable(2)">Mã giảng viên</th>
+          <th onclick="sortTable(3)">Email</th>
+          <th onclick="sortTable(4)">Khoa</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -53,10 +51,11 @@ ob_start();
     </table>
   </div>
 </div>
+</div>
 
 
 
 <?php
 $content = ob_get_clean();
-include "../views/admin/layout.php";
+include "../views/admin/layoutNew.php";
 ?>

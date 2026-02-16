@@ -25,19 +25,78 @@
         <input type="text" name="email" placeholder="Email" required>
         <i class="fa-solid fa-envelope"></i>
       </div> -->
-      <div class="input-box">
-        <input
-          type="text"
-          name="username"
-          placeholder="Tài Khoản"
-          required
-          value="<?= isset($oldUsername) ? htmlspecialchars($oldUsername) : '' ?>">
-        <i class="fa-solid fa-envelope"></i>
+      <!-- From Uiverse.io by pharmacist-sabot -->
+      <!-- <div class="glitch-input-wrapper">
+        <div class="input-box">
+          <input type="username" name="username" id="holo-input" class="holo-input" placeholder="" required="" />
+          <label for="holo-input" class="input-label" data-text="Tên người dùng">Tên người dùng</label>
+
+          <div class="input-border"></div>
+          <div class="input-scanline"></div>
+          <div class="input-glow"></div>
+
+          <div class="input-data-stream">
+            <div class="stream-bar" style="--i: 0;"></div>
+            <div class="stream-bar" style="--i: 1;"></div>
+            <div class="stream-bar" style="--i: 2;"></div>
+            <div class="stream-bar" style="--i: 3;"></div>
+            <div class="stream-bar" style="--i: 4;"></div>
+            <div class="stream-bar" style="--i: 5;"></div>
+            <div class="stream-bar" style="--i: 6;"></div>
+            <div class="stream-bar" style="--i: 7;"></div>
+            <div class="stream-bar" style="--i: 8;"></div>
+            <div class="stream-bar" style="--i: 9;"></div>
+          </div>
+
+          <div class="input-corners">
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+          </div>
+        </div>
       </div>
 
+      <div class="glitch-input-wrapper">
+        <div class="input-box">
+          <input type="password" name="password" id="holo-input" class="holo-input" placeholder="" required="" />
+          <label for="holo-input" class="input-label" data-text="Mật khẩu">Mật khẩu</label>
+
+          <div class="input-border"></div>
+          <div class="input-scanline"></div>
+          <div class="input-glow"></div>
+
+          <div class="input-data-stream">
+            <div class="stream-bar" style="--i: 0;"></div>
+            <div class="stream-bar" style="--i: 1;"></div>
+            <div class="stream-bar" style="--i: 2;"></div>
+            <div class="stream-bar" style="--i: 3;"></div>
+            <div class="stream-bar" style="--i: 4;"></div>
+            <div class="stream-bar" style="--i: 5;"></div>
+            <div class="stream-bar" style="--i: 6;"></div>
+            <div class="stream-bar" style="--i: 7;"></div>
+            <div class="stream-bar" style="--i: 8;"></div>
+            <div class="stream-bar" style="--i: 9;"></div>
+          </div>
+
+          <div class="input-corners">
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+          </div>
+        </div>
+      </div> -->
+
 
       <div class="input-box">
-        <input type="password" name="password" placeholder="Mật khẩu" required>
+        <input required="" type="text" name="username" autocomplete="off" class="input">
+        <label class="user-label">Tên người dùng</label>
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div class="input-box">
+        <input required="" type="password" name="password" autocomplete="off" class="input">
+        <label class="user-label">Mật khẩu</label>
         <i class="fa-solid fa-lock"></i>
       </div>
 
@@ -48,7 +107,13 @@
         <a href="#">Quên mật khẩu?</a>
       </div>
 
-      <button type="submit" name="btn_login" class="btn">Đăng nhập</button>
+      <!-- <button type="submit" name="btn_login" class="btn">Đăng nhập</button> -->
+      <button type="submit" name="btn_login">
+        Đăng nhập
+        <div class="arrow-wrapper">
+          <div class="arrow"></div>
+        </div>
+      </button>
 
       <div class="register-link">
         <!-- <p>Bạn chưa có tài khoản? <a href="index.php?controller=auth&action=register">Đăng ký</a></p> -->

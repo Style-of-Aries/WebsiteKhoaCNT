@@ -46,6 +46,7 @@ class classSessionsModel extends database
         $endWeek = (int) $timetable['end_week'];
         $targetDow = (int) $timetable['day_of_week']; // 1 = Thứ 2
         $session = $timetable['session'];
+        $room = $timetable['room_id'];
         $semesterStart = $timetable['start_date'];
 
         // 🔹 Tìm ngày học đầu tiên đúng thứ trong tuần 1
@@ -75,8 +76,8 @@ class classSessionsModel extends database
 
                 $insertSql = "
                 INSERT INTO class_sessions 
-                (course_class_id, session_date, day_of_week, session, week_number)
-                VALUES ($courseClassId, '$sessionDate', $targetDow, '$session', $week)
+                (course_class_id, session_date, day_of_week, session, week_number,room_id)
+                VALUES ($courseClassId, '$sessionDate', $targetDow, '$session', $week,$room)
             ";
 
                 $this->__query($insertSql);
