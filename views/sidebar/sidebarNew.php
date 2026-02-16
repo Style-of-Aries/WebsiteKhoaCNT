@@ -1,6 +1,6 @@
 <?php
 // include __DIR__ .'./../../config/permission.php';
-require_once __DIR__ ."/../../services/PermissionService.php";
+require_once __DIR__ . "/../../services/PermissionService.php";
 $role = $_SESSION['user']['role'];
 // var_dump($role);
 // var_dump(PermissionService::has($role, 'attendance'));
@@ -49,14 +49,12 @@ $role = $_SESSION['user']['role'];
     <li class="<?= PermissionService::has($role, 'dashboard') ? 'dropdown' : 'locked' ?>">
         <a class="drop-btn" href="index.php?controller=admin&action=index">Trang chủ</a>
     </li>
-
+    <li class="<?= PermissionService::has($role, 'students') ? 'dropdown' : 'locked' ?>">
+        <a class="drop-btn" href="index.php?controller=admin&action=getAllUser">Người dùng</a>
+    </li>
     <li class="dropdown">
-        <a class="drop-btn">Quản lý ▸</a>
+        <a class="drop-btn">Đào tạo ▸</a>
         <ul class="submenu">
-
-            <li class="<?= PermissionService::has($role, 'users') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=admin&action=getAllUser">Người dùng</a>
-            </li>
 
             <li class="<?= PermissionService::has($role, 'departments') ? 'dropdown' : 'locked' ?>">
                 <a href="index.php?controller=department&action=getAllKhoa">Khoa</a>
@@ -74,27 +72,23 @@ $role = $_SESSION['user']['role'];
                 <a href="index.php?controller=course_classes&action=getAllHocPhan">Lớp học phần</a>
             </li>
 
-            <li class="<?= PermissionService::has($role, 'lecturers') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=admin&action=getAllGiangVien">Giảng viên</a>
-            </li>
-
         </ul>
     </li>
 
     <li class="<?= PermissionService::has($role, 'students') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn" href="index.php?controller=admin&action=getAllSinhVien">Quản lý hồ sơ sinh viên</a>
+        <a class="drop-btn" href="index.php?controller=admin&action=getAllSinhVien">Hồ sơ sinh viên</a>
     </li>
 
     <li class="dropdown">
-        <a class="drop-btn">Quản lý học tập ▸</a>
+        <a class="drop-btn">Kết quả học tập ▸</a>
         <ul class="submenu">
 
             <li class="<?= PermissionService::has($role, 'attendance') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=lecturer&action=getCourseClass">Điểm danh</a>
+                <a href="index.php?controller=lecturer&action=getCourseClass&type=attendance">Điểm danh</a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'score') ? 'dropdown' : 'locked' ?>">
-                <a href="#">Nhập điểm</a>
+                <a href="index.php?controller=lecturer&action=getCourseClass&type=score">Nhập điểm</a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'view_scores') ? 'dropdown' : 'locked' ?>">
@@ -105,7 +99,7 @@ $role = $_SESSION['user']['role'];
     </li>
 
     <li class="<?= PermissionService::has($role, 'timetable') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn">Quản lý thời khóa biểu</a>
+        <a class="drop-btn">Thời khóa biểu</a>
     </li>
 
 </ul>

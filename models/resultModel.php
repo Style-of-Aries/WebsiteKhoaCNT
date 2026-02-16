@@ -43,11 +43,11 @@ class resultModel extends database
     }
 
 
-    public function saveScore($studentId, $classId, $frequentJson, $process, $mid)
+    public function saveScore($studentId, $classId, $frequentJson, $process, $mid, $final, $role)
     {
-        // Convert NULL đúng SQL
         $processSql = ($process === null || $process === '') ? "NULL" : $process;
         $midSql = ($mid === null || $mid === '') ? "NULL" : $mid;
+        $finalSql = ($final === null || $final === '') ? "NULL" : $final;
 
         $check = $this->__query("
         SELECT id FROM academic_results
@@ -57,25 +57,46 @@ class resultModel extends database
     ");
 
         if (mysqli_num_rows($check) > 0) {
-            $sql = "
-            UPDATE academic_results
-            SET
-                frequent_scores = '$frequentJson',
-                process_score = $processSql,
-                midterm_score = $midSql
-            WHERE student_id = '$studentId'
-              AND course_class_id = '$classId'
-        ";
+
+            if ($role == 'lecturer') {
+
+                // 👨‍🏫 Giảng viên chỉ được sửa TX + giữa kỳ
+                $sql = "
+                UPDATE academic_results
+                SET
+                    frequent_scores = '$frequentJson',
+                    process_score   = $processSql,
+                    midterm_score   = $midSql
+                WHERE student_id = '$studentId'
+                  AND course_class_id = '$classId'
+            ";
+
+            } elseif ($role == 'exam_office') {
+
+                // 📝 Khảo thí chỉ được sửa điểm thi
+                $sql = "
+                UPDATE academic_results
+                SET
+                    final_exam_score = $finalSql
+                WHERE student_id = '$studentId'
+                  AND course_class_id = '$classId'
+            ";
+            }
+
         } else {
+
+            // Nếu chưa tồn tại thì insert đầy đủ
             $sql = "
             INSERT INTO academic_results
-            (student_id, course_class_id, frequent_scores, process_score, midterm_score)
-            VALUES ('$studentId', '$classId', '$frequentJson', $processSql, $midSql)
+            (student_id, course_class_id, frequent_scores, process_score, midterm_score, final_exam_score)
+            VALUES ('$studentId', '$classId', '$frequentJson', $processSql, $midSql, $finalSql)
         ";
         }
 
         return $this->__query($sql);
     }
+
+
 
 
 }

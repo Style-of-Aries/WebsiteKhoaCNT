@@ -7,14 +7,17 @@ ob_start();
 ?>
 
 
-<div class="container-admin">
-    <h2>Bảng điểm danh</h2>
+<div class="admin-table-wrapper">
 
+    <div class="table-toolbar">
+        <h2>📋 Danh sách sinh viên</h2>
+        <input type="text" id="searchTable" placeholder="Tìm kiếm sinh viên...">
+    </div>
     <form method="POST" action="index.php?controller=attendance&action=saveAttendance">
 
         <input type="hidden" name="course_class_id" value="<?= $_GET['course_class_id'] ?>">
-        <div class="table-wrapper">
-            <table class="attendance-table">
+        <div class="table-wrap">
+            <table class="attendance-table" id="mainTable">
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -79,10 +82,15 @@ ob_start();
                 </tbody>
             </table>
         </div>
-        <button type="submit" class="att-btn">💾 Lưu tất cả điểm danh</button>
+        <div class="att-action">
+            <button class="att-btn" type="submit"> 
+                <span>💾Lưu điểm danh</span>
+            </button>
+        </div>
+
 
     </form>
-
+</div>
 
     <?php
     $content = ob_get_clean();
