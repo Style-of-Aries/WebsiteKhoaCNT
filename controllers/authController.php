@@ -18,12 +18,13 @@ class authController
         $this->userModel = new userModel();
         $this->lecturerModel = new lecturerModel();
     }
-    
+
     public function login() //trang đăng nhập
     {
         $errorLogin = "";
         $oldUsername = "";
         include_once "./../views/auth/login.php";
+        // include_once "./../views/auth/loginNew.php";
     }
     // function xử lý chức năng đăng nhập
     public function auth_login()
@@ -39,7 +40,7 @@ class authController
             if ($user && trim($user['password']) === $password) {
                 // session_start();
                 $_SESSION['user'] = [
-                    'id'   => $user['id'],
+                    'id' => $user['id'],
                     'role' => $user['role'],
                     'ref_id' => $user['ref_id'],
                     'name' => $user['username'],
@@ -49,15 +50,6 @@ class authController
                     // $_SESSION['profile'] = $profile;
                     // include_once "./../views/user/profile.php";
                     header('Location: index.php?controller=student&action=profile');
-                } elseif ($user['role'] == 'lecturer') {
-                    $lecturer = $this->lecturerModel->getById($user['ref_id']);
-                    $_SESSION['profile'] = $lecturer;
-                    header('Location: index.php?controller=lecturer&action=index');
-                }  
-                 elseif ($user['role'] == 'training_office') {
-                    // $trainningOffice = $this->trainningOfficeModel->getById($user['ref_id']);
-                    // $_SESSION['profile'] = $trainningOffice;
-                    header('Location: index.php?controller=trainningOffice&action=getAll');
                 } else {
                     header('Location: index.php?controller=admin&action=index');
                 }

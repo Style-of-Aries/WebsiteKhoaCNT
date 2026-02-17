@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,7 @@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/authNew.css">
 </head>
-    
+
 <body>
     <header class="header">
         <nav class="navbar">
@@ -30,17 +31,25 @@
     <div class="container">
         <div class="content">
             <h2 class="logo"><i class='bx bxs-graduation'></i>HPC</h2>
-            
+
         </div>
 
         <div class="logreg-box">
             <div class="form-box login">
                 <form action="index.php?controller=auth&action=auth_login" method="post">
                     <h2>Sign In</h2>
-                    <div class="input-box">
-                        <span class="icon"><i class='bx bxs-user'></i></span>
-                        <input name="username" type="text" required>
-                        <label>Username</label>
+                    <!-- From Uiverse.io by liyaxu123 -->
+                    <div class="form-control">
+                        <input name="username" type="text" required="">
+                        <label>
+                            <span style="transition-delay:0ms">U</span><span style="transition-delay:50ms">s</span><span
+                                style="transition-delay:100ms">e</span><span
+                                style="transition-delay:150ms">r</span><span
+                                style="transition-delay:200ms">n</span><span
+                                style="transition-delay:250ms">a</span><span
+                                style="transition-delay:300ms">m</span><span style="transition-delay:350ms">e</span>
+                        </label>
+                        <span class="icon"><i class='bx bxs-lock-alt'></i></span>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class='bx bxs-lock-alt'></i></span>
@@ -52,6 +61,7 @@
                         <a href="#">Forgot Password?</a>
                     </div>
                     <button type="submit" name="btn_login" class="btn">Login</button>
+                    
                     <!-- <div class="login-register">
                         <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
                     </div> -->
@@ -85,4 +95,5 @@
     </div>
     <!-- <script src="script.js"></script> -->
 </body>
+
 </html>

@@ -93,13 +93,15 @@ $currentAction = $_GET['action'] ?? '';
 
     </header>
 
+    <div class="container"></div>
     <div class="layout">
         <!-- CONTENT -->
         <main class="portal-content">
             <?php echo $content ?? '' ?>
         </main>
     </div>
-
+    <script src="<?= BASE_URL ?>js/user.js"></script>
 </body>
+
 
 </html>
