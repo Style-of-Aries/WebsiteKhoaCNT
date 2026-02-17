@@ -13,17 +13,30 @@ class course_classesModel extends database
     {
         $sql = "
             SELECT 
-            cc.id,
-            cc.class_code,
-            s.name AS subject_name,
-            l.full_name AS lecturer_name,
-            se.name AS semester_name,
-            cc.max_students
-        FROM course_classes cc
-        JOIN subjects s ON cc.subject_id = s.id
-        JOIN lecturer l ON cc.lecturer_id = l.id
-        JOIN semesters se ON cc.semester_id = se.id
-        ORDER BY semester_name, cc.class_code ASC
+    cc.id,
+    cc.class_code,
+    s.name AS subject_name,
+    l.full_name AS lecturer_name,
+    se.name AS semester_name,
+    cc.max_students,
+    COUNT(scc.student_id) AS total_students
+FROM course_classes cc
+JOIN subjects s ON cc.subject_id = s.id
+JOIN lecturer l ON cc.lecturer_id = l.id
+JOIN semesters se ON cc.semester_id = se.id
+LEFT JOIN student_course_classes scc 
+       ON scc.course_class_id = cc.id
+GROUP BY 
+    cc.id,
+    cc.class_code,
+    s.name,
+    l.full_name,
+    se.name,
+    cc.max_students
+ORDER BY 
+    se.name ASC,
+    cc.class_code ASC;
+
         ";
 
         return $this->__query($sql);

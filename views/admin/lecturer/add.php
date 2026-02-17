@@ -45,5 +45,6 @@ ob_start();
 </form>
 <?php
 $content = ob_get_clean();
-include "../views/admin/layout.php";
+include "../views/admin/layoutNew.php";
 ?>
+

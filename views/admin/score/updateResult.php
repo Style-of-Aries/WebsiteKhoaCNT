@@ -1,89 +1,110 @@
 <?php
 ob_start();
+$role = $_SESSION['user']['role'];
+
 ?>
 
-<div class="container-admin">
-    <h2>Danh sách sinh viên</h2>
+<div class="admin-table-wrapper">
+
+    <div class="table-toolbar">
+        <h2>📋 Danh sách sinh viên</h2>
+        <input type="text" id="searchTable" placeholder="Tìm kiếm sinh viên...">
+    </div>
 
     <form method="post" action="index.php?controller=lecturer&action=saveScores">
 
-        <input type="hidden" name="class_id" value="<?= $_GET['class_id'] ?>">
+        <input type="hidden" name="class_id" value="<?= $_GET['course_class_id'] ?>">
 
-        <table class="main-table">
-            <thead>
-                <tr>
-                    <th>MSSV</th>
-                    <th>Họ tên</th>
-                    <th>Ngày sinh</th>
-                    <th>Điểm thường xuyên</th>
-                    <th>Điểm định kỳ</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = mysqli_fetch_assoc($students)): ?>
-
-                    <?php
-                    // Lấy số tín chỉ
-                    $credits = $row['subject_credits'] ?? 2;
-
-                    // Quy tắc: tín chỉ → số điểm TX
-                    if ($credits <= 2) {
-                        $numFrequentScores = 2;
-                    } elseif ($credits == 3) {
-                        $numFrequentScores = 3;
-                    } else {
-                        $numFrequentScores = 4;
-                    }
-                    ?>
-
+        <div class="table-wrap">
+            <table class="main-table" id="mainTable">
+                <thead>
                     <tr>
-                        <td><?= htmlspecialchars($row['student_code']) ?></td>
-                        <td><?= htmlspecialchars($row['full_name']) ?></td>
-                        <td><?= htmlspecialchars($row['date_of_birth']) ?></td>
+                        <th>STT</th>
+                        <th>MSSV</th>
+                        <th>Họ tên</th>
+                        <th>Ngày sinh</th>
+                        <th>Điểm TX</th>
+                        <th>Điểm ĐK</th>
+                        <th>Điểm thi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $stt = 1; ?>
+                    <?php foreach ($students as $row): ?>
 
-                        <!-- Điểm thường xuyên -->
                         <?php
+                        $credits = $row['subject_credits'] ?? 2;
+
+                        if ($credits <= 2)
+                            $numFrequentScores = 2;
+                        elseif ($credits == 3)
+                            $numFrequentScores = 3;
+                        else
+                            $numFrequentScores = 4;
+
                         $frequentScores = json_decode($row['frequent_scores'] ?? '[]', true);
-                        // echo '<pre>';
-                        // print_r($row['frequent_scores']);
-                        // echo '</pre>';
+                        $midScore = $row['midterm_score'];
+                        $midValue = ($midScore === null) ? '' : round($midScore, 1);
+                        $finalScore = $row['final_exam_score'];
+                        $finalValue = ($finalScore === null) ? '' : round($finalScore, 1);
                         ?>
 
-                        <td>
-                            <div class="input-frequentScore">
-                                <?php for ($i = 1; $i <= $numFrequentScores; $i++): ?>
-                                    <input type="number" name="scores[<?= $row['student_id'] ?>][frequent][]"
-                                        value="<?= $frequentScores[$i - 1] ?? '' ?>" step="0.1" min="0" max="10"
-                                        class="score-input" placeholder="--" inputmode="decimal" title="Điểm từ 0 đến 10"
-                                        oninput="
-                                        if (this.value === '') return;
-                                        if (this.value < 0) this.value = 0;
-                                        if (this.value > 10) this.value = 10;
-                                      ">
-                                <?php endfor; ?>
-                            </div>
-                        </td>
+                        <tr>
+                            <td><?= $stt++ ?></td>
+                            <td><?= htmlspecialchars($row['student_code']) ?></td>
+                            <td><?= htmlspecialchars($row['full_name']) ?></td>
+                            <td><?= htmlspecialchars($row['date_of_birth']) ?></td>
 
-                        <!-- Điểm định kỳ -->
-                        <td>
-                            <?php
-                            $midScore = $row['midterm_score'];
-                            $midValue = ($midScore === null) ? '' : round($midScore, 1);
-                            ?>
+                            <!-- Điểm thường xuyên -->
+                            <td>
+                                <div class="input-frequentScore">
+                                    <?php for ($i = 1; $i <= $numFrequentScores; $i++): ?>
 
-                            <input type="number" name="scores[<?= $row['student_id'] ?>][mid]" value="<?= $midValue ?>"
-                                step="0.1" min="0" max="10" class="score-input" placeholder="--" inputmode="decimal"
-                                title="Điểm từ 0 đến 10">
-                        </td>
-                    </tr>
+                                        <?php if ($role == 'lecturer'): ?>
+                                            <input type="number" name="scores[<?= $row['student_id'] ?>][frequent][]"
+                                                value="<?= $frequentScores[$i - 1] ?? '' ?>" step="0.1" min="0" max="10"
+                                                class="score-input">
+                                        <?php else: ?>
+                                            <input type="number" value="<?= $frequentScores[$i - 1] ?? '' ?>" readonly
+                                                class="score-input disabled-input">
+                                        <?php endif; ?>
 
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+                                    <?php endfor; ?>
+                                </div>
+                            </td>
 
-        <div class="save-score-wrapper">
-            <button type="submit" class="btn-save-score">
-                💾 Lưu điểm
+                            <!-- Điểm định kỳ -->
+                            <td>
+                                <?php if ($role == 'lecturer'): ?>
+                                    <input type="number" name="scores[<?= $row['student_id'] ?>][mid]" value="<?= $midValue ?>"
+                                        step="0.1" min="0" max="10" class="score-input">
+                                <?php else: ?>
+                                    <input type="number" value="<?= $midValue ?>" readonly class="score-input disabled-input">
+                                <?php endif; ?>
+                            </td>
+
+
+                            <!-- Điểm thi -->
+                            <td>
+                                <?php if ($role == 'exam_office'): ?>
+                                    <input type="number" name="scores[<?= $row['student_id'] ?>][final]"
+                                        value="<?= $finalValue ?>" step="0.1" min="0" max="10" class="score-input final-input">
+                                <?php else: ?>
+                                    <input type="number" value="<?= $finalValue ?>" readonly class="score-input disabled-input">
+                                <?php endif; ?>
+                            </td>
+
+                        </tr>
+
+                    <?php endforeach; ?>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="save-score-wrapper">    
+            <button class="att-btn" type="submit"> 
+                <span>💾Lưu điểm</span>
             </button>
         </div>
 
