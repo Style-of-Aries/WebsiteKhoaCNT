@@ -1,6 +1,7 @@
 <?php
 ob_start();
 $type = $_GET['type'] ?? 'attendance';
+$role = $_SESSION['user']['role'];
 
 if ($type == 'attendance') {
     $url = "index.php?controller=attendance&action=sessions";

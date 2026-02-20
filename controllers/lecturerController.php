@@ -141,7 +141,7 @@ class lecturerController
         $role = $_SESSION['user']['role'];
 
         // 🔐 Phân quyền
-        if (!in_array($role, ['lecturer', 'exam_office'])) {
+        if (!in_array($role, ['admin','lecturer', 'exam_office'])) {
             $_SESSION['error'] = 'Bạn không có quyền truy cập';
             header('Location: index.php');
             exit;

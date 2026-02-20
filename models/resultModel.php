@@ -58,7 +58,7 @@ class resultModel extends database
 
         if (mysqli_num_rows($check) > 0) {
 
-            if ($role == 'lecturer') {
+            if ($role == 'lecturer' || $role == 'admin') {
 
                 // 👨‍🏫 Giảng viên chỉ được sửa TX + giữa kỳ
                 $sql = "
@@ -71,7 +71,7 @@ class resultModel extends database
                   AND course_class_id = '$classId'
             ";
 
-            } elseif ($role == 'exam_office') {
+            } elseif ($role == 'exam_office' || $role == 'admin') {
 
                 // 📝 Khảo thí chỉ được sửa điểm thi
                 $sql = "

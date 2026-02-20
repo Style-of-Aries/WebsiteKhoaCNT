@@ -125,3 +125,140 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 });
+
+const dropboxAdmin = document.querySelector(".dropboxAdmin");
+const ctx = document.getElementById("studentChart");
+
+new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: ["CNTT1", "CNTT2", "KT01", "QTKD"],
+    datasets: [
+      {
+        label: "Nam",
+        data: [30, 27, 20, 10],
+        backgroundColor: "#3E7EDB",
+      },
+      {
+        label: "Nữ",
+        data: [10, 7, 6, 15],
+        backgroundColor: "#4CAF50",
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: "top" },
+    },
+  },
+});
+
+const avatar = document.querySelector(".avatar");
+avatar.addEventListener("click", function (e) {
+  e.stopPropagation();
+  dropboxAdmin.classList.toggle("active");
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const icons = document.querySelectorAll(".info-item i");
+  let tooltip;
+
+  icons.forEach(icon => {
+    icon.addEventListener("mouseenter", function (e) {
+      const text = this.dataset.label;
+      if (!text) return;
+
+      tooltip = document.createElement("div");
+      tooltip.className = "tooltip";
+      tooltip.innerText = text;
+      document.body.appendChild(tooltip);
+
+      const rect = this.getBoundingClientRect();
+      tooltip.style.left = rect.left + rect.width / 2 + "px";
+      tooltip.style.top = rect.top - 10 + window.scrollY + "px";
+      tooltip.style.transform = "translate(-50%, -100%)";
+      tooltip.style.opacity = 1;
+    });
+
+    icon.addEventListener("mouseleave", function () {
+      if (tooltip) {
+        tooltip.remove();
+        tooltip = null;
+      }
+    });
+  });
+});
+document.querySelector('.fake-file button').addEventListener('click', function () {
+  document.getElementById('realFile').click();
+});
+
+function updateFileName(input) {
+  if (input.files && input.files[0]) {
+    // đổi tên file
+    document.getElementById('fileName').innerText = input.files[0].name;
+
+    // preview ảnh avatar
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = document.getElementById('avatarPreview');
+      if (img) {
+        img.src = e.target.result;
+      }
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+document.querySelectorAll(".more-btn").forEach(btn => {
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+
+    const parent = this.closest(".more-actions");
+
+    // đóng dropdown khác
+    document.querySelectorAll(".more-actions").forEach(menu => {
+      if (menu !== parent) menu.classList.remove("active");
+    });
+
+    // toggle menu hiện tại
+    parent.classList.toggle("active");
+  });
+});
+
+// click ra ngoài => đóng menu
+document.addEventListener("click", () => {
+  document.querySelectorAll(".more-actions").forEach(menu => {
+    menu.classList.remove("active");
+  });
+});
+function addSchedule() {
+
+    let wrapper = document.getElementById("schedule-wrapper");
+    let firstItem = wrapper.querySelector(".schedule-item");
+
+    let clone = firstItem.cloneNode(true);
+
+    // Reset value
+    clone.querySelectorAll("select").forEach(select => {
+        select.selectedIndex = 0;
+    });
+
+    // Thêm nút X nếu chưa có
+    if (!clone.querySelector("button")) {
+        let btn = document.createElement("button");
+        btn.type = "button";
+        btn.innerText = "X";
+        btn.onclick = function () {
+            removeSchedule(this);
+        };
+        clone.appendChild(btn);
+    }
+
+    wrapper.appendChild(clone);
+}
+
+function removeSchedule(btn) {
+    btn.parentElement.remove();
+}
+

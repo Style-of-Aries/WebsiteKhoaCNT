@@ -60,7 +60,7 @@ $role = $_SESSION['user']['role'];
                                 <div class="input-frequentScore">
                                     <?php for ($i = 1; $i <= $numFrequentScores; $i++): ?>
 
-                                        <?php if ($role == 'lecturer'): ?>
+                                        <?php if ($role == 'lecturer' || $role == 'admin'): ?>
                                             <input type="number" name="scores[<?= $row['student_id'] ?>][frequent][]"
                                                 value="<?= $frequentScores[$i - 1] ?? '' ?>" step="0.1" min="0" max="10"
                                                 class="score-input">
@@ -75,7 +75,7 @@ $role = $_SESSION['user']['role'];
 
                             <!-- Điểm định kỳ -->
                             <td>
-                                <?php if ($role == 'lecturer'): ?>
+                                <?php if ($role == 'lecturer' || $role == 'admin'): ?>
                                     <input type="number" name="scores[<?= $row['student_id'] ?>][mid]" value="<?= $midValue ?>"
                                         step="0.1" min="0" max="10" class="score-input">
                                 <?php else: ?>
@@ -86,7 +86,7 @@ $role = $_SESSION['user']['role'];
 
                             <!-- Điểm thi -->
                             <td>
-                                <?php if ($role == 'exam_office'): ?>
+                                <?php if ($role == 'exam_office' || $role == 'admin'): ?>
                                     <input type="number" name="scores[<?= $row['student_id'] ?>][final]"
                                         value="<?= $finalValue ?>" step="0.1" min="0" max="10" class="score-input final-input">
                                 <?php else: ?>

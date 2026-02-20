@@ -14,6 +14,10 @@ return [
         'departments', 'subjects', 'classes', 'course_classes', 'timetable', 'dashboard'
     ],
 
+    'student_affairs' => [
+        'students', 'dashboard'
+    ],
+
     'exam_office' => [
         'score', 'view_scores', 'dashboard'
     ]
