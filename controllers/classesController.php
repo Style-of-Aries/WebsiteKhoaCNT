@@ -7,18 +7,20 @@ require_once "./../models/classesModel.php";
 require_once "./../models/departmentModel.php";
 class classesController
 {
+    private $connect;
     private $userModel;
     private $studentModel;
     private $lecturerModel;
     private $classesModel;
     private $departmentModel;
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->classesModel = new classesModel();
-        $this->studentModel = new studentModel();
-        $this->userModel = new userModel();
-        $this->lecturerModel = new lecturerModel();
-        $this->departmentModel = new departmentModel();
+        $this->connect = $connect;
+        $this->classesModel = new classesModel($connect);
+        $this->studentModel = new studentModel($connect);
+        $this->userModel = new userModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
+        $this->departmentModel = new departmentModel($connect);
     }
 
     public function getAllLopHoc()

@@ -9,21 +9,22 @@ require_once '../models/resultModel.php';
 require_once '../models/trainningOfficeModel.php';
 class trainningOfficeController
 {
-    private $resultModel;
+    private $resultModel;private $connect;
     private $courseClassModel;
     private $lecturerModel;
     private $studentModel;
     private $timetableModel;
     private $trainningOfficeModel;
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->resultModel = new resultModel();
-        $this->courseClassModel = new course_classesModel();
-        $this->lecturerModel = new lecturerModel();
-        $this->studentModel = new studentModel();
-        $this->timetableModel = new timetableModel();
-        $this->trainningOfficeModel = new trainningOfficeModel();
-        $this->studentModel = new studentModel();
+        $this->connect = $connect;
+        $this->resultModel = new resultModel($connect);
+        $this->courseClassModel = new course_classesModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
+        $this->studentModel = new studentModel($connect);
+        $this->timetableModel = new timetableModel($connect);
+        $this->trainningOfficeModel = new trainningOfficeModel($connect);
+        $this->studentModel = new studentModel($connect);
     }
 
 

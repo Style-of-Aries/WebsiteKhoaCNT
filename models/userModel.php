@@ -1,13 +1,18 @@
 <?php
 require_once "./../config/database.php";
-class userModel extends database
+class userModel
 {
 
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
 
     // lấy user theo username
@@ -75,9 +80,5 @@ class userModel extends database
     {
         $sql = "UPDATE users SET username='$username',password = '$password' WHERE ref_id='$id'";
         $query = $this->__query($sql);
-    }
-    public function __query($sql)
-    {
-        return mysqli_query($this->connect, $sql);
     }
 }

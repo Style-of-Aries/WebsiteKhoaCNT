@@ -10,7 +10,6 @@ document.getElementById("searchTable").addEventListener("keyup", function () {
 });
 
 let sortDirection = true;
-
 function sortTable(colIndex) {
   let tbody = document.querySelector("#mainTable tbody");
   let rows = Array.from(tbody.rows);
@@ -164,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const icons = document.querySelectorAll(".info-item i");
   let tooltip;
 
-  icons.forEach(icon => {
+  icons.forEach((icon) => {
     icon.addEventListener("mouseenter", function (e) {
       const text = this.dataset.label;
       if (!text) return;
@@ -189,19 +188,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-document.querySelector('.fake-file button').addEventListener('click', function () {
-  document.getElementById('realFile').click();
-});
+document
+  .querySelector(".fake-file button")
+  .addEventListener("click", function () {
+    document.getElementById("realFile").click();
+  });
 
 function updateFileName(input) {
   if (input.files && input.files[0]) {
     // đổi tên file
-    document.getElementById('fileName').innerText = input.files[0].name;
+    document.getElementById("fileName").innerText = input.files[0].name;
 
     // preview ảnh avatar
     const reader = new FileReader();
     reader.onload = function (e) {
-      const img = document.getElementById('avatarPreview');
+      const img = document.getElementById("avatarPreview");
       if (img) {
         img.src = e.target.result;
       }
@@ -210,14 +211,14 @@ function updateFileName(input) {
   }
 }
 
-document.querySelectorAll(".more-btn").forEach(btn => {
+document.querySelectorAll(".more-btn").forEach((btn) => {
   btn.addEventListener("click", function (e) {
     e.stopPropagation();
 
     const parent = this.closest(".more-actions");
 
     // đóng dropdown khác
-    document.querySelectorAll(".more-actions").forEach(menu => {
+    document.querySelectorAll(".more-actions").forEach((menu) => {
       if (menu !== parent) menu.classList.remove("active");
     });
 
@@ -228,37 +229,37 @@ document.querySelectorAll(".more-btn").forEach(btn => {
 
 // click ra ngoài => đóng menu
 document.addEventListener("click", () => {
-  document.querySelectorAll(".more-actions").forEach(menu => {
+  document.querySelectorAll(".more-actions").forEach((menu) => {
     menu.classList.remove("active");
   });
 });
 function addSchedule() {
+  let wrapper = document.getElementById("schedule-wrapper");
+  let firstItem = wrapper.querySelector(".schedule-item");
 
-    let wrapper = document.getElementById("schedule-wrapper");
-    let firstItem = wrapper.querySelector(".schedule-item");
+  let clone = firstItem.cloneNode(true);
 
-    let clone = firstItem.cloneNode(true);
+  // Reset value
+  clone.querySelectorAll("select").forEach((select) => {
+    select.selectedIndex = 0;
+  });
 
-    // Reset value
-    clone.querySelectorAll("select").forEach(select => {
-        select.selectedIndex = 0;
-    });
+  // Thêm nút X nếu chưa có
+  if (!clone.querySelector("button")) {
+    let btn = document.createElement("button");
+    btn.type = "button";
+    btn.innerText = "X";
+    btn.onclick = function () {
+      removeSchedule(this);
+    };
+    clone.appendChild(btn);
+  }
 
-    // Thêm nút X nếu chưa có
-    if (!clone.querySelector("button")) {
-        let btn = document.createElement("button");
-        btn.type = "button";
-        btn.innerText = "X";
-        btn.onclick = function () {
-            removeSchedule(this);
-        };
-        clone.appendChild(btn);
-    }
-
-    wrapper.appendChild(clone);
+  wrapper.appendChild(clone);
 }
 
 function removeSchedule(btn) {
-    btn.parentElement.remove();
+  btn.parentElement.remove();
 }
+
 

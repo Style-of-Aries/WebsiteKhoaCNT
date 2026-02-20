@@ -6,14 +6,16 @@ require_once '../models/attendanceModel.php';
 require_once '../models/classSessionsModel.php';
 class attendanceController
 {
+    private $connect;
     private $attendanceModel;
     private $courseClassesModel;
     private $classSessionsModel;
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->attendanceModel = new AttendanceModel();
-        $this->courseClassesModel = new course_classesModel();
-        $this->classSessionsModel = new classSessionsModel();
+        $this->connect = $connect;
+        $this->attendanceModel = new AttendanceModel($connect);
+        $this->courseClassesModel = new course_classesModel($connect);
+        $this->classSessionsModel = new classSessionsModel($connect);
     }
     public function sessions()
     {

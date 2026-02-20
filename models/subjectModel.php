@@ -1,13 +1,18 @@
 <?php
 require_once "./../config/database.php";
-class subjectModel extends database
+class subjectModel
 {
 
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
     public function getAll()
     {
@@ -79,9 +84,5 @@ class subjectModel extends database
         $sql = "SELECT * FROM subjects WHERE id='$id'";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
-    }
-    public function __query($sql)
-    {
-        return mysqli_query($this->connect, $sql);
     }
 }

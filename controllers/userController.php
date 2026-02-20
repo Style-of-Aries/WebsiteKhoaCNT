@@ -3,10 +3,11 @@ require_once '../models/userModel.php';
 require_once '../config/config.php';
 class userController
 {
-    private $userModel;
-    public function __construct()
+    private $userModel;private $connect;
+    public function __construct($connect)
     {
-        $this->userModel = new UserModel();
+        $this->connect = $connect;
+        $this->userModel = new UserModel($connect);
     }
     
 }

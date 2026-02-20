@@ -1,12 +1,17 @@
 <?php
 require "../config/database.php";
-class adminModel extends database
+class adminModel
 {
-    private $connect;
+   protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
 
    

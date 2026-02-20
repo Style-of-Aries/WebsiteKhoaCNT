@@ -29,7 +29,7 @@ ob_start();
           <th onclick="sortTable(2)">Môn học</th>
           <th onclick="sortTable(3)">Giảng viên</th>
           <th onclick="sortTable(4)">Học kỳ</th>
-          <th onclick="sortTable(5)">Số lượng tối đa</th>
+          <th onclick="sortTable(5)">Sĩ số</th>
           <th class="action">Hành động</th>
         </tr>
       </thead>
@@ -41,7 +41,11 @@ ob_start();
             <td><?= htmlspecialchars($subject['subject_name']) ?></td>
             <td><?= htmlspecialchars($subject['lecturer_name']) ?></td>
             <td><?= htmlspecialchars($subject['semester_name']) ?></td>
-            <td><?= htmlspecialchars($subject['max_students']) ?></td>
+            <td>
+              <?= htmlspecialchars($subject['total_students']) ?>
+              /
+              <?= htmlspecialchars($subject['max_students']) ?>
+            </td>
 
             <td class="action">
               <!-- <a href="index.php?controller=course_classes&action=getAllResult&id=<?= $subject['id'] ?>&user=<?= $subject['subject_name'] ?>"

@@ -1,14 +1,15 @@
 <?php
 require_once "./../config/database.php";
-class resultModel extends database
+class resultModel
 {
-    private $connect;
-    public function __construct()
+    protected $connect;
+
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
     }
 
-    public function __query($sql)
+    protected function __query($sql)
     {
         return mysqli_query($this->connect, $sql);
     }

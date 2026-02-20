@@ -1,13 +1,18 @@
 <?php
 require_once "./../config/database.php";
-class course_classesModel extends database
+class course_classesModel
 {
 
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
     public function getAll()
     {
@@ -149,10 +154,6 @@ ORDER BY
         $sql = "SELECT * FROM course_classes WHERE id='$id'";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
-    }
-    public function __query($sql)
-    {
-        return mysqli_query($this->connect, $sql);
     }
 
     public function getCourseClassSV($studentId)

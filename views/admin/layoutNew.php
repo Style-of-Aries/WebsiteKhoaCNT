@@ -18,20 +18,30 @@ require_once __DIR__ . "/../../config/config.php";
 <body>
     <div class="layout">
         <div class="flash-message">
-            <?php if (isset($_SESSION['success'])): ?>
-                <div class="alert alert-success" id="autoHideAlert">
-                    <?= htmlspecialchars($_SESSION['success']) ?>
-                </div>
-                <?php unset($_SESSION['success']); ?>
-            <?php endif; ?>
 
-            <?php if (isset($_SESSION['error'])): ?>
-                <div class="alert alert-error" id="autoHideAlert">
-                    <?= htmlspecialchars($_SESSION['error']) ?>
-                </div>
-                <?php unset($_SESSION['error']); ?>
-            <?php endif; ?>
+            <?php
+            $message = '';
+            $type = '';
+
+            if (isset($_SESSION['success'])) {
+                $message = $_SESSION['success'];
+                $type = 'alert-success';
+            } elseif (isset($_SESSION['error'])) {
+                $message = $_SESSION['error'];
+                $type = 'alert-error';
+            }
+            ?>
+
+            <div id="autoHideAlert" class="alert <?= $type ?> <?= empty($message) ? 'hide' : '' ?>">
+                <span id="alertMessage">
+                    <?= htmlspecialchars($message) ?>
+                </span>
+            </div>
+
         </div>
+
+        <?php unset($_SESSION['success'], $_SESSION['error']); ?>
+
 
         <div class="header">
             <div class="avatar">
@@ -63,7 +73,11 @@ require_once __DIR__ . "/../../config/config.php";
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="<?= BASE_URL ?>js/adminNew.js"></script>
+    <!-- <script src="<?= BASE_URL ?>js/adminNew.js"></script> -->
+    <?php if ($_GET['controller'] === 'lecturer' && $_GET['action'] === 'updateResultByCourseClass'): ?>
+        <script src="<?= BASE_URL ?>js/validateScore.js"></script>
+    <?php endif; ?>
+    <script src="<?= BASE_URL ?>js/layoutNew.js"></script>
 </body>
 
 </html>

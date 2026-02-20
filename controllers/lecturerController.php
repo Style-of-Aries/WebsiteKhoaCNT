@@ -5,18 +5,29 @@ require_once '../models/course_classesModel.php';
 require_once '../models/timetableModel.php';
 require_once '../config/config.php';
 require_once '../models/resultModel.php';
+require_once '../models/scoreComponentsModel.php';
+require_once '../models/studentModel.php';
+require_once '../models/studentComponentScoresModel.php';
 class lecturerController
 {
     private $resultModel;
+    private $connect;
     private $courseClassModel;
     private $lecturerModel;
+    private $studentModel;
+    private $studentComponentScoresModel;
     private $timetableModel;
-    public function __construct()
+    private $scoreComponentsModel;
+    public function __construct($connect)
     {
-        $this->resultModel = new resultModel();
-        $this->courseClassModel = new course_classesModel();
-        $this->lecturerModel = new lecturerModel();
-        $this->timetableModel = new timetableModel();
+        $this->connect = $connect;
+        $this->studentModel = new studentModel($connect);
+        $this->studentComponentScoresModel = new studentComponentScoresModel($connect);
+        $this->resultModel = new resultModel($connect);
+        $this->courseClassModel = new course_classesModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
+        $this->timetableModel = new timetableModel($connect);
+        $this->scoreComponentsModel = new scoreComponentsModel($connect);
     }
 
 
@@ -83,8 +94,13 @@ class lecturerController
             die('Thiếu course_class_id');
         }
         $classId = $_GET['course_class_id'];
-        $students = $this->courseClassModel->updateResultByCourseClass($classId);
-        require_once "./../views/admin/score/updateResult.php";
+        // $students = $this->courseClassModel->updateResultByCourseClass($classId);
+        $students = $this->courseClassModel->getStudents($classId);
+        $components = $this->scoreComponentsModel->getByCourseClass($classId);
+        $scores = $this->studentComponentScoresModel->getScores($classId);
+        // require_once "./../views/admin/score/updateResult.php";
+        require_once "./../views/admin/score/enterScoreNew.php";
+
     }
 
     // public function saveScores()
@@ -141,7 +157,7 @@ class lecturerController
         $role = $_SESSION['user']['role'];
 
         // 🔐 Phân quyền
-        if (!in_array($role, ['admin','lecturer', 'exam_office'])) {
+        if (!in_array($role, ['admin', 'lecturer', 'exam_office'])) {
             $_SESSION['error'] = 'Bạn không có quyền truy cập';
             header('Location: index.php');
             exit;
@@ -225,6 +241,96 @@ class lecturerController
         header("Location: index.php?controller=lecturer&action=updateResultByCourseClass&course_class_id=$classId");
         exit;
     }
+
+    public function saveScoresNew()
+    {
+
+        if (!isset($_SESSION['user'])) {
+            $_SESSION['error'] = "Bạn chưa đăng nhập!";
+            header("Location: index.php");
+            exit;
+        }
+
+        $role = $_SESSION['user']['role'];
+        $course_class_id = $_POST['course_class_id'];
+        if (!in_array($role, ['admin', 'lecturer', 'exam_office'])) {
+            $_SESSION['error'] = "Bạn không có quyền!";
+            header("Location: index.php?controller=lecturer&action=updateResultByCourseClass&course_class_id=$course_class_id");
+            exit;
+        }
+
+        if (!isset($_POST['scores']) || !is_array($_POST['scores'])) {
+            $_SESSION['error'] = "Không có dữ liệu điểm!";
+            header("Location: index.php?controller=lecturer&action=updateResultByCourseClass&course_class_id=$course_class_id");
+            exit;
+        }
+
+        $errors = [];
+        $successCount = 0;
+
+        mysqli_begin_transaction($this->connect);
+
+        foreach ($_POST['scores'] as $studentId => $components) {
+
+            if (!ctype_digit((string) $studentId)) {
+                $errors[] = "Student ID không hợp lệ: $studentId";
+                continue;
+            }
+
+            if (!$this->studentModel->studentExists($studentId)) {
+                $errors[] = "Sinh viên không tồn tại: $studentId";
+                continue;
+            }
+
+            foreach ($components as $componentId => $scoreValue) {
+
+                if ($scoreValue === '')
+                    continue;
+
+                if (!ctype_digit((string) $componentId)) {
+                    $errors[] = "Component ID không hợp lệ: $componentId";
+                    continue;
+                }
+
+                $component = $this->scoreComponentsModel->getComponentById($componentId);
+                if (!$component) {
+                    $errors[] = "Thành phần điểm không tồn tại";
+                    continue;
+                }
+
+                if (!$this->studentComponentScoresModel->canEditComponent($role, $component['type'])) {
+                    $errors[] = "Không có quyền nhập {$component['type']}";
+                    continue;
+                }
+
+                if (!preg_match('/^(10|[0-9](\.[0-9])?)$/', $scoreValue)) {
+                    $errors[] = "Điểm không hợp lệ (SV: $studentId)";
+                    continue;
+                }
+
+                $scoreValue = round((float) $scoreValue, 1);
+
+                if (!$this->studentComponentScoresModel->saveScore($studentId, $componentId, $scoreValue)) {
+                    $errors[] = "Lỗi khi lưu SV: $studentId";
+                    continue;
+                }
+
+                $successCount++;
+            }
+        }
+
+        if (!empty($errors)) {
+            mysqli_rollback($this->connect);
+            $_SESSION['error'] = implode("<br>", $errors);
+        } else {
+            mysqli_commit($this->connect);
+            $_SESSION['success'] = "Đã lưu $successCount điểm!";
+        }
+
+        header("Location: index.php?controller=lecturer&action=updateResultByCourseClass&course_class_id=$course_class_id");
+        exit;
+    }
+
 
 
 
