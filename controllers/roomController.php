@@ -13,7 +13,7 @@ require_once "./../models/roomModel.php";
 
 class timetableController
 {
-    private $userModel;
+    private $userModel;private $connect;
     private $studentModel;
     private $lecturerModel;
     private $classesModel;
@@ -24,18 +24,19 @@ class timetableController
     private $timetableModel;
     private $roomModel;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->classesModel = new classesModel();
-        $this->studentModel = new studentModel();
-        $this->userModel = new userModel();
-        $this->lecturerModel = new lecturerModel();
-        $this->departmentModel = new departmentModel();
-        $this->subjectModel = new subjectModel();
-        $this->course_classesModel = new course_classesModel();
-        $this->semesterModel = new semesterModel();
-        $this->timetableModel = new timetableModel();
-        $this->roomModel = new roomModel();
+        $this->connect = $connect;
+        $this->classesModel = new classesModel($connect);
+        $this->studentModel = new studentModel($connect);
+        $this->userModel = new userModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
+        $this->departmentModel = new departmentModel($connect);
+        $this->subjectModel = new subjectModel($connect);
+        $this->course_classesModel = new course_classesModel($connect);
+        $this->semesterModel = new semesterModel($connect);
+        $this->timetableModel = new timetableModel($connect);
+        $this->roomModel = new roomModel($connect);
     }
 
     public function getAllHocPhan()

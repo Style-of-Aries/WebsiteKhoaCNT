@@ -1,13 +1,18 @@
 <?php
 require_once "./../config/database.php";
-class studentModel extends database
+class studentModel
 {
 
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
 
     // lấy thông tin user theo id
@@ -351,10 +356,6 @@ WHERE st.id = $studentId;
         $sql = "delete from student where id= $id";
         return $this->__query($sql);
     }
-    public function __query($sql)
-    {
-        return mysqli_query($this->connect, $sql);
-    }
     // Sửa thông tin ở trang của sinh viên
     public function updateProfile($student_id, array $data)
     {
@@ -389,6 +390,16 @@ WHERE st.id = $studentId;
         mysqli_commit($this->connect);
         return true;
     }
-    
+
+    public function studentExists($id)
+    {
+        $id = (int) $id;
+
+        $sql = "SELECT id FROM student WHERE id = $id LIMIT 1";
+        $result = $this->__query($sql);
+
+        return mysqli_num_rows($result) > 0;
+    }
+
 }
 

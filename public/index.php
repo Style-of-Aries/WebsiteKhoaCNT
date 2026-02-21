@@ -14,7 +14,13 @@ $controllerClass = $controllerName . 'Controller';
 
 require_once __DIR__ . "/../controllers/{$controllerClass}.php";
 
-$controller = new $controllerClass();
+$conn = database::connect();
+
+if (!$conn) {
+    die("❌ Không thể kết nối database");
+}
+
+$controller = new $controllerClass($conn);
 
 // ✅ Check action tồn tại để tránh lỗi
 if (!method_exists($controller, $action)) {

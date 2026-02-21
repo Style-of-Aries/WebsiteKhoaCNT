@@ -10,16 +10,17 @@ require_once '../models/resultModel.php';
 require_once '../config/config.php';
 class studentController
 {
-    private $resultModel;
+    private $resultModel;private $connect;
     private $courseClassModel;
     private $studentModel;
     private $timetableModel;
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->resultModel = new resultModel();
-        $this->studentModel = new studentModel();
-        $this->timetableModel = new timetableModel();
-        $this->courseClassModel = new course_classesModel();
+        $this->connect = $connect;
+        $this->resultModel = new resultModel($connect);
+        $this->studentModel = new studentModel($connect);
+        $this->timetableModel = new timetableModel($connect);
+        $this->courseClassModel = new course_classesModel($connect);
     }
 
 

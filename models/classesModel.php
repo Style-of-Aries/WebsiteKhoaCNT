@@ -1,13 +1,18 @@
 <?php
-require_once "./../config/database.php";
-class classesModel extends database
+// require_once "./../config/database.php";
+class classesModel
 {
 
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
 
 
@@ -112,9 +117,5 @@ WHERE c.id = '$id';
 
 ";
         return $this->__query($sql);
-    }
-    public function __query($sql)
-    {
-        return mysqli_query($this->connect, $sql);
     }
 }

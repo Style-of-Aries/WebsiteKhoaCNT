@@ -14,9 +14,11 @@ require_once "./../models/semesterModel.php";
 require_once "./../models/timetableModel.php";
 require_once "./../models/roomModel.php";
 require_once "./../models/classSessionsModel.php";
+require_once "./../models/scoreComponentsModel.php";
 class course_classesController
 {
     private $userModel;
+    private $connect;
     private $studentModel;
     private $lecturerModel;
     private $classesModel;
@@ -27,20 +29,23 @@ class course_classesController
     private $semesterModel;
     private $timetableModel;
     private $roomModel;
+    private $scoreComponentsModel;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->classSessionsModel = new classSessionsModel();
-        $this->classesModel = new classesModel();
-        $this->studentModel = new studentModel();
-        $this->userModel = new userModel();
-        $this->lecturerModel = new lecturerModel();
-        $this->departmentModel = new departmentModel();
-        $this->subjectModel = new subjectModel();
-        $this->course_classesModel = new course_classesModel();
-        $this->semesterModel = new semesterModel();
-        $this->timetableModel = new timetableModel();
-        $this->roomModel = new roomModel();
+        $this->connect = $connect;
+        $this->classSessionsModel = new classSessionsModel($connect);
+        $this->classesModel = new classesModel($connect);
+        $this->studentModel = new studentModel($connect);
+        $this->userModel = new userModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
+        $this->departmentModel = new departmentModel($connect);
+        $this->subjectModel = new subjectModel($connect);
+        $this->course_classesModel = new course_classesModel($connect);
+        $this->semesterModel = new semesterModel($connect);
+        $this->timetableModel = new timetableModel($connect);
+        $this->roomModel = new roomModel($connect);
+        $this->scoreComponentsModel = new scoreComponentsModel($connect);
     }
 
     public function getAllHocPhan()
@@ -78,7 +83,7 @@ class course_classesController
 
         $totalWeeks = ceil(
             (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-                / (7 * 86400)
+            / (7 * 86400)
         );
         $rooms = $this->roomModel->getAll();
         require_once './../views/admin/course_classes/add.php';
@@ -102,7 +107,7 @@ class course_classesController
 
         $totalWeeks = ceil(
             (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-                / (7 * 86400)
+            / (7 * 86400)
         );
 
         $course_classes = $this->course_classesModel->getById($id);
@@ -134,7 +139,7 @@ class course_classesController
 
         $totalWeeks = ceil(
             (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-                / (7 * 86400)
+            / (7 * 86400)
         );
 
         if (isset($_POST['btn_add'])) {
@@ -188,7 +193,7 @@ class course_classesController
 
                 $totalWeeks = ceil(
                     (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-                        / (7 * 86400)
+                    / (7 * 86400)
                 );
             }
 
@@ -250,7 +255,7 @@ class course_classesController
         $subject = $this->subjectModel->getAll();
         $lecturer = $this->lecturerModel->getAll();
         $rooms = $this->roomModel->getAll();
-
+        $semesters = $this->semesterModel->getAll();
         $semester = $this->semesterModel->layHocKyDangHoatDong();
         if (!$semester) {
             die("Chưa có học kỳ đang hoạt động");
@@ -261,13 +266,13 @@ class course_classesController
 
         $totalWeeks = ceil(
             (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-                / (7 * 86400)
+            / (7 * 86400)
         );
 
         $errors = [];
         $old = [];
 
-        require_once './../views/admin/course_classes/add.php';
+        require_once './../views/admin/course_classes/addNew.php';
     }
 
     public function add()
@@ -290,7 +295,7 @@ class course_classesController
 
         $totalWeeks = ceil(
             (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-                / (7 * 86400)
+            / (7 * 86400)
         );
 
         if (isset($_POST['btn_add'])) {
@@ -334,9 +339,9 @@ class course_classesController
 
                 foreach ($days as $i => $day) {
 
-                    $day = (int)$day;
+                    $day = (int) $day;
                     $session = $sessions[$i] ?? '';
-                    $room_id = (int)($roomsPost[$i] ?? 0);
+                    $room_id = (int) ($roomsPost[$i] ?? 0);
 
                     if (!$day || !$session || !$room_id) {
                         $errors['schedule'] = "Vui lòng nhập đầy đủ thông tin các buổi học";
@@ -396,6 +401,136 @@ class course_classesController
         require_once './../views/admin/course_classes/add.php';
     }
 
+    public function addNew()
+    {
+
+        if (!isset($_POST['btn_add'])) {
+            header("Location: index.php?controller=course_classes&action=addHocPhan");
+            exit;
+        }
+
+        $errors = [];
+
+        $subject_id = $_POST['subject_id'] ?? '';
+        $semester_id = $_POST['semester_id'] ?? '';
+        $lecturer_id = $_POST['lecturer_id'] ?? '';
+        $max_students = $_POST['max_students'] ?? '';
+        $components = $_POST['components'] ?? [];
+
+        /* ================= VALIDATE ================= */
+
+        if (empty($subject_id)) {
+            $errors[] = "Vui lòng chọn môn học";
+        }
+
+        if (empty($semester_id)) {
+            $errors[] = "Vui lòng chọn học kỳ";
+        }
+
+        if (empty($lecturer_id)) {
+            $errors[] = "Vui lòng chọn giảng viên";
+        }
+
+        if (empty($max_students) || !is_numeric($max_students) || $max_students <= 0) {
+            $errors[] = "Sĩ số phải là số lớn hơn 0";
+        }
+
+        if (empty($components)) {
+            $errors[] = "Phải có ít nhất 1 thành phần điểm";
+        }
+
+        $totalWeight = 0;
+        $hasFinalExam = false;
+
+        foreach ($components as $index => $component) {
+
+            $name = trim($component['name'] ?? '');
+            $type = $component['type'] ?? '';
+            $weight = $component['weight'] ?? '';
+
+            if ($name === '') {
+                $errors[] = "Tên thành phần ở dòng " . ($index + 1) . " không được để trống";
+            }
+
+            if (!in_array($type, ['TX', 'DK', 'CK', 'PROJECT'])) {
+                $errors[] = "Loại thành phần ở dòng " . ($index + 1) . " không hợp lệ";
+            }
+
+            if (!is_numeric($weight) || $weight < 0 || $weight > 100) {
+                $errors[] = "Trọng số ở dòng " . ($index + 1) . " phải từ 0 đến 100";
+            }
+
+            $totalWeight += (float) $weight;
+
+            if ($type === 'ck') {
+                if ($hasFinalExam) {
+                    $errors[] = "Chỉ được có 1 thành phần Cuối kỳ";
+                }
+                $hasFinalExam = true;
+            }
+        }
+
+        if (abs($totalWeight - 100) > 0.01) {
+            $errors[] = "Tổng trọng số phải bằng 100%";
+        }
+
+        if (!empty($errors)) {
+            $_SESSION['error'] = implode("<br>", $errors);
+            $_SESSION['old'] = $_POST;
+            header("Location: index.php?controller=course_classes&action=addHocPhan");
+            exit;
+        }
+
+        /* ================= INSERT ================= */
+
+        $this->connect->begin_transaction();
+
+        try {
+
+            $class_code = $this->course_classesModel->malop($subject_id);
+
+            $course_class_id = $this->course_classesModel->themHocPhan(
+                $subject_id,
+                $lecturer_id,
+                $semester_id,
+                $class_code,
+                $max_students
+            );
+
+            if (!$course_class_id) {
+                throw new Exception("Không thể tạo lớp học phần");
+            }
+
+            foreach ($components as $component) {
+
+                $result = $this->scoreComponentsModel->add(
+                    $course_class_id,
+                    trim($component['name']),
+                    $component['type'],
+                    $component['weight']
+                );
+
+                if (!$result) {
+                    throw new Exception("Lỗi khi thêm thành phần điểm");
+                }
+            }
+
+            $this->connect->commit();
+
+            $_SESSION['success'] = "Thêm lớp học phần thành công";
+            header("Location: index.php?controller=course_classes&action=getAllHocPhan");
+            exit;
+
+        } catch (Exception $e) {
+
+            $this->connect->rollback();
+
+            $_SESSION['error'] = $e->getMessage();
+            $_SESSION['old'] = $_POST;
+            header("Location: index.php?controller=course_classes&action=addHocPhan");
+            exit;
+        }
+    }
 
 
     // sửa 
@@ -497,7 +632,7 @@ class course_classesController
 
             $totalWeeks = ceil(
                 (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-                    / (7 * 86400)
+                / (7 * 86400)
             );
         }
 

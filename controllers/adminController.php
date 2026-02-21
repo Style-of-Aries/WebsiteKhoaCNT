@@ -7,6 +7,7 @@ require_once "./../models/classesModel.php";
 require_once "./../models/departmentModel.php";
 class adminController
 {
+    private $connect;
 
 
     private $model;
@@ -15,14 +16,15 @@ class adminController
     private $lecturerModel;
     private $classesModel;
     private $departmentModel;
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->model = new adminModel();
-        $this->studentModel = new studentModel();
-        $this->userModel = new userModel();
-        $this->lecturerModel = new lecturerModel();
-        $this->classesModel = new classesModel();
-        $this->departmentModel = new departmentModel();
+        $this->connect = $connect;
+        $this->model = new adminModel($connect);
+        $this->studentModel = new studentModel($connect);
+        $this->userModel = new userModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
+        $this->classesModel = new classesModel($connect);
+        $this->departmentModel = new departmentModel($connect);
     }
 
     // giao diện dashboard

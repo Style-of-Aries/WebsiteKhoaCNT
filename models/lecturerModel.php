@@ -1,13 +1,18 @@
 <?php
 require_once "./../config/database.php";
-class lecturerModel extends database
+class lecturerModel
 {
 
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
 
     // lấy thông tin user theo id
@@ -169,10 +174,6 @@ class lecturerModel extends database
     {
         $sql = "delete from lecturer where id= $ref_id";
         return $this->__query($sql);
-    }
-    public function __query($sql)
-    {
-        return mysqli_query($this->connect, $sql);
     }
 
     public function sidebarSubjects($lecturer_id)

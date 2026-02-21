@@ -6,17 +6,19 @@ require_once "./../models/trainningOfficeModel.php";
 
 class authController
 {
+    private $connect;
     private $userModel;
     private $studentModel;
     private $lecturerModel;
     private $trainningOfficeModel;
 
-    public function __construct()
+    public function __construct($connect)
     {
+        $this->connect = $connect;
         // session_start();
-        $this->studentModel = new studentModel();
-        $this->userModel = new userModel();
-        $this->lecturerModel = new lecturerModel();
+        $this->studentModel = new studentModel($connect);
+        $this->userModel = new userModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
     }
 
     public function login() //trang đăng nhập

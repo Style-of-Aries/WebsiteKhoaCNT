@@ -1,13 +1,18 @@
 <?php
 require_once "./../config/database.php";
-class departmentModel extends database
+class departmentModel
 {
 
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
     public function getAll()
     {
@@ -44,16 +49,16 @@ GROUP BY
         return $this->__query($sql);
     }
     public function getAlledit()
-{
-    $sql = "SELECT id, name AS faculty_name FROM department";
-    $query = $this->__query($sql);
+    {
+        $sql = "SELECT id, name AS faculty_name FROM department";
+        $query = $this->__query($sql);
 
-    $data = [];
-    while ($row = mysqli_fetch_assoc($query)) {
-        $data[] = $row;
+        $data = [];
+        while ($row = mysqli_fetch_assoc($query)) {
+            $data[] = $row;
+        }
+        return $data;
     }
-    return $data;
-}
 
     public function getAllKhoa()
     {
@@ -155,9 +160,5 @@ GROUP BY
         $sql = "SELECT * FROM department WHERE id='$id'";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
-    }
-    public function __query($sql)
-    {
-        return mysqli_query($this->connect, $sql);
     }
 }

@@ -1,13 +1,18 @@
 <?php
-    require_once "./../config/database.php";
-class authModel extends database
+    // require_once "./../config/database.php";
+class authModel
 {
 
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect= $this->connect();
+        $this->connect = $connect;
+    }
+
+    protected function __query($sql)
+    {
+        return mysqli_query($this->connect, $sql);
     }
 
     //start register
@@ -49,10 +54,4 @@ class authModel extends database
     }
     //end login
     
-    
-
-
-    public function __query($sql){
-        return mysqli_query($this->connect,$sql);
-    }
 }

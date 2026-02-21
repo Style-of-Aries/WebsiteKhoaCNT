@@ -1,16 +1,14 @@
 <?php
-require_once "./../config/database.php";
-
-class AttendanceModel extends database
+class AttendanceModel
 {
-    private $connect;
+    protected $connect;
 
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->connect = $this->connect();
+        $this->connect = $connect;
     }
 
-    public function __query($sql)
+    protected function __query($sql)
     {
         return mysqli_query($this->connect, $sql);
     }
@@ -37,7 +35,8 @@ class AttendanceModel extends database
 
             foreach ($sessions as $sessionId => $status) {
 
-                if ($status == '') continue;
+                if ($status == '')
+                    continue;
 
                 // Kiểm tra tồn tại
                 $checkSql = "
@@ -68,7 +67,7 @@ class AttendanceModel extends database
                         $success = false;
                     }
 
-                } 
+                }
                 // Nếu chưa có → INSERT
                 else {
 

@@ -8,20 +8,21 @@ require_once "./../models/departmentModel.php";
 require_once "./../models/subjectModel.php";
 class subjectController
 {
-    private $userModel;
+    private $userModel;private $connect;
     private $studentModel;
     private $lecturerModel;
     private $classesModel;
     private $departmentModel;
     private $subjectModel;
-    public function __construct()
+    public function __construct($connect)
     {
-        $this->classesModel = new classesModel();
-        $this->studentModel = new studentModel();
-        $this->userModel = new userModel();
-        $this->lecturerModel = new lecturerModel();
-        $this->departmentModel = new departmentModel();
-        $this->subjectModel = new subjectModel();
+        $this->connect = $connect;
+        $this->classesModel = new classesModel($connect);
+        $this->studentModel = new studentModel($connect);
+        $this->userModel = new userModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
+        $this->departmentModel = new departmentModel($connect);
+        $this->subjectModel = new subjectModel($connect);
     }
 
     public function getAllMonHoc()
