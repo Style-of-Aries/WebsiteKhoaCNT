@@ -21,6 +21,47 @@ class userModel
         $sql = "SELECT * FROM users WHERE username='$name'";
         return $this->__query($sql);
     }
+
+    public function getUserProfile($role, $refId)
+    {
+        switch ($role) {
+            case 'lecturer':
+                $sql = "SELECT full_name, 'Nam' as gender FROM lecturer WHERE id = $refId";
+                break;
+
+            case 'student':
+                $sql = "SELECT full_name, gender FROM student_profiles WHERE student_id = $refId";
+                break;
+
+            case 'training_office':
+                $sql = "SELECT full_name, 'Nam' as gender FROM training_office WHERE id = $refId";
+                break;
+
+            case 'academic_affairs':
+                $sql = "SELECT full_name, 'Nam' as gender FROM academic_affairs WHERE id = $refId";
+                break;
+
+            case 'exam_office':
+                $sql = "SELECT full_name, 'Nam' as gender FROM exam_office WHERE id = $refId";
+                break;
+
+            case 'student_affairs':
+                $sql = "SELECT full_name, 'Nam' as gender FROM student_affairs WHERE id = $refId";
+                break;
+
+            case 'admin':
+                return [
+                    'full_name' => 'Administrator',
+                    'gender' => 'Nam'
+                ];
+
+            default:
+                return null;
+        }
+        $result = $this->__query($sql);
+        return mysqli_fetch_assoc($result);
+
+    }
     public function getAll()
     {
         $sql = " select * from users";

@@ -47,15 +47,18 @@ require_once __DIR__ . "/../../config/config.php";
         <div class="header">
             <div class="avatar">
                 <?php
-                $name = $_SESSION['user']['name'] ?? 'Admin';
-                
+                $fullName = $_SESSION['user']['full_name'] ?? 'Admin';
                 $gender = $_SESSION['user']['gender'] ?? 'Nam';
                 if ($gender === 'Nam'): ?>
                     <img src="<?= BASE_URL ?>img/male.jpg" alt="avatar" id="avatarBtn">
                 <?php else: ?>
                     <img src="<?= BASE_URL ?>img/avatar-nu.jpg" alt="avatar" id="avatarBtn">
                 <?php endif; ?>
-                <?= $name ?>
+                <div class="name-wrapper" data-name="<?= htmlspecialchars($fullName) ?>">
+                    <span class="fullName">
+                        <?= htmlspecialchars($fullName) ?>
+                    </span>
+                </div>
             </div>
         </div>
 

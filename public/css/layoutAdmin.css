@@ -18,8 +18,8 @@
 
   --text-title: #1f2d3d;
   --text-main: #34495e;
-  --z-index-header: 100;
-  --z-index-sidebar: 200;
+  --z-index-header: 600;
+  --z-index-sidebar: 700;
 }
 
 * {
@@ -45,7 +45,8 @@ a {
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 9999;
+  margin-top: var(--header-height);
+  z-index: 900;
 }
 
 /* ===============================
@@ -118,11 +119,11 @@ select {
   border-radius: 4px;
 }
 .info-box {
-            margin-top: 15px;
-            margin-bottom: 10px;
-            padding: 10px;
-            background: #eef5ff;
-            border-left: 4px solid #3498db;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #eef5ff;
+  border-left: 4px solid #3498db;
 }
 
 .nav-disabled {
@@ -163,13 +164,14 @@ select {
 }
 
 .header .avatar {
-  width: 200px;
+  flex: 1;
   height: auto;
   /* border-radius: 50%; */
   /* background-color: red; */
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  /* margin-right: auto; */
   gap: 10px;
   font-weight: bold;
   color: var(--sidebar-bg-color);
@@ -181,6 +183,37 @@ select {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.name-wrapper {
+  position: relative;
+  display: block;
+  height: 100%;
+  z-index: 600;
+}
+
+.fullName {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+/* Tooltip */
+.name-wrapper:hover::after {
+  content: attr(data-name);
+  position: absolute;
+  top: 110%; /* hiện phía dưới */
+  right: 10px;
+  background: #333;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar {
@@ -952,7 +985,6 @@ select {
   }
 }
 
-
 .view-button {
   width: 40px;
   height: 40px;
@@ -1209,53 +1241,50 @@ select {
   filter: grayscale(80%);
 }
 
-
-
 /* ===== Ô nhập điểm ===== */
 .main-table .info-components {
   text-align: center;
   display: block;
 }
 .main-table .score-input {
-    width: 60px;
-    height: 32px;
-    padding: 4px 6px;
-    text-align: center;
-    margin: auto;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    background: #f9fafb;
-display: block;
-    font-size: 14px;
-    font-weight: 500;
+  width: 60px;
+  height: 32px;
+  padding: 4px 6px;
+  text-align: center;
+  margin: auto;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #f9fafb;
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
 
-    transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 /* Khi focus */
 .main-table .score-input:focus {
-    outline: none;
-    border-color: #2563eb;
-    background: #ffffff;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  outline: none;
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
 }
 
 /* Ẩn mũi tên tăng giảm */
 .main-table .score-input::-webkit-outer-spin-button,
 .main-table .score-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .main-table .score-input {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 /* Hover nhẹ */
 .main-table .score-input:hover {
-    border-color: #9ca3af;
+  border-color: #9ca3af;
 }
-
 
 /* ===== Save Button ===== */
 .save-score-wrapper {

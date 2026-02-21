@@ -39,6 +39,10 @@ class authController
             $password = $_POST['password'];
             $user = $this->userModel->getByUsername($name);
             $user = mysqli_fetch_assoc($user);
+            $profile = $this->userModel->getUserProfile(
+                $user['role'],
+                $user['ref_id']
+            );
             if ($user && trim($user['password']) === $password) {
                 // session_start();
                 $_SESSION['user'] = [
@@ -46,6 +50,8 @@ class authController
                     'role' => $user['role'],
                     'ref_id' => $user['ref_id'],
                     'name' => $user['username'],
+                    'full_name' => $profile['full_name'] ?? 'Unknown',
+                    'gender' => $profile['gender'] ?? 'Nam'
                 ];
                 if ($user['role'] == 'student') {
                     // $profile = $this->studentModel->getAllProfile($user['ref_id']);

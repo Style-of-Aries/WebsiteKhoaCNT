@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th2 20, 2026 lúc 01:54 PM
+-- Thời gian đã tạo: Th2 21, 2026 lúc 09:34 AM
 -- Phiên bản máy phục vụ: 8.4.3
 -- Phiên bản PHP: 8.3.30
 
@@ -163,10 +163,8 @@ CREATE TABLE `course_classes` (
 --
 
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`) VALUES
-(18, 24, 61, 2, '2026KCNTT000003', 30),
-(19, 12, 61, 1, '2026KCNTT000004', 31),
-(21, 11, 61, 1, '2026KCNTT000005', 30),
-(23, 11, 4, 1, '2026KCNTT000006', 30);
+(24, 37, 61, 2, '2026KCNTT000001', 30),
+(25, 36, 61, 1, '2026KCNTT000002', 30);
 
 -- --------------------------------------------------------
 
@@ -229,15 +227,6 @@ CREATE TABLE `learning_materials` (
   `type` enum('pdf','video','doc') COLLATE utf8mb4_general_ci DEFAULT 'pdf'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `learning_materials`
---
-
-INSERT INTO `learning_materials` (`id`, `subject_id`, `title`, `file_url`, `type`) VALUES
-(1, 1, 'Giáo trình C', '/uploads/c.pdf', 'pdf'),
-(2, 2, 'PHP MVC Video', '/uploads/php.mp4', 'video'),
-(3, 3, 'MySQL Tài liệu', '/uploads/mysql.docx', 'doc');
-
 -- --------------------------------------------------------
 
 --
@@ -283,42 +272,6 @@ INSERT INTO `rooms` (`id`, `room_name`, `building`, `capacity`, `type`) VALUES
 (1, 'P101', 'A', 50, 'theory'),
 (2, 'LAB201', 'B', 40, 'lab'),
 (3, 'HALL01', 'C', 200, 'exam');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `score_components`
---
-
-CREATE TABLE `score_components` (
-  `id` bigint UNSIGNED NOT NULL,
-  `course_class_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `type` enum('TX','DK','CK','PROJECT') NOT NULL,
-  `weight` decimal(5,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Đang đổ dữ liệu cho bảng `score_components`
---
-
-INSERT INTO `score_components` (`id`, `course_class_id`, `name`, `type`, `weight`) VALUES
-(5, 18, 'Báo cáo', 'PROJECT', 100.00),
-(6, 19, 'Chuyên cần', 'TX', 10.00),
-(7, 19, 'Bài kiểm tra 1', 'TX', 10.00),
-(8, 19, 'Bài kiểm tra 2', 'DK', 20.00),
-(9, 19, 'Bài tập lớn', 'PROJECT', 60.00),
-(10, 21, 'Chuyên cần', 'TX', 10.00),
-(11, 21, 'Bài kiểm tra 1', 'TX', 10.00),
-(12, 21, 'Bài kiểm tra 2', 'DK', 20.00),
-(13, 21, 'Bài thi', 'CK', 60.00),
-(14, 23, 'Chuyên cần', 'TX', 5.00),
-(15, 23, 'Bài kiểm tra 1', 'TX', 5.00),
-(16, 23, 'Điểm thường xuyên', 'TX', 5.00),
-(17, 23, 'Bài tập', 'TX', 5.00),
-(18, 23, 'Bài kiểm tra lý thuyết', 'DK', 10.00),
-(19, 23, 'Bài kiểm tra thực hành', 'DK', 10.00),
-(20, 23, 'Bài thi', 'CK', 60.00);
 
 -- --------------------------------------------------------
 
@@ -398,7 +351,8 @@ INSERT INTO `student_affairs` (`id`, `full_name`, `office_code`, `email`, `creat
 CREATE TABLE `student_component_scores` (
   `id` bigint UNSIGNED NOT NULL,
   `student_id` bigint UNSIGNED NOT NULL,
-  `component_id` bigint UNSIGNED NOT NULL,
+  `course_class_id` bigint UNSIGNED NOT NULL,
+  `subject_component_id` bigint UNSIGNED NOT NULL,
   `score` decimal(4,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -408,14 +362,15 @@ CREATE TABLE `student_component_scores` (
 -- Đang đổ dữ liệu cho bảng `student_component_scores`
 --
 
-INSERT INTO `student_component_scores` (`id`, `student_id`, `component_id`, `score`, `created_at`, `updated_at`) VALUES
-(1, 22, 6, 8.00, '2026-02-19 22:39:19', '2026-02-20 10:24:06'),
-(2, 22, 7, 7.00, '2026-02-19 22:39:19', '2026-02-20 10:24:06'),
-(3, 22, 8, 9.50, '2026-02-19 22:39:19', '2026-02-19 23:00:58'),
-(4, 22, 9, 10.00, '2026-02-19 22:39:19', '2026-02-19 22:39:19'),
-(13, 22, 10, 10.00, '2026-02-20 11:54:37', '2026-02-20 11:54:37'),
-(14, 22, 13, 10.00, '2026-02-20 11:54:53', '2026-02-20 11:54:53'),
-(15, 22, 14, 10.00, '2026-02-20 13:06:50', '2026-02-20 13:06:50');
+INSERT INTO `student_component_scores` (`id`, `student_id`, `course_class_id`, `subject_component_id`, `score`, `created_at`, `updated_at`) VALUES
+(1, 22, 25, 4, 10.00, '2026-02-21 03:46:36', '2026-02-21 03:46:36'),
+(6, 22, 25, 5, 10.00, '2026-02-21 04:09:49', '2026-02-21 04:09:49'),
+(9, 22, 25, 7, 8.00, '2026-02-21 04:09:53', '2026-02-21 04:21:27'),
+(13, 25, 25, 4, 8.00, '2026-02-21 04:20:23', '2026-02-21 04:21:14'),
+(16, 22, 25, 6, 10.00, '2026-02-21 04:20:27', '2026-02-21 04:20:27'),
+(29, 16, 25, 4, 5.00, '2026-02-21 04:20:42', '2026-02-21 04:20:42'),
+(42, 16, 25, 5, 5.00, '2026-02-21 04:20:47', '2026-02-21 04:20:47'),
+(54, 25, 25, 5, 7.00, '2026-02-21 04:21:11', '2026-02-21 06:24:25');
 
 -- --------------------------------------------------------
 
@@ -433,9 +388,9 @@ CREATE TABLE `student_course_classes` (
 --
 
 INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
-(22, 19),
-(22, 21),
-(22, 23);
+(16, 25),
+(22, 25),
+(25, 25);
 
 -- --------------------------------------------------------
 
@@ -478,38 +433,48 @@ CREATE TABLE `subjects` (
   `subject_code` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `credits` int DEFAULT '3',
-  `department_id` bigint UNSIGNED DEFAULT NULL
+  `department_id` bigint UNSIGNED DEFAULT NULL,
+  `subject_type` enum('NORMAL','PROJECT') COLLATE utf8mb4_general_ci DEFAULT 'NORMAL'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `subjects`
 --
 
-INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`) VALUES
-(1, 'CT101', 'Lập trình C', 6, 3),
-(2, 'CT202', 'Lập trình PHP', 3, 3),
-(3, 'CT30', 'Cơ sở dữ liệud', 3, 3),
-(4, 'TK3D', 'Thiết kế 3D', 6, 2),
-(5, 'IT101', 'Nhập môn Công nghệ thông tin', 3, 2),
-(6, 'IT102', 'Lập trình C cơ bản', 3, 2),
-(7, 'IT103', 'Lập trình hướng đối tượng', 3, 2),
-(8, 'IT104', 'Cấu trúc dữ liệu và giải thuật', 4, 2),
-(9, 'IT105', 'Cơ sở dữ liệu', 3, 2),
-(10, 'IT106', 'Hệ điều hành', 3, 2),
-(11, 'IT107', 'Mạng máy tính', 3, 2),
-(12, 'IT108', 'Phân tích và thiết kế hệ thống', 3, 2),
-(13, 'IT109', 'Công nghệ phần mềm', 3, 2),
-(14, 'IT110', 'Lập trình Web', 3, 2),
-(15, 'IT111', 'Lập trình Java nâng cao', 3, 2),
-(16, 'IT112', 'Lập trình PHP & MySQL', 3, 2),
-(17, 'IT113', 'An toàn và bảo mật thông tin', 3, 2),
-(18, 'IT114', 'Trí tuệ nhân tạo', 3, 2),
-(19, 'IT115', 'Khai phá dữ liệu', 3, 2),
-(20, 'IT116', 'Hệ quản trị cơ sở dữ liệu', 3, 2),
-(21, 'IT117', 'Điện toán đám mây', 3, 2),
-(22, 'IT118', 'Phát triển ứng dụng di động', 3, 2),
-(23, 'IT119', 'Kiểm thử phần mềm', 3, 2),
-(24, 'IT120', 'Đồ án chuyên ngành CNTT', 4, 2);
+INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`, `subject_type`) VALUES
+(36, 'IT34', 'Phân tích thiết kế hệ thống', 3, 2, 'NORMAL'),
+(37, 'IT51', 'Đồ án tốt nghiệp', 3, 2, 'PROJECT'),
+(38, 'IT01', 'Cơ sở dữ liệu', 3, 2, 'NORMAL');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `subject_score_components`
+--
+
+CREATE TABLE `subject_score_components` (
+  `id` bigint UNSIGNED NOT NULL,
+  `subject_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `type` enum('TX','DK','CK','PROJECT') NOT NULL,
+  `weight` decimal(5,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ;
+
+--
+-- Đang đổ dữ liệu cho bảng `subject_score_components`
+--
+
+INSERT INTO `subject_score_components` (`id`, `subject_id`, `name`, `type`, `weight`, `created_at`) VALUES
+(4, 36, 'Chuyên cần', 'TX', 10.00, '2026-02-20 17:03:16'),
+(5, 36, 'Bài kiểm tra 1', 'TX', 10.00, '2026-02-20 17:03:16'),
+(6, 36, 'Bài kiểm tra 2', 'DK', 20.00, '2026-02-20 17:03:16'),
+(7, 36, 'Bài tập lớn', 'CK', 60.00, '2026-02-20 17:03:16'),
+(8, 37, 'Đồ án', 'PROJECT', 100.00, '2026-02-20 17:04:30'),
+(9, 38, 'Chuyên cần', 'TX', 10.00, '2026-02-20 17:09:13'),
+(10, 38, 'Bài kiểm tra 1', 'TX', 10.00, '2026-02-20 17:09:13'),
+(11, 38, 'Bài kiểm tra 2', 'DK', 20.00, '2026-02-20 17:09:13'),
+(12, 38, 'Bài thi', 'CK', 60.00, '2026-02-20 17:09:13');
 
 -- --------------------------------------------------------
 
@@ -685,13 +650,6 @@ ALTER TABLE `rooms`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `score_components`
---
-ALTER TABLE `score_components`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `course_class_id` (`course_class_id`);
-
---
 -- Chỉ mục cho bảng `semesters`
 --
 ALTER TABLE `semesters`
@@ -719,8 +677,9 @@ ALTER TABLE `student_affairs`
 --
 ALTER TABLE `student_component_scores`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_student_component` (`student_id`,`component_id`),
-  ADD KEY `fk_grade_component` (`component_id`);
+  ADD UNIQUE KEY `uq_student_component` (`student_id`,`course_class_id`,`subject_component_id`),
+  ADD KEY `fk_scs_course` (`course_class_id`),
+  ADD KEY `fk_scs_component` (`subject_component_id`);
 
 --
 -- Chỉ mục cho bảng `student_course_classes`
@@ -743,6 +702,13 @@ ALTER TABLE `subjects`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `subject_code` (`subject_code`),
   ADD KEY `department_id` (`department_id`);
+
+--
+-- Chỉ mục cho bảng `subject_score_components`
+--
+ALTER TABLE `subject_score_components`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_subject_component` (`subject_id`,`name`);
 
 --
 -- Chỉ mục cho bảng `timetables`
@@ -813,7 +779,7 @@ ALTER TABLE `class_sessions`
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
@@ -844,12 +810,6 @@ ALTER TABLE `lecturer`
 --
 ALTER TABLE `rooms`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT cho bảng `score_components`
---
-ALTER TABLE `score_components`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `semesters`
@@ -885,7 +845,13 @@ ALTER TABLE `student_profiles`
 -- AUTO_INCREMENT cho bảng `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT cho bảng `subject_score_components`
+--
+ALTER TABLE `subject_score_components`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `timetables`
@@ -966,12 +932,6 @@ ALTER TABLE `lecturer`
   ADD CONSTRAINT `lecturer_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE SET NULL;
 
 --
--- Ràng buộc cho bảng `score_components`
---
-ALTER TABLE `score_components`
-  ADD CONSTRAINT `score_components_ibfk_1` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE;
-
---
 -- Ràng buộc cho bảng `student`
 --
 ALTER TABLE `student`
@@ -982,8 +942,9 @@ ALTER TABLE `student`
 -- Ràng buộc cho bảng `student_component_scores`
 --
 ALTER TABLE `student_component_scores`
-  ADD CONSTRAINT `fk_grade_component` FOREIGN KEY (`component_id`) REFERENCES `score_components` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_grade_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_scs_component` FOREIGN KEY (`subject_component_id`) REFERENCES `subject_score_components` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_scs_course` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_scs_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE;
 
 --
 -- Ràng buộc cho bảng `student_course_classes`
@@ -1003,6 +964,12 @@ ALTER TABLE `student_profiles`
 --
 ALTER TABLE `subjects`
   ADD CONSTRAINT `subjects_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE SET NULL;
+
+--
+-- Ràng buộc cho bảng `subject_score_components`
+--
+ALTER TABLE `subject_score_components`
+  ADD CONSTRAINT `fk_subject_component_subject` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE;
 
 --
 -- Ràng buộc cho bảng `timetables`
