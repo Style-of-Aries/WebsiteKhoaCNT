@@ -30,6 +30,7 @@ require_once __DIR__ . "/../../config/config.php";
                 $message = $_SESSION['error'];
                 $type = 'alert-error';
             }
+            // var_dump($message);die();
             ?>
 
             <div id="autoHideAlert" class="alert <?= $type ?> <?= empty($message) ? 'hide' : '' ?>">
@@ -47,6 +48,7 @@ require_once __DIR__ . "/../../config/config.php";
             <div class="avatar">
                 <?php
                 $name = $_SESSION['user']['name'] ?? 'Admin';
+                
                 $gender = $_SESSION['user']['gender'] ?? 'Nam';
                 if ($gender === 'Nam'): ?>
                     <img src="<?= BASE_URL ?>img/male.jpg" alt="avatar" id="avatarBtn">

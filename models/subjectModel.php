@@ -16,7 +16,7 @@ class subjectModel
     }
     public function getAll()
     {
-    $sql = "SELECT s.*, d.name AS department_name
+        $sql = "SELECT s.*, d.name AS department_name
                 FROM subjects s
                 LEFT JOIN department d ON s.department_id = d.id";
         return $this->__query($sql);
@@ -36,16 +36,19 @@ class subjectModel
         return $this->__query($sql);
     }
 
-    public function addMonHoc($name, $subject_code, $credits,$department_id){
+    public function addMonHoc($name, $subject_code, $credits, $department_id, $subject_type)
+    {
 
         $sql = "
-            INSERT INTO subjects (subject_code, name, credits, department_id)
-            VALUES ('$subject_code', '$name', '$credits','$department_id' )
+            INSERT INTO subjects (subject_code, name, credits, department_id, subject_type)
+            VALUES ('$subject_code', '$name', '$credits','$department_id', '$subject_type')
         ";
-        return $this->__query($sql);
+        $this->__query($sql);
+        return mysqli_insert_id($this->connect);
 
     }
-    public function editMonHoc($id,$name, $subject_code, $credits,$department_id){
+    public function editMonHoc($id, $name, $subject_code, $credits, $department_id)
+    {
 
         $sql = "
             UPDATE subjects
@@ -59,7 +62,31 @@ class subjectModel
         return $this->__query($sql);
 
     }
-    public function checkMonHoc($name,$id)
+
+    public function isSubjectCodeExists($subject_code)
+    {
+        $subject_code = trim($subject_code);
+
+        if ($subject_code === '') {
+            return false;
+        }
+
+        $sql = "
+        SELECT id 
+        FROM subjects 
+        WHERE subject_code = '$subject_code'
+        LIMIT 1
+    ";
+
+        $result = $this->__query($sql);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+    public function checkMonHoc($name, $id)
     {
 
         $sql = "Select *from subjects where name = '$name'AND id != '$id'
@@ -75,11 +102,12 @@ class subjectModel
         $sql = "SELECT id, name FROM department";
         return $this->__query($sql);
     }
-    public function deleteMonHoc($id){
-        $sql= "delete from subjects where id= '$id'";
+    public function deleteMonHoc($id)
+    {
+        $sql = "delete from subjects where id= '$id'";
         return $this->__query($sql);
     }
-     public function getById($id)
+    public function getById($id)
     {
         $sql = "SELECT * FROM subjects WHERE id='$id'";
         $query = $this->__query($sql);

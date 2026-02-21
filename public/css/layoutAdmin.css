@@ -580,6 +580,10 @@ select {
   min-width: 240px;
 }
 
+.main-table .tdDate {
+  min-width: 150px;
+}
+
 /* ================= Bảng điểm danh ================= */
 /* ===== TABLE ===== */
 .attendance-table {

@@ -14,7 +14,7 @@ require_once "./../models/semesterModel.php";
 require_once "./../models/timetableModel.php";
 require_once "./../models/roomModel.php";
 require_once "./../models/classSessionsModel.php";
-require_once "./../models/scoreComponentsModel.php";
+// require_once "./../models/scoreComponentsModel.php";
 class course_classesController
 {
     private $userModel;
@@ -29,7 +29,7 @@ class course_classesController
     private $semesterModel;
     private $timetableModel;
     private $roomModel;
-    private $scoreComponentsModel;
+    // private $scoreComponentsModel;
 
     public function __construct($connect)
     {
@@ -45,7 +45,7 @@ class course_classesController
         $this->semesterModel = new semesterModel($connect);
         $this->timetableModel = new timetableModel($connect);
         $this->roomModel = new roomModel($connect);
-        $this->scoreComponentsModel = new scoreComponentsModel($connect);
+        // $this->scoreComponentsModel = new scoreComponentsModel($connect);
     }
 
     public function getAllHocPhan()
@@ -275,7 +275,7 @@ class course_classesController
         require_once './../views/admin/course_classes/addNew.php';
     }
 
-    public function add()
+    public function tkb()
     {
         $errors = [];
         $old = [];
@@ -403,87 +403,47 @@ class course_classesController
 
     public function addNew()
     {
-
         if (!isset($_POST['btn_add'])) {
             header("Location: index.php?controller=course_classes&action=addHocPhan");
             exit;
         }
 
-        $errors = [];
+        $error = '';
 
         $subject_id = $_POST['subject_id'] ?? '';
         $semester_id = $_POST['semester_id'] ?? '';
         $lecturer_id = $_POST['lecturer_id'] ?? '';
         $max_students = $_POST['max_students'] ?? '';
-        $components = $_POST['components'] ?? [];
 
         /* ================= VALIDATE ================= */
 
-        if (empty($subject_id)) {
-            $errors[] = "Vui lòng chọn môn học";
+        if (empty($subject_id) && $error === '') {
+            $error = "Vui lòng chọn môn học";
         }
 
-        if (empty($semester_id)) {
-            $errors[] = "Vui lòng chọn học kỳ";
+        if (empty($semester_id) && $error === '') {
+            $error = "Vui lòng chọn học kỳ";
         }
 
-        if (empty($lecturer_id)) {
-            $errors[] = "Vui lòng chọn giảng viên";
+        if (empty($lecturer_id) && $error === '') {
+            $error = "Vui lòng chọn giảng viên";
         }
 
-        if (empty($max_students) || !is_numeric($max_students) || $max_students <= 0) {
-            $errors[] = "Sĩ số phải là số lớn hơn 0";
+        if (
+            (empty($max_students) || !is_numeric($max_students) || $max_students <= 0)
+            && $error === ''
+        ) {
+            $error = "Sĩ số phải là số lớn hơn 0";
         }
 
-        if (empty($components)) {
-            $errors[] = "Phải có ít nhất 1 thành phần điểm";
-        }
-
-        $totalWeight = 0;
-        $hasFinalExam = false;
-
-        foreach ($components as $index => $component) {
-
-            $name = trim($component['name'] ?? '');
-            $type = $component['type'] ?? '';
-            $weight = $component['weight'] ?? '';
-
-            if ($name === '') {
-                $errors[] = "Tên thành phần ở dòng " . ($index + 1) . " không được để trống";
-            }
-
-            if (!in_array($type, ['TX', 'DK', 'CK', 'PROJECT'])) {
-                $errors[] = "Loại thành phần ở dòng " . ($index + 1) . " không hợp lệ";
-            }
-
-            if (!is_numeric($weight) || $weight < 0 || $weight > 100) {
-                $errors[] = "Trọng số ở dòng " . ($index + 1) . " phải từ 0 đến 100";
-            }
-
-            $totalWeight += (float) $weight;
-
-            if ($type === 'ck') {
-                if ($hasFinalExam) {
-                    $errors[] = "Chỉ được có 1 thành phần Cuối kỳ";
-                }
-                $hasFinalExam = true;
-            }
-        }
-
-        if (abs($totalWeight - 100) > 0.01) {
-            $errors[] = "Tổng trọng số phải bằng 100%";
-        }
-
-        if (!empty($errors)) {
-            $_SESSION['error'] = implode("<br>", $errors);
+        if ($error !== '') {
+            $_SESSION['error'] = $error;
             $_SESSION['old'] = $_POST;
             header("Location: index.php?controller=course_classes&action=addHocPhan");
             exit;
         }
 
         /* ================= INSERT ================= */
-
-        $this->connect->begin_transaction();
 
         try {
 
@@ -501,30 +461,16 @@ class course_classesController
                 throw new Exception("Không thể tạo lớp học phần");
             }
 
-            foreach ($components as $component) {
-
-                $result = $this->scoreComponentsModel->add(
-                    $course_class_id,
-                    trim($component['name']),
-                    $component['type'],
-                    $component['weight']
-                );
-
-                if (!$result) {
-                    throw new Exception("Lỗi khi thêm thành phần điểm");
-                }
-            }
-
-            $this->connect->commit();
-
             $_SESSION['success'] = "Thêm lớp học phần thành công";
             header("Location: index.php?controller=course_classes&action=getAllHocPhan");
             exit;
 
         } catch (Exception $e) {
-
-            $this->connect->rollback();
-
+            error_log(
+                date('Y-m-d H:i:s') . " | " . $e->getMessage() . PHP_EOL,
+                3,
+                __DIR__ . "/../logs/error.log"
+            );
             $_SESSION['error'] = $e->getMessage();
             $_SESSION['old'] = $_POST;
             header("Location: index.php?controller=course_classes&action=addHocPhan");

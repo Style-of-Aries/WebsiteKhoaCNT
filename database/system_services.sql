@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th2 19, 2026 lúc 10:14 PM
+-- Thời gian đã tạo: Th2 20, 2026 lúc 01:54 PM
 -- Phiên bản máy phục vụ: 8.4.3
 -- Phiên bản PHP: 8.3.30
 
@@ -52,74 +52,17 @@ CREATE TABLE `academic_results` (
   `id` bigint UNSIGNED NOT NULL,
   `student_id` bigint UNSIGNED NOT NULL,
   `course_class_id` bigint UNSIGNED NOT NULL,
-  `process_score` decimal(4,2) DEFAULT NULL,
-  `midterm_score` decimal(4,2) DEFAULT NULL,
-  `final_exam_score` decimal(4,2) DEFAULT NULL,
-  `final_grade` decimal(5,2) DEFAULT NULL,
-  `grade_letter` char(2) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `result` enum('pass','fail') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `frequent_scores` text COLLATE utf8mb4_general_ci COMMENT 'JSON điểm thường xuyên'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `academic_results`
---
-
-INSERT INTO `academic_results` (`id`, `student_id`, `course_class_id`, `process_score`, `midterm_score`, `final_exam_score`, `final_grade`, `grade_letter`, `result`, `frequent_scores`) VALUES
-(1, 22, 1, 10.00, 10.00, 10.00, 10.00, 'A', 'pass', '[\"10\",\"10\",\"10\"]'),
-(2, 25, 1, 5.67, 6.00, 5.00, 5.33, 'D', 'pass', '[\"6\",\"5\",\"6\"]'),
-(3, 16, 1, 6.00, 7.00, NULL, 4.80, 'D', 'pass', '[\"6\",\"6\"]'),
-(4, 22, 3, 5.00, NULL, NULL, NULL, NULL, NULL, '[\"5\"]');
-
---
--- Bẫy `academic_results`
---
-DELIMITER $$
-CREATE TRIGGER `trg_calc_final_grade_insert` BEFORE INSERT ON `academic_results` FOR EACH ROW BEGIN
-    IF NEW.process_score IS NOT NULL
-       AND NEW.midterm_score IS NOT NULL
-       AND NEW.final_exam_score IS NOT NULL THEN
-
-        SET NEW.final_grade =
-            NEW.final_exam_score * 0.6
-          + ((NEW.process_score + NEW.midterm_score) / 2) * 0.4;
-
-        SET NEW.grade_letter = CASE
-            WHEN NEW.final_grade >= 8.5 THEN 'A'
-            WHEN NEW.final_grade >= 7.0 THEN 'B'
-            WHEN NEW.final_grade >= 5.5 THEN 'C'
-            WHEN NEW.final_grade >= 4.0 THEN 'D'
-            ELSE 'F'
-        END;
-
-        SET NEW.result = IF(NEW.final_grade >= 4.0, 'pass', 'fail');
-    END IF;
-END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `trg_calc_final_grade_update` BEFORE UPDATE ON `academic_results` FOR EACH ROW BEGIN
-    IF NEW.process_score IS NOT NULL
-       AND NEW.midterm_score IS NOT NULL
-       AND NEW.final_exam_score IS NOT NULL THEN
-
-        SET NEW.final_grade =
-            NEW.final_exam_score * 0.6
-          + ((NEW.process_score + NEW.midterm_score) / 2) * 0.4;
-
-        SET NEW.grade_letter = CASE
-            WHEN NEW.final_grade >= 8.5 THEN 'A'
-            WHEN NEW.final_grade >= 7.0 THEN 'B'
-            WHEN NEW.final_grade >= 5.5 THEN 'C'
-            WHEN NEW.final_grade >= 4.0 THEN 'D'
-            ELSE 'F'
-        END;
-
-        SET NEW.result = IF(NEW.final_grade >= 4.0, 'pass', 'fail');
-    END IF;
-END
-$$
-DELIMITER ;
+  `final_score` decimal(4,1) DEFAULT NULL COMMENT 'Điểm hệ 10 (1 chữ số thập phân)',
+  `letter_grade` varchar(2) DEFAULT NULL COMMENT 'A, B+, C...',
+  `gpa_4` decimal(3,2) DEFAULT NULL COMMENT 'GPA hệ 4',
+  `result_status` enum('pass','fail') DEFAULT NULL COMMENT 'Kết quả đạt hay không',
+  `approval_status` enum('DRAFT','APPROVED','PUBLISHED') DEFAULT 'DRAFT' COMMENT 'Trạng thái xử lý kết quả',
+  `approved_by` bigint UNSIGNED DEFAULT NULL COMMENT 'User exam_office duyệt',
+  `approved_at` timestamp NULL DEFAULT NULL COMMENT 'Thời điểm duyệt',
+  `published_at` timestamp NULL DEFAULT NULL COMMENT 'Thời điểm công bố',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -135,57 +78,6 @@ CREATE TABLE `attendance` (
   `status` enum('present','absent','late') COLLATE utf8mb4_general_ci DEFAULT 'present',
   `session_id` bigint UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `attendance`
---
-
-INSERT INTO `attendance` (`id`, `student_id`, `course_class_id`, `date`, `status`, `session_id`) VALUES
-(1, 16, 1, '2025-09-02', 'present', 1),
-(2, 16, 1, '2025-09-09', 'absent', 2),
-(3, 16, 1, '2025-09-16', 'absent', 3),
-(4, 16, 1, '2025-09-23', 'absent', 4),
-(5, 16, 1, '2025-09-30', 'absent', 5),
-(6, 16, 1, '2025-10-07', 'absent', 6),
-(7, 16, 1, '2025-10-14', 'absent', 7),
-(8, 16, 1, '2025-10-21', 'absent', 8),
-(9, 16, 1, '2025-10-28', 'absent', 9),
-(10, 16, 1, '2025-11-04', 'absent', 10),
-(11, 16, 1, '2025-11-11', 'absent', 11),
-(12, 16, 1, '2025-11-18', 'absent', 12),
-(13, 16, 1, '2025-11-25', 'absent', 13),
-(14, 16, 1, '2025-12-02', 'absent', 14),
-(15, 16, 1, '2025-12-09', 'absent', 15),
-(16, 22, 1, '2025-09-02', 'present', 1),
-(17, 22, 1, '2025-09-09', 'present', 2),
-(18, 22, 1, '2025-09-16', 'present', 3),
-(19, 22, 1, '2025-09-23', 'present', 4),
-(20, 22, 1, '2025-09-30', 'present', 5),
-(21, 22, 1, '2025-10-07', 'present', 6),
-(22, 22, 1, '2025-10-14', 'present', 7),
-(23, 22, 1, '2025-10-21', 'present', 8),
-(24, 22, 1, '2025-10-28', 'present', 9),
-(25, 22, 1, '2025-11-04', 'present', 10),
-(26, 22, 1, '2025-11-11', 'present', 11),
-(27, 22, 1, '2025-11-18', 'present', 12),
-(28, 22, 1, '2025-11-25', 'present', 13),
-(29, 22, 1, '2025-12-02', 'present', 14),
-(30, 22, 1, '2025-12-09', 'present', 15),
-(31, 25, 1, '2025-09-02', 'present', 1),
-(32, 25, 1, '2025-09-09', 'present', 2),
-(33, 25, 1, '2025-09-16', 'present', 3),
-(34, 25, 1, '2025-09-23', 'present', 4),
-(35, 25, 1, '2025-09-30', 'late', 5),
-(36, 25, 1, '2025-10-07', 'absent', 6),
-(37, 25, 1, '2025-10-14', 'absent', 7),
-(38, 25, 1, '2025-10-21', 'absent', 8),
-(39, 25, 1, '2025-10-28', 'absent', 9),
-(40, 25, 1, '2025-11-04', 'absent', 10),
-(41, 25, 1, '2025-11-11', 'absent', 11),
-(42, 25, 1, '2025-11-18', 'absent', 12),
-(43, 25, 1, '2025-11-25', 'absent', 13),
-(44, 25, 1, '2025-12-02', 'absent', 14),
-(45, 25, 1, '2025-12-09', 'absent', 15);
 
 -- --------------------------------------------------------
 
@@ -251,42 +143,6 @@ CREATE TABLE `class_sessions` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `class_sessions`
---
-
-INSERT INTO `class_sessions` (`id`, `course_class_id`, `session_date`, `day_of_week`, `session`, `week_number`, `room_id`, `created_at`) VALUES
-(1, 1, '2025-09-02', 2, 'Sáng', 1, 1, '2026-02-03 09:05:16'),
-(2, 1, '2025-09-09', 2, 'Sáng', 2, 1, '2026-02-03 09:05:16'),
-(3, 1, '2025-09-16', 2, 'Sáng', 3, 1, '2026-02-03 09:05:16'),
-(4, 1, '2025-09-23', 2, 'Sáng', 4, 1, '2026-02-03 09:05:16'),
-(5, 1, '2025-09-30', 2, 'Sáng', 5, 1, '2026-02-03 09:05:16'),
-(6, 1, '2025-10-07', 2, 'Sáng', 6, 1, '2026-02-03 09:05:16'),
-(7, 1, '2025-10-14', 2, 'Sáng', 7, 1, '2026-02-03 09:05:16'),
-(8, 1, '2025-10-21', 2, 'Sáng', 8, 1, '2026-02-03 09:05:16'),
-(9, 1, '2025-10-28', 2, 'Sáng', 9, 1, '2026-02-03 09:05:16'),
-(10, 1, '2025-11-04', 2, 'Sáng', 10, 1, '2026-02-03 09:05:16'),
-(11, 1, '2025-11-11', 2, 'Sáng', 11, 1, '2026-02-03 09:05:16'),
-(12, 1, '2025-11-18', 2, 'Sáng', 12, 1, '2026-02-03 09:05:16'),
-(13, 1, '2025-11-25', 2, 'Sáng', 13, 1, '2026-02-03 09:05:16'),
-(14, 1, '2025-12-02', 2, 'Sáng', 14, 1, '2026-02-03 09:05:16'),
-(15, 1, '2025-12-09', 2, 'Sáng', 15, 1, '2026-02-03 09:05:16'),
-(16, 10, '2025-09-04', 4, 'Chiều', 1, NULL, '2026-02-06 17:35:13'),
-(17, 10, '2025-09-11', 4, 'Chiều', 2, NULL, '2026-02-06 17:35:13'),
-(18, 10, '2025-09-18', 4, 'Chiều', 3, NULL, '2026-02-06 17:35:13'),
-(19, 10, '2025-09-25', 4, 'Chiều', 4, NULL, '2026-02-06 17:35:13'),
-(20, 10, '2025-10-02', 4, 'Chiều', 5, NULL, '2026-02-06 17:35:13'),
-(21, 10, '2025-10-09', 4, 'Chiều', 6, NULL, '2026-02-06 17:35:13'),
-(22, 10, '2025-10-16', 4, 'Chiều', 7, NULL, '2026-02-06 17:35:13'),
-(23, 11, '2025-09-05', 5, 'Chiều', 1, NULL, '2026-02-11 04:27:49'),
-(24, 11, '2025-09-12', 5, 'Chiều', 2, NULL, '2026-02-11 04:27:49'),
-(25, 11, '2025-09-19', 5, 'Chiều', 3, NULL, '2026-02-11 04:27:49'),
-(26, 11, '2025-09-26', 5, 'Chiều', 4, NULL, '2026-02-11 04:27:49'),
-(27, 11, '2025-10-03', 5, 'Chiều', 5, NULL, '2026-02-11 04:27:49'),
-(28, 11, '2025-10-10', 5, 'Chiều', 6, NULL, '2026-02-11 04:27:49'),
-(29, 11, '2025-10-17', 5, 'Chiều', 7, NULL, '2026-02-11 04:27:49'),
-(30, 11, '2025-10-24', 5, 'Chiều', 8, NULL, '2026-02-11 04:27:49');
-
 -- --------------------------------------------------------
 
 --
@@ -307,14 +163,10 @@ CREATE TABLE `course_classes` (
 --
 
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`) VALUES
-(1, 2, 61, 1, 'PHP1', 60),
-(3, 3, 4, 1, '2026BMPM000001', 40),
-(8, 1, 11, 1, '2026BMPM000004', 20),
-(10, 4, 61, 1, '2026KCNTT000001', 60),
-(11, 4, 11, 1, '2026KCNTT000002', 60),
 (18, 24, 61, 2, '2026KCNTT000003', 30),
 (19, 12, 61, 1, '2026KCNTT000004', 31),
-(21, 11, 61, 1, '2026KCNTT000005', 30);
+(21, 11, 61, 1, '2026KCNTT000005', 30),
+(23, 11, 4, 1, '2026KCNTT000006', 30);
 
 -- --------------------------------------------------------
 
@@ -459,7 +311,14 @@ INSERT INTO `score_components` (`id`, `course_class_id`, `name`, `type`, `weight
 (10, 21, 'Chuyên cần', 'TX', 10.00),
 (11, 21, 'Bài kiểm tra 1', 'TX', 10.00),
 (12, 21, 'Bài kiểm tra 2', 'DK', 20.00),
-(13, 21, 'Bài thi', 'CK', 60.00);
+(13, 21, 'Bài thi', 'CK', 60.00),
+(14, 23, 'Chuyên cần', 'TX', 5.00),
+(15, 23, 'Bài kiểm tra 1', 'TX', 5.00),
+(16, 23, 'Điểm thường xuyên', 'TX', 5.00),
+(17, 23, 'Bài tập', 'TX', 5.00),
+(18, 23, 'Bài kiểm tra lý thuyết', 'DK', 10.00),
+(19, 23, 'Bài kiểm tra thực hành', 'DK', 10.00),
+(20, 23, 'Bài thi', 'CK', 60.00);
 
 -- --------------------------------------------------------
 
@@ -545,6 +404,19 @@ CREATE TABLE `student_component_scores` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ;
 
+--
+-- Đang đổ dữ liệu cho bảng `student_component_scores`
+--
+
+INSERT INTO `student_component_scores` (`id`, `student_id`, `component_id`, `score`, `created_at`, `updated_at`) VALUES
+(1, 22, 6, 8.00, '2026-02-19 22:39:19', '2026-02-20 10:24:06'),
+(2, 22, 7, 7.00, '2026-02-19 22:39:19', '2026-02-20 10:24:06'),
+(3, 22, 8, 9.50, '2026-02-19 22:39:19', '2026-02-19 23:00:58'),
+(4, 22, 9, 10.00, '2026-02-19 22:39:19', '2026-02-19 22:39:19'),
+(13, 22, 10, 10.00, '2026-02-20 11:54:37', '2026-02-20 11:54:37'),
+(14, 22, 13, 10.00, '2026-02-20 11:54:53', '2026-02-20 11:54:53'),
+(15, 22, 14, 10.00, '2026-02-20 13:06:50', '2026-02-20 13:06:50');
+
 -- --------------------------------------------------------
 
 --
@@ -561,13 +433,9 @@ CREATE TABLE `student_course_classes` (
 --
 
 INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
-(16, 1),
-(22, 1),
-(25, 1),
-(22, 3),
-(22, 8),
 (22, 19),
-(22, 21);
+(22, 21),
+(22, 23);
 
 -- --------------------------------------------------------
 
@@ -659,17 +527,6 @@ CREATE TABLE `timetables` (
   `end_week` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `timetables`
---
-
-INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `session`, `start_week`, `end_week`) VALUES
-(1, 1, 1, 2, 'Sáng', 1, 15),
-(2, 3, 2, 3, 'Chiều', 3, 10),
-(4, 8, 2, 2, 'Sáng', 1, 19),
-(6, 10, 1, 4, 'Chiều', 1, 7),
-(7, 11, 2, 5, 'Chiều', 1, 8);
-
 -- --------------------------------------------------------
 
 --
@@ -743,8 +600,9 @@ ALTER TABLE `academic_affairs`
 --
 ALTER TABLE `academic_results`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `student_id` (`student_id`,`course_class_id`),
-  ADD KEY `course_class_id` (`course_class_id`);
+  ADD UNIQUE KEY `uq_student_course` (`student_id`,`course_class_id`),
+  ADD KEY `course_class_id` (`course_class_id`),
+  ADD KEY `approved_by` (`approved_by`);
 
 --
 -- Chỉ mục cho bảng `attendance`
@@ -925,7 +783,7 @@ ALTER TABLE `academic_affairs`
 -- AUTO_INCREMENT cho bảng `academic_results`
 --
 ALTER TABLE `academic_results`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `attendance`
@@ -955,7 +813,7 @@ ALTER TABLE `class_sessions`
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
@@ -991,7 +849,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT cho bảng `score_components`
 --
 ALTER TABLE `score_components`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `semesters`
@@ -1056,7 +914,8 @@ ALTER TABLE `users`
 --
 ALTER TABLE `academic_results`
   ADD CONSTRAINT `academic_results_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `academic_results_ibfk_2` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `academic_results_ibfk_2` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `academic_results_ibfk_3` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Ràng buộc cho bảng `attendance`

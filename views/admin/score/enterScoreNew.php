@@ -44,8 +44,8 @@ $role = $_SESSION['user']['role'];
                         <tr>
                             <td><?= $stt++ ?></td>
                             <td><?= $student['student_code'] ?></td>
-                            <td><?= $student['full_name'] ?></td>
-                            <td><?= $student['date_of_birth'] ?></td>
+                            <td class="tdName"><?= $student['full_name'] ?></td>
+                            <td class="tdDate"><?= $student['date_of_birth'] ?></td>
                             <?php while ($c = mysqli_fetch_assoc($components)): ?>
                                 <td class="tdInputScore">
                                     <?php
@@ -68,7 +68,7 @@ $role = $_SESSION['user']['role'];
                                     // var_dump($canEdit);die;
                                     ?>
 
-                                    <input class="score-input" type="number" step="0.1" min="0" max="10" required
+                                    <input class="score-input" type="number" step="0.1" min="0" max="10" 
                                         name="scores[<?= $student['id'] ?>][<?= $c['id'] ?>]" value="<?= isset($scores[$student['id']][$c['id']])
                                                 ? $scores[$student['id']][$c['id']]
                                                 : '' ?>" <?= $canEdit ? '' : 'disabled' ?>>

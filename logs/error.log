@@ -1,0 +1,15 @@
+2026-02-20 16:58:32 | Cannot add or update a child row: a foreign key constraint fails (`system_services`.`subject_score_components`, CONSTRAINT `fk_subject_component_subject` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE)
+2026-02-21 03:37:38 | SV 22: Table 'system_services.score_components' doesn't exist
+2026-02-21 03:38:32 | SV 22: Unknown column 'sc.course_class_id' in 'where clause'
+2026-02-21 03:39:21 | SV 22: Unknown column 'sc.course_class_id' in 'where clause'
+2026-02-21 03:40:17 | SV 22: Field 'course_class_id' doesn't have a default value
+2026-02-21 03:40:23 | SV 22: Field 'course_class_id' doesn't have a default value
+2026-02-21 03:46:40 | SV 22: Unknown column 'sc.course_class_id' in 'where clause'
+2026-02-21 03:46:48 | SV 22: Unknown column 'sc.course_class_id' in 'where clause'
+2026-02-21 03:49:36 | SV 22: SV 22 không đủ điều kiện dự thi
+2026-02-21 04:20:33 | SV 25: SV 25 không đủ điều kiện dự thi
+2026-02-21 04:20:45 | SV 16: SV 16 không đủ điều kiện dự thi
+2026-02-21 04:20:50 | SV 16: SV 16 không đủ điều kiện dự thi
+2026-02-21 04:21:33 | SV 25: SV 25 không đủ điều kiện dự thi
+2026-02-21 06:24:08 | SV 25: SV 25 không đủ điều kiện dự thi
+2026-02-21 09:08:45 | Duplicate entry '1-4-1' for key 'course_classes.uq_subject_lecturer_semester'
