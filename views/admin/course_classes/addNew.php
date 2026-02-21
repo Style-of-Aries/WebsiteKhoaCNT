@@ -64,43 +64,10 @@ unset($_SESSION['old']);
 
             <div class="col">
                 <label>Sĩ số tối đa</label>
-                <input type="number" name="max_students" required value="<?= htmlspecialchars($old['max_students'] ?? '') ?>">
+                <input type="number" name="max_students" required
+                    value="<?= htmlspecialchars($old['max_students'] ?? '') ?>">
             </div>
         </div>
-
-        <!-- ================== PHẦN B ================== -->
-        <h3>Cấu trúc điểm</h3>
-
-        <table class="main-table" id="componentsTable">
-            <thead>
-                <tr>
-                    <th>Tên thành phần</th>
-                    <th>Loại</th>
-                    <th>Trọng số (%)</th>
-                    <th>Xóa</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- JS thêm dòng -->
-            </tbody>
-        </table>
-
-        <!-- <button type="button" class="btn btn-add" id="btnAddComponent">
-                + Thêm thành phần
-            </button> -->
-        <button class="add-button" id="btnAddComponent">
-            <div class="sign">+</div>
-            <div class="text">Thêm thành phần</div>
-        </button>
-
-
-        <div class="info-box">
-            Tổng trọng số: <strong><span id="totalWeight">0</span>%</strong>
-        </div>
-
-        <!-- <button type="submit" class="btn btn-submit">
-                Tạo lớp học phần
-            </button> -->
         <button name="btn_add" type="submit" class="btn-submit">Thêm lớp học phần</button>
     </form>
 </div>
