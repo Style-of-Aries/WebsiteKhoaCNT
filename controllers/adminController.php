@@ -203,6 +203,12 @@ class adminController
 
 
     // truy cập tới giao diện sinh viên
+    public function addNguoiDung()
+    {
+
+
+        require_once './../views/admin/users/add.php';
+    }
     public function addSinhVien()
     {
         $classes = $this->classesModel->getAll();
