@@ -4,12 +4,16 @@ class ScoreService
     protected $conn;
     protected $scoreModel;
     protected $componentModel;
+    protected $academicResultsModel;
+    protected $courseClassModel;
 
     public function __construct($conn)
     {
         $this->conn = $conn;
+        $this->academicResultsModel = new academicResultsModel($conn);
         $this->scoreModel = new studentComponentScoresModel($conn);
         $this->componentModel = new subjectScoreComponentsModel($conn);
+        $this->courseClassModel = new course_classesModel($conn);
     }
 
     public function saveScoreWithRule($studentId, $subjectComponentId, $courseClassId, $role, $scoreValue)
@@ -20,13 +24,13 @@ class ScoreService
             throw new Exception("Thành phần không tồn tại");
         }
 
-        // Check quyền
+        // 1️⃣ Check quyền
         if (!$this->scoreModel->canEditComponent($role, $component['type'])) {
             throw new Exception("Không có quyền nhập {$component['type']}");
         }
 
-        // Nếu là CK hoặc weight > 50%
-        if ($component['weight'] >= 50) {
+        // 2️⃣ Nếu là CK hoặc Project thì check điều kiện dự thi
+        if (($component['type'] === 'CK' || $component['type'] === 'PROJECT') && count($component) > 1) {
 
             $eligibility = $this->scoreModel
                 ->checkEligibility($studentId, $courseClassId);
@@ -36,12 +40,24 @@ class ScoreService
             }
         }
 
-        return $this->scoreModel->saveScore(
+        // 3️⃣ Lưu điểm
+        $save = $this->scoreModel->saveScore(
             $studentId,
             $courseClassId,
             $subjectComponentId,
             $scoreValue
         );
+
+        if (!$save) {
+            throw new Exception("Lưu điểm thất bại");
+        }
+
+        // 4️⃣ Nếu là CK hoặc Project thì tính điểm tổng
+        if ($component['type'] === 'CK' || $component['type'] === 'PROJECT') {
+            $this->academicResultsModel->calculateFinalResult($studentId, $courseClassId);
+        }
+
+        return true;
     }
     public function saveMultipleScores($scores, $courseClassId, $role)
     {
@@ -83,6 +99,11 @@ class ScoreService
 
                 } catch (Exception $e) {
                     $errors[] = "SV $studentId: " . $e->getMessage();
+                    error_log(
+                        date('Y-m-d H:i:s') . " | " . $e->getMessage() . PHP_EOL,
+                        3,
+                        __DIR__ . "/../logs/error.log"
+                    );
                 }
             }
         }
@@ -91,5 +112,40 @@ class ScoreService
             'errors' => $errors,
             'successCount' => $successCount
         ];
+    }
+
+    public function getEligibilityList($students, $classId)
+    {
+        $eligibilities = [];
+
+        // Lấy thông tin lớp học phần
+        $courseClass = $this->courseClassModel->getById($classId);
+        $subjectId = $courseClass['subject_id'];
+
+        // Lấy cấu trúc điểm của môn
+        $componentsResult = $this->componentModel->getBySubject($subjectId);
+
+        $components = [];
+        while ($row = mysqli_fetch_assoc($componentsResult)) {
+            $components[] = $row;
+        }
+
+        // 🔥 Nếu chỉ có 1 component và weight = 100% → MÔN ĐỒ ÁN
+        if (count($components) == 1 && $components[0]['weight'] == 100) {
+
+            foreach ($students as $student) {
+                $eligibilities[$student['id']] = null; // Không áp dụng
+            }
+
+            return $eligibilities;
+        }
+
+        // ✅ Nếu là môn có điều kiện thi → kiểm tra bình thường
+        foreach ($students as $student) {
+            $eligibilities[$student['id']] =
+                $this->scoreModel->checkEligibility($student['id'], $classId);
+        }
+
+        return $eligibilities;
     }
 }

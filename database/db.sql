@@ -63,18 +63,14 @@ CREATE TABLE IF NOT EXISTS `academic_results` (
 CREATE TABLE IF NOT EXISTS `attendance` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `student_id` bigint unsigned NOT NULL,
-  `course_class_id` bigint unsigned NOT NULL,
-  `date` date NOT NULL,
-  `status` enum('present','absent','late') COLLATE utf8mb4_general_ci DEFAULT 'present',
-  `session_id` bigint unsigned DEFAULT NULL,
+  `session_id` bigint unsigned NOT NULL,
+  `status` enum('present','absent','late') DEFAULT 'present',
   PRIMARY KEY (`id`),
-  KEY `student_id` (`student_id`),
-  KEY `course_class_id` (`course_class_id`),
-  KEY `fk_attendance_session` (`session_id`),
+  UNIQUE KEY `unique_attendance` (`student_id`,`session_id`),
+  KEY `session_id` (`session_id`),
   CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_attendance_session` FOREIGN KEY (`session_id`) REFERENCES `class_sessions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`session_id`) REFERENCES `class_sessions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -125,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `class_sessions` (
   KEY `room_id` (`room_id`),
   CONSTRAINT `class_sessions_ibfk_1` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
   CONSTRAINT `class_sessions_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -285,7 +281,7 @@ CREATE TABLE IF NOT EXISTS `student_component_scores` (
   CONSTRAINT `fk_scs_course` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_scs_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
   CONSTRAINT `chk_score` CHECK ((`score` between 0 and 10))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -370,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `timetables` (
   KEY `room_id` (`room_id`),
   CONSTRAINT `timetables_ibfk_1` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
   CONSTRAINT `timetables_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 

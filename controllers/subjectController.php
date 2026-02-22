@@ -87,6 +87,8 @@ class subjectController
         $components = $_POST['components'] ?? [];
 
         $error = '';
+        $subjectNormal = false;
+        $subjectProject = false;
 
         // ==============================
         // 2️⃣ VALIDATE CƠ BẢN
@@ -112,6 +114,10 @@ class subjectController
             $error = "Loại môn không hợp lệ";
         }
 
+        if ($subject_type === 'NORMAL')
+            $subjectNormal = true;
+        if ($subject_type === 'PROJECT')
+            $subjectProject = true;
         // ==============================
         // 3️⃣ CHECK TRÙNG MÃ MÔN
         // ==============================
@@ -131,6 +137,8 @@ class subjectController
         if (!empty($components) && $error === '') {
 
             $totalWeight = 0;
+            $hasTX = false;
+            $hasDK = false;
             $hasCK = false;
             $isProject = false;
 
@@ -152,6 +160,14 @@ class subjectController
                     $error = "Trọng số phải từ 1 đến 100";
                 }
 
+                if ($type === 'TX') {
+                    $hasTX = true;
+                }
+
+                if ($type === 'DK') {
+                    $hasDK = true;
+                }
+
                 if ($type === 'CK') {
                     $hasCK = true;
                 }
@@ -163,16 +179,24 @@ class subjectController
                 $totalWeight += $weight;
             }
 
+            if ($subjectNormal && (!$hasTX || !$hasDK) && $error === '') {
+                $error = "Môn thường phải có ít nhất 1 điểm thường xuyên và định kì";
+            }
+
             if ($totalWeight !== 100 && $error === '') {
                 $error = "Tổng trọng số phải bằng 100%";
             }
 
-            if (!$isProject && !$hasCK && $error === '') {
+            if ($subjectNormal && !$isProject && !$hasCK && $error === '') {
                 $error = "Phải có ít nhất 1 điểm CK";
             }
 
-            if ($isProject && count($components) > 1 && $error === '') {
+            if ($subjectProject && count($components) > 1 && $error === '') {
                 $error = "Môn đồ án chỉ được có 1 thành phần PROJECT";
+            }
+
+            if ($subjectProject && !$isProject && $error === '') {
+                $error = "Môn đồ án phải có thành phần đồ án";
             }
         }
 
@@ -181,12 +205,25 @@ class subjectController
         // ==============================
 
         if ($error !== '') {
+            // var_dump($_POST);
+            // die();
             $_SESSION['error'] = $error;
             $_SESSION['old'] = $_POST;
+            error_log(
+                date('Y-m-d H:i:s') . " | " . $error . PHP_EOL,
+                3,
+                __DIR__ . "/../logs/error.log"
+            );
             header("Location: index.php?controller=subject&action=addMonHoc");
             exit;
         }
 
+        // var_dump($subjectProject);
+        // var_dump($subjectNormal);
+        // var_dump($isProject);
+        // var_dump($hasCK);
+        // var_dump(count($components));
+        // die();
 
         // ==============================
         // 6️⃣ TRANSACTION INSERT

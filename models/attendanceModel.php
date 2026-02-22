@@ -43,7 +43,6 @@ class AttendanceModel
                     SELECT id FROM attendance 
                     WHERE student_id = $studentId 
                     AND session_id = $sessionId
-                    AND course_class_id = $courseClassId
                 ";
                 $check = $this->__query($checkSql);
 
@@ -60,7 +59,6 @@ class AttendanceModel
                         SET status = '$status'
                         WHERE student_id = $studentId 
                         AND session_id = $sessionId
-                        AND course_class_id = $courseClassId
                     ";
 
                     if (!$this->__query($updateSql)) {
@@ -70,10 +68,9 @@ class AttendanceModel
                 }
                 // Nếu chưa có → INSERT
                 else {
-
                     $insertSql = "
-                        INSERT INTO attendance (student_id, session_id, course_class_id, status)
-                        VALUES ($studentId, $sessionId, $courseClassId, '$status')
+                        INSERT INTO attendance (student_id, session_id, status)
+                        VALUES ($studentId, $sessionId, '$status')
                     ";
 
                     if (!$this->__query($insertSql)) {

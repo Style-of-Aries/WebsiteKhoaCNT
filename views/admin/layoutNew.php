@@ -13,6 +13,7 @@ require_once __DIR__ . "/../../config/config.php";
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/layoutAdmin.css">
     <link rel="icon" href="<?= BASE_URL ?>img/favicon_io/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>

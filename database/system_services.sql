@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th2 21, 2026 lúc 09:34 AM
+-- Thời gian đã tạo: Th2 22, 2026 lúc 02:51 PM
 -- Phiên bản máy phục vụ: 8.4.3
 -- Phiên bản PHP: 8.3.30
 
@@ -64,6 +64,13 @@ CREATE TABLE `academic_results` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `academic_results`
+--
+
+INSERT INTO `academic_results` (`id`, `student_id`, `course_class_id`, `final_score`, `letter_grade`, `gpa_4`, `result_status`, `approval_status`, `approved_by`, `approved_at`, `published_at`, `created_at`, `updated_at`) VALUES
+(1, 22, 26, 9.0, 'A', 4.00, 'pass', 'DRAFT', NULL, NULL, NULL, '2026-02-21 14:12:50', '2026-02-21 14:16:00');
+
 -- --------------------------------------------------------
 
 --
@@ -73,11 +80,9 @@ CREATE TABLE `academic_results` (
 CREATE TABLE `attendance` (
   `id` bigint UNSIGNED NOT NULL,
   `student_id` bigint UNSIGNED NOT NULL,
-  `course_class_id` bigint UNSIGNED NOT NULL,
-  `date` date NOT NULL,
-  `status` enum('present','absent','late') COLLATE utf8mb4_general_ci DEFAULT 'present',
-  `session_id` bigint UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `session_id` bigint UNSIGNED NOT NULL,
+  `status` enum('present','absent','late') DEFAULT 'present'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -164,7 +169,8 @@ CREATE TABLE `course_classes` (
 
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`) VALUES
 (24, 37, 61, 2, '2026KCNTT000001', 30),
-(25, 36, 61, 1, '2026KCNTT000002', 30);
+(26, 37, 61, 1, '2026KCNTT000002', 30),
+(29, 47, 61, 1, '2026KCNTT000003', 30);
 
 -- --------------------------------------------------------
 
@@ -363,14 +369,8 @@ CREATE TABLE `student_component_scores` (
 --
 
 INSERT INTO `student_component_scores` (`id`, `student_id`, `course_class_id`, `subject_component_id`, `score`, `created_at`, `updated_at`) VALUES
-(1, 22, 25, 4, 10.00, '2026-02-21 03:46:36', '2026-02-21 03:46:36'),
-(6, 22, 25, 5, 10.00, '2026-02-21 04:09:49', '2026-02-21 04:09:49'),
-(9, 22, 25, 7, 8.00, '2026-02-21 04:09:53', '2026-02-21 04:21:27'),
-(13, 25, 25, 4, 8.00, '2026-02-21 04:20:23', '2026-02-21 04:21:14'),
-(16, 22, 25, 6, 10.00, '2026-02-21 04:20:27', '2026-02-21 04:20:27'),
-(29, 16, 25, 4, 5.00, '2026-02-21 04:20:42', '2026-02-21 04:20:42'),
-(42, 16, 25, 5, 5.00, '2026-02-21 04:20:47', '2026-02-21 04:20:47'),
-(54, 25, 25, 5, 7.00, '2026-02-21 04:21:11', '2026-02-21 06:24:25');
+(136, 22, 26, 8, 9.00, '2026-02-21 14:12:50', '2026-02-21 14:16:00'),
+(142, 22, 29, 27, 10.00, '2026-02-22 04:36:15', '2026-02-22 04:36:15');
 
 -- --------------------------------------------------------
 
@@ -388,9 +388,8 @@ CREATE TABLE `student_course_classes` (
 --
 
 INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
-(16, 25),
-(22, 25),
-(25, 25);
+(22, 26),
+(22, 29);
 
 -- --------------------------------------------------------
 
@@ -444,7 +443,8 @@ CREATE TABLE `subjects` (
 INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`, `subject_type`) VALUES
 (36, 'IT34', 'Phân tích thiết kế hệ thống', 3, 2, 'NORMAL'),
 (37, 'IT51', 'Đồ án tốt nghiệp', 3, 2, 'PROJECT'),
-(38, 'IT01', 'Cơ sở dữ liệu', 3, 2, 'NORMAL');
+(38, 'IT01', 'Cơ sở dữ liệu', 3, 2, 'NORMAL'),
+(47, 'd123', 'Quả Chín Quá', 6, 2, 'NORMAL');
 
 -- --------------------------------------------------------
 
@@ -474,7 +474,11 @@ INSERT INTO `subject_score_components` (`id`, `subject_id`, `name`, `type`, `wei
 (9, 38, 'Chuyên cần', 'TX', 10.00, '2026-02-20 17:09:13'),
 (10, 38, 'Bài kiểm tra 1', 'TX', 10.00, '2026-02-20 17:09:13'),
 (11, 38, 'Bài kiểm tra 2', 'DK', 20.00, '2026-02-20 17:09:13'),
-(12, 38, 'Bài thi', 'CK', 60.00, '2026-02-20 17:09:13');
+(12, 38, 'Bài thi', 'CK', 60.00, '2026-02-20 17:09:13'),
+(27, 47, 'Chuyên cần', 'TX', 10.00, '2026-02-22 04:30:58'),
+(28, 47, 'Bài kiểm tra 1', 'TX', 10.00, '2026-02-22 04:30:58'),
+(29, 47, 'Bài kiểm tra 2', 'DK', 20.00, '2026-02-22 04:30:58'),
+(30, 47, 'Bài tập lớn', 'PROJECT', 60.00, '2026-02-22 04:30:58');
 
 -- --------------------------------------------------------
 
@@ -574,9 +578,8 @@ ALTER TABLE `academic_results`
 --
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `student_id` (`student_id`),
-  ADD KEY `course_class_id` (`course_class_id`),
-  ADD KEY `fk_attendance_session` (`session_id`);
+  ADD UNIQUE KEY `unique_attendance` (`student_id`,`session_id`),
+  ADD KEY `session_id` (`session_id`);
 
 --
 -- Chỉ mục cho bảng `audit_logs`
@@ -749,13 +752,13 @@ ALTER TABLE `academic_affairs`
 -- AUTO_INCREMENT cho bảng `academic_results`
 --
 ALTER TABLE `academic_results`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `audit_logs`
@@ -773,13 +776,13 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT cho bảng `class_sessions`
 --
 ALTER TABLE `class_sessions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
@@ -845,7 +848,7 @@ ALTER TABLE `student_profiles`
 -- AUTO_INCREMENT cho bảng `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT cho bảng `subject_score_components`
@@ -857,7 +860,7 @@ ALTER TABLE `subject_score_components`
 -- AUTO_INCREMENT cho bảng `timetables`
 --
 ALTER TABLE `timetables`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `training_office`
@@ -888,8 +891,7 @@ ALTER TABLE `academic_results`
 --
 ALTER TABLE `attendance`
   ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_attendance_session` FOREIGN KEY (`session_id`) REFERENCES `class_sessions` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`session_id`) REFERENCES `class_sessions` (`id`) ON DELETE CASCADE;
 
 --
 -- Ràng buộc cho bảng `classes`

@@ -10,9 +10,11 @@ require_once '../models/studentModel.php';
 require_once '../models/studentComponentScoresModel.php';
 require_once '../services/ScoreService.php';
 require_once '../models/subjectScoreComponentsModel.php';
+require_once '../models/academicResultsModel.php';
 class lecturerController
 {
     private $ScoreService;
+    private $academicResultsModel;
     private $resultModel;
     private $subjectScoreComponentsModel;
     private $connect;
@@ -21,19 +23,18 @@ class lecturerController
     private $studentModel;
     private $studentComponentScoresModel;
     private $timetableModel;
-    private $scoreComponentsModel;
     public function __construct($connect)
     {
         $this->connect = $connect;
         $this->studentModel = new studentModel($connect);
-        $this->subjectScoreComponentsModel = new subjectScoreComponentsModel(connect: $connect);
+        $this->subjectScoreComponentsModel = new subjectScoreComponentsModel($connect);
+        $this->academicResultsModel = new academicResultsModel($connect);
         $this->ScoreService = new ScoreService($connect);
         $this->studentComponentScoresModel = new studentComponentScoresModel($connect);
         $this->resultModel = new resultModel($connect);
         $this->courseClassModel = new course_classesModel($connect);
         $this->lecturerModel = new lecturerModel($connect);
         $this->timetableModel = new timetableModel($connect);
-        // $this->scoreComponentsModel = new scoreComponentsModel($connect);
     }
 
 
@@ -93,32 +94,53 @@ class lecturerController
     public function updateResultByCourseClass()
     {
         if (!isset($_SESSION['user']['ref_id'])) {
-            die('Chưa đăng nhập');
+            $_SESSION['error'] = "Chưa đăng nhập";
+            header('Location: index.php');
+            exit;
         }
 
         if (!isset($_GET['course_class_id'])) {
-            die('Thiếu course_class_id');
+            $_SESSION['error'] = "Thiếu course_class_id";
+            header('Location: index.php?controller=lecturer&action=getCourseClass&type=score');
+            exit;
         }
 
-        $classId = $_GET['course_class_id'];
+        $classId = (int) $_GET['course_class_id'];
 
         // 1️⃣ Lấy thông tin lớp học phần
         $courseClass = $this->courseClassModel->getById($classId);
 
         if (!$courseClass) {
-            die('Lớp học phần không tồn tại');
+            $_SESSION['error'] = "Lớp học phần không tồn tại";
+            header('Location: index.php?controller=lecturer&action=getCourseClass&type=score');
+            exit;
         }
 
         $subjectId = $courseClass['subject_id'];
 
         // 2️⃣ Lấy sinh viên
-        $students = $this->courseClassModel->getStudents($classId);
+        $studentsResult = $this->courseClassModel->getStudents($classId);
 
-        // 3️⃣ Lấy cấu trúc điểm theo subject_id
+        // Chuyển về mảng để dùng nhiều lần
+        $students = [];
+        while ($row = mysqli_fetch_assoc($studentsResult)) {
+            $students[] = $row;
+        }
+
+        // 3️⃣ Lấy cấu trúc điểm
         $components = $this->subjectScoreComponentsModel->getBySubject($subjectId);
 
         // 4️⃣ Lấy điểm sinh viên
         $scores = $this->studentComponentScoresModel->getScores($classId);
+
+        // 5️⃣ Nếu là phòng khảo thí → tính điều kiện thi
+        $eligibilities = [];
+
+        if ($_SESSION['user']['role'] === 'exam_office' || $_SESSION['user']['role'] === 'admin') {
+
+            $eligibilities = $this->ScoreService
+                ->getEligibilityList($students, $classId);
+        }
 
         require_once "./../views/admin/score/enterScoreNew.php";
     }
