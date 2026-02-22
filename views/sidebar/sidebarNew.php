@@ -49,7 +49,7 @@ $role = $_SESSION['user']['role'];
     <li class="<?= PermissionService::has($role, 'dashboard') ? 'dropdown' : 'locked' ?>">
         <a class="drop-btn" href="index.php?controller=admin&action=index">Trang chủ</a>
     </li>
-    <li class="<?= PermissionService::has($role, 'students') ? 'dropdown' : 'hideDrop-btn' ?>">
+    <li class="<?= PermissionService::has($role, 'students') ? 'dropdown' : 'locked' ?>">
         <a class="drop-btn" href="index.php?controller=admin&action=getAllUser">Người dùng</a>
     </li>
     <li class="dropdown">

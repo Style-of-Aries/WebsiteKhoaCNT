@@ -275,7 +275,7 @@ class course_classesController
         require_once './../views/admin/course_classes/addNew.php';
     }
 
-    public function add()
+    public function tkb()
     {
         $errors = [];
         $old = [];
