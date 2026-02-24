@@ -17,6 +17,9 @@
     <?php if (!empty($errors['subject_id'])): ?>
         <small style="color:red"><?= $errors['subject_id'] ?></small>
     <?php endif; ?>
+    <!-- mã môn học  -->
+    <label>Mã môn học</label>
+    <input disabled type="text"  name="subject_id" value="<?= $course_classes['class_code'] ?>">
 
 
     <!-- Giảng viên -->
@@ -182,7 +185,7 @@
 
 
 
-        <input type="submit" name="btn_add" value="Thêm học phần">
+        <input type="submit" name="btn_add" value="Lưu">
     </form>
 
     <?php

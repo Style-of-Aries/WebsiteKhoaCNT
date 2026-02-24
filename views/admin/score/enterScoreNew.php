@@ -31,6 +31,9 @@ $role = $_SESSION['user']['role'];
                                 </span>
                             </th>
                         <?php endwhile; ?>
+                        <?php if ($role === 'admin' || $role === 'exam_office'): ?>
+                            <th>ĐK thi</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,7 +41,7 @@ $role = $_SESSION['user']['role'];
                     mysqli_data_seek($components, 0);
                     $stt = 1;
 
-                    while ($student = mysqli_fetch_assoc($students)):
+                    foreach ($students as $student):
                         ?>
 
                         <tr>
@@ -68,19 +71,34 @@ $role = $_SESSION['user']['role'];
                                     // var_dump($canEdit);die;
                                     ?>
 
-                                    <input class="score-input" type="number" step="0.1" min="0" max="10" 
+                                    <input class="score-input" type="number" step="0.1" min="0" max="10"
                                         name="scores[<?= $student['id'] ?>][<?= $c['id'] ?>]" value="<?= isset($scores[$student['id']][$c['id']])
                                                 ? $scores[$student['id']][$c['id']]
                                                 : '' ?>" <?= $canEdit ? '' : 'disabled' ?>>
 
 
                                 </td>
+
                             <?php endwhile; ?>
                             <?php mysqli_data_seek($components, 0); ?>
-
+                            <?php if ($role === 'admin' || $role === 'exam_office'): ?>
+                                <td class="dkthi">
+                                    <?php
+                                    $status = $eligibilities[$student['id']] ?? null;
+                                    // var_dump($status);
+                                    if ($status === null) {
+                                        echo "<span style='color:gray'>Không áp dụng</span>";
+                                    } elseif ($status >= 5) {
+                                        echo "<span style='color:green'>Đủ điều kiện</span>";
+                                    } else {
+                                        echo "<span style='color:red'>Không đủ</span>";
+                                    }
+                                    ?>
+                                </td>
+                            <?php endif; ?>
                         </tr>
 
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

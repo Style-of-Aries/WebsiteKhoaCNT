@@ -1,5 +1,6 @@
 <?php
 ob_start();
+// var_dump($_SESSION);die();
 $old = $_SESSION['old'] ?? [];
 unset($_SESSION['old']);
 
@@ -19,24 +20,30 @@ function getOld($key, $default = '', $data = null)
         <div class="row">
             <div class="col">
                 <label>Tên Môn học</label>
-                <input type="text" name="name" value="<?= htmlspecialchars(getOld('name')) ?>" required>
+                <input type="text" name="name" value="<?= htmlspecialchars($old['name'] ?? '') ?>" required>
             </div>
             <div class="col">
                 <label>Số tín chỉ</label>
-                <input type="number" name="credits" min="1" value="<?= htmlspecialchars(getOld('credits')) ?>" required>
+                <input type="number" name="credits" min="1" value="<?= htmlspecialchars($old['credits'] ?? '') ?>"
+                    required>
             </div>
         </div>
 
         <div class="row">
             <div class="col">
                 <label>Mã Môn học</label>
-                <input type="text" name="subject_code" value="<?= htmlspecialchars(getOld('subject_code')) ?>" required>
+                <input type="text" name="subject_code" value="<?= htmlspecialchars($old['credits'] ?? '') ?>" required>
             </div>
             <div class="col">
                 <label>Loại môn</label>
                 <select name="subject_type" required>
-                    <option value="NORMAL" <?= getOld('subject_type') == 'NORMAL' ? 'selected' : '' ?>>Môn thường</option>
-                    <option value="PROJECT" <?= getOld('subject_type') == 'PROJECT' ? 'selected' : '' ?>>Đồ án</option>
+                    <option value="NORMAL" <?= ($old['subject_type'] ?? '') == 'NORMAL' ? 'selected' : '' ?>>
+                        Môn thường
+                    </option>
+
+                    <option value="PROJECT" <?= ($old['subject_type'] ?? '') == 'PROJECT' ? 'selected' : '' ?>>
+                        Đồ án
+                    </option>
                 </select>
             </div>
         </div>
@@ -45,8 +52,9 @@ function getOld($key, $default = '', $data = null)
             <span>Khoa</span>
             <select name="department_id" required>
                 <option value="">-- Chọn khoa --</option>
+
                 <?php foreach ($department as $dept): ?>
-                    <option value="<?= $dept['id'] ?>" <?= getOld('department_id') == $dept['id'] ? 'selected' : '' ?>>
+                    <option value="<?= $dept['id'] ?>" <?= ($old['department_id'] ?? '') == $dept['id'] ? 'selected' : '' ?>>
                         <?= htmlspecialchars($dept['faculty_name']) ?>
                     </option>
                 <?php endforeach; ?>
@@ -64,14 +72,45 @@ function getOld($key, $default = '', $data = null)
                 </tr>
             </thead>
             <tbody>
-                <!-- JS sẽ thêm <tr> vào đây -->
+                <?php if (!empty($old['components'])): ?>
+                    <?php foreach ($old['components'] as $index => $comp): ?>
+                        <tr>
+                            <td>
+                                <input type="text" name="components[<?= $index ?>][name]"
+                                    value="<?= htmlspecialchars($comp['name']) ?>">
+                            </td>
+
+                            <td>
+                                <select name="components[<?= $index ?>][type]">
+                                    <option value="TX" <?= $comp['type'] == 'TX' ? 'selected' : '' ?>>TX</option>
+                                    <option value="DK" <?= $comp['type'] == 'DK' ? 'selected' : '' ?>>DK</option>
+                                    <option value="CK" <?= $comp['type'] == 'CK' ? 'selected' : '' ?>>CK</option>
+                                    <option value="PROJECT" <?= $comp['type'] == 'PROJECT' ? 'selected' : '' ?>>PROJECT</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <input type="number" name="components[<?= $index ?>][weight]"
+                                    value="<?= htmlspecialchars($comp['weight']) ?>">
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn-remove btn-delete">
+                                    <span class="X"></span>
+                                    <span class="Y"></span>
+                                    <div class="close">Xóa</div>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
 
         <!-- <button type="button" class="btn btn-add" id="btnAddComponent">
                 + Thêm thành phần
             </button> -->
-        <button class="add-button" id="btnAddComponent">
+        <button type="button" class="add-button" id="btnAddComponent">
             <div class="sign">+</div>
             <div class="text">Thêm thành phần</div>
         </button>

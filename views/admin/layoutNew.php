@@ -13,6 +13,7 @@ require_once __DIR__ . "/../../config/config.php";
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/layoutAdmin.css">
     <link rel="icon" href="<?= BASE_URL ?>img/favicon_io/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
@@ -47,15 +48,18 @@ require_once __DIR__ . "/../../config/config.php";
         <div class="header">
             <div class="avatar">
                 <?php
-                $name = $_SESSION['user']['name'] ?? 'Admin';
-                
+                $fullName = $_SESSION['user']['full_name'] ?? 'Admin';
                 $gender = $_SESSION['user']['gender'] ?? 'Nam';
                 if ($gender === 'Nam'): ?>
                     <img src="<?= BASE_URL ?>img/male.jpg" alt="avatar" id="avatarBtn">
                 <?php else: ?>
                     <img src="<?= BASE_URL ?>img/avatar-nu.jpg" alt="avatar" id="avatarBtn">
                 <?php endif; ?>
-                <?= $name ?>
+                <div class="name-wrapper" data-name="<?= htmlspecialchars($fullName) ?>">
+                    <span class="fullName">
+                        <?= htmlspecialchars($fullName) ?>
+                    </span>
+                </div>
             </div>
         </div>
 

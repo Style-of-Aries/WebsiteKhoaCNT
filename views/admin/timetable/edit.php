@@ -1,24 +1,29 @@
 <?php ob_start(); ?>
 
 <form class="add-form"
-    action="index.php?controller=course_classes&action=edit"
+    action="index.php?controller=timetable&action=edit"
     method="POST">
 
     <h2>Sửa học phần: <?= $course_classes['class_code'] ?></h2>
 
     <!-- ID học phần -->
-    <input type="hidden" name="id" value="<?= $course_classes['id'] ?>">
+    <input type="hidden" name="id" value="<?= $class_sessions['id'] ?>">
+    <input  type="hidden"
+        name="course_class_id"
+        value="<?= $class_sessions['course_class_id'] ?>"
+        >
+
 
     <!-- Mã lớp -->
     <label>Mã lớp</label>
-    <input type="text"
+    <input disabled type="text"
         name="class_code"
         value="<?= $course_classes['class_code'] ?>"
         readonly>
 
     <!-- Môn học -->
     <label>Môn học</label>
-    <select name="subject_id">
+    <select disabled name="subject_id">
         <?php foreach ($subject as $s): ?>
             <option value="<?= $s['id'] ?>"
                 <?= $course_classes['subject_id'] == $s['id'] ? 'selected' : '' ?>>
@@ -33,7 +38,7 @@
 
     <!-- Giảng viên -->
     <label>Giảng viên</label>
-    <select name="lecturer_id">
+    <select disabled name="lecturer_id">
         <?php foreach ($lecturer as $l): ?>
             <option value="<?= $l['id'] ?>"
                 <?= $course_classes['lecturer_id'] == $l['id'] ? 'selected' : '' ?>>
@@ -48,7 +53,7 @@
 
     <!-- Sĩ số -->
     <label>Sĩ số tối đa</label>
-    <input type="number"
+    <input disabled type="number"
         name="max_students"
         value="<?= $course_classes['max_students'] ?>">
     <?php if (!empty($errors['max_students'])): ?>
@@ -62,7 +67,7 @@
         <option value="">-- Chọn thứ --</option>
         <?php for ($i = 2; $i <= 7; $i++): ?>
             <option value="<?= $i ?>"
-                <?= $timetable['day_of_week'] == $i ? 'selected' : '' ?>>
+                <?= $class_sessions['day_of_week'] == $i ? 'selected' : '' ?>>
                 Thứ <?= $i ?>
             </option>
         <?php endfor; ?>
@@ -76,8 +81,8 @@
     <label>Buổi</label>
     <select name="session">
         <option value="">-- Chọn buổi --</option>
-        <option value="Sáng" <?= $timetable['session'] == 'Sáng' ? 'selected' : '' ?>>Sáng</option>
-        <option value="Chiều" <?= $timetable['session'] == 'Chiều' ? 'selected' : '' ?>>Chiều</option>
+        <option value="Sáng" <?= $class_sessions['session'] == 'Sáng' ? 'selected' : '' ?>>Sáng</option>
+        <option value="Chiều" <?= $class_sessions['session'] == 'Chiều' ? 'selected' : '' ?>>Chiều</option>
     </select>
     <?php if (!empty($errors['session'])): ?>
         <small style="color:red"><?= $errors['session'] ?></small>
@@ -89,19 +94,19 @@
     <select name="room_id">
         <?php foreach ($rooms as $r): ?>
             <option value="<?= $r['id'] ?>"
-                <?= $timetable['room_id'] == $r['id'] ? 'selected' : '' ?>>
+                <?= $class_sessions['room_id'] == $r['id'] ? 'selected' : '' ?>>
                 <?= $r['room_name'] ?> (<?= $r['building'] ?>)
             </option>
         <?php endforeach; ?>
     </select>
-    <?php if (!empty($errors['room_id'])): ?>   
+    <?php if (!empty($errors['room_id'])): ?>
         <small style="color:red"><?= $errors['room_id'] ?></small>
     <?php endif; ?>
 
 
     <!-- Tuần học -->
     <label>Từ tuần</label>
-    <select name="start_week">
+    <select disabled name="start_week">
         <?php
         $start = new DateTime($semesterStart);
         for ($i = 1; $i <= $totalWeeks - 1; $i++):
@@ -118,7 +123,7 @@
     </select>
 
     <label>Đến tuần</label>
-    <select name="end_week">
+    <select disabled name="end_week">
         <?php
         $start = new DateTime($semesterStart);
         for ($i = 1; $i <= $totalWeeks - 1; $i++):
@@ -150,5 +155,5 @@
 
 <?php
 $content = ob_get_clean();
-include "../views/admin/layout.php";
+include "../views/admin/layoutNew.php";
 ?>

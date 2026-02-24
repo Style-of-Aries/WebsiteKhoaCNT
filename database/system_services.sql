@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th2 20, 2026 lúc 01:54 PM
+-- Thời gian đã tạo: Th2 23, 2026 lúc 08:42 AM
 -- Phiên bản máy phục vụ: 8.4.3
 -- Phiên bản PHP: 8.3.30
 
@@ -40,7 +40,8 @@ CREATE TABLE `academic_affairs` (
 --
 
 INSERT INTO `academic_affairs` (`id`, `full_name`, `office_code`, `email`, `created_at`) VALUES
-(1, 'Phòng Học vụ CNTT', 'HV_CNTT', 'hocvu_cntt@university.edu.vn', '2026-02-16 16:06:51');
+(1, 'Phòng Học vụ CNTT', 'HV_CNTT', 'hocvu_cntt@university.edu.vn', '2026-02-16 16:06:51'),
+(2, 'df', 'HV00001', 'tutue9692@gmail.comdsd', '2026-02-22 14:32:25');
 
 -- --------------------------------------------------------
 
@@ -75,7 +76,7 @@ CREATE TABLE `attendance` (
   `student_id` bigint UNSIGNED NOT NULL,
   `course_class_id` bigint UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `status` enum('present','absent','late') COLLATE utf8mb4_general_ci DEFAULT 'present',
+  `status` enum('present','absent','late') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'present',
   `session_id` bigint UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -88,12 +89,12 @@ CREATE TABLE `attendance` (
 CREATE TABLE `audit_logs` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
-  `action` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `target_type` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `action` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `target_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `target_id` bigint UNSIGNED DEFAULT NULL,
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `audit_logs`
@@ -111,8 +112,8 @@ INSERT INTO `audit_logs` (`id`, `user_id`, `action`, `target_type`, `target_id`,
 
 CREATE TABLE `classes` (
   `id` bigint UNSIGNED NOT NULL,
-  `class_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `class_code` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `class_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `department_id` bigint UNSIGNED NOT NULL,
   `lecturer_id` bigint UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -137,11 +138,26 @@ CREATE TABLE `class_sessions` (
   `course_class_id` bigint UNSIGNED NOT NULL,
   `session_date` date NOT NULL,
   `day_of_week` tinyint NOT NULL,
-  `session` enum('Sáng','Chiều') COLLATE utf8mb4_general_ci NOT NULL,
+  `session` enum('Sáng','Chiều') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `week_number` int NOT NULL,
   `room_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `class_sessions`
+--
+
+INSERT INTO `class_sessions` (`id`, `course_class_id`, `session_date`, `day_of_week`, `session`, `week_number`, `room_id`, `created_at`) VALUES
+(39, 25, '2025-09-04', 4, 'Sáng', 1, 1, '2026-02-23 08:01:04'),
+(40, 25, '2025-09-11', 4, 'Sáng', 2, 1, '2026-02-23 08:01:04'),
+(41, 25, '2025-09-18', 4, 'Sáng', 3, 1, '2026-02-23 08:01:04'),
+(42, 25, '2025-09-25', 4, 'Sáng', 4, 1, '2026-02-23 08:01:04'),
+(43, 25, '2025-10-02', 4, 'Sáng', 5, 1, '2026-02-23 08:01:04'),
+(44, 25, '2025-10-09', 4, 'Sáng', 6, 1, '2026-02-23 08:01:04'),
+(45, 25, '2025-10-16', 4, 'Sáng', 7, 1, '2026-02-23 08:01:04'),
+(46, 25, '2025-10-23', 4, 'Sáng', 8, 1, '2026-02-23 08:01:04'),
+(47, 25, '2025-10-30', 4, 'Sáng', 9, 1, '2026-02-23 08:01:04');
 
 -- --------------------------------------------------------
 
@@ -154,7 +170,7 @@ CREATE TABLE `course_classes` (
   `subject_id` bigint UNSIGNED NOT NULL,
   `lecturer_id` bigint UNSIGNED NOT NULL,
   `semester_id` bigint UNSIGNED NOT NULL,
-  `class_code` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `class_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `max_students` int DEFAULT '60'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -163,10 +179,8 @@ CREATE TABLE `course_classes` (
 --
 
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`) VALUES
-(18, 24, 61, 2, '2026KCNTT000003', 30),
-(19, 12, 61, 1, '2026KCNTT000004', 31),
-(21, 11, 61, 1, '2026KCNTT000005', 30),
-(23, 11, 4, 1, '2026KCNTT000006', 30);
+(24, 37, 61, 2, '2026KCNTT000001', 30),
+(25, 36, 61, 1, '2026KCNTT000002', 30);
 
 -- --------------------------------------------------------
 
@@ -176,8 +190,8 @@ INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, 
 
 CREATE TABLE `department` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `type` enum('school','faculty','department') COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `type` enum('school','faculty','department') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `parent_id` bigint UNSIGNED DEFAULT NULL,
   `staff_count` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -213,7 +227,11 @@ CREATE TABLE `exam_office` (
 --
 
 INSERT INTO `exam_office` (`id`, `full_name`, `office_code`, `email`, `created_at`) VALUES
-(1, 'Phòng Khảo thí CNTT', 'KT_CNTT', 'khaothi_cntt@university.edu.vn', '2026-02-16 16:06:51');
+(1, 'Phòng Khảo thí CNTT', 'KT_CNTT', 'khaothi_cntt@university.edu.vn', '2026-02-16 16:06:51'),
+(2, 'Nguyễn Văn Tứ', 'KT00001', 'tutue9692@gmail.comdfkjnfojnf', '2026-02-22 14:36:17'),
+(4, 'Nguyễn Văn Tứ', 'KT00002', 'tutue9692@gmail.comdfef', '2026-02-22 14:42:06'),
+(5, 'Nguyễn Đức Trọng', 'KT00003', 'tutue9692@gmail.comdfckjbsfn', '2026-02-22 14:46:01'),
+(6, 'Nguyễn Văn Tứ', 'KT00004', 'tutue9692@gmail.comfdjkbfdkvb', '2026-02-22 14:46:59');
 
 -- --------------------------------------------------------
 
@@ -224,19 +242,10 @@ INSERT INTO `exam_office` (`id`, `full_name`, `office_code`, `email`, `created_a
 CREATE TABLE `learning_materials` (
   `id` bigint UNSIGNED NOT NULL,
   `subject_id` bigint UNSIGNED NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `file_url` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `type` enum('pdf','video','doc') COLLATE utf8mb4_general_ci DEFAULT 'pdf'
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `file_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `type` enum('pdf','video','doc') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'pdf'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `learning_materials`
---
-
-INSERT INTO `learning_materials` (`id`, `subject_id`, `title`, `file_url`, `type`) VALUES
-(1, 1, 'Giáo trình C', '/uploads/c.pdf', 'pdf'),
-(2, 2, 'PHP MVC Video', '/uploads/php.mp4', 'video'),
-(3, 3, 'MySQL Tài liệu', '/uploads/mysql.docx', 'doc');
 
 -- --------------------------------------------------------
 
@@ -246,9 +255,9 @@ INSERT INTO `learning_materials` (`id`, `subject_id`, `title`, `file_url`, `type
 
 CREATE TABLE `lecturer` (
   `id` bigint UNSIGNED NOT NULL,
-  `full_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `lecturer_code` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lecturer_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `department_id` bigint UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -269,10 +278,10 @@ INSERT INTO `lecturer` (`id`, `full_name`, `lecturer_code`, `email`, `department
 
 CREATE TABLE `rooms` (
   `id` bigint UNSIGNED NOT NULL,
-  `room_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `building` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `room_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `building` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `capacity` int DEFAULT NULL,
-  `type` enum('theory','lab','exam') COLLATE utf8mb4_general_ci DEFAULT 'theory'
+  `type` enum('theory','lab','exam') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'theory'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -287,49 +296,13 @@ INSERT INTO `rooms` (`id`, `room_name`, `building`, `capacity`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `score_components`
---
-
-CREATE TABLE `score_components` (
-  `id` bigint UNSIGNED NOT NULL,
-  `course_class_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `type` enum('TX','DK','CK','PROJECT') NOT NULL,
-  `weight` decimal(5,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Đang đổ dữ liệu cho bảng `score_components`
---
-
-INSERT INTO `score_components` (`id`, `course_class_id`, `name`, `type`, `weight`) VALUES
-(5, 18, 'Báo cáo', 'PROJECT', 100.00),
-(6, 19, 'Chuyên cần', 'TX', 10.00),
-(7, 19, 'Bài kiểm tra 1', 'TX', 10.00),
-(8, 19, 'Bài kiểm tra 2', 'DK', 20.00),
-(9, 19, 'Bài tập lớn', 'PROJECT', 60.00),
-(10, 21, 'Chuyên cần', 'TX', 10.00),
-(11, 21, 'Bài kiểm tra 1', 'TX', 10.00),
-(12, 21, 'Bài kiểm tra 2', 'DK', 20.00),
-(13, 21, 'Bài thi', 'CK', 60.00),
-(14, 23, 'Chuyên cần', 'TX', 5.00),
-(15, 23, 'Bài kiểm tra 1', 'TX', 5.00),
-(16, 23, 'Điểm thường xuyên', 'TX', 5.00),
-(17, 23, 'Bài tập', 'TX', 5.00),
-(18, 23, 'Bài kiểm tra lý thuyết', 'DK', 10.00),
-(19, 23, 'Bài kiểm tra thực hành', 'DK', 10.00),
-(20, 23, 'Bài thi', 'CK', 60.00);
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `semesters`
 --
 
 CREATE TABLE `semesters` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `academic_year` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `academic_year` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `semester_number` tinyint NOT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
@@ -352,7 +325,7 @@ INSERT INTO `semesters` (`id`, `name`, `academic_year`, `semester_number`, `star
 
 CREATE TABLE `student` (
   `id` bigint UNSIGNED NOT NULL,
-  `student_code` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `student_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `class_id` bigint UNSIGNED DEFAULT NULL,
   `department_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -387,7 +360,8 @@ CREATE TABLE `student_affairs` (
 --
 
 INSERT INTO `student_affairs` (`id`, `full_name`, `office_code`, `email`, `created_at`) VALUES
-(1, 'Phòng Công tác HSSV CNTT', 'CTSV_CNTT', 'ctsv_cntt@university.edu.vn', '2026-02-16 16:06:51');
+(1, 'Phòng Công tác HSSV CNTT', 'CTSV_CNTT', 'ctsv_cntt@university.edu.vn', '2026-02-16 16:06:51'),
+(2, 'Nguyễn Văn Tứ', 'CTSV00001', 'tutue9692@gmail.comekmfm', '2026-02-22 14:51:45');
 
 -- --------------------------------------------------------
 
@@ -398,24 +372,26 @@ INSERT INTO `student_affairs` (`id`, `full_name`, `office_code`, `email`, `creat
 CREATE TABLE `student_component_scores` (
   `id` bigint UNSIGNED NOT NULL,
   `student_id` bigint UNSIGNED NOT NULL,
-  `component_id` bigint UNSIGNED NOT NULL,
+  `course_class_id` bigint UNSIGNED NOT NULL,
+  `subject_component_id` bigint UNSIGNED NOT NULL,
   `score` decimal(4,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `student_component_scores`
 --
 
-INSERT INTO `student_component_scores` (`id`, `student_id`, `component_id`, `score`, `created_at`, `updated_at`) VALUES
-(1, 22, 6, 8.00, '2026-02-19 22:39:19', '2026-02-20 10:24:06'),
-(2, 22, 7, 7.00, '2026-02-19 22:39:19', '2026-02-20 10:24:06'),
-(3, 22, 8, 9.50, '2026-02-19 22:39:19', '2026-02-19 23:00:58'),
-(4, 22, 9, 10.00, '2026-02-19 22:39:19', '2026-02-19 22:39:19'),
-(13, 22, 10, 10.00, '2026-02-20 11:54:37', '2026-02-20 11:54:37'),
-(14, 22, 13, 10.00, '2026-02-20 11:54:53', '2026-02-20 11:54:53'),
-(15, 22, 14, 10.00, '2026-02-20 13:06:50', '2026-02-20 13:06:50');
+INSERT INTO `student_component_scores` (`id`, `student_id`, `course_class_id`, `subject_component_id`, `score`, `created_at`, `updated_at`) VALUES
+(1, 22, 25, 4, 10.00, '2026-02-21 03:46:36', '2026-02-21 03:46:36'),
+(6, 22, 25, 5, 10.00, '2026-02-21 04:09:49', '2026-02-21 04:09:49'),
+(9, 22, 25, 7, 8.00, '2026-02-21 04:09:53', '2026-02-21 04:21:27'),
+(13, 25, 25, 4, 8.00, '2026-02-21 04:20:23', '2026-02-21 04:21:14'),
+(16, 22, 25, 6, 10.00, '2026-02-21 04:20:27', '2026-02-21 04:20:27'),
+(29, 16, 25, 4, 5.00, '2026-02-21 04:20:42', '2026-02-21 04:20:42'),
+(42, 16, 25, 5, 5.00, '2026-02-21 04:20:47', '2026-02-21 04:20:47'),
+(54, 25, 25, 5, 7.00, '2026-02-21 04:21:11', '2026-02-21 06:24:25');
 
 -- --------------------------------------------------------
 
@@ -433,9 +409,9 @@ CREATE TABLE `student_course_classes` (
 --
 
 INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
-(22, 19),
-(22, 21),
-(22, 23);
+(16, 25),
+(22, 25),
+(25, 25);
 
 -- --------------------------------------------------------
 
@@ -446,16 +422,16 @@ INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
 CREATE TABLE `student_profiles` (
   `id` bigint UNSIGNED NOT NULL,
   `student_id` bigint UNSIGNED NOT NULL,
-  `full_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `gender` enum('Nam','Nữ','Khác') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `gender` enum('Nam','Nữ','Khác') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `phone` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `identity_number` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `education_type` enum('Chính quy','Liên thông','Tại chức') COLLATE utf8mb4_general_ci DEFAULT 'Chính quy',
-  `status` enum('Đang học','Tạm dừng','Thôi học','Đã tốt nghiệp') COLLATE utf8mb4_general_ci DEFAULT 'Đang học'
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `identity_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `education_type` enum('Chính quy','Liên thông','Tại chức') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'Chính quy',
+  `status` enum('Đang học','Tạm dừng','Thôi học','Đã tốt nghiệp') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'Đang học'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -475,41 +451,51 @@ INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date
 
 CREATE TABLE `subjects` (
   `id` bigint UNSIGNED NOT NULL,
-  `subject_code` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `subject_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `credits` int DEFAULT '3',
-  `department_id` bigint UNSIGNED DEFAULT NULL
+  `department_id` bigint UNSIGNED DEFAULT NULL,
+  `subject_type` enum('NORMAL','PROJECT') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'NORMAL'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `subjects`
 --
 
-INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`) VALUES
-(1, 'CT101', 'Lập trình C', 6, 3),
-(2, 'CT202', 'Lập trình PHP', 3, 3),
-(3, 'CT30', 'Cơ sở dữ liệud', 3, 3),
-(4, 'TK3D', 'Thiết kế 3D', 6, 2),
-(5, 'IT101', 'Nhập môn Công nghệ thông tin', 3, 2),
-(6, 'IT102', 'Lập trình C cơ bản', 3, 2),
-(7, 'IT103', 'Lập trình hướng đối tượng', 3, 2),
-(8, 'IT104', 'Cấu trúc dữ liệu và giải thuật', 4, 2),
-(9, 'IT105', 'Cơ sở dữ liệu', 3, 2),
-(10, 'IT106', 'Hệ điều hành', 3, 2),
-(11, 'IT107', 'Mạng máy tính', 3, 2),
-(12, 'IT108', 'Phân tích và thiết kế hệ thống', 3, 2),
-(13, 'IT109', 'Công nghệ phần mềm', 3, 2),
-(14, 'IT110', 'Lập trình Web', 3, 2),
-(15, 'IT111', 'Lập trình Java nâng cao', 3, 2),
-(16, 'IT112', 'Lập trình PHP & MySQL', 3, 2),
-(17, 'IT113', 'An toàn và bảo mật thông tin', 3, 2),
-(18, 'IT114', 'Trí tuệ nhân tạo', 3, 2),
-(19, 'IT115', 'Khai phá dữ liệu', 3, 2),
-(20, 'IT116', 'Hệ quản trị cơ sở dữ liệu', 3, 2),
-(21, 'IT117', 'Điện toán đám mây', 3, 2),
-(22, 'IT118', 'Phát triển ứng dụng di động', 3, 2),
-(23, 'IT119', 'Kiểm thử phần mềm', 3, 2),
-(24, 'IT120', 'Đồ án chuyên ngành CNTT', 4, 2);
+INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`, `subject_type`) VALUES
+(36, 'IT34', 'Phân tích thiết kế hệ thống', 3, 2, 'NORMAL'),
+(37, 'IT51', 'Đồ án tốt nghiệp', 3, 2, 'PROJECT'),
+(38, 'IT01', 'Cơ sở dữ liệu', 3, 2, 'NORMAL');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `subject_score_components`
+--
+
+CREATE TABLE `subject_score_components` (
+  `id` bigint UNSIGNED NOT NULL,
+  `subject_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `type` enum('TX','DK','CK','PROJECT') NOT NULL,
+  `weight` decimal(5,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `subject_score_components`
+--
+
+INSERT INTO `subject_score_components` (`id`, `subject_id`, `name`, `type`, `weight`, `created_at`) VALUES
+(4, 36, 'Chuyên cần', 'TX', 10.00, '2026-02-20 17:03:16'),
+(5, 36, 'Bài kiểm tra 1', 'TX', 10.00, '2026-02-20 17:03:16'),
+(6, 36, 'Bài kiểm tra 2', 'DK', 20.00, '2026-02-20 17:03:16'),
+(7, 36, 'Bài tập lớn', 'CK', 60.00, '2026-02-20 17:03:16'),
+(8, 37, 'Đồ án', 'PROJECT', 100.00, '2026-02-20 17:04:30'),
+(9, 38, 'Chuyên cần', 'TX', 10.00, '2026-02-20 17:09:13'),
+(10, 38, 'Bài kiểm tra 1', 'TX', 10.00, '2026-02-20 17:09:13'),
+(11, 38, 'Bài kiểm tra 2', 'DK', 20.00, '2026-02-20 17:09:13'),
+(12, 38, 'Bài thi', 'CK', 60.00, '2026-02-20 17:09:13');
 
 -- --------------------------------------------------------
 
@@ -522,10 +508,17 @@ CREATE TABLE `timetables` (
   `course_class_id` bigint UNSIGNED NOT NULL,
   `room_id` bigint UNSIGNED NOT NULL,
   `day_of_week` tinyint NOT NULL,
-  `session` enum('Sáng','Chiều') COLLATE utf8mb4_general_ci NOT NULL,
+  `session` enum('Sáng','Chiều') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `start_week` int NOT NULL,
   `end_week` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `timetables`
+--
+
+INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `session`, `start_week`, `end_week`) VALUES
+(9, 25, 1, 4, 'Sáng', 1, 9);
 
 -- --------------------------------------------------------
 
@@ -535,10 +528,9 @@ CREATE TABLE `timetables` (
 
 CREATE TABLE `training_office` (
   `id` bigint UNSIGNED NOT NULL,
-  `full_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `office_code` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `phone` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `office_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -546,9 +538,9 @@ CREATE TABLE `training_office` (
 -- Đang đổ dữ liệu cho bảng `training_office`
 --
 
-INSERT INTO `training_office` (`id`, `full_name`, `office_code`, `email`, `phone`, `created_at`) VALUES
-(1, 'Phòng Đào Tạo Khoa Công Nghệ Thông Tin', 'PDT_CNTT', 'daotao_cntt@university.edu.vn', '02438889999', '2026-02-06 07:42:38'),
-(2, 'Nguyễn Thị Hương – Cán bộ đào tạo', 'CB_DT_01', 'huongdt@university.edu.vn', '0988777666', '2026-02-06 07:42:38');
+INSERT INTO `training_office` (`id`, `full_name`, `office_code`, `email`, `created_at`) VALUES
+(1, 'Phòng Đào Tạo Khoa Công Nghệ Thông Tin', 'PDT_CNTT', 'daotao_cntt@university.edu.vn', '2026-02-06 07:42:38'),
+(2, 'Nguyễn Thị Hương – Cán bộ đào tạo', 'CB_DT_01', 'huongdt@university.edu.vn', '2026-02-06 07:42:38');
 
 -- --------------------------------------------------------
 
@@ -558,8 +550,8 @@ INSERT INTO `training_office` (`id`, `full_name`, `office_code`, `email`, `phone
 
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `role` enum('admin','lecturer','student','training_office','academic_affairs','exam_office','student_affairs') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ref_id` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -581,7 +573,13 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 (26, 'pdt', '123', 'training_office', 1),
 (31, 'hocvu', '123', 'academic_affairs', 1),
 (32, 'khaothi', '123', 'exam_office', 1),
-(33, 'ctsv', '123', 'student_affairs', 1);
+(33, 'ctsv', '123', 'student_affairs', 1),
+(34, 'HV00001', 'HV00001', 'academic_affairs', 2),
+(35, 'KT00001', 'KT00001', 'exam_office', 2),
+(36, 'KT00002', 'KT00002', 'exam_office', 4),
+(37, 'KT00003', 'KT00003', 'exam_office', 5),
+(38, 'KT00004', 'KT00004', 'exam_office', 6),
+(39, 'CTSV00001', 'CTSV00001', 'student_affairs', 2);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -685,13 +683,6 @@ ALTER TABLE `rooms`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `score_components`
---
-ALTER TABLE `score_components`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `course_class_id` (`course_class_id`);
-
---
 -- Chỉ mục cho bảng `semesters`
 --
 ALTER TABLE `semesters`
@@ -719,8 +710,9 @@ ALTER TABLE `student_affairs`
 --
 ALTER TABLE `student_component_scores`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_student_component` (`student_id`,`component_id`),
-  ADD KEY `fk_grade_component` (`component_id`);
+  ADD UNIQUE KEY `uq_student_component` (`student_id`,`course_class_id`,`subject_component_id`),
+  ADD KEY `fk_scs_course` (`course_class_id`),
+  ADD KEY `fk_scs_component` (`subject_component_id`);
 
 --
 -- Chỉ mục cho bảng `student_course_classes`
@@ -743,6 +735,13 @@ ALTER TABLE `subjects`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `subject_code` (`subject_code`),
   ADD KEY `department_id` (`department_id`);
+
+--
+-- Chỉ mục cho bảng `subject_score_components`
+--
+ALTER TABLE `subject_score_components`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_subject_component` (`subject_id`,`name`);
 
 --
 -- Chỉ mục cho bảng `timetables`
@@ -777,7 +776,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `academic_affairs`
 --
 ALTER TABLE `academic_affairs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `academic_results`
@@ -795,7 +794,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT cho bảng `audit_logs`
 --
 ALTER TABLE `audit_logs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `classes`
@@ -807,13 +806,13 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT cho bảng `class_sessions`
 --
 ALTER TABLE `class_sessions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
@@ -825,7 +824,7 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT cho bảng `exam_office`
 --
 ALTER TABLE `exam_office`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `learning_materials`
@@ -846,12 +845,6 @@ ALTER TABLE `rooms`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `score_components`
---
-ALTER TABLE `score_components`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
 -- AUTO_INCREMENT cho bảng `semesters`
 --
 ALTER TABLE `semesters`
@@ -867,13 +860,13 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT cho bảng `student_affairs`
 --
 ALTER TABLE `student_affairs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `student_component_scores`
 --
 ALTER TABLE `student_component_scores`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT cho bảng `student_profiles`
@@ -885,13 +878,19 @@ ALTER TABLE `student_profiles`
 -- AUTO_INCREMENT cho bảng `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT cho bảng `subject_score_components`
+--
+ALTER TABLE `subject_score_components`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `timetables`
 --
 ALTER TABLE `timetables`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `training_office`
@@ -903,7 +902,7 @@ ALTER TABLE `training_office`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- Ràng buộc đối với các bảng kết xuất
@@ -966,12 +965,6 @@ ALTER TABLE `lecturer`
   ADD CONSTRAINT `lecturer_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE SET NULL;
 
 --
--- Ràng buộc cho bảng `score_components`
---
-ALTER TABLE `score_components`
-  ADD CONSTRAINT `score_components_ibfk_1` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE;
-
---
 -- Ràng buộc cho bảng `student`
 --
 ALTER TABLE `student`
@@ -982,8 +975,9 @@ ALTER TABLE `student`
 -- Ràng buộc cho bảng `student_component_scores`
 --
 ALTER TABLE `student_component_scores`
-  ADD CONSTRAINT `fk_grade_component` FOREIGN KEY (`component_id`) REFERENCES `score_components` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_grade_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_scs_component` FOREIGN KEY (`subject_component_id`) REFERENCES `subject_score_components` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_scs_course` FOREIGN KEY (`course_class_id`) REFERENCES `course_classes` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_scs_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE;
 
 --
 -- Ràng buộc cho bảng `student_course_classes`
@@ -1005,6 +999,12 @@ ALTER TABLE `subjects`
   ADD CONSTRAINT `subjects_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE SET NULL;
 
 --
+-- Ràng buộc cho bảng `subject_score_components`
+--
+ALTER TABLE `subject_score_components`
+  ADD CONSTRAINT `fk_subject_component_subject` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE;
+
+--
 -- Ràng buộc cho bảng `timetables`
 --
 ALTER TABLE `timetables`
@@ -1013,9 +1013,5 @@ ALTER TABLE `timetables`
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-<<<<<<< HEAD
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
-=======
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
->>>>>>> 0e1944da8c3ee13b6af721a4759d61cd04dc530f

@@ -99,7 +99,7 @@ $role = $_SESSION['user']['role'];
     </li>
 
     <li class="<?= PermissionService::has($role, 'timetable') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn">Thời khóa biểu</a>
+        <a class="drop-btn" href="index.php?controller=timetable&action=getAllTkb">Thời khóa biểu</a>
     </li>
 
 </ul>

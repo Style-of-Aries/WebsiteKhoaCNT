@@ -1,3 +1,43 @@
+//#region ================= SORT MODULE =================
+let sortDirection = true;
+
+function sortTable(colIndex) {
+  let tbody = document.querySelector("#mainTable tbody");
+  if (!tbody) return;
+
+  let rows = Array.from(tbody.rows);
+  sortDirection = !sortDirection;
+
+  rows.sort((rowA, rowB) => {
+    let cellA = rowA.cells[colIndex].innerText.trim();
+    let cellB = rowB.cells[colIndex].innerText.trim();
+
+    // Number sort
+    let numA = parseFloat(cellA.replace(/\D/g, ""));
+    let numB = parseFloat(cellB.replace(/\D/g, ""));
+
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return sortDirection ? numA - numB : numB - numA;
+    }
+
+    // Date sort
+    let dateA = Date.parse(cellA);
+    let dateB = Date.parse(cellB);
+
+    if (!isNaN(dateA) && !isNaN(dateB)) {
+      return sortDirection ? dateA - dateB : dateB - dateA;
+    }
+
+    // Text sort
+    return sortDirection
+      ? cellA.localeCompare(cellB)
+      : cellB.localeCompare(cellA);
+  });
+
+  rows.forEach((row) => tbody.appendChild(row));
+}
+//#endregion
+
 document.addEventListener("DOMContentLoaded", function () {
   //#region ================= ALERT MODULE =================
   const alertBox = document.getElementById("autoHideAlert");
@@ -23,46 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
       alertBox.classList.add("hide");
     }, 3000);
-  }
-  //#endregion
-
-  //#region ================= SORT MODULE =================
-  let sortDirection = true;
-
-  function sortTable(colIndex) {
-    let tbody = document.querySelector("#mainTable tbody");
-    if (!tbody) return;
-
-    let rows = Array.from(tbody.rows);
-    sortDirection = !sortDirection;
-
-    rows.sort((rowA, rowB) => {
-      let cellA = rowA.cells[colIndex].innerText.trim();
-      let cellB = rowB.cells[colIndex].innerText.trim();
-
-      // Number sort
-      let numA = parseFloat(cellA.replace(/\D/g, ""));
-      let numB = parseFloat(cellB.replace(/\D/g, ""));
-
-      if (!isNaN(numA) && !isNaN(numB)) {
-        return sortDirection ? numA - numB : numB - numA;
-      }
-
-      // Date sort
-      let dateA = Date.parse(cellA);
-      let dateB = Date.parse(cellB);
-
-      if (!isNaN(dateA) && !isNaN(dateB)) {
-        return sortDirection ? dateA - dateB : dateB - dateA;
-      }
-
-      // Text sort
-      return sortDirection
-        ? cellA.localeCompare(cellB)
-        : cellB.localeCompare(cellA);
-    });
-
-    rows.forEach((row) => tbody.appendChild(row));
   }
   //#endregion
 
@@ -227,20 +227,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   //#endregion
 
-
-
-
-
-
-
   //#region ================= FORM ADD SUBJECT =================
-  let index = 0;
 
   const table = document.getElementById("score-structure");
   const tbody = table.querySelector("tbody");
   const addBtn = document.getElementById("btnAddComponent");
   const totalWeightSpan = document.getElementById("totalWeight");
-
+  let index = tbody.querySelectorAll("tr").length;
   // =============================
   // TÍNH TỔNG TRỌNG SỐ
   // =============================
@@ -336,6 +329,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // TẠO DÒNG ĐẦU MẶC ĐỊNH
-  createRow();
+  if (tbody.querySelectorAll("tr").length === 0) {
+    createRow();
+  }
+  updateTotalWeight();
   //#endregion
 });

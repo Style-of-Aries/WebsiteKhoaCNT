@@ -122,12 +122,12 @@ WHERE s.id = '$id';
     {
 
         //         $sql = "SELECT *
-// FROM student s
-// JOIN student_profiles sp
-//     ON s.id = sp.student_id
-// WHERE s.id = $id;";
-//         $query = $this->__query($sql);
-//         return mysqli_fetch_assoc($query);
+        // FROM student s
+        // JOIN student_profiles sp
+        //     ON s.id = sp.student_id
+        // WHERE s.id = $id;";
+        //         $query = $this->__query($sql);
+        //         return mysqli_fetch_assoc($query);
         $sql = "
         SELECT 
     st.id AS student_id,
@@ -400,6 +400,4 @@ WHERE st.id = $studentId;
 
         return mysqli_num_rows($result) > 0;
     }
-
 }
-
