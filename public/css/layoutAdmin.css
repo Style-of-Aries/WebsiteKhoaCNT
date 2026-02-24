@@ -475,6 +475,8 @@ select {
 }
 
 .container-main {
+  margin: auto;
+  width: 800px;
   height: calc(100% - var(--header-height));
   background: #fff;
   padding: 18px;

@@ -1,97 +1,59 @@
 <?php
 ob_start();
 ?>
-<!-- <style>
 
-    .error {
-        color: red;
-        /* margin-left: px; */
-    }
+<div class="container-main">
+    <button class="back-button" onclick="history.back()">
+        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
+            <path
+                d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z">
+            </path>
+        </svg>
+        <span>Quay lại</span>
+    </button>
+    <h2>Thêm Khoa</h2>
 
-    form.song-form {
-        background-color: #231b2e;
-        padding: 24px;
-        border-radius: 8px;
-        /* max-width: 600px; */
-        width: 50%;
-        /* height: 70%; */
-        /* margin: auto; */
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="file"],
-    input[type="password"],
-    select {
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #2e253a;
-        color: white;
-        width: 100%;
-        outline: none;
-    }
-
-    input[type="submit"] {
-        padding: 12px;
-        background-color: #9b4de0;
-        border: none;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-        outline: none;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #b86aff;
-    }
-</style> -->
+    <form action="index.php?controller=department&action=add" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col">
+                <label>Tên Khoa</label>
+                <input type="text" name="name" required>
+                <!-- <i class="fa-solid fa-user"></i> -->
+                <!-- <small class="error" id="error-title"></small> -->
+            </div>
+        </div>
 
 
-<h2>Thêm Khoa</h2>
+        <div class="row">
+            <div class="col">
+                <label>Loại</label><br>
+                <select name="type" required>
+                    <option value="">-- Chọn loại --</option>
+                    <option value="school">Trường</option>
+                    <option value="faculty">Khoa</option>
+                    <option value="department">Bộ môn</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Đơn vị cha</label><br>
+                <select name="parent_id">
+                    <option value="">-- Không có --</option>
+                    <?php while ($row = mysqli_fetch_assoc($parents)) { ?>
+                        <option value="<?= $row['id'] ?>">
+                            <?= $row['name'] ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
 
-<form class="add-form" action="index.php?controller=department&action=add" method="POST" enctype="multipart/form-data">
-    <div>
-        <label>Tên Khoa</label>
-        <input type="text" name="name" required>
-        <!-- <i class="fa-solid fa-user"></i> -->
-        <!-- <small class="error" id="error-title"></small> -->
-    </div>
-    
-    
-    <div>
-        <label>Loại</label><br>
-        <select name="type" required>
-            <option value="">-- Chọn loại --</option>
-            <option value="school">Trường</option>
-            <option value="faculty">Khoa</option>
-            <option value="department">Bộ môn</option>
-        </select>
-    </div>
-    <div>
-        <label>Đơn vị cha</label><br>
-        <select name="parent_id">
-            <option value="">-- Không có --</option>
-            <?php while ($row = mysqli_fetch_assoc($parents)) { ?>
-                <option value="<?= $row['id'] ?>">
-                    <?= $row['name'] ?>
-                </option>
-            <?php } ?>
-        </select>
-    </div>
 
-    
-    <input type="submit" value="Thêm lớp học" name="btn_add">
-</form>
+        <!-- <input type="submit" value="Thêm lớp học" name="btn_add"> -->
+        <button type="submit" class="btn-submit" name="btn_add">Thêm khoa</button>
+    </form>
+</div>
 <?php
 $content = ob_get_clean();
 include "../views/admin/layoutNew.php";

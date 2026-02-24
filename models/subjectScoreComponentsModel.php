@@ -63,4 +63,9 @@ class subjectScoreComponentsModel
 
         return mysqli_fetch_assoc($result);
     }
+
+    public function deleteBySubjectId($subjectId) {
+        $sql = "delete from subject_score_components where id= '$subjectId'";
+        return $this->__query($sql);
+    }
 }

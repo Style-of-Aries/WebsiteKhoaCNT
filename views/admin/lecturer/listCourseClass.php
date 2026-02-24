@@ -13,7 +13,7 @@ if ($type == 'attendance') {
 <div class="admin-table-wrapper">
     <div class="table-toolbar">
         <h2>Danh sách lớp học phần</h2>
-        <input type="text" id="searchTable" placeholder="Tìm kiếm giảng viên, mã giảng viên, email...">
+        <input type="text" id="searchTable" placeholder="Tìm kiếm mã lớp học phần...">
     </div>
     <table class="main-table" id="mainTable">
         <thead>

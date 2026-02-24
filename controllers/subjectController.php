@@ -51,6 +51,7 @@ class subjectController
         $id = $_GET['id'];
         $department = $this->departmentModel->getAll();
         $subject = $this->subjectModel->getById($id);
+        $components = $this->subjectScoreComponentsModel->getBySubject($id);
         require_once './../views/admin/subject/edit.php';
     }
     // thêm 
@@ -316,6 +317,170 @@ class subjectController
             }
         }
         include_once "./../views/admin/subject/edit.php";
+    }
+
+    public function editNew()
+    {
+        if (!isset($_SESSION['user'])) {
+            header("Location: index.php");
+            exit;
+        }
+
+        $errors = "";
+
+        // ================= POST =================
+        if (isset($_POST['btn_edit'])) {
+
+            $id = $_POST['id'];
+            $name = trim($_POST['name']);
+            $subject_code = trim($_POST['subject_code']);
+            $credits = trim($_POST['credits']);
+            $department_id = $_POST['department_id'];
+            $subject_type = $_POST['subject_type'];
+            $components = $_POST['components'] ?? [];
+            $subjectNormal = ($subject_type === 'NORMAL');
+            $subjectProject = ($subject_type === 'PROJECT');
+            $errors = "";
+            $totalWeight = 0;
+            $hasTX = false;
+            $hasDK = false;
+            $hasCK = false;
+            $isProject = false;
+
+            // ================= VALIDATE SUBJECT =================
+
+            if (empty($name) && $errors === "") {
+                $errors = "Tên môn học không được để trống";
+            }
+
+            if (empty($subject_code) && $errors === "") {
+                $errors = "Mã môn học không được để trống";
+            }
+
+            if (($credits === '' || !is_numeric($credits) || $credits <= 0) && $errors === "") {
+                $errors = "Số tín chỉ phải lớn hơn 0";
+            }
+
+            if (empty($department_id) && $errors === "") {
+                $errors = "Vui lòng chọn khoa";
+            }
+
+            // ================= VALIDATE COMPONENT =================
+
+            if (empty($components) && $errors === "") {
+                $errors = "Phải có ít nhất 1 thành phần điểm";
+            }
+
+
+            if ($errors === '') {
+
+                foreach ($components as $c) {
+
+                    $type = $c['type'] ?? '';
+                    $weight = (int) ($c['weight'] ?? 0);
+                    $nameComponent = trim($c['name'] ?? '');
+
+                    if ($nameComponent === '' && $errors === '') {
+                        $errors = "Tên thành phần điểm không được để trống";
+                    }
+
+                    if (!in_array($type, ['TX', 'DK', 'CK', 'PROJECT']) && $errors === '') {
+                        $errors = "Loại điểm không hợp lệ";
+                    }
+
+                    if (($weight <= 0 || $weight > 100) && $errors === '') {
+                        $errors = "Trọng số phải từ 1 đến 100";
+                    }
+
+                    if ($type === 'TX') {
+                        $hasTX = true;
+                    }
+
+                    if ($type === 'DK') {
+                        $hasDK = true;
+                    }
+
+                    if ($type === 'CK') {
+                        $hasCK = true;
+                    }
+
+                    if ($type === 'PROJECT') {
+                        $isProject = true;
+                    }
+
+                    $totalWeight += $weight;
+                }
+                if ($subjectNormal && (!$hasTX || !$hasDK) && $errors === '') {
+                    $errors = "Môn thường phải có ít nhất 1 điểm thường xuyên và định kì";
+                }
+
+                if ($totalWeight !== 100 && $errors === '') {
+                    $errors = "Tổng trọng số phải bằng 100%";
+                }
+
+                if ($subjectNormal && !$isProject && !$hasCK && $errors === '') {
+                    $errors = "Phải có ít nhất 1 điểm CK";
+                }
+
+                if ($subjectProject && count($components) > 1 && $errors === '') {
+                    $errors = "Môn đồ án chỉ được có 1 thành phần PROJECT";
+                }
+
+                if ($subjectProject && !$isProject && $errors === '') {
+                    $errors = "Môn đồ án phải có thành phần đồ án";
+                }
+            }
+
+            if ($totalWeight != 100 && $errors === "") {
+                $errors = "Tổng trọng số phải bằng 100";
+            }
+
+            // ================= Nếu có lỗi =================
+            if ($errors !== "") {
+
+                $subject = [
+                    'id' => $id,
+                    'name' => $name,
+                    'subject_code' => $subject_code,
+                    'credits' => $credits,
+                    'subject_type' => $subject_type,
+                    'department_id' => $department_id
+                ];
+                $department = $this->departmentModel->getAll();
+                $components = $this->subjectScoreComponentsModel->getBySubject($id);
+                $_SESSION['error'] = $errors;
+                include "./../views/admin/subject/edit.php";
+                return;
+            }
+
+            // ================= UPDATE SUBJECT =================
+            $this->subjectModel->editMonHoc(
+                $id,
+                $name,
+                $subject_code,
+                $credits,
+                $department_id,
+                $subject_type
+            );
+
+            // ================= UPDATE COMPONENT =================
+            $this->subjectScoreComponentsModel->deleteBySubjectId($id);
+
+            foreach ($components as $comp) {
+                $this->subjectScoreComponentsModel->add(
+                    $id,
+                    $comp['name'],
+                    $comp['weight'],
+                    $comp['type']
+                );
+            }
+
+            $_SESSION['success'] = "Cập nhật môn học thành công!";
+            $this->getAllMonHoc();
+            exit;
+        }
+
+        include "./../views/admin/subject/edit.php";
     }
     public function deleteMonHoc()
     {

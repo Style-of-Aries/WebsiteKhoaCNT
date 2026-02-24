@@ -207,7 +207,7 @@ class adminController
     {
         $classes = $this->classesModel->getAll();
 
-        $department = $this->departmentModel->getAll();
+        $department = $this->departmentModel->getAllKhoa();
 
         require_once './../views/admin/student/addNew.php';
     }

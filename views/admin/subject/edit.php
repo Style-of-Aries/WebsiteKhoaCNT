@@ -1,97 +1,145 @@
 <?php
 ob_start();
+
+$old = $_SESSION['old'] ?? [];
+unset($_SESSION['old']);
+
+function getValue($key, $default = '', $data = null)
+{
+    global $old;
+    if (!empty($old)) {
+        return htmlspecialchars($old[$key] ?? $default);
+    }
+    return htmlspecialchars($data[$key] ?? $default);
+}
 ?>
-<style>
-    .error {
-        color: red;
-        /* margin-left: px; */
-    }
 
-    form.song-form {
-        background-color: #231b2e;
-        padding: 24px;
-        border-radius: 8px;
-        /* max-width: 600px; */
-        width: 50%;
-        /* height: 70%; */
-        /* margin: auto; */
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
+<div class="container-main">
 
-    label {
-        font-weight: bold;
-    }
+    <button class="back-button" onclick="history.back()">
+        ← Quay lại
+    </button>
 
-    input[type="text"],
-    input[type="email"],
-    input[type="file"],
-    input[type="password"],
-    select {
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #2e253a;
-        color: white;
-        width: 100%;
-        outline: none;
-    }
+    <h2>Sửa Môn học</h2>
 
-    input[type="submit"] {
-        padding: 12px;
-        background-color: #9b4de0;
-        border: none;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-        outline: none;
-    }
+    <form action="index.php?controller=subject&action=editNew" method="POST">
+        <input type="hidden" name="id" value="<?= $subject['id']?>">
+        <!-- ===== THÔNG TIN CƠ BẢN ===== -->
+        <div class="row">
+            <div class="col">
+                <label>Tên Môn học</label>
+                <input type="text" name="name" value="<?= getValue('name', '', $subject) ?>" required>
+            </div>
 
-    input[type="submit"]:hover {
-        background-color: #b86aff;
-    }
-</style>
+            <div class="col">
+                <label>Số tín chỉ</label>
+                <input type="number" name="credits" min="1" value="<?= getValue('credits', '', $subject) ?>" required>
+            </div>
+        </div>
 
+        <div class="row">
+            <div class="col">
+                <label>Mã Môn học</label>
+                <input type="text" name="subject_code" value="<?= getValue('subject_code', '', $subject) ?>" required>
+            </div>
 
-<h2>Sửa thông tin Môn học:<?= $subject['name'] ?> </h2>
+            <div class="col">
+                <label>Loại môn</label>
+                <select name="subject_type" required>
+                    <option value="NORMAL" <?= getValue('subject_type', '', $subject) == 'NORMAL' ? 'selected' : '' ?>>
+                        Môn thường
+                    </option>
 
-<form class="song-form" action="index.php?controller=subject&action=edit" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="id" value=" <?= $subject['id'] ?>">
+                    <option value="PROJECT" <?= getValue('subject_type', '', $subject) == 'PROJECT' ? 'selected' : '' ?>>
+                        Đồ án
+                    </option>
+                </select>
+            </div>
+        </div>
 
-    <div>
-        <span>Tên khoa</span>
-        <input type="text" name="name" placeholder="Mã lớp" value="<?= $subject['name'] ?>" required>
-        <?php if (!empty($errorMaSv)) echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
-    </div>
-    <div>
-        <span>Mã môn học</span>
-        <input type="text" name="subject_code" placeholder="Mã môn học" value="<?= $subject['subject_code'] ?>" required>
-    </div>
-    <div>
-        <span>Số tín chỉ</span>
-        <input type="text" name="credits" placeholder="Số tín chỉ" value="<?= $subject['credits'] ?>" required>
-    </div>
-    <div>
-        <span>Lớp</span>
-        <select name="department_id" required>
-            <option value="">-- Chọn lớp --</option>
+        <!-- ===== KHOA ===== -->
+        <div class="col">
+            <label>Khoa</label>
+            <select name="department_id" required>
+                <option value="">-- Chọn khoa --</option>
 
-            <?php foreach ($department as $class): ?>
-                <option
-                    value="<?= $class['id'] ?>"
-                    <?= ($class['id'] == $subject['department_id']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($class['faculty_name']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <i class="fa-solid fa-school"></i>
-    </div>
+                <?php foreach ($department as $dept): ?>
+                    <option value="<?= $dept['id'] ?>" <?= getValue('department_id', '', $subject) == $dept['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($dept['faculty_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-    <input type="submit" value="Sửa thông tin" name="btn_edit">
-</form>
+        <!-- ===== CẤU TRÚC ĐIỂM ===== -->
+        <h3>Cấu trúc điểm</h3>
+
+        <table class="main-table" id="score-structure">
+            <thead>
+                <tr>
+                    <th>Tên thành phần</th>
+                    <th>Loại</th>
+                    <th>Trọng số (%)</th>
+                    <th>Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <?php
+                $dataComponents = $old['components'] ?? $components ?? [];
+                ?>
+
+                <?php foreach ($dataComponents as $index => $comp): ?>
+                    <tr>
+                        <td>
+                            <input type="text" name="components[<?= $index ?>][name]"
+                                value="<?= htmlspecialchars($comp['name']) ?>">
+                        </td>
+
+                        <td>
+                            <select name="components[<?= $index ?>][type]">
+                                <option value="TX" <?= $comp['type'] == 'TX' ? 'selected' : '' ?>>Thường xuyên</option>
+                                <option value="DK" <?= $comp['type'] == 'DK' ? 'selected' : '' ?>>Định kì</option>
+                                <option value="CK" <?= $comp['type'] == 'CK' ? 'selected' : '' ?>>Điểm thi</option>
+                                <option value="PROJECT" <?= $comp['type'] == 'PROJECT' ? 'selected' : '' ?>>Đồ án</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <input type="number" class="weight-input" name="components[<?= $index ?>][weight]"
+                                value="<?= htmlspecialchars($comp['weight']) ?>">
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn-remove btn-delete">
+                                <span class="X"></span>
+                                <span class="Y"></span>
+                                <div class="close">Xóa</div>
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </tbody>
+        </table>
+
+        <button type="button" class="add-button" id="btnAddComponent">
+            <div class="sign">+</div>
+            <div class="text">Thêm thành phần</div>
+        </button>
+
+        <div class="info-box">
+            Tổng trọng số:
+            <strong><span id="totalWeight">0</span>%</strong>
+        </div>
+
+        <button name="btn_edit" type="submit" class="btn-submit">
+            Cập nhật môn học
+        </button>
+
+    </form>
+</div>
+
 <?php
 $content = ob_get_clean();
 include "../views/admin/layoutNew.php";
