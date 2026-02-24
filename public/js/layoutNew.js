@@ -47,12 +47,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (realFile) {
     realFile.addEventListener("change", function () {
-      const file = this.files[0];
-      if (!file) return;
+  const file = this.files[0];
+  if (!file) return;
 
-      preview.src = URL.createObjectURL(file);
-      fileName.textContent = file.name;
-    });
+  preview.src = URL.createObjectURL(file);
+
+  // Ẩn tên file
+  if (fileName) {
+    fileName.style.display = "none";
+  }
+});
   }
 });
 //#endregion

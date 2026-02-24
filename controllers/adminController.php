@@ -213,6 +213,7 @@
         {
             $classes = $this->classesModel->getAll();
 
+            $student=  $this->studentModel->generateStudentCode();
             $department = $this->departmentModel->getAll();
 
             require_once './../views/admin/student/addNew.php';

@@ -51,10 +51,10 @@ ob_start();
                 <input type="text" name="full_name" required>
             </div>
 
-            <!-- <div class="info-row">
+            <div class="info-row">
                 <label>Mã sinh viên</label>
-                <input type="text" name="student_code" required>
-            </div> -->
+                <input disabled type="text" name="student_code" value=" <?=   $student ?>" required>
+            </div>
         </div>
     </div>
 
