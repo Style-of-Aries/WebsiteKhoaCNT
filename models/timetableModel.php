@@ -14,6 +14,52 @@ class timetableModel
     {
         return mysqli_query($this->connect, $sql);
     }
+
+    public function getAllTkb()
+    {
+        $sql = "SELECT 
+                cs.id,
+                s.name AS subject_name,
+                cs.session_date,
+                cs.course_class_id,
+                cs.day_of_week,
+                cs.session,
+                cs.week_number,
+                r.room_name,
+                r.building,
+                l.full_name
+            FROM class_sessions cs
+            JOIN course_classes cc ON cs.course_class_id = cc.id
+            JOIN subjects s ON cc.subject_id = s.id
+            JOIN lecturer l ON cc.lecturer_id = l.id
+            LEFT JOIN rooms r ON cs.room_id = r.id
+            ORDER BY cs.session_date ASC";
+        return $this->__query($sql);
+    }
+    public function getAllTkbEdit($course_class_id)
+    {
+        $sql = "SELECT 
+            cs.id,
+            s.name AS subject_name,
+            cs.session_date,
+            cs.course_class_id,
+            cs.day_of_week,
+            cs.session,
+            cs.week_number,
+            r.room_name,
+            r.building,
+            l.full_name
+        FROM class_sessions cs
+        JOIN course_classes cc ON cs.course_class_id = cc.id
+        JOIN subjects s ON cc.subject_id = s.id
+        JOIN lecturer l ON cc.lecturer_id = l.id
+        LEFT JOIN rooms r ON cs.room_id = r.id
+        WHERE cs.course_class_id = $course_class_id
+        ORDER BY cs.session_date ASC
+        ";
+
+        return $this->__query($sql);
+    }
     public function getAll($id)
     {
         $sql = "
@@ -339,6 +385,13 @@ ORDER BY
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
+    public function getByClass_sessionId($id_buoihoc)
+    {
+
+        $sql = "SELECT * FROM class_sessions WHERE id = $id_buoihoc LIMIT 1";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
+    }
     public function phongDaCoLichEdit($room_id, $day, $session, $course_class_id)
     {
         $sql = "
@@ -368,6 +421,25 @@ ORDER BY
             start_week = $start_week,
             end_week = $end_week
         WHERE course_class_id = $course_class_id
+    ";
+        return $this->__query($sql);
+    }
+    public function updateClass_sessions(
+        $id,
+        $room_id,
+        $day,
+        $session
+        // $start_week,
+        // $end_week
+    ) {
+        $sql = "
+        UPDATE class_sessions
+        SET
+            room_id = $room_id,
+            day_of_week = $day,
+            session = '$session'
+            
+        WHERE id = $id
     ";
         return $this->__query($sql);
     }

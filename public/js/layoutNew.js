@@ -39,13 +39,27 @@ function sortTable(colIndex) {
 //#endregion
 
 //#region ================= PREVIEW AVATAR ==============
-function previewAvatar(event) {
-  const file = event.target.files[0];
+//#region ================= AVATAR UPLOAD =================
+document.addEventListener("DOMContentLoaded", function () {
+  const realFile = document.getElementById("realFile");
+  const preview = document.getElementById("avatarPreview");
+  const fileName = document.getElementById("fileName");
+
+  if (realFile) {
+    realFile.addEventListener("change", function () {
+  const file = this.files[0];
   if (!file) return;
 
-  const img = document.getElementById("avatarPreview");
-  img.src = URL.createObjectURL(file);
-}
+  preview.src = URL.createObjectURL(file);
+
+  // Ẩn tên file
+  if (fileName) {
+    fileName.style.display = "none";
+  }
+});
+  }
+});
+//#endregion
 //#endregion
 
 //#region ================= INPUT FULL NAME ==============

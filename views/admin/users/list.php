@@ -7,6 +7,10 @@ ob_start();
     <h2>Danh sách Người dùng</h2>
     <input type="text" id="searchTable" placeholder="Tìm kiếm người dùng, tên đăng nhập, vai trò...">
   </div>
+    <button class="add-button" onclick="location.href='index.php?controller=admin&action=addNguoiDung'">
+    <div class="sign">+</div>
+    <div class="text">Thêm Người Dùng Mới</div>
+  </button>
   <div class="table-wrap">
     <table class="main-table" id="mainTable">
       <thead>

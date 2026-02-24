@@ -1,5 +1,4 @@
 <?php
-require_once "./../config/database.php";
 class userModel
 {
 
@@ -121,5 +120,164 @@ class userModel
     {
         $sql = "UPDATE users SET username='$username',password = '$password' WHERE ref_id='$id'";
         $query = $this->__query($sql);
+    }
+
+    public function addUser($role, $full_name, $email, $code)
+    {
+
+        mysqli_begin_transaction($this->connect);
+
+        try {
+
+            $refId = null;
+
+            // =========================
+            // STUDENT
+            // =========================
+            if ($role === 'student') {
+
+                $sqlStudent = "
+                INSERT INTO student(student_code, class_id, department_id, created_at)
+                VALUES (
+                    '$code',
+                    'null',
+                    'null',
+                    NOW()
+                )
+            ";
+
+                if (!$this->__query($sqlStudent)) {
+                    throw new Exception("Insert student failed");
+                }
+
+                $refId = mysqli_insert_id($this->connect);
+
+
+               
+            }
+
+            // LECTURER
+            elseif ($role === 'lecturer') {
+
+                $sql = "
+                INSERT INTO lecturer(full_name, lecturer_code, email, department_id)
+                VALUES (
+                    '$full_name',
+                    '$code',
+                    '$email',
+                    'null'
+                )
+            ";
+
+                if (!$this->__query($sql)) {
+                    throw new Exception("Insert lecturer failed");
+                }
+
+                $refId = mysqli_insert_id($this->connect);
+            }
+
+            // TRAINING OFFICE
+            elseif ($role === 'training_office') {
+
+                $sql = "
+                INSERT INTO training_office(full_name, office_code, email, created_at)
+                VALUES (
+                    '$full_name',
+                    '$code',
+                    '$email',
+                    NOW()
+                )
+            ";
+
+                if (!$this->__query($sql)) {
+                    throw new Exception("Insert training office failed");
+                }
+
+                $refId = mysqli_insert_id($this->connect);
+            }
+
+            // ACADEMIC AFFAIRS
+            elseif ($role === 'academic_affairs') {
+
+                $sql = "
+                INSERT INTO academic_affairs(full_name, office_code, email, created_at)
+                VALUES (
+                    '$full_name',
+                    '$code',
+                    '$email',
+                    NOW()
+                )
+            ";
+
+                if (!$this->__query($sql)) {
+                    throw new Exception("Insert academic affairs failed");
+                }
+
+                $refId = mysqli_insert_id($this->connect);
+            }
+
+            // EXAM OFFICE
+            elseif ($role === 'exam_office') {
+
+                $sql = "
+                INSERT INTO exam_office(full_name, office_code, email, created_at)
+                VALUES (
+                    '$full_name',
+                    '$code',
+                    '$email',
+                    NOW()
+                )
+            ";
+
+                if (!$this->__query($sql)) {
+                    throw new Exception("Insert exam office failed");
+                }
+
+                $refId = mysqli_insert_id($this->connect);
+            }
+
+            // STUDENT AFFAIRS
+            elseif ($role === 'student_affairs') {
+
+                $sql = "
+                INSERT INTO student_affairs(full_name, office_code, email, created_at)
+                VALUES (
+                    '$full_name',
+                    '$code',
+                    '$email',
+                    NOW()
+                )
+            ";
+
+                if (!$this->__query($sql)) {
+                    throw new Exception("Insert student affairs failed");
+                }
+
+                $refId = mysqli_insert_id($this->connect);
+            }
+
+            // INSERT USERS
+
+            $sqlUser = "
+            INSERT INTO users(username, password, role, ref_id)
+            VALUES (
+                '$code',
+                '$code',
+                '$role',
+                '$refId'
+            )
+        ";
+
+            if (!$this->__query($sqlUser)) {
+                throw new Exception("Insert user failed");
+            }
+
+            mysqli_commit($this->connect);
+            return true;
+        } catch (Exception $e) {
+
+            mysqli_rollback($this->connect);
+            return false;
+        }
     }
 }

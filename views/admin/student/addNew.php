@@ -2,15 +2,7 @@
 ob_start();
 ?>
 
-<form class="profile-paper" method="POST" enctype="multipart/form-data">
-    <button class="back-button" onclick="history.back()">
-        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
-            <path
-                d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z">
-            </path>
-        </svg>
-        <span>Quay lại</span>
-    </button>
+<form class="profile-paper" action="index.php?controller=admin&action=add" method="POST" enctype="multipart/form-data">
 
     <!-- Quốc hiệu -->
     <div class="national">
@@ -24,10 +16,34 @@ ob_start();
 
     <!-- HEADER -->
     <div class="profile-header">
-        <label class="avatar-box">
+        <!-- <label class="avatar-box">
             <input type="file" name="avatar" hidden onchange="previewAvatar(event)">
             <img id="avatarPreview" src="" alt="Ảnh 3x4">
+        </label> -->
+        <!-- <label>Ảnh đại diện</label> -->
+
+        <label class="avatar-box" for="realFile">
+            <div class="file-info">
+                <img id="avatarPreview"
+                    src="<?= !empty($studentprf['avatar'])
+                                ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
+                                : BASE_URL . 'uploads/avatars/default.png' ?>"
+                    alt="Avatar">
+
+                <span id="fileName">
+                    <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'Chọn ảnh' ?>
+                </span>
+            </div>
         </label>
+
+        <input type="file"
+            name="avatar"
+            id="realFile"
+            hidden
+            accept="image/*">
+
+        <input type="hidden" name="old_avatar"
+            value="<?= $studentprf['avatar'] ?>">
 
         <div class="header-info">
             <div class="info-row">
@@ -37,7 +53,7 @@ ob_start();
 
             <div class="info-row">
                 <label>Mã sinh viên</label>
-                <input type="text" name="student_code" required>
+                <input disabled type="text" name="student_code" value=" <?=   $student ?>" required>
             </div>
         </div>
     </div>
@@ -122,7 +138,7 @@ ob_start();
     </div>
 
     <div class="actions">
-        <button type="submit" class="btn-submit">LƯU HỒ SƠ</button>
+        <button type="submit" class="btn-submit" name="btn_add">LƯU HỒ SƠ</button>
     </div>
 
 </form>

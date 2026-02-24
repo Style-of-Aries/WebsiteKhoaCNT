@@ -47,6 +47,7 @@ class classSessionsModel
         $targetDow = (int) $timetable['day_of_week']; // 1 = Thứ 2
         $session = $timetable['session'];
         $room = $timetable['room_id'];
+        // $lecturer = $timetable['lecturer_id'];
         $semesterStart = $timetable['start_date'];
 
         // 🔹 Tìm ngày học đầu tiên đúng thứ trong tuần 1
