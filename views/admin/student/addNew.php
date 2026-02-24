@@ -105,12 +105,22 @@ ob_start();
 
         <div class="info-row">
             <label>Hệ đào tạo</label>
-            <input type="text" name="education_type">
+            <select name="education_type" required>
+                <option value="">-- Chọn hệ đào tạo --</option>
+                <option value="Chính quy">Chính quy</option>
+                <option value="Liên thông">Liên thông</option>
+            </select>
         </div>
 
         <div class="info-row">
             <label>Trạng thái học tập</label>
-            <input type="text" name="status">
+            <select name="status" required>
+                <option value="">-- Chọn trạng thái --</option>
+                <option value="Đang học">Đang học</option>
+                <option value="Bảo lưu">Bảo lưu</option>
+                <option value="Thôi học">Thôi học</option>
+                <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
+            </select>
         </div>
     </div>
 
