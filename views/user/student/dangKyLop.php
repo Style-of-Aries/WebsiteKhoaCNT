@@ -2,13 +2,14 @@
 ob_start();
 ?>
 
-<div class="container-admin">
+<div class="admin-table-wrapper">
 
     <h2>Các lớp đang mở ở kì này</h2>
 
     <table class="main-table">
-        <thead class="table-secondary">
+        <thead>
             <tr>
+                <th>STT</th>
                 <th>Mã Lớp</th>
                 <th>Tên Môn Học</th>
                 <th>Thứ</th>
@@ -20,10 +21,12 @@ ob_start();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($classes as $row):
+            <?php $stt = 1;
+            foreach ($classes as $row):
                 $remaining = $row['max_students'] - $row['current_students'];
                 ?>
                 <tr>
+                    <td><?= $stt++;?></td>
                     <td><?= htmlspecialchars($row['class_code']) ?></td>
                     <td><?= htmlspecialchars($row['subject_name']) ?></td>
                     <td class="text-center"><?= $row['day_of_week'] ?></td>
@@ -52,7 +55,8 @@ ob_start();
 
                         <?php elseif ($remaining > 0): ?>
 
-                            <a href="index.php?controller=student&action=registerCourseClass&class_id=<?= $row['id'] ?>" class="btn btn-primary btn-sm">
+                            <a href="index.php?controller=student&action=registerCourseClass&class_id=<?= $row['id'] ?>"
+                                class="btn btn-primary btn-sm">
                                 Đăng Ký
                             </a>
 

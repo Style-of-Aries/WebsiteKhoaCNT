@@ -107,4 +107,79 @@ class academicResultsModel
 
         return round($totalPoints / $totalCredits, 2);
     }
+
+    public function getStudentGrades($student_id)
+    {
+        $sql = "
+            SELECT 
+                ar.course_class_id,
+                sub.name AS subject_name,   -- sửa tại đây
+                sub.subject_code,
+                sub.credits,
+
+                ssc.name AS component_name,
+                ssc.type,
+                scs.score,
+
+                ar.final_score,
+                ar.letter_grade
+
+            FROM academic_results ar
+
+            JOIN course_classes cc 
+                ON ar.course_class_id = cc.id
+
+            JOIN subjects sub 
+                ON cc.subject_id = sub.id
+
+            LEFT JOIN student_component_scores scs 
+                ON scs.student_id = ar.student_id
+                AND scs.course_class_id = ar.course_class_id
+
+            LEFT JOIN subject_score_components ssc 
+                ON ssc.id = scs.subject_component_id
+
+            WHERE ar.student_id = '$student_id'
+            AND ar.approval_status = 'PUBLISHED'
+
+            ORDER BY ar.course_class_id, ssc.type
+        ";
+
+        return $this->__query($sql);
+    }
+
+    public function getStudentStatistics($student_id)
+{
+    $sql = "
+        SELECT 
+            SUM(sub.credits) AS total_credits,
+
+            SUM(
+                CASE 
+                    WHEN ar.result_status = 'pass' 
+                    THEN sub.credits 
+                    ELSE 0 
+                END
+            ) AS passed_credits,
+
+            SUM(ar.final_score * sub.credits) 
+                / NULLIF(SUM(sub.credits),0) AS avg_score_10,
+
+            SUM(ar.gpa_4 * sub.credits) 
+                / NULLIF(SUM(sub.credits),0) AS avg_gpa_4
+
+        FROM academic_results ar
+
+        JOIN course_classes cc 
+            ON ar.course_class_id = cc.id
+
+        JOIN subjects sub 
+            ON cc.subject_id = sub.id
+
+        WHERE ar.student_id = '$student_id'
+        AND ar.approval_status = 'PUBLISHED'
+    ";
+
+    return $this->__query($sql);
+}
 }

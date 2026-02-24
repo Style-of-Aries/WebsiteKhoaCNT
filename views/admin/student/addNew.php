@@ -28,9 +28,9 @@ ob_start();
                     ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
                     : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
 
-                <span id="fileName">
+                <!-- <span id="fileName">
                     <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'Chọn ảnh' ?>
-                </span>
+                </span> -->
             </div>
         </label>
         

@@ -1,4 +1,8 @@
 :root {
+  --sidebar-width: 250px;
+  --header-height: 60px;
+  --sidebar-bg-color: #5a5efb;
+  --sidebar-text-color: #ecf0f1;
   --blue-dark: #1e5fa8;
   --blue-main: #2f6fb3;
   --blue-light: #4f8fd8;
@@ -14,6 +18,8 @@
 
   --text-title: #1f2d3d;
   --text-main: #34495e;
+  --z-index-header: 600;
+  --z-index-sidebar: 700;
 }
 
 /* RESET */
@@ -28,17 +34,17 @@ body {
 
   font-family: Arial, sans-serif;
   color: #fff;
-  /* overflow-x: hidden; */
+  overflow: hidden;
 }
 
 a {
-    text-decoration: none;
-    color: var(--bg-card);
+  text-decoration: none;
+  color: var(--bg-card);
 }
 /* ================= HEADER ================= */
 .portal-header {
   height: 70px;
-  background: linear-gradient(90deg, var(--blue-main), var(--blue-light));
+  background: var(--sidebar-bg-color);
   color: white;
   display: flex;
   align-items: center;
@@ -67,32 +73,33 @@ a {
 /* ================= NAV MENU ================= */
 .header-nav {
   display: flex;
-  gap: 22px;
+  gap: 42px;
 }
 
 .header-nav a {
+  position: relative;
+  font-size: 18px;
   color: white;
   text-decoration: none;
-  font-size: 14px;
-  padding: 8px 2px;
-  position: relative;
-  transition: opacity 0.15s ease;
+  font-weight: bold;
+  margin-right: 30px;
 }
-
-.header-nav a:hover {
-  opacity: 0.85;
-}
-
-/* Active underline */
-.header-nav a.active::after {
+.header-nav a::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -8px;
+  bottom: -6px;
   width: 100%;
-  height: 3px;
+  height: 2px;
   background: white;
-  border-radius: 8px;
+  border-radius: 5px;
+  transform: translateY(10px);
+  transition: 0.3s;
+  opacity: 0;
+}
+.header-nav a:hover::after {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 /* ================= RIGHT ================= */
@@ -138,7 +145,7 @@ a {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  background: linear-gradient(180deg, var(--blue-main), var(--blue-dark));
+  background: var(--sidebar-bg-color);
   border: 1px solid var(--blue-light);
   min-width: 210px;
   /* border-radius: 14px; */
@@ -219,7 +226,8 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
   height: 100%;
   --c: #09f;
   background-color: #000;
-  background-image: radial-gradient(4px 100px at 0px 235px, var(--c), #0000),
+  background-image:
+    radial-gradient(4px 100px at 0px 235px, var(--c), #0000),
     radial-gradient(4px 100px at 300px 235px, var(--c), #0000),
     radial-gradient(1.5px 1.5px at 150px 117.5px, var(--c) 100%, #0000 150%),
     radial-gradient(4px 100px at 0px 252px, var(--c), #0000),
@@ -377,16 +385,14 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
   }
 }
 
-
 /* ================= CONTENT ================= */
 .portal-content {
   flex: 1;
-  margin-top: 70px;
-  padding: 26px;
-  /* min-height: calc(100vh - 88px); */
-  background: var(--bg-main);
+  margin-top: var(--header-height); /* Height of the header */
+  padding: 20px;
+  height: 100vh;
+  /* overflow: auto; */
   color: var(--text-main);
-  overflow-x: hidden;
 }
 
 /* ================= MOBILE ================= */

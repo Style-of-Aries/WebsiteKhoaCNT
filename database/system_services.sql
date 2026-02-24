@@ -385,7 +385,7 @@ CREATE TABLE `student_component_scores` (
   `score` decimal(4,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ;
+);
 
 --
 -- Đang đổ dữ liệu cho bảng `student_component_scores`

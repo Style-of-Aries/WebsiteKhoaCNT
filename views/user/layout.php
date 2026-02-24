@@ -3,7 +3,7 @@ require_once __DIR__ . "/../../config/config.php";
 
 $user = $_SESSION['user'] ?? null;
 $role = $user['role'] ?? 'guest';
-$name = $user['name'] ?? 'Guest';
+$fullName = $user['full_name'] ?? 'Guest';
 $gender = $user['gender'] ?? 'Nam';
 
 $currentController = $_GET['controller'] ?? '';
@@ -80,7 +80,7 @@ $currentAction = $_GET['action'] ?? '';
 
             <div class="user-menu">
                 <img src="<?= BASE_URL ?>img/<?= $gender === 'Nam' ? 'male.jpg' : 'avatar-nu.jpg' ?>">
-                <span><?= htmlspecialchars($name) ?></span>
+                <span><?= htmlspecialchars($fullName) ?></span>
                 <i class='bx bx-chevron-down'></i>
 
                 <div class="user-dropdown">

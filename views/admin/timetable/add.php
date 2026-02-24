@@ -122,7 +122,7 @@
 
         </div>
 
-        <button type="button" onclick="addSchedule()">+ Thêm buổi</button>
+        <!-- <button type="button" onclick="addSchedule()">+ Thêm buổi</button> -->
 
 
 

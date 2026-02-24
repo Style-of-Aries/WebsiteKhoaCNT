@@ -8,16 +8,26 @@ require_once '../models/timetableModel.php';
 require_once '../models/course_classesModel.php';
 require_once '../models/resultModel.php';
 require_once '../config/config.php';
+require_once '../models/classesModel.php';
+require_once '../models/departmentModel.php';
+require_once '../models/academicResultsModel.php';
 class studentController
 {
-    private $resultModel;private $connect;
+    private $academicResultsModel;
+    private $connect;
     private $courseClassModel;
     private $studentModel;
+    private $classesModel;
+    private $departmentModel;
     private $timetableModel;
+    private $userModel;
     public function __construct($connect)
     {
         $this->connect = $connect;
-        $this->resultModel = new resultModel($connect);
+        $this->academicResultsModel = new academicResultsModel($connect);
+        $this->userModel = new userModel($connect);
+        $this->classesModel = new classesModel($connect);
+        $this->departmentModel = new departmentModel($connect);
         $this->studentModel = new studentModel($connect);
         $this->timetableModel = new timetableModel($connect);
         $this->courseClassModel = new course_classesModel($connect);
@@ -34,16 +44,31 @@ class studentController
         $user = $_SESSION['user'];
         $profile = $this->studentModel->getAllProfile($user['ref_id']);
         $_SESSION['profile'] = $profile;
+        $id = $user['ref_id'];
+        $classes = $this->classesModel->getAll();
+        $department = $this->departmentModel->getAll();
+        $student = $this->studentModel->getById($id);
+        $studentprf = $this->studentModel->getById($id);
+        $userNd = $this->userModel->getByRef_id($id);
         // include "./../views/user/profile.php";
-        require_once '../views/user/student/profile.php';
+        require_once '../views/user/student/profileNew.php';
     }
 
     public function getAllResult()
     {
+
+        if (!isset($_SESSION['user'])) {
+            header("Location: index.php");
+            exit;
+        }
         $studentId = $_SESSION['user']['ref_id'];
-        $result = $this->resultModel->getAllResult($studentId);
+
+        $result = $this->academicResultsModel->getStudentGrades($studentId);
+        $statistics = mysqli_fetch_assoc($this->academicResultsModel->getStudentStatistics($studentId));
+
         require_once './../views/user/student/result.php';
     }
+
 
     public function getSchedule()
     {
@@ -54,7 +79,7 @@ class studentController
         $studentId = $_SESSION['user']['ref_id'];
         $weeks = $this->timetableModel->getWeeksOfActiveSemester();
 
-        $week = isset($_GET['week']) ? (int)$_GET['week'] : null;
+        $week = isset($_GET['week']) ? (int) $_GET['week'] : null;
 
         if ($week) {
             $timetables = $this->timetableModel->lichHocSvTheoTuan($studentId, $week);
@@ -175,7 +200,7 @@ class studentController
     public function registerCourseClass()
     {
         $studentId = $_SESSION['user']['ref_id'];
-        $classId   = $_GET['class_id'];
+        $classId = $_GET['class_id'];
         // var_dump($studentId);
         // var_dump($classId);
         // die;
