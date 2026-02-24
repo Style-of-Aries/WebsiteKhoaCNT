@@ -2,9 +2,7 @@
 ob_start();
 ?>
 
-<form class="profile-paper"
-    action="index.php?controller=admin&action=editSinhVien"
-    method="POST"
+<form class="profile-paper" action="index.php?controller=admin&action=editSinhVien" method="POST"
     enctype="multipart/form-data">
 
     <!-- hidden id -->
@@ -19,7 +17,7 @@ ob_start();
     </div>
 
     <div class="form-title">
-        CHỈNH SỬA HỒ SƠ SINH VIÊN
+        HỒ SƠ SINH VIÊN
     </div>
 
     <!-- HEADER -->
@@ -28,11 +26,9 @@ ob_start();
         <!-- Avatar -->
         <label class="avatar-box" for="realFile">
             <div class="file-info">
-                <img id="avatarPreview"
-                    src="<?= !empty($studentprf['avatar'])
-                                ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
-                                : BASE_URL . 'uploads/avatars/default.png' ?>"
-                    alt="Avatar">
+                <img id="avatarPreview" src="<?= !empty($studentprf['avatar'])
+                    ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
+                    : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
                 <span>
                     <?= !empty($studentprf['avatar'])
                         ? $studentprf['avatar']
@@ -41,29 +37,19 @@ ob_start();
             </div>
         </label>
 
-        <input type="file"
-            name="avatar"
-            id="realFile"
-            hidden
-            accept="image/*">
-            
+        <input type="file" name="avatar" id="realFile" hidden accept="image/*">
+
 
         <div class="header-info">
 
             <div class="info-row">
                 <label>Họ và tên</label>
-                <input type="text"
-                    name="full_name"
-                    value="<?= $studentprf['full_name'] ?>"
-                    required>
+                <input type="text" name="full_name" value="<?= $studentprf['full_name'] ?>" required>
             </div>
 
             <div class="info-row">
                 <label>Mã sinh viên</label>
-                <input type="text"
-                    name="student_code"
-                    value="<?= $student['student_code'] ?>"
-                    required>
+                <input type="text" name="student_code" value="<?= $student['student_code'] ?>" required>
                 <span style="color:red"><?= $errorMaSv ?? '' ?></span>
             </div>
 
@@ -86,38 +72,28 @@ ob_start();
 
         <div class="info-row">
             <label>Ngày sinh</label>
-            <input type="date"
-                name="date_of_birth"
-                value="<?= $studentprf['date_of_birth'] ?>">
+            <input type="date" name="date_of_birth" value="<?= $studentprf['date_of_birth'] ?>">
         </div>
 
         <div class="info-row">
             <label>Email</label>
-            <input type="email"
-                name="email"
-                value="<?= $studentprf['email'] ?>">
+            <input type="email" name="email" value="<?= $studentprf['email'] ?>">
             <span style="color:red"><?= $errorEmail ?? '' ?></span>
         </div>
 
         <div class="info-row">
             <label>Số điện thoại</label>
-            <input type="text"
-                name="phone"
-                value="<?= $studentprf['phone'] ?>">
+            <input type="text" name="phone" value="<?= $studentprf['phone'] ?>">
         </div>
 
         <div class="info-row">
             <label>CCCD / CMND</label>
-            <input type="text"
-                name="identity_number"
-                value="<?= $studentprf['identity_number'] ?>">
+            <input type="text" name="identity_number" value="<?= $studentprf['identity_number'] ?>">
         </div>
 
         <div class="info-row">
             <label>Địa chỉ</label>
-            <input type="text"
-                name="address"
-                value="<?= $studentprf['address'] ?>">
+            <input type="text" name="address" value="<?= $studentprf['address'] ?>">
         </div>
     </div>
 
@@ -129,12 +105,11 @@ ob_start();
             <label>Lớp hành chính</label>
             <select name="class_id" required>
                 <option value="">-- Chọn lớp --</option>
-                <?php while ($class = mysqli_fetch_assoc($classes)): ?>
-                    <option value="<?= $class['id'] ?>"
-                        <?= $student['class_id'] == $class['id'] ? 'selected' : '' ?>>
+                <?php foreach ($classes as $class): ?>
+                    <option value="<?= $class['id'] ?>" <?= $student['class_id'] == $class['id'] ? 'selected' : '' ?>>
                         <?= $class['class_name'] ?>
                     </option>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </select>
         </div>
 
@@ -142,12 +117,11 @@ ob_start();
             <label>Khoa</label>
             <select name="department_id" required>
                 <option value="">-- Chọn khoa --</option>
-                <?php while ($dept = mysqli_fetch_assoc($department)): ?>
-                    <option value="<?= $dept['id'] ?>"
-                        <?= $student['department_id'] == $dept['id'] ? 'selected' : '' ?>>
+                <?php foreach ($department as $dept): ?>
+                    <option value="<?= $dept['id'] ?>" <?= $student['department_id'] == $dept['id'] ? 'selected' : '' ?>>
                         <?= $dept['faculty_name'] ?>
                     </option>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </select>
         </div>
 
@@ -188,24 +162,18 @@ ob_start();
 
         <div class="info-row">
             <label>Username</label>
-            <input type="text"
-                name="username"
-                value="<?= $userNd['username'] ?>">
+            <input type="text" name="username" value="<?= $userNd['username'] ?>">
             <span style="color:red"><?= $errorName ?? '' ?></span>
         </div>
 
         <div class="info-row">
             <label>Password</label>
-            <input type="text"
-                name="password"
-                value="<?= $userNd['password'] ?>">
+            <input type="text" name="password" value="<?= $userNd['password'] ?>">
         </div>
     </div>
 
     <div class="actions">
-        <button type="submit"
-            class="btn-submit"
-            name="btn_edit">
+        <button type="submit" class="btn-submit" name="btn_edit">
             CẬP NHẬT HỒ SƠ
         </button>
     </div>

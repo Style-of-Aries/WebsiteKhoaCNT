@@ -47,7 +47,7 @@ class subjectModel
         return mysqli_insert_id($this->connect);
 
     }
-    public function editMonHoc($id, $name, $subject_code, $credits, $department_id)
+    public function editMonHoc($id, $name, $subject_code, $credits, $department_id, $subject_type)
     {
 
         $sql = "
@@ -56,7 +56,8 @@ class subjectModel
             name = '$name',
             subject_code = '$subject_code',
             credits = '$credits',
-            department_id = '$department_id'
+            department_id = '$department_id',
+            subject_type = '$subject_type'
         WHERE id = '$id'
         ";
         return $this->__query($sql);

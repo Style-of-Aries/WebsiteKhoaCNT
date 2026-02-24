@@ -24,26 +24,19 @@ ob_start();
 
         <label class="avatar-box" for="realFile">
             <div class="file-info">
-                <img id="avatarPreview"
-                    src="<?= !empty($studentprf['avatar'])
-                                ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
-                                : BASE_URL . 'uploads/avatars/default.png' ?>"
-                    alt="Avatar">
+                <img id="avatarPreview" src="<?= !empty($studentprf['avatar'])
+                    ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
+                    : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
 
                 <span id="fileName">
                     <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'Chọn ảnh' ?>
                 </span>
             </div>
         </label>
+        
+        <input type="file" name="avatar" id="realFile" hidden accept="image/*">
 
-        <input type="file"
-            name="avatar"
-            id="realFile"
-            hidden
-            accept="image/*">
-
-        <input type="hidden" name="old_avatar"
-            value="<?= $studentprf['avatar'] ?>">
+        <input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
 
         <div class="header-info">
             <div class="info-row">
@@ -53,7 +46,7 @@ ob_start();
 
             <div class="info-row">
                 <label>Mã sinh viên</label>
-                <input disabled type="text" name="student_code" value=" <?=   $student ?>" required>
+                <input disabled type="text" name="student_code" value=" <?= $student ?>" required>
             </div>
         </div>
     </div>
@@ -107,11 +100,11 @@ ob_start();
             <!-- <input type="text" name="class_name"> -->
             <select name="class_id" required>
                 <option value="">-- Chọn lớp --</option>
-                <?php while ($class = mysqli_fetch_assoc($classes)): ?>
+                <?php foreach ($classes as $class): ?>
                     <option value="<?= $class['id'] ?>">
                         <?= $class['class_name'] ?>
                     </option>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </select>
         </div>
 
@@ -119,11 +112,11 @@ ob_start();
             <label>Khoa</label>
             <select name="department_id" required>
                 <option value="">-- Chọn khoa --</option>
-                <?php while ($dept = mysqli_fetch_assoc($department)): ?>
+                <?php foreach ($department as $dept): ?>
                     <option value="<?= $dept['id'] ?>">
                         <?= $dept['faculty_name'] ?>
                     </option>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </select>
         </div>
 
@@ -133,17 +126,6 @@ ob_start();
                 <option value="">-- Chọn hệ đào tạo --</option>
                 <option value="Chính quy">Chính quy</option>
                 <option value="Liên thông">Liên thông</option>
-            </select>
-        </div>
-
-        <div class="info-row">
-            <label>Trạng thái học tập</label>
-            <select name="status" required>
-                <option value="">-- Chọn trạng thái --</option>
-                <option value="Đang học">Đang học</option>
-                <option value="Bảo lưu">Bảo lưu</option>
-                <option value="Thôi học">Thôi học</option>
-                <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
             </select>
         </div>
     </div>

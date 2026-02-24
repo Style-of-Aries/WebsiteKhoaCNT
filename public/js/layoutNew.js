@@ -39,28 +39,6 @@ function sortTable(colIndex) {
 //#endregion
 
 //#region ================= PREVIEW AVATAR ==============
-//#region ================= AVATAR UPLOAD =================
-document.addEventListener("DOMContentLoaded", function () {
-  const realFile = document.getElementById("realFile");
-  const preview = document.getElementById("avatarPreview");
-  const fileName = document.getElementById("fileName");
-
-  if (realFile) {
-    realFile.addEventListener("change", function () {
-  const file = this.files[0];
-  if (!file) return;
-
-  preview.src = URL.createObjectURL(file);
-
-  // Ẩn tên file
-  if (fileName) {
-    fileName.style.display = "none";
-  }
-});
-  }
-});
-//#endregion
-//#endregion
 
 //#region ================= INPUT FULL NAME ==============
 const fullNameInput = document.querySelector('input[name="full_name"]');
@@ -249,13 +227,22 @@ document.addEventListener("DOMContentLoaded", function () {
   //   }
   //#endregion
 
-  //#region ================= UPLOAD MODULE =================
-  const fakeBtn = document.querySelector(".fake-file button");
+  //#region ================= AVATAR UPLOAD =================
   const realFile = document.getElementById("realFile");
+  const preview = document.getElementById("avatarPreview");
+  const fileName = document.getElementById("fileName");
 
-  if (fakeBtn && realFile) {
-    fakeBtn.addEventListener("click", function () {
-      realFile.click();
+  if (realFile) {
+    realFile.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      preview.src = URL.createObjectURL(file);
+
+      // Ẩn tên file
+      if (fileName) {
+        fileName.style.display = "none";
+      }
     });
   }
   //#endregion

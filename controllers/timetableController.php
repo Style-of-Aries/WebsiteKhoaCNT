@@ -251,7 +251,6 @@ class timetableController
                 $errors['schedule'] = "Vui lòng thêm ít nhất 1 buổi học";
 
             // ===== VALIDATE MULTI SCHEDULE =====
-
             if (empty($errors)) {
 
                 foreach ($days as $i => $day) {
@@ -318,8 +317,11 @@ class timetableController
                 }
 
                 // generate session tự động
-                $this->classSessionsModel->generateSessions($course_class_id);
-
+                $generateSessions = $this->classSessionsModel->generateSessions($course_class_id);
+                if(!$generateSessions) {
+                    $_SESSION['error'] = "lỗi hàm tự sinh";
+                    exit();
+                }
                 $this->getAllHocPhan();
                 exit();
             }
