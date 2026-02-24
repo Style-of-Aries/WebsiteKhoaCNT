@@ -3,19 +3,6 @@ ob_start();
 $title = "Hồ sơ cá nhân";
 ?>
 
-<?php if (isset($_SESSION['success'])): ?>
-    <div class="alert alert-success" id="autoHideAlert">
-        <?= htmlspecialchars($_SESSION['success']) ?>
-    </div>
-    <?php unset($_SESSION['success']); ?>
-<?php endif; ?>
-
-<?php if (isset($_SESSION['error'])): ?>
-    <div class="alert alert-error" id="autoHideAlert">
-        <?= htmlspecialchars($_SESSION['error']) ?>
-    </div>
-    <?php unset($_SESSION['error']); ?>
-<?php endif; ?>
 
 <form action="index.php?controller=student&action=updateProfile" method="POST" enctype="multipart/form-data" class="profile-card">
 
@@ -27,7 +14,7 @@ $title = "Hồ sơ cá nhân";
         <input type="file" id="avatarInput" name="avatar" accept="image/*" hidden onchange="previewAvatar(event)">
 
         <div class="nameAndbtn">
-            <h2><?= $profile['full_name'] ?></h2>
+            <input type="text" name="full_name" value="<?= $profile['full_name'] ?>">
             <p class="student-code">MSSV: <?= $profile['student_code'] ?></p>
 
             <!-- Có thể ẩn bằng CSS nếu không cho sửa -->
@@ -35,50 +22,7 @@ $title = "Hồ sơ cá nhân";
                 <i class='bx bx-camera'></i> Chọn ảnh thẻ
             </label>
         </div>
-
     </div>
-
-
-    <!-- ===== THÔNG TIN HỌC VỤ ===== -->
-    <div class="profile-section">
-        <h3>Thông tin học vụ</h3>
-
-        <div class="info-row">
-            <label>Lớp hành chính</label>
-            <input type="text" value="<?= $profile['class_name'] ?>" readonly>
-        </div>
-
-        <div class="info-row">
-            <label>Khoa / Bộ môn</label>
-            <input type="text" value="<?= $profile['department_name'] ?>" readonly>
-        </div>
-
-        <div class="info-row">
-            <label>Hệ đào tạo</label>
-            <input type="text" value="<?= $profile['education_type'] ?>" readonly>
-        </div>
-
-        <div class="info-row">
-            <label>Trạng thái học tập</label>
-            <input type="text" value="<?= $profile['status'] ?>" readonly>
-        </div>
-
-        <div class="info-row">
-            <label>GPA</label>
-            <input type="text" value="<?= $profile['gpa'] ?? '0.00' ?>" readonly>
-        </div>
-
-        <div class="info-row">
-            <label>Tổng tín chỉ</label>
-            <input type="text" value="<?= $profile['total_credits'] ?? 0 ?>" readonly>
-        </div>
-
-        <div class="info-row">
-            <label>Số môn đã học</label>
-            <input type="text" value="<?= $profile['total_courses'] ?? 0 ?>" readonly>
-        </div>
-    </div>
-
 
     <!-- ===== THÔNG TIN CÁ NHÂN ===== -->
     <div class="profile-section">
@@ -121,7 +65,30 @@ $title = "Hồ sơ cá nhân";
 
     </div>
 
+    <!-- ===== THÔNG TIN HỌC VỤ ===== -->
+    <div class="profile-section">
+        <h3>Thông tin học vụ</h3>
 
+        <div class="info-row">
+            <label>Lớp hành chính</label>
+            <input type="text" value="<?= $profile['class_name'] ?>" readonly>
+        </div>
+
+        <div class="info-row">
+            <label>Khoa / Bộ môn</label>
+            <input type="text" value="<?= $profile['department_name'] ?>" readonly>
+        </div>
+
+        <div class="info-row">
+            <label>Hệ đào tạo</label>
+            <input type="text" value="<?= $profile['education_type'] ?>" readonly>
+        </div>
+
+        <div class="info-row">
+            <label>Trạng thái học tập</label>
+            <input type="text" value="<?= $profile['status'] ?>" readonly>
+        </div>
+    </div>
     <!-- ===== ACTION ===== -->
     <div class="actions">
         <button type="submit" class="btn-save">Cập nhật</button>

@@ -38,6 +38,35 @@ function sortTable(colIndex) {
 }
 //#endregion
 
+//#region ================= PREVIEW AVATAR ==============
+//#region ================= AVATAR UPLOAD =================
+document.addEventListener("DOMContentLoaded", function () {
+  const realFile = document.getElementById("realFile");
+  const preview = document.getElementById("avatarPreview");
+  const fileName = document.getElementById("fileName");
+
+  if (realFile) {
+    realFile.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      preview.src = URL.createObjectURL(file);
+      fileName.textContent = file.name;
+    });
+  }
+});
+//#endregion
+//#endregion
+
+//#region ================= INPUT FULL NAME ==============
+const fullNameInput = document.querySelector('input[name="full_name"]');
+
+if (fullNameInput) {
+  fullNameInput.addEventListener("input", function () {
+    this.value = this.value.toUpperCase();
+  });
+}
+//#endregion
 document.addEventListener("DOMContentLoaded", function () {
   //#region ================= ALERT MODULE =================
   const alertBox = document.getElementById("autoHideAlert");

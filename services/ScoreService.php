@@ -29,8 +29,18 @@ class ScoreService
             throw new Exception("Không có quyền nhập {$component['type']}");
         }
 
+        $courseClass = $this->courseClassModel->getById($courseClassId);
+        $subjectId = $courseClass['subject_id'];
+        // Lấy cấu trúc điểm của môn
+        $componentsResult = $this->componentModel->getBySubject($subjectId);
+
+        $components = [];
+        while ($row = mysqli_fetch_assoc($componentsResult)) {
+            $components[] = $row;
+        }
+
         // 2️⃣ Nếu là CK hoặc Project thì check điều kiện dự thi
-        if (($component['type'] === 'CK' || $component['type'] === 'PROJECT') && count($component) > 1) {
+        if (($component['type'] === 'CK' || $component['type'] === 'PROJECT') && count($components) > 1) {
 
             $eligibility = $this->scoreModel
                 ->checkEligibility($studentId, $courseClassId);

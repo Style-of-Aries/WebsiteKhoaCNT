@@ -154,7 +154,6 @@ WHERE s.id = '$id';
     d.type AS department_type,
 
     -- GPA + tín chỉ + số môn
-    stats.gpa,
     stats.total_credits,
     stats.total_courses,
 
@@ -175,7 +174,6 @@ LEFT JOIN department d
 LEFT JOIN (
     SELECT 
         ar.student_id,
-        ROUND(AVG(ar.final_grade), 2) AS gpa,
         SUM(sb.credits) AS total_credits,
         COUNT(ar.course_class_id) AS total_courses
     FROM academic_results ar
@@ -266,8 +264,37 @@ WHERE st.id = $studentId;
         return $this->__query($sql);
     }
 
+    public function generateStudentCode()
+{
+    $year = date('Y'); 
+
+    // Lấy mã sinh viên lớn nhất của năm hiện tại
+    $sql = "SELECT student_code 
+            FROM student 
+            WHERE student_code LIKE '$year%' 
+            ORDER BY student_code DESC 
+            LIMIT 1";
+
+    $result = mysqli_query($this->connect, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+
+        // Lấy 5 số cuối
+        $lastNumber = substr($row['student_code'], 4, 5);
+        $newNumber = (int)$lastNumber + 1;
+    } else {
+        // Nếu chưa có sinh viên năm đó
+        $newNumber = 1;
+    }
+
+    // Format thành 5 số
+    $newNumber = str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+    return $year . $newNumber;
+}
     // thêm mới sinh viên 
-    public function addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password)
+    public function addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar)
     {
         mysqli_begin_transaction($this->connect); //bắt đầu nhưng CHƯA được ghi hẳn vào CSDL
 
@@ -323,8 +350,8 @@ WHERE st.id = $studentId;
         $sqlUser = "
         INSERT INTO users(username, password, role, ref_id)
         VALUES (
-            '$username',
-            '$password',
+            '$student_code',
+            '$student_code',
             'student',
             '$studentId'
         )

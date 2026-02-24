@@ -124,7 +124,7 @@ class timetableController
         // $old = [];
 
         $id = $_GET['id_hocPhan'];
-        $id_buoihoc =$_GET['id_buoiHoc'];
+        $id_buoihoc = $_GET['id_buoiHoc'];
 
         $subject = $this->subjectModel->getAll();
         $lecturer = $this->lecturerModel->getAll();
@@ -139,7 +139,7 @@ class timetableController
 
         $totalWeeks = ceil(
             (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-            / (7 * 86400)
+                / (7 * 86400)
         );
 
         $course_classes = $this->course_classesModel->getById($id);
@@ -149,9 +149,8 @@ class timetableController
         $errors = [];
 
         require_once './../views/admin/timetable/edit.php';
-
     }
-    
+
     // public function editTkb()
     // {
     //     $id = $_GET['id_hocPhan'];
@@ -221,7 +220,7 @@ class timetableController
 
             $course_class_id = $_POST['id'];
             // $subject_id = (int) ($_POST['subject_id'] ?? 0);
-            // $lecturer_id = (int) ($_POST['lecturer_id'] ?? 0);
+            // $lecturer = (int) ($_POST['lecturer_id'] ?? 0);
             // $max_students = (int) ($_POST['max_students'] ?? 0);
 
             // MULTI SCHEDULE
@@ -278,6 +277,15 @@ class timetableController
                     ) {
                         $errors['schedule'] = "Phòng bị trùng lịch trong khoảng tuần đã chọn";
                         break;
+                    }
+                    if (
+                        $this->timetableModel->phongDaCoLich(
+                            $room_id,
+                            $day,
+                            $session
+                        )
+                    ) {
+                        $errors['room_id'] = "Phòng học đã có lịch";
                     }
                 }
             }
@@ -588,7 +596,7 @@ class timetableController
             // $subject_id = (int) $_POST['subject_id'];
             // $lecturer_id = (int) $_POST['lecturer_id'];
             // $max_students = (int) $_POST['max_students'];
-            $course_class_id= (int)$_POST['course_class_id'];
+            $course_class_id = (int)$_POST['course_class_id'];
 
             $day = (int) $_POST['day_of_week'];
             $session = $_POST['session'];
@@ -652,7 +660,7 @@ class timetableController
                     // $endWeek
                 );
 
-                $this->getAllTkb();
+                $this->getAllTkbEdit($course_class_id);
                 exit();
             }
 

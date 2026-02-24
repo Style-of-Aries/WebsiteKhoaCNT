@@ -14,7 +14,7 @@ class timetableModel
     {
         return mysqli_query($this->connect, $sql);
     }
-    
+
     public function getAllTkb()
     {
         $sql = "SELECT 
@@ -39,24 +39,24 @@ class timetableModel
     public function getAllTkbEdit($course_class_id)
     {
         $sql = "SELECT 
-                cs.id,
-                s.name AS subject_name,
-                cs.session_date,
-                cs.course_class_id,
-                cs.day_of_week,
-                cs.session,
-                cs.week_number,
-                r.room_name,
-                r.building,
-                l.full_name
-            FROM class_sessions cs
-            JOIN course_classes cc ON cs.course_class_id = cc.id
-            JOIN subjects s ON cc.subject_id = s.id
-            JOIN lecturer l ON cc.lecturer_id = l.id
-            LEFT JOIN rooms r ON cs.room_id = r.id
-            ORDER BY cs.session_date ASC
-            Where course_class_id = $course_class_id
-            ";
+            cs.id,
+            s.name AS subject_name,
+            cs.session_date,
+            cs.course_class_id,
+            cs.day_of_week,
+            cs.session,
+            cs.week_number,
+            r.room_name,
+            r.building,
+            l.full_name
+        FROM class_sessions cs
+        JOIN course_classes cc ON cs.course_class_id = cc.id
+        JOIN subjects s ON cc.subject_id = s.id
+        JOIN lecturer l ON cc.lecturer_id = l.id
+        LEFT JOIN rooms r ON cs.room_id = r.id
+        WHERE cs.course_class_id = $course_class_id
+        ORDER BY cs.session_date ASC
+        ";
 
         return $this->__query($sql);
     }
