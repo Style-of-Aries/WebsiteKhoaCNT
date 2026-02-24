@@ -38,6 +38,25 @@ function sortTable(colIndex) {
 }
 //#endregion
 
+//#region ================= PREVIEW AVATAR ==============
+function previewAvatar(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const img = document.getElementById("avatarPreview");
+  img.src = URL.createObjectURL(file);
+}
+//#endregion
+
+//#region ================= INPUT FULL NAME ==============
+const fullNameInput = document.querySelector('input[name="full_name"]');
+
+if (fullNameInput) {
+  fullNameInput.addEventListener("input", function () {
+    this.value = this.value.toUpperCase();
+  });
+}
+//#endregion
 document.addEventListener("DOMContentLoaded", function () {
   //#region ================= ALERT MODULE =================
   const alertBox = document.getElementById("autoHideAlert");

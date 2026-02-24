@@ -154,7 +154,6 @@ WHERE s.id = '$id';
     d.type AS department_type,
 
     -- GPA + tín chỉ + số môn
-    stats.gpa,
     stats.total_credits,
     stats.total_courses,
 
@@ -175,7 +174,6 @@ LEFT JOIN department d
 LEFT JOIN (
     SELECT 
         ar.student_id,
-        ROUND(AVG(ar.final_grade), 2) AS gpa,
         SUM(sb.credits) AS total_credits,
         COUNT(ar.course_class_id) AS total_courses
     FROM academic_results ar

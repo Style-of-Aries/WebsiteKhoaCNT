@@ -60,12 +60,12 @@ class classesModel
     LEFT JOIN department d ON c.department_id = d.id
     LEFT JOIN lecturer l ON c.lecturer_id = l.id
 ";
-        $query = $this->__query($sql);
-        $classes = [];
-        while ($row = mysqli_fetch_assoc($query)) {
-            $classes[] = $row;
-        }
-        return $classes;
+        // $query = $this->__query($sql);
+        // $classes = [];
+        // while ($row = mysqli_fetch_assoc($query)) {
+        //     $classes[] = $row;
+        // }
+        return $this->__query($sql);
     }
     public function getAlledit()
 {

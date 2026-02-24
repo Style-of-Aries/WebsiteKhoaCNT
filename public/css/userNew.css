@@ -82,7 +82,7 @@
   background: #f5f7fa;
 }
 
-.nameAndbtn h2 {
+.nameAndbtn input {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
@@ -106,7 +106,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: 0.2s ease;
-  opacity: 0;
+  opacity: 1;
 }
 .btn-upload:hover {
   background: #2f6fdc;
@@ -196,7 +196,7 @@
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .profile-header {
+  .portal-header {
     flex-direction: column;
     align-items: flex-start;
   }

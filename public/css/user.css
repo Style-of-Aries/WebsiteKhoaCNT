@@ -103,7 +103,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s ease;
-    opacity: 0;
+    opacity: 1;
 }
 .btn-upload:hover {
     background: #2f6fdc;

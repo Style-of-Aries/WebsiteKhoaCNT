@@ -209,7 +209,7 @@ class adminController
 
         $department = $this->departmentModel->getAll();
 
-        require_once './../views/admin/student/add.php';
+        require_once './../views/admin/student/addNew.php';
     }
     // thêm mới sinh Đ
     public function add()
@@ -230,10 +230,8 @@ class adminController
             $identity_number = $_POST['identity_number'];
             $education_type = $_POST['education_type'];
             $status = $_POST['status'];
-
             $username = $_POST['username'];
             $password = $_POST['password'];
-
             // upload avatar
             $avatar = null;
             if (!empty($_FILES['avatar']['name'])) {
@@ -243,7 +241,43 @@ class adminController
                     'upload/avatar/' . $avatar
                 );
             }
+            $student = $this->studentModel->addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password);
+            if ($student) {
+                $this->getAllSinhVien();
+            } else {
+                $this->no_index();
+            }
+        }
+    }
+    public function addNew()
+    {
+        if ($_POST['btn_add']) {
+            $student_code = $_POST['student_code'];
+            $class_id = $_POST['class_id'];
+            $department_id = $_POST['department_id'];
+            // $year= date('dd/mm/YYYY');
 
+
+            $full_name = $_POST['full_name'];
+            $gender = $_POST['gender'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+            $date_of_birth = $_POST['date_of_birth'];
+            $address = $_POST['address'];
+            $identity_number = $_POST['identity_number'];
+            $education_type = $_POST['education_type'];
+            $status = $_POST['status'];
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            // upload avatar
+            $avatar = null;
+            if (!empty($_FILES['avatar']['name'])) {
+                $avatar = time() . '_' . $_FILES['avatar']['name'];
+                move_uploaded_file(
+                    $_FILES['avatar']['tmp_name'],
+                    'upload/avatar/' . $avatar
+                );
+            }
             $student = $this->studentModel->addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar, $username, $password);
             if ($student) {
                 $this->getAllSinhVien();

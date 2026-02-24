@@ -30,7 +30,7 @@
 }
 
 body {
-  overflow: auto;
+  overflow: hidden;
 }
 
 a {
@@ -457,7 +457,7 @@ select {
   margin-top: var(--header-height); /* Height of the header */
   padding: 20px;
   height: 100vh;
-  /* overflow: auto; */
+  overflow: auto;
 }
 
 .main-content h2 {
@@ -1510,3 +1510,115 @@ select {
   box-sizing: border-box;
 }
 
+/* ===== TỜ GIẤY ===== */
+.profile-paper {
+  width: 900px;
+  margin: auto;
+  background: #fff;
+  padding: 50px 70px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  font-family: "Times New Roman", serif;
+  color: #000;
+  height: calc(100% - var(--header-height));
+  overflow-y: auto;
+}
+
+/* ===== QUỐC HIỆU ===== */
+.national {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.national h2 {
+  margin: 0;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+.national p {
+  margin: 5px 0;
+  font-style: italic;
+}
+
+/* ===== TIÊU ĐỀ ===== */
+.form-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 30px 0;
+  text-transform: uppercase;
+}
+
+/* ===== HEADER ===== */
+.profile-header {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.avatar-box {
+  width: 160px;
+  height: 200px;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.avatar-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-header .header-info {
+  flex: 1;
+}
+
+/* ===== SECTION ===== */
+.section {
+  margin-bottom: 35px;
+}
+
+.section h3 {
+  font-size: 18px;
+  border-bottom: 1px solid #000;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+/* ===== ROW ===== */
+.info-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.info-row label {
+  font-weight: bold;
+}
+
+/* ===== INPUT ===== */
+.profile-paper input,
+.profile-paper select {
+  border: none;
+  border-bottom: 1px dotted #000;
+  padding: 6px 4px;
+  font-family: inherit;
+  font-size: 15px;
+  background: transparent;
+  outline: none;
+}
+
+.profile-paper input:focus,
+.profile-paper select:focus {
+  border-bottom: 1px solid #007bff;
+}
+
+
+.profile-paper input[name="full_name"] {
+  font-size: 1.2em;
+}
