@@ -398,11 +398,25 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
   .header-nav {
-    display: none;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .header-right {
+    margin-left: auto;
+  }
+
+  .portal-content {
+    margin-top: 250px;
+  }
+
+  body {
+    overflow: auto;
   }
 
   .portal-header {
-    padding: 0 14px;
+    height: 250px;
+
   }
 }
 /* ================= TABLE STYLES ================= */

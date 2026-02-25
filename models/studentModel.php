@@ -265,34 +265,34 @@ WHERE st.id = $studentId;
     }
 
     public function generateStudentCode()
-{
-    $year = date('Y'); 
+    {
+        $year = date('Y');
 
-    // Lấy mã sinh viên lớn nhất của năm hiện tại
-    $sql = "SELECT student_code 
+        // Lấy mã sinh viên lớn nhất của năm hiện tại
+        $sql = "SELECT student_code 
             FROM student 
             WHERE student_code LIKE '$year%' 
             ORDER BY student_code DESC 
             LIMIT 1";
 
-    $result = mysqli_query($this->connect, $sql);
+        $result = mysqli_query($this->connect, $sql);
 
-    if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
 
-        // Lấy 5 số cuối
-        $lastNumber = substr($row['student_code'], 4, 5);
-        $newNumber = (int)$lastNumber + 1;
-    } else {
-        // Nếu chưa có sinh viên năm đó
-        $newNumber = 1;
+            // Lấy 5 số cuối
+            $lastNumber = substr($row['student_code'], 4, 5);
+            $newNumber = (int) $lastNumber + 1;
+        } else {
+            // Nếu chưa có sinh viên năm đó
+            $newNumber = 1;
+        }
+
+        // Format thành 5 số
+        $newNumber = str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+        return $year . $newNumber;
     }
-
-    // Format thành 5 số
-    $newNumber = str_pad($newNumber, 5, '0', STR_PAD_LEFT);
-
-    return $year . $newNumber;
-}
     // thêm mới sinh viên 
     public function addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar)
     {
@@ -426,5 +426,17 @@ WHERE st.id = $studentId;
         $result = $this->__query($sql);
 
         return mysqli_num_rows($result) > 0;
+    }
+
+    public function getIdByStudentCode($studentCode)
+    {
+        $studentCode = mysqli_real_escape_string($this->connect, $studentCode);
+
+        $sql = "SELECT id FROM student WHERE student_code = '$studentCode' LIMIT 1";
+        $result = $this->__query($sql);
+
+        $row = mysqli_fetch_assoc($result);
+
+        return $row ? $row['id'] : null;
     }
 }

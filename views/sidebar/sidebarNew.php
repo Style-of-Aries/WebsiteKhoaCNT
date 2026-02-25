@@ -11,7 +11,7 @@ $role = $_SESSION['user']['role'];
 <div class="logo">
     <a href="index.php?controller=admin&action=index" class="logo-link">
         <img src="<?= BASE_URL ?>img/logo-truong.png" alt="">
-        <span>HPC</span>
+        <!-- <span>HPC</span> -->
     </a>
 </div>
 <!-- <ul class="navi">
@@ -92,7 +92,7 @@ $role = $_SESSION['user']['role'];
             </li>
 
             <li class="<?= PermissionService::has($role, 'view_scores') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=lecturer&action=getCourseClass">Tra cứu điểm</a>
+                <a href="index.php?controller=academicResult&action=searchScore">Tra cứu điểm</a>
             </li>
 
         </ul>

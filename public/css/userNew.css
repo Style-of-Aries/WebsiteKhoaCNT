@@ -1,4 +1,8 @@
 :root {
+  --sidebar-width: 250px;
+  --header-height: 60px;
+  --sidebar-bg-color: #5a5efb;
+  --sidebar-text-color: #ecf0f1;
   --blue-dark: #1e5fa8;
   --blue-main: #2f6fb3;
   --blue-light: #4f8fd8;
@@ -14,6 +18,8 @@
 
   --text-title: #1f2d3d;
   --text-main: #34495e;
+  --z-index-header: 600;
+  --z-index-sidebar: 700;
 }
 
 /* ===== TỜ GIẤY ===== */
@@ -131,9 +137,6 @@
   border-bottom: 1px solid #007bff;
 }
 
-
-
-
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .portal-header {
@@ -159,163 +162,128 @@
   color: #2f80ed;
 }
 
+/* ===== SELECT WEEK ===== */
 .selectWeek {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 15px 0;
-  flex-wrap: wrap;
-  justify-content: flex-end; /* Đẩy sang phải */
   margin-bottom: 20px;
 }
 
-/* Select box */
 .week-select {
   padding: 8px 14px;
-  font-size: 15px;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  outline: none;
-  transition: all 0.2s ease;
-  min-width: 180px;
-  background-color: #fff;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  background: #f8fafc;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* Hover & focus */
 .week-select:hover {
-  border-color: #4f46e5;
+  border-color: #3b82f6;
 }
 
-.week-select:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
-}
-
-/* Button */
-.btn-search {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: none;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  color: white;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-/* Hover button */
-.btn-search:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
-
-/* Mobile responsive */
-@media (max-width: 600px) {
-  .selectWeek {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .week-select,
-  .btn-search {
-    width: 100%;
-  }
-}
-
-/* Grid thời khóa biểu */
+/* ===== GRID ===== */
 .tkb-grid {
   display: grid;
-  grid-template-columns: 70px repeat(7, 1fr);
+  grid-template-columns: 80px repeat(6, 1fr);
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #e5e7eb;
 }
 
-/* Header ngày */
+/* ===== HEADER ===== */
 .tkb-header {
-  background: var(--bg-main);
-  font-weight: 700;
-  padding: 12px;
+  background: var(--sidebar-bg-color);
+  color: white;
+  font-weight: 500;
   text-align: center;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 14px;
+  padding: 12px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* ===== TIME COLUMN ===== */
 .tkb-time {
+  background: #f1f5f9;
+  text-align: center;
+  padding: 15px 5px;
+  font-weight: 500;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-weight: 600;
+  border-right: 1px solid #e5e7eb;
   font-size: 13px;
-  color: var(--text-main);
-  padding: 12px 6px;
-  text-align: center;
+  letter-spacing: 0.3px;
 }
 
 .tkb-time .dash {
-  opacity: 0.4;
-  margin: 3px 0;
+  margin: 4px 0;
+  color: #94a3b8;
 }
 
-/* Ô lịch */
+/* ===== CELL ===== */
 .tkb-cell {
-  min-height: 120px;
+  min-height: 130px;
+  border-right: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
   padding: 8px;
-  border-left: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
-  background: var(--bg-main);
-  transition: background 0.3s ease;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
+  background: #ffffff;
+  transition: background 0.2s ease;
 }
 
-.tkb-cell span {
-  font-size: 11px;
+.tkb-cell:hover {
+  background: #f8fafc;
 }
 
-/* Khi có môn */
+/* Ô có lớp */
 .tkb-cell.has-class {
-  background: var(--bg-main);
+  background: #eff6ff;
 }
 
-/* Item môn học */
+/* ===== ITEM ===== */
 .tkb-item {
-  background: linear-gradient(135deg, var(--bg-main), var(--bg-card));
-  border-left: 4px solid #2563eb;
-  border-radius: 10px;
+  background: #ffffff;
+  border-left: 4px solid var(--sidebar-bg-color);
   padding: 8px 10px;
+  border-radius: 8px;
   font-size: 13px;
-  line-height: 1.5;
-  margin-bottom: 6px;
-  transition: all 0.2s ease;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease;
 }
 
 .tkb-item:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
-/* Môn học */
-.tkb-item strong:first-child {
+.tkb-item strong {
   font-size: 14px;
-  display: block;
-  margin-bottom: 2px;
+  color: #1e293b;
 }
 
-/* Lớp */
+.tkb-item span {
+  color: #475569;
+  display: block;
+  margin-top: 2px;
+}
+
 .tkb-class {
   display: inline-block;
   margin-top: 4px;
-  background: var(--bg-main);
-  color: var(--blue-main);
-  padding: 3px 8px;
+  padding: 2px 6px;
+  background: #dbeafe;
   border-radius: 6px;
   font-size: 12px;
-  font-weight: 600;
+  color: var(--sidebar-bg-color);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .tkb-grid {
+    font-size: 12px;
+  }
+
+  .tkb-item {
+    font-size: 12px;
+  }
 }
 
 .welcome-container {
@@ -828,7 +796,7 @@
 .grade-table th:nth-child(6),
 .grade-table th:nth-child(7),
 .grade-table th:nth-child(8) {
-    text-align: center;
+  text-align: center;
 }
 
 .grade-table td:nth-child(4),
@@ -836,11 +804,11 @@
 .grade-table td:nth-child(6),
 .grade-table td:nth-child(7),
 .grade-table td:nth-child(8) {
-    text-align: center;
-    vertical-align: middle;
+  text-align: center;
+  vertical-align: middle;
 }
 
 /* Căn giữa các dòng TX / ĐK */
 .grade-table .score-process div {
-    text-align: center;
+  text-align: center;
 }

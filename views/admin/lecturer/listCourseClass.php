@@ -32,7 +32,7 @@ if ($type == 'attendance') {
         <tbody>
             <?php $stt = 1;
             while ($row = mysqli_fetch_assoc($classes)): ?>
-                <tr onclick="window.location='<?= $url ?>&course_class_id=<?= $row['id'] ?>'">
+                <tr class="trOnclick" onclick="window.location='<?= $url ?>&course_class_id=<?= $row['id'] ?>'">
                     <td><?= $stt++; ?></td>
                     <td><?= $row['class_code'] ?></td>
                     <td><?= $row['subject_name'] ?></td>
