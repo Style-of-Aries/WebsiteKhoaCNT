@@ -4,7 +4,7 @@ ob_start();
 
 
 <div class="container-main">
-    <h2>Sửa thông tin khoa:<?= $user['name'] ?> </h2>
+    <!-- <h2>Sửa thông tin khoa:<?= $user['name'] ?> </h2> -->
 
     <form class="song-form" action="index.php?controller=department&action=edit" method="POST"
         enctype="multipart/form-data">
@@ -30,7 +30,7 @@ ob_start();
                         Khoa
                     </option>
                     <option value="department" <?= ($user['type'] == 'department') ? 'selected' : '' ?>>
-                        Bộ môn
+                        Ngành
                     </option>
                 </select>
             </div>

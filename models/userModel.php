@@ -62,10 +62,28 @@ class userModel
 
     }
     public function getAll()
-    {
-        $sql = " select * from users";
-        return $this->__query($sql);
-    }
+{
+    $sql = "
+        SELECT 
+            id,
+            username,
+            password,
+            ref_id,
+            CASE role
+                WHEN 'admin' THEN 'Quản trị viên'
+                WHEN 'lecturer' THEN 'Giảng viên'
+                WHEN 'student' THEN 'Sinh viên'
+                WHEN 'training_office' THEN 'Phòng đào tạo'
+                WHEN 'academic_affairs' THEN 'Phòng học vụ'
+                WHEN 'exam_office' THEN 'Phòng khảo thí'
+                WHEN 'student_affairs' THEN 'Phòng công tác sinh viên'
+                ELSE role
+            END AS role
+        FROM users
+    ";
+
+    return $this->__query($sql);
+}
 
     // lấy thông tin user theo id 
     public function getById($id)

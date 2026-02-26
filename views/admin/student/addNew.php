@@ -96,6 +96,17 @@ ob_start();
         <h3>Thông tin học vụ</h3>
 
         <div class="info-row">
+            <label>Ngành học</label>
+            <select name="department_id" required>
+                <option value="">-- Chọn ngành học --</option>
+                <?php foreach ($department as $dept): ?>
+                    <option value="<?= $dept['id'] ?>">
+                        <?= $dept['faculty_name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="info-row">
             <label>Lớp hành chính</label>
             <!-- <input type="text" name="class_name"> -->
             <select name="class_id" required>
@@ -108,17 +119,7 @@ ob_start();
             </select>
         </div>
 
-        <div class="info-row">
-            <label>Khoa</label>
-            <select name="department_id" required>
-                <option value="">-- Chọn khoa --</option>
-                <?php foreach ($department as $dept): ?>
-                    <option value="<?= $dept['id'] ?>">
-                        <?= $dept['faculty_name'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+        
 
         <div class="info-row">
             <label>Hệ đào tạo</label>

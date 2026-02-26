@@ -43,13 +43,13 @@ class subjectController
     }
     public function addMonHoc()
     {
-        $department = $this->departmentModel->getAll();
+        $department = $this->departmentModel->getAllDepartment();
         require_once './../views/admin/subject/add.php';
     }
     public function editMonHoc()
     {
         $id = $_GET['id'];
-        $department = $this->departmentModel->getAll();
+        $department = $this->departmentModel->getAllDepartment();
         $subject = $this->subjectModel->getById($id);
         $components = $this->subjectScoreComponentsModel->getBySubject($id);
         require_once './../views/admin/subject/edit.php';
@@ -63,7 +63,7 @@ class subjectController
             $credits = $_POST['credits'];
             $department_id = $_POST['department_id'];
 
-            $subjects = $this->subjectModel->addMonHoc($name, $subject_code, $credits, $department_id);
+            $subjects = $this->subjectModel->addMonHoc($name, $credits, $department_id);
             if ($subjects) {
                 $this->getAllMonHoc();
             }
@@ -79,7 +79,7 @@ class subjectController
         // 1️⃣ LẤY & LỌC DỮ LIỆU
         // ==============================
         $name = trim($_POST['name'] ?? '');
-        $subject_code = trim($_POST['subject_code'] ?? '');
+        // $subject_code = trim($_POST['subject_code'] ?? '');
         $credits = (int) ($_POST['credits'] ?? 0);
         $department_id = (int) ($_POST['department_id'] ?? 0);
         $subject_type = $_POST['subject_type'] ?? '';
@@ -99,9 +99,9 @@ class subjectController
             $error = "Tên môn không được để trống";
         }
 
-        if ($subject_code === '' && $error === '') {
-            $error = "Mã môn không được để trống";
-        }
+        // if ($subject_code === '' && $error === '') {
+        //     $error = "Mã môn không được để trống";
+        // }
 
         if ($credits <= 0 && $error === '') {
             $error = "Số tín chỉ phải lớn hơn 0";
@@ -123,9 +123,9 @@ class subjectController
         // 3️⃣ CHECK TRÙNG MÃ MÔN
         // ==============================
 
-        if ($this->subjectModel->isSubjectCodeExists($subject_code) && $error === '') {
-            $error = "Mã môn đã tồn tại";
-        }
+        // if ($this->subjectModel->isSubjectCodeExists($subject_code) && $error === '') {
+        //     $error = "Mã môn đã tồn tại";
+        // }
 
         // ==============================
         // 4️⃣ VALIDATE CẤU TRÚC ĐIỂM
@@ -235,7 +235,7 @@ class subjectController
 
             $subject_id = $this->subjectModel->addMonHoc(
                 $name,
-                $subject_code,
+                // $subject_code,
                 $credits,
                 $department_id,
                 $subject_type
@@ -296,11 +296,12 @@ class subjectController
             $subject_code = $_POST['subject_code'];
             $credits = $_POST['credits'];
             $department_id = $_POST['department_id'];
+            $subject_type= $_POST['subject_type'];
             if ($this->subjectModel->checkMonHoc($id, $name)) {
                 $errorMaSv = "Khoa đã tồn tại";
             }
             if (empty($errorMaSv)) {
-                $this->subjectModel->editMonHoc($id, $name, $subject_code, $credits, $department_id);
+                $this->subjectModel->editMonHoc($id, $name,$subject_code, $credits, $department_id,$subject_type);
                 $this->getAllMonHoc();
 
                 exit;

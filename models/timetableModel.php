@@ -15,6 +15,47 @@ class timetableModel
         return mysqli_query($this->connect, $sql);
     }
 
+    public function getAllNoAdd()
+    {
+        $sql = "SELECT 
+        cc.id,
+    cc.class_code,
+    s.name AS subject_name,
+    l.full_name AS lecturer_name,
+    se.name AS semester_name,
+    se.academic_year
+FROM course_classes cc
+LEFT JOIN class_sessions cs 
+       ON cc.id = cs.course_class_id
+JOIN subjects s 
+       ON cc.subject_id = s.id
+JOIN lecturer l 
+       ON cc.lecturer_id = l.id
+JOIN semesters se 
+       ON cc.semester_id = se.id
+WHERE cs.course_class_id IS NULL";
+        return $this->__query($sql);
+    }
+    public function getAllCourse_Classes()
+    {
+        $sql = "SELECT 
+        cc.id,
+    cc.class_code,
+    s.name AS subject_name,
+    l.full_name AS lecturer_name,
+    se.name AS semester_name,
+    se.academic_year
+FROM course_classes cc
+LEFT JOIN class_sessions cs 
+       ON cc.id = cs.course_class_id
+JOIN subjects s 
+       ON cc.subject_id = s.id
+JOIN lecturer l 
+       ON cc.lecturer_id = l.id
+JOIN semesters se 
+       ON cc.semester_id = se.id";
+        return $this->__query($sql);
+    }
     public function getAllTkb()
     {
         $sql = "SELECT 
@@ -428,7 +469,8 @@ ORDER BY
         $id,
         $room_id,
         $day,
-        $session
+        $session,
+        $session_date
         // $start_week,
         // $end_week
     ) {
@@ -437,7 +479,8 @@ ORDER BY
         SET
             room_id = $room_id,
             day_of_week = $day,
-            session = '$session'
+            session = '$session',
+            session_date = '$session_date'
             
         WHERE id = $id
     ";

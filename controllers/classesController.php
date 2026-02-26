@@ -36,7 +36,7 @@ class classesController
     }
     public function addLopHoc()
     {
-        $department = $this->departmentModel->getAll();
+        $department = $this->departmentModel->getAllDepartment();
         $lecturer = $this->lecturerModel->getAll();
         require_once './../views/admin/classes/add.php';
     }
@@ -53,7 +53,7 @@ class classesController
     {
         if ($_POST['btn_add']) {
             $class_name = $_POST['class_name'];
-            $class_code = $_POST['class_code'];
+            $class_code = $class_name;
             $department_id = $_POST['department_id'];
             $lecturer_id = $_POST['lecturer_id'];
             $class = $this->classesModel->addLopHoc($class_name, $class_code, $department_id, $lecturer_id);

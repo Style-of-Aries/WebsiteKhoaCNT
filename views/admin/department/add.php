@@ -31,7 +31,7 @@ ob_start();
                     <option value="">-- Chọn loại --</option>
                     <option value="school">Trường</option>
                     <option value="faculty">Khoa</option>
-                    <option value="department">Bộ môn</option>
+                    <option value="department">Ngành</option>
                 </select>
             </div>
         </div>

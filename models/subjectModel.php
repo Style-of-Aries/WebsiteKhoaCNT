@@ -36,17 +36,57 @@ class subjectModel
         return $this->__query($sql);
     }
 
-    public function addMonHoc($name, $subject_code, $credits, $department_id, $subject_type)
-    {
+    public function addMonHoc($name, $credits, $department_id)
+{
+    $subject_code = $this->generateSubjectCode($name);
 
-        $sql = "
-            INSERT INTO subjects (subject_code, name, credits, department_id, subject_type)
-            VALUES ('$subject_code', '$name', '$credits','$department_id', '$subject_type')
-        ";
-        $this->__query($sql);
-        return mysqli_insert_id($this->connect);
+    $sql = "
+        INSERT INTO subjects (subject_code, name, credits, department_id)
+        VALUES ('$subject_code', '$name', '$credits', '$department_id)
+    ";
 
+    $this->__query($sql);
+    return mysqli_insert_id($this->connect);
+}
+    public function getInitials($name)
+{
+    // Chuẩn hóa khoảng trắng
+    $name = trim($name);
+    $name = preg_replace('/\s+/', ' ', $name);
+
+    // Tách từng từ
+    $words = explode(' ', $name);
+
+    $initials = '';
+
+    foreach ($words as $word) {
+        $initials .= strtoupper(mb_substr($word, 0, 1, 'UTF-8'));
     }
+
+    return $initials;
+}
+    public function generateSubjectCode($name)
+{
+    $prefix = $this->getInitials($name);
+
+    $sql = "SELECT subject_code 
+            FROM subjects 
+            WHERE subject_code LIKE '$prefix%' 
+            ORDER BY id DESC 
+            LIMIT 1";
+
+    $result = $this->__query($sql);
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row) {
+        $number = intval(substr($row['subject_code'], strlen($prefix)));
+        $number++;
+    } else {
+        $number = 1;
+    }
+
+    return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT);
+}
     public function editMonHoc($id, $name, $subject_code, $credits, $department_id, $subject_type)
     {
 

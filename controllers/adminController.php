@@ -214,7 +214,7 @@
             $classes = $this->classesModel->getAll();
 
             $student=  $this->studentModel->generateStudentCode();
-            $department = $this->departmentModel->getAll();
+            $department = $this->departmentModel->getAllDepartment();
 
             require_once './../views/admin/student/addNew.php';
         }
@@ -236,7 +236,7 @@
                 $address = $_POST['address'];
                 $identity_number = $_POST['identity_number'];
                 $education_type = $_POST['education_type'];
-                $status = $_POST['status'];
+                // $status = $_POST['status'];
 
                 // upload avatar
                 $avatar = null;
@@ -247,7 +247,7 @@
                         'upload/avatar/' . $avatar
                     );
                 }
-                $student = $this->studentModel->addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar);
+                $student = $this->studentModel->addSinhVien($student_code, $class_id, $gender, $education_type, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar);
                 if ($student) {
                     $this->getAllSinhVien();
                 } else {

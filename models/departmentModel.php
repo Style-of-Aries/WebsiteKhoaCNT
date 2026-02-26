@@ -18,6 +18,49 @@ class departmentModel
     {
         $sql = "
         SELECT 
+            k.id,
+            k.name AS faculty_name,
+            t.name AS parent_name,
+            
+            CASE k.type
+                WHEN 'school' THEN 'Trường'
+                WHEN 'faculty' THEN 'Khoa'
+                WHEN 'department' THEN 'Ngành'
+                ELSE k.type
+            END AS type,
+
+            COUNT(l.id) AS staff_count,
+            k.created_at,
+            k.updated_at
+
+        FROM department k
+        LEFT JOIN department t 
+            ON k.parent_id = t.id
+        LEFT JOIN lecturer l 
+            ON l.department_id = k.id
+            
+        GROUP BY 
+            k.id,
+            k.name,
+            t.name,
+            k.type,
+            k.created_at,
+            k.updated_at
+    ";
+
+        $query = $this->__query($sql);
+        $departments = [];
+
+        while ($row = mysqli_fetch_assoc($query)) {
+            $departments[] = $row;
+        }
+
+        return $departments;
+    }
+    public function getAllDepartment()
+    {
+        $sql = "
+        SELECT 
     k.id,
     k.name AS faculty_name,
     t.name AS parent_name,
@@ -30,16 +73,15 @@ LEFT JOIN department t
     ON k.parent_id = t.id
 LEFT JOIN lecturer l 
     ON l.department_id = k.id
+WHERE k.type = 'department'
 GROUP BY 
     k.id,
     k.name,
     t.name,
     k.type,
     k.created_at,
-    k.updated_at;
-
+    k.updated_at
     ";
-
         $query = $this->__query($sql);
         $departments = [];
         while ($row = mysqli_fetch_assoc($query)) {
@@ -127,7 +169,7 @@ GROUP BY
         SET 
             name = '$name',
             type = '$type',
-            parent_id = $parent_id,
+            parent_id = '$parent_id',
             updated_at = NOW()
         WHERE id = '$id'
         ";
