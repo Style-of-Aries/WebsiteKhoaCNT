@@ -54,3 +54,24 @@
 2026-02-24 09:56:53 | Môn đồ án phải có thành phần đồ án
 2026-02-24 09:57:09 | Môn đồ án chỉ được có 1 thành phần PROJECT
 2026-02-24 15:12:44 | Môn thường phải có ít nhất 1 điểm thường xuyên và định kì
+2026-02-26 16:47:21 | Môn thường phải có ít nhất 1 điểm thường xuyên và định kì
+2026-02-26 16:47:47 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1)' at line 2
+2026-02-26 16:51:43 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''subject_type')
+        VALUES ('TĐHC00001', 'Trường Đại học CNTT', '3' at line 1
+2026-02-26 16:55:10 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1,PROJECT)' at line 2
+2026-02-26 16:55:14 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1,PROJECT)' at line 2
+2026-02-26 16:55:14 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1,PROJECT)' at line 2
+2026-02-26 16:55:15 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1,PROJECT)' at line 2
+2026-02-26 16:55:35 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''7,PROJECT)' at line 2
+2026-02-26 16:55:39 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''7,PROJECT)' at line 2
+2026-02-26 16:56:18 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''7,PROJECT)' at line 2
+2026-02-26 16:57:16 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''7,PROJECT)' at line 2
+2026-02-26 16:57:22 | Môn đồ án phải có thành phần đồ án
+2026-02-26 16:57:29 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''7,PROJECT)' at line 2
+2026-02-26 17:00:03 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
+2026-02-26 17:00:07 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
+2026-02-26 17:00:08 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
+2026-02-26 17:00:08 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
+2026-02-26 17:00:08 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
+2026-02-26 17:00:09 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
+2026-02-26 17:00:16 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2

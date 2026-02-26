@@ -114,14 +114,19 @@ class lecturerModel
 
     // kết thúc thêm giảng viên 
     public function KtEmail($email, $id)
-    {
-        $sql = "Select *from lecturer where email='$email'AND id != $id
-        LIMIT 1";
-        $query = $this->__query($sql);
-        if (mysqli_num_rows($query) > 0) {
-            return true;
-        }
-    }
+{
+    $email = trim($email);
+    $id = (int)$id;
+
+    $sql = "SELECT id FROM lecturer 
+            WHERE email = '$email' 
+            AND id != $id 
+            LIMIT 1";
+
+    $query = $this->__query($sql);
+
+    return mysqli_num_rows($query) > 0;
+}
     public function KtMagv($lecturer_code, $id)
     {
         $sql = "Select *from lecturer where lecturer_code ='$lecturer_code'AND id != $id

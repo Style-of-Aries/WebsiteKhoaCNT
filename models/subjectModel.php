@@ -36,15 +36,19 @@ class subjectModel
         return $this->__query($sql);
     }
 
-    public function addMonHoc($name, $credits, $department_id)
+    public function addMonHoc($name, $credits, $department_id,$subject_type)
 {
     $subject_code = $this->generateSubjectCode($name);
 
     $sql = "
-        INSERT INTO subjects (subject_code, name, credits, department_id)
-        VALUES ('$subject_code', '$name', '$credits', '$department_id)
+        INSERT INTO subjects (subject_code, name, credits, department_id,subject_type)
+        VALUES ('$subject_code', '$name', '$credits', '$department_id','$subject_type')
     ";
 
+//     echo "<pre>";
+// var_dump($sql);
+// echo "</pre>";
+// die();
     $this->__query($sql);
     return mysqli_insert_id($this->connect);
 }
