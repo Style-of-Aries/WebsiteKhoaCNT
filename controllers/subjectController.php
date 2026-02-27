@@ -462,7 +462,10 @@ class subjectController
                 $department_id,
                 $subject_type
             );
-
+            // echo "<pre>";
+            // print_r($components);
+            // var_dump($id);
+            // die();
             // ================= UPDATE COMPONENT =================
             $this->subjectScoreComponentsModel->deleteBySubjectId($id);
 
@@ -470,8 +473,8 @@ class subjectController
                 $this->subjectScoreComponentsModel->add(
                     $id,
                     $comp['name'],
-                    $comp['weight'],
-                    $comp['type']
+                    $comp['type'],    // đúng vị trí
+                    $comp['weight']   // đúng vị trí
                 );
             }
 
