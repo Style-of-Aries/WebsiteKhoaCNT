@@ -34,6 +34,7 @@ class classesController
         $students = $this->classesModel->getAllSinhVienCuaLop($id);
         require_once './../views/admin/classes/listSv.php';
     }
+    
     public function addLopHoc()
     {
         $department = $this->departmentModel->getAllDepartment();
@@ -49,9 +50,19 @@ class classesController
         require_once './../views/admin/classes/edit.php';
     }
     // thêm 
+    public function getLecturerByDepartment()
+{
+    $department_id = $_GET['id'];
+
+    $lecturers = $this->classesModel->getLecturerByDepartment($department_id);
+
+    header('Content-Type: application/json');
+    echo json_encode($lecturers);
+    exit;
+}
     public function add()
     {
-        if ($_POST['btn_add']) {
+        if (isset($_POST['btn_add'])) {
             $class_name = $_POST['class_name'];
             $class_code = $class_name;
             $department_id = $_POST['department_id'];

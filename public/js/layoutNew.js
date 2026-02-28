@@ -1,4 +1,6 @@
+
 //#region ================= SORT MODULE =================
+
 let sortDirection = true;
 
 function sortTable(colIndex) {
@@ -41,20 +43,69 @@ function sortTable(colIndex) {
 //#region ================= PREVIEW AVATAR ==============
 
 //#region ================= INPUT FULL NAME ==============
-const fullNameInput = document.querySelector('input[name="full_name"]');
+// const fullNameInput = document.querySelector('input[name="full_name"]');
 
-if (fullNameInput) {
-  fullNameInput.addEventListener("input", function () {
-    this.value = this.value.toUpperCase();
-  });
-}
-//#endregion
-document.addEventListener("DOMContentLoaded", function () {
-  //#region ================= ALERT MODULE =================
+// if (fullNameInput) {
+//   fullNameInput.addEventListener("input", function () {
+//     this.value = this.value.toUpperCase();
+//   });
+// }
+// //#endregion
+// document.addEventListener("DOMContentLoaded", function () {
+//   //#region ================= ALERT MODULE =================
+//   const alertBox = document.getElementById("autoHideAlert");
+//   const alertMessage = document.getElementById("alertMessage");
+
+//   // 🔥 Auto hide nếu có alert từ session
+//   if (alertBox && !alertBox.classList.contains("hide")) {
+//     setTimeout(() => {
+//       alertBox.classList.add("hide");
+//     }, 3000);
+//   }
+
+//   function showAlert(message, type = "error") {
+//     if (!alertBox || !alertMessage) return;
+
+//     alertMessage.innerText = message;
+
+//     alertBox.classList.remove("alert-success", "alert-error", "hide");
+//     alertBox.classList.add(
+//       type === "success" ? "alert-success" : "alert-error",
+//     );
+
+//     setTimeout(() => {
+//       alertBox.classList.add("hide");
+//     }, 3000);
+//   }
+  // const fullNameInput = document.querySelector('input[name="full_name"]');
+  document.addEventListener("DOMContentLoaded", function () {
+
+  // ================= FORMAT HỌ TÊN =================
+
+  const fullNameInput = document.querySelector('input[name="full_name"]');
+
+  if (fullNameInput) {
+    fullNameInput.addEventListener("blur", function () {
+      this.value = formatFullName(this.value);
+    });
+  }
+
+  function formatFullName(str) {
+    return str
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, " ")
+      .split(" ")
+      .map(word =>
+        word.charAt(0).toUpperCase() + word.slice(1)
+      )
+      .join(" ");
+  }
+
+  // ================= ALERT MODULE =================
   const alertBox = document.getElementById("autoHideAlert");
   const alertMessage = document.getElementById("alertMessage");
 
-  // 🔥 Auto hide nếu có alert từ session
   if (alertBox && !alertBox.classList.contains("hide")) {
     setTimeout(() => {
       alertBox.classList.add("hide");
@@ -68,13 +119,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     alertBox.classList.remove("alert-success", "alert-error", "hide");
     alertBox.classList.add(
-      type === "success" ? "alert-success" : "alert-error",
+      type === "success" ? "alert-success" : "alert-error"
     );
 
     setTimeout(() => {
       alertBox.classList.add("hide");
     }, 3000);
   }
+
+
   //#endregion
 
   //#region ================= SEARCH MODULE =================
@@ -354,4 +407,42 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   updateTotalWeight();
   //#endregion
+});
+
+function toggleDepartment() {
+    var role = document.getElementById("roleSelect").value;
+    var departmentField = document.getElementById("department_id");
+
+    if (role === "lecturer") {
+        departmentField.style.display = "block";
+    } else {
+        departmentField.style.display = "none";
+    }
+}
+
+// chạy khi load trang
+window.onload = toggleDepartment;
+
+// load giảng viên trang classes add 
+document.getElementById("departmentSelect").addEventListener("change", function() {
+    let departmentId = this.value;
+    let lecturerSelect = document.getElementById("lecturerSelect");
+
+    lecturerSelect.innerHTML = '<option value="">Đang tải...</option>';
+
+    fetch("index.php?controller=classes&action=getLecturerByDepartment&id=" + departmentId)
+        .then(response => response.json())
+        .then(data => {
+            lecturerSelect.innerHTML = '<option value="">-- Chọn giảng viên --</option>';
+
+            data.forEach(function(lecturer) {
+                let option = document.createElement("option");
+                option.value = lecturer.id;
+                option.textContent = lecturer.full_name;
+                lecturerSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            lecturerSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
+        });
 });

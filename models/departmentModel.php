@@ -90,6 +90,39 @@ GROUP BY
         return $departments;
         return $this->__query($sql);
     }
+    public function getAllFaculty()
+    {
+        $sql = "
+        SELECT 
+    k.id,
+    k.name AS faculty_name,
+    t.name AS parent_name,
+    k.type,
+    COUNT(l.id) AS staff_count,
+    k.created_at,
+    k.updated_at
+FROM department k
+LEFT JOIN department t 
+    ON k.parent_id = t.id
+LEFT JOIN lecturer l 
+    ON l.department_id = k.id
+WHERE k.type = 'faculty'
+GROUP BY 
+    k.id,
+    k.name,
+    t.name,
+    k.type,
+    k.created_at,
+    k.updated_at
+    ";
+        $query = $this->__query($sql);
+        $departments = [];
+        while ($row = mysqli_fetch_assoc($query)) {
+            $departments[] = $row;
+        }
+        return $departments;
+        return $this->__query($sql);
+    }
     public function getAlledit()
     {
         $sql = "SELECT id, name AS faculty_name FROM department";

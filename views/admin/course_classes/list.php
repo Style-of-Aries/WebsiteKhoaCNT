@@ -48,34 +48,6 @@ ob_start();
             </td>
 
             <td class="action">
-              <!-- <a href="index.php?controller=course_classes&action=getAllResult&id=<?= $subject['id'] ?>&user=<?= $subject['subject_name'] ?>"
-                class="action-btn primary-btn">
-                <i class="ri-bar-chart-line"></i> Điểm
-              </a>
-
-              <a href="index.php?controller=course_classes&action=getStudents&id=<?= $subject['id'] ?>&user=<?= $subject['subject_name'] ?>"
-                class="action-btn secondary-btn">
-                <i class="ri-group-line"></i> DS lớp
-              </a>
-
-              <div class="more-actions">
-                <button class="more-btn">⋯</button>
-                <div class="more-menu">
-                  <a
-                    href="index.php?controller=course_classes&action=lichHoc&id=<?= $subject['id'] ?>&user=<?= $subject['subject_name'] ?>">
-                    <i class="ri-calendar-line"></i> Lịch học
-                  </a>
-
-                  <a href="index.php?controller=course_classes&action=editHocPhan&id=<?= $subject['id'] ?>">
-                    <i class="ri-pencil-line"></i> Sửa
-                  </a>
-
-                  <a href="index.php?controller=course_classes&action=deleteHocPhan&id=<?= $subject['id'] ?>"
-                    class="danger" onclick="return confirm('Xóa học phần này?')">
-                    <i class="ri-delete-bin-line"></i> Xóa
-                  </a>
-                </div>
-              </div> -->
               <button class="view-button"
                 onclick="location.href='index.php?controller=timetable&action=tkb&id=<?= $subject['id'] ?>'">
                 <svg xmlns="http://www.w3.org/2000/svg" class="view-svgIcon" viewBox="0 0 20 20" fill="currentColor">

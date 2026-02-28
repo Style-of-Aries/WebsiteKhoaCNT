@@ -16,11 +16,12 @@ class classesModel
     }
 
 
-    public function deleteLh($id){
-        $sql= "delete from classes where id= '$id'";
+    public function deleteLh($id)
+    {
+        $sql = "delete from classes where id= '$id'";
         return $this->__query($sql);
     }
-    public function checkMaLop($class_code,$id)
+    public function checkMaLop($class_code, $id)
     {
 
         $sql = "Select *from classes where class_code = '$class_code'AND id != '$id'
@@ -30,6 +31,20 @@ class classesModel
             return true;
         }
     }
+    public function getLecturerByDepartment($department_id)
+{
+    $department_id = intval($department_id);
+
+    $sql = "
+        SELECT l.id, l.full_name
+        FROM lecturer l
+        JOIN department d ON d.id = $department_id
+        WHERE l.department_id = d.parent_id
+    ";
+
+    $result = mysqli_query($this->connect, $sql);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
     public function addLopHoc($class_name, $class_code, $department_id, $lecturer_id)
     {
         $sql = "INSERT INTO `classes` (`class_name`, `class_code`, `department_id`, `lecturer_id`) VALUES ('$class_name', '$class_code', '$department_id', '$lecturer_id')";
@@ -68,16 +83,16 @@ class classesModel
         return $classes;
     }
     public function getAlledit()
-{
-    $sql = "SELECT id, class_name FROM classes";
-    $query = $this->__query($sql);
+    {
+        $sql = "SELECT id, class_name FROM classes";
+        $query = $this->__query($sql);
 
-    $data = [];
-    while ($row = mysqli_fetch_assoc($query)) {
-        $data[] = $row;
+        $data = [];
+        while ($row = mysqli_fetch_assoc($query)) {
+            $data[] = $row;
+        }
+        return $data;
     }
-    return $data;
-}
 
 
     public function getAllSinhVienCuaLop($id)

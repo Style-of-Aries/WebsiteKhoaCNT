@@ -59,11 +59,10 @@ class userModel
         }
         $result = $this->__query($sql);
         return mysqli_fetch_assoc($result);
-
     }
     public function getAll()
-{
-    $sql = "
+    {
+        $sql = "
         SELECT 
             id,
             username,
@@ -82,14 +81,20 @@ class userModel
         FROM users
     ";
 
-    return $this->__query($sql);
-}
+        return $this->__query($sql);
+    }
 
     // lấy thông tin user theo id 
     public function getById($id)
     {
         $sql = "SELECT * FROM users WHERE id='$id'";
         return $this->__query($sql);
+    }
+    public function getByIdUser($id_user)
+    {
+        $sql = "SELECT * FROM users WHERE id='$id_user'";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
     }
 
 
@@ -108,11 +113,7 @@ class userModel
         return false;
     }
 
-    public function deleteUser($ref_id)
-    {
-        $sql = "delete from users where ref_id= '$ref_id'";
-        return $this->__query($sql);
-    }
+    
     public function KtUserName($username, $id)
     {
         $sql = "
@@ -140,7 +141,50 @@ class userModel
         $query = $this->__query($sql);
     }
 
-    public function addUser($role, $full_name, $email, $code)
+    public function checkEmailByRole($role, $email)
+{
+    switch ($role) {
+        case 'lecturer':
+            $table = 'lecturer';
+            break;
+
+        case 'student':
+            $table = 'student_profiles';
+            break;
+
+        case 'training_office':
+            $table = 'training_office';
+            break;
+
+        case 'academic_affairs':
+            $table = 'academic_affairs';
+            break;
+
+        case 'exam_office':
+            $table = 'exam_office';
+            break;
+
+        case 'student_affairs':
+            $table = 'student_affairs';
+            break;
+
+        default:
+            return false; // role không hợp lệ
+    }
+
+    $sql = "SELECT id FROM $table 
+            WHERE email = '$email'
+            LIMIT 1";
+
+    $result = mysqli_query($this->connect, $sql);
+
+    if(mysqli_num_rows($result) > 0){
+        return true;  // Email đã tồn tại
+    }
+
+    return false; // Email hợp lệ
+}
+    public function addUser($role, $full_name, $email, $code, $department)
     {
 
         mysqli_begin_transaction($this->connect);
@@ -152,30 +196,27 @@ class userModel
             // =========================
             // STUDENT
             // =========================
-            if ($role === 'student') {
+            // if ($role === 'student') {
 
-                $sqlStudent = "
-                INSERT INTO student(student_code, class_id, department_id, created_at)
-                VALUES (
-                    '$code',
-                    'null',
-                    'null',
-                    NOW()
-                )
-            ";
+            //     $sqlStudent = "
+            //     INSERT INTO student(student_code, class_id, department_id, created_at)
+            //     VALUES (
+            //         '$code',
+            //         'null',
+            //         'null',
+            //         NOW()
+            //     )
+            // ";
 
-                if (!$this->__query($sqlStudent)) {
-                    throw new Exception("Insert student failed");
-                }
+            //     if (!$this->__query($sqlStudent)) {
+            //         throw new Exception("Insert student failed");
+            //     }
 
-                $refId = mysqli_insert_id($this->connect);
-
-
-               
-            }
+            //     $refId = mysqli_insert_id($this->connect);
+            // }
 
             // LECTURER
-            elseif ($role === 'lecturer') {
+            if ($role === 'lecturer') {
 
                 $sql = "
                 INSERT INTO lecturer(full_name, lecturer_code, email, department_id)
@@ -183,7 +224,7 @@ class userModel
                     '$full_name',
                     '$code',
                     '$email',
-                    'null'
+                    '$department'
                 )
             ";
 
@@ -293,7 +334,71 @@ class userModel
             mysqli_commit($this->connect);
             return true;
         } catch (Exception $e) {
+            mysqli_rollback($this->connect);
+            echo $e->getMessage(); // thêm dòng này
+            die();
+        }
+    }
+    public function deleteUser($id){
+        $sql = "DELETE FROM users WHERE id = $id";  
+        return $this->__query($sql);
 
+    }
+    public function deleteUsers($id, $ref_id, $role)
+    {
+        mysqli_begin_transaction($this->connect);
+
+        try {
+
+            switch ($role) {
+                case 'Giảng viên':
+                    $sql = "DELETE FROM lecturer WHERE id = $ref_id";
+                    break;
+
+                case 'student':
+                    $sql = "DELETE FROM student WHERE id = $ref_id";
+                    break;
+
+                case 'Phòng đào tạo':
+                    $sql = "DELETE FROM training_office WHERE id = $ref_id";
+                    break;
+
+                case 'Học vụ':
+                    $sql = "DELETE FROM academic_affairs WHERE id = $ref_id";
+                    break;
+
+                case 'Khảo thí':
+                    $sql = "DELETE FROM exam_office WHERE id = $ref_id";
+                    break;
+
+                case 'Công tác SV':
+                    $sql = "DELETE FROM student_affairs WHERE id = $ref_id";
+                    break;
+
+                case 'admin':
+                    // admin không có bảng phụ
+                    $sql = null;
+                    break;
+
+                default:
+                    throw new Exception("Role không hợp lệ");
+            }
+
+            if ($sql) {
+                if (!mysqli_query($this->connect, $sql)) {
+                    throw new Exception("Lỗi xóa bảng phụ");
+                }
+            }
+
+            // Xóa user
+            $sqlUser = "DELETE FROM users WHERE id = $id";
+            if (!mysqli_query($this->connect, $sqlUser)) {
+                throw new Exception("Lỗi xóa user");
+            }
+
+            mysqli_commit($this->connect);
+            return true;
+        } catch (Exception $e) {
             mysqli_rollback($this->connect);
             return false;
         }

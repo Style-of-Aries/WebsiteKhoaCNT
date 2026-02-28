@@ -207,13 +207,14 @@
         {
 
 
+            $department = $this->departmentModel->getAllFaculty();
             require_once './../views/admin/users/add.php';
         }
         public function addSinhVien()
         {
             $classes = $this->classesModel->getAll();
 
-            $student=  $this->studentModel->generateStudentCode();
+            $student =  $this->studentModel->generateStudentCode();
             $department = $this->departmentModel->getAllDepartment();
 
             require_once './../views/admin/student/addNew.php';
@@ -346,7 +347,7 @@
                 $username = $_POST['username'];
                 $password = $_POST['password'];
 
-                $student = $this->lecturerModel->addGiangVien($full_name, $lecturer_code, $email, $department_id, $username, $password);
+                $student = $this->lecturerModel->addGiangVien($full_name, $lecturer_code, $email, $department_id);
                 if ($student) {
                     $this->getAllGiangVien();
                 } else {
