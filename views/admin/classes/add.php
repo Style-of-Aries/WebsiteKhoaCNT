@@ -31,12 +31,12 @@ ob_start();
         <div class="row">
             <div class="col">
                 <label>Ngành học</label>
-                <select name="department_id" required>
+                <select name="department_id" id="departmentSelect" required>
                     <option value="">-- Chọn ngành học --</option>
 
-                    <?php foreach ($department as $class): ?>
-                        <option value="<?= $class['id'] ?>">
-                            <?= htmlspecialchars($class['faculty_name']) ?>
+                    <?php foreach ($department as $dep): ?>
+                        <option value="<?= $dep['id'] ?>">
+                            <?= htmlspecialchars($dep['faculty_name']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -46,7 +46,7 @@ ob_start();
         <div class="row">
             <div class="col">
                 <label>Giảng viên chủ nhiệm</label>
-                <select name="lecturer_id" required>
+                <select name="lecturer_id" id="lecturerSelect" required>
                     <option value="">-- Chọn giảng viên --</option>
 
                     <?php foreach ($lecturer as $class): ?>

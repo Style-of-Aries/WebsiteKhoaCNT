@@ -55,20 +55,20 @@ class subjectController
         require_once './../views/admin/subject/edit.php';
     }
     // thêm 
-    public function add()
-    {
-        if ($_POST['btn_add']) {
-            $name = $_POST['name'];
-            $subject_code = $_POST['subject_code'];
-            $credits = $_POST['credits'];
-            $department_id = $_POST['department_id'];
+    // public function add()
+    // {
+    //     if ($_POST['btn_add']) {
+    //         $name = $_POST['name'];
+    //         $subject_code = $_POST['subject_code'];
+    //         $credits = $_POST['credits'];
+    //         $department_id = $_POST['department_id'];
 
-            $subjects = $this->subjectModel->addMonHoc($name, $credits, $department_id);
-            if ($subjects) {
-                $this->getAllMonHoc();
-            }
-        }
-    }
+    //         $subjects = $this->subjectModel->addMonHoc($name, $credits, $department_id);
+    //         if ($subjects) {
+    //             $this->getAllMonHoc();
+    //         }
+    //     }
+    // }
     public function addNew()
     {
         if (!isset($_POST['btn_add'])) {

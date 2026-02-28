@@ -73,12 +73,12 @@ class lecturerModel
 
 
     // thêm mới giảng viên 
-    public function addGiangVien($full_name, $lecturer_code, $email, $department_id, $username, $password)
+    public function addGiangVien($full_name, $code, $email, $department_id)
     {
         mysqli_begin_transaction($this->connect);
 
         // 1. Insert student
-        $sqlStudent = "INSERT INTO `lecturer` ( `full_name`, `lecturer_code`, `email`, `department_id`) VALUES ( '$full_name', '$lecturer_code', '$email', $department_id)";
+        $sqlStudent = "INSERT INTO `lecturer` ( `full_name`, `lecturer_code`, `email`, `department_id`) VALUES ( '$full_name', '$code', '$email', $department_id)";
 
 
         if ($this->__query($sqlStudent) === false) {
@@ -95,8 +95,8 @@ class lecturerModel
         $sqlUser = "
         INSERT INTO users(username, password, role, ref_id)
         VALUES (
-            '$username',
-            '$password',
+            '$code',
+            '$code',
             'lecturer',
             $studentId
         )
