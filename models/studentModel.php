@@ -231,6 +231,8 @@ WHERE st.id = $studentId;
 
     public function KtEmail($email, $id)
     {
+        $email = trim($email);
+        $id = (int)$id;
         $sql = "Select *from student_profiles where email='$email'AND id != $id
         LIMIT 1";
         $query = $this->__query($sql);
@@ -282,7 +284,7 @@ WHERE st.id = $studentId;
 
             // Lấy 5 số cuối
             $lastNumber = substr($row['student_code'], 4, 5);
-            $newNumber = (int) $lastNumber + 1;
+            $newNumber = (int)$lastNumber + 1;
         } else {
             // Nếu chưa có sinh viên năm đó
             $newNumber = 1;
@@ -294,7 +296,7 @@ WHERE st.id = $studentId;
         return $year . $newNumber;
     }
     // thêm mới sinh viên 
-    public function addSinhVien($student_code, $class_id, $gender, $education_type, $status, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar)
+    public function addSinhVien($student_code, $class_id, $gender, $education_type, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar)
     {
         mysqli_begin_transaction($this->connect); //bắt đầu nhưng CHƯA được ghi hẳn vào CSDL
 
@@ -332,7 +334,7 @@ WHERE st.id = $studentId;
                     '$identity_number',
                     '$avatar',
                     '$education_type',
-                    '$status'
+                    'Đang học'
                 )
             ";
 

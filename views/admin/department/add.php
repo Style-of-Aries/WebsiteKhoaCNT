@@ -11,12 +11,12 @@ ob_start();
         </svg>
         <span>Quay lại</span>
     </button>
-    <h2>Thêm Khoa</h2>
+    <h2>Thêm Trường/Khoa/Ngành</h2>
 
     <form action="index.php?controller=department&action=add" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="col">
-                <label>Tên Khoa</label>
+                <label>Tên </label>
                 <input type="text" name="name" required>
                 <!-- <i class="fa-solid fa-user"></i> -->
                 <!-- <small class="error" id="error-title"></small> -->
@@ -31,7 +31,7 @@ ob_start();
                     <option value="">-- Chọn loại --</option>
                     <option value="school">Trường</option>
                     <option value="faculty">Khoa</option>
-                    <option value="department">Bộ môn</option>
+                    <option value="department">Ngành</option>
                 </select>
             </div>
         </div>
@@ -51,7 +51,7 @@ ob_start();
 
 
         <!-- <input type="submit" value="Thêm lớp học" name="btn_add"> -->
-        <button type="submit" class="btn-submit" name="btn_add">Thêm khoa</button>
+        <button type="submit" class="btn-submit" name="btn_add">Thêm mới</button>
     </form>
 </div>
 <?php

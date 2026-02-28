@@ -59,9 +59,9 @@ function getValue($key, $default = '', $data = null)
 
         <!-- ===== KHOA ===== -->
         <div class="col">
-            <label>Khoa</label>
+            <label>Ngành </label>
             <select name="department_id" required>
-                <option value="">-- Chọn khoa --</option>
+                <option value="">-- Ngành --</option>
 
                 <?php foreach ($department as $dept): ?>
                     <option value="<?= $dept['id'] ?>" <?= getValue('department_id', '', $subject) == $dept['id'] ? 'selected' : '' ?>>

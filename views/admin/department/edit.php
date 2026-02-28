@@ -12,7 +12,7 @@ ob_start();
 
         <div class="row">
             <div class="col">
-                <label>Tên khoa</label>
+                <label>Tên </label>
                 <input type="text" name="name" placeholder="Mã lớp" value="<?= $user['name'] ?>" required>
                 <?php if (!empty($errorMaSv))
                     echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
@@ -30,7 +30,7 @@ ob_start();
                         Khoa
                     </option>
                     <option value="department" <?= ($user['type'] == 'department') ? 'selected' : '' ?>>
-                        Bộ môn
+                        Ngành
                     </option>
                 </select>
             </div>
@@ -51,7 +51,7 @@ ob_start();
             </div>
         </div>
         <!-- <input type="submit" value="Sửa thông tin" name="btn_edit"> -->
-        <button class="btn-submit" name="btn_edit">Cập nhật khoa</button>
+        <button class="btn-submit" name="btn_edit">Lưu</button>
     </form>
 </div>
 <?php

@@ -12,9 +12,9 @@ ob_start();
         <i class="ri-add-circle-line"></i>
         Thêm Học Phần Mới</a>
     </div> -->
-  <button class="add-button" onclick="location.href='index.php?controller=course_classes&action=addHocPhan'">
+  <button class="add-button" onclick="location.href='index.php?controller=timetable&action=add_tkb_tb'">
     <div class="sign">+</div>
-    <div class="text">Thêm Học Phần Mới</div>
+    <div class="text">Thêm lịch học</div>
   </button>
   </style>
   <!-- <h2>Danh sách ngươi dùng</h2> -->
@@ -76,13 +76,13 @@ ob_start();
                   </a>
                 </div>
               </div> -->
-              <button class="view-button"
+              <!-- <button class="view-button"
                 onclick="location.href='index.php?controller=timetable&action=tkb&id=<?= $subject['course_class_id'] ?>'">
                 <svg xmlns="http://www.w3.org/2000/svg" class="view-svgIcon" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd">
                   </path>
                 </svg>
-              </button>
+              </button> -->
               <button class="edit-button"
                 onclick="location.href='index.php?controller=timetable&action=editTkb&id_hocPhan=<?= $subject['course_class_id'] ?>&id_buoiHoc=<?= $subject['id'] ?>'">
                 <svg class="edit-svgIcon" viewBox="0 0 512 512">

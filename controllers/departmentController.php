@@ -48,7 +48,7 @@ class departmentController
     // thêm 
     public function add()
     {
-        if ($_POST['btn_add']) {
+        if (isset($_POST['btn_add'])) {
             $name = $_POST['name'];
             $type = $_POST['type'];
             $parent_id = $_POST['parent_id'];
@@ -60,7 +60,7 @@ class departmentController
     }
     // sửa 
     public function edit(){
-        if ($_POST['btn_edit']) {
+        if (isset($_POST['btn_edit']) ){
             $id= $_POST['id'];
             $name = $_POST['name'];
             $type = $_POST['type'];

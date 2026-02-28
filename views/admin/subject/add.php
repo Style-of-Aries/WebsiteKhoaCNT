@@ -38,10 +38,10 @@ function getOld($key, $default = '', $data = null)
         </div>
 
         <div class="row">
-            <div class="col">
+            <!-- <div class="col">
                 <label>Mã Môn học</label>
                 <input type="text" name="subject_code" value="<?= htmlspecialchars($old['subject_code'] ?? '') ?>" required>
-            </div>
+            </div> -->
             <div class="col">
                 <label>Loại môn</label>
                 <select name="subject_type" required>
@@ -57,9 +57,9 @@ function getOld($key, $default = '', $data = null)
         </div>
 
         <div class="col">
-            <span>Khoa</span>
+            <label>Ngành</label>
             <select name="department_id" required>
-                <option value="">-- Chọn khoa --</option>
+                <option value="">-- Chọn ngành --</option>
 
                 <?php foreach ($department as $dept): ?>
                     <option value="<?= $dept['id'] ?>" <?= ($old['department_id'] ?? '') == $dept['id'] ? 'selected' : '' ?>>
@@ -68,6 +68,7 @@ function getOld($key, $default = '', $data = null)
                 <?php endforeach; ?>
             </select>
         </div>
+        
         <h3>Cấu trúc điểm</h3>
 
         <table class="main-table" id="score-structure">

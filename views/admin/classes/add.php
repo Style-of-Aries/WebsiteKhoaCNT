@@ -21,18 +21,18 @@ ob_start();
                 <!-- <small class="error" id="error-title"></small> -->
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col">
                 <label>Mã lớp</label>
                 <input type="text" name="class_code" required>
             </div>
-        </div>
+        </div> -->
 
         <div class="row">
             <div class="col">
-                <label>Khoa</label>
+                <label>Ngành học</label>
                 <select name="department_id" required>
-                    <option value="">-- Chọn khoa --</option>
+                    <option value="">-- Chọn ngành học --</option>
 
                     <?php foreach ($department as $class): ?>
                         <option value="<?= $class['id'] ?>">
