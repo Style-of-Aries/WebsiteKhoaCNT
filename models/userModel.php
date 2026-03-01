@@ -113,7 +113,7 @@ class userModel
         return false;
     }
 
-    
+
     public function KtUserName($username, $id)
     {
         $sql = "
@@ -142,48 +142,48 @@ class userModel
     }
 
     public function checkEmailByRole($role, $email)
-{
-    switch ($role) {
-        case 'lecturer':
-            $table = 'lecturer';
-            break;
+    {
+        switch ($role) {
+            case 'lecturer':
+                $table = 'lecturer';
+                break;
 
-        case 'student':
-            $table = 'student_profiles';
-            break;
+            case 'student':
+                $table = 'student_profiles';
+                break;
 
-        case 'training_office':
-            $table = 'training_office';
-            break;
+            case 'training_office':
+                $table = 'training_office';
+                break;
 
-        case 'academic_affairs':
-            $table = 'academic_affairs';
-            break;
+            case 'academic_affairs':
+                $table = 'academic_affairs';
+                break;
 
-        case 'exam_office':
-            $table = 'exam_office';
-            break;
+            case 'exam_office':
+                $table = 'exam_office';
+                break;
 
-        case 'student_affairs':
-            $table = 'student_affairs';
-            break;
+            case 'student_affairs':
+                $table = 'student_affairs';
+                break;
 
-        default:
-            return false; // role không hợp lệ
-    }
+            default:
+                return false; // role không hợp lệ
+        }
 
-    $sql = "SELECT id FROM $table 
+        $sql = "SELECT id FROM $table 
             WHERE email = '$email'
             LIMIT 1";
 
-    $result = mysqli_query($this->connect, $sql);
+        $result = mysqli_query($this->connect, $sql);
 
-    if(mysqli_num_rows($result) > 0){
-        return true;  // Email đã tồn tại
+        if (mysqli_num_rows($result) > 0) {
+            return true;  // Email đã tồn tại
+        }
+
+        return false; // Email hợp lệ
     }
-
-    return false; // Email hợp lệ
-}
     public function addUser($role, $full_name, $email, $code, $department)
     {
 
@@ -339,10 +339,60 @@ class userModel
             die();
         }
     }
-    public function deleteUser($id){
-        $sql = "DELETE FROM users WHERE id = $id";  
-        return $this->__query($sql);
+    public function getByIdUsers($role, $id)
+    {
+        switch ($role) {
+            case 'Giảng viên':
+                $sql = "SELECT * FROM lecturer WHERE id='$id'";
+                $query = $this->__query($sql);
+                return mysqli_fetch_assoc($query);
+                break;
 
+            // case 'student':
+            //     $sql = "DELETE FROM student WHERE id = $ref_id";
+            //     break;
+
+            case 'training_office':
+                
+                $sql = "SELECT * FROM training_office WHERE id='$id'";
+                $query = $this->__query($sql);
+                return mysqli_fetch_assoc($query);
+                break;
+
+            case 'academic_affairs':
+                
+                $sql = "SELECT * FROM academic_affairs WHERE id='$id'";
+                $query = $this->__query($sql);
+                return mysqli_fetch_assoc($query);
+                break;
+
+            case 'exam_office':
+                
+                $sql = "SELECT * FROM exam_office WHERE id='$id'";
+                $query = $this->__query($sql);
+                return mysqli_fetch_assoc($query);
+                break;
+
+            case 'student_affairs':
+                
+                $sql = "SELECT * FROM student_affairs WHERE id='$id'";
+                $query = $this->__query($sql);
+                return mysqli_fetch_assoc($query);
+                break;
+
+            case 'admin':
+                // admin không có bảng phụ
+                $sql = null;
+                break;
+
+            default:
+                throw new Exception("Role không hợp lệ");
+        }
+    }
+    public function deleteUser($id)
+    {
+        $sql = "DELETE FROM users WHERE id = $id";
+        return $this->__query($sql);
     }
     public function deleteUsers($id, $ref_id, $role)
     {
@@ -403,4 +453,5 @@ class userModel
             return false;
         }
     }
+    
 }

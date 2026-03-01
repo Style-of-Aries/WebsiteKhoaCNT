@@ -139,9 +139,11 @@ class userController
             $id = $user['ref_id'];
             $role = $user['role'];
 
-            if ($role === 'lecturer') {
-                $if_user = $this->lecturerModel->getById($id);
-            }
+            // if ($role === 'lecturer') {
+            //     $if_user = $this->lecturerModel->getById($id);
+            // }
+                $if_user = $this->userModel->getByIdUsers($role,$id);
+
         }
         require_once './../views/admin/users/edit.php';
     }
