@@ -27,14 +27,22 @@ function getOld($key, $default = '', $data = null)
     <form action="index.php?controller=subject&action=addNew" method="POST">
         <div class="row">
             <div class="col">
+            <label>Ngành</label>
+            <select name="department_id" required>
+                <option value="">-- Chọn ngành --</option>
+
+                <?php foreach ($department as $dept): ?>
+                    <option value="<?= $dept['id'] ?>" <?= ($old['department_id'] ?? '') == $dept['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($dept['faculty_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+            <div class="col">
                 <label>Tên Môn học</label>
                 <input type="text" name="name" value="<?= htmlspecialchars($old['name'] ?? '') ?>" required>
             </div>
-            <div class="col">
-                <label>Số tín chỉ</label>
-                <input type="number" name="credits" min="1" value="<?= htmlspecialchars($old['credits'] ?? '') ?>"
-                    required>
-            </div>
+            
         </div>
 
         <div class="row">
@@ -54,20 +62,29 @@ function getOld($key, $default = '', $data = null)
                     </option>
                 </select>
             </div>
-        </div>
-
-        <div class="col">
-            <label>Ngành</label>
-            <select name="department_id" required>
-                <option value="">-- Chọn ngành --</option>
-
-                <?php foreach ($department as $dept): ?>
-                    <option value="<?= $dept['id'] ?>" <?= ($old['department_id'] ?? '') == $dept['id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($dept['faculty_name']) ?>
+            <div class="col">
+                <label>Số tín chỉ</label>
+                <input type="number" name="credits" min="1" value="<?= htmlspecialchars($old['credits'] ?? '') ?>"
+                    required>
+            </div>
+            <div class="col">
+                <label>Năm đào tạo</label>
+                <select name="recommended_year" required>
+                    <option value="1" <?= ($old['recommended_year'] ?? '') == '1' ? 'selected' : '' ?>>
+                        Năm nhất
                     </option>
-                <?php endforeach; ?>
-            </select>
+
+                    <option value="2" <?= ($old['recommended_year'] ?? '') == '2' ? 'selected' : '' ?>>
+                        Năm hai
+                    </option>
+                    <option value="3" <?= ($old['recommended_year'] ?? '') == '3' ? 'selected' : '' ?>>
+                        Năm ba
+                    </option>
+                </select>
+            </div>
         </div>
+
+        
         
         <h3>Cấu trúc điểm</h3>
 

@@ -28,7 +28,7 @@ ob_start();
           <th onclick="sortTable(1)">Tên môn học</th>
           <th onclick="sortTable(2)">Mã môn học</th>
           <th onclick="sortTable(3)">Số tín chỉ</th>
-          <th onclick="sortTable(4)">Ban quản lý</th>
+          <th onclick="sortTable(4)">Ngành</th>
           <th class="action">Hành động</th>
         </tr>
       </thead>

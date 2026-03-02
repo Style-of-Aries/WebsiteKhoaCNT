@@ -201,12 +201,22 @@ ORDER BY S.name
         return mysqli_num_rows($this->__query($sql)) > 0;
     }
 
-    public function themHocPhan($subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
-    {
+    public function themHocPhan(
+        $subject_id,
+        $lecturer_id,
+        $semester_id,
+        $class_code,
+        $max_students,
+        $registration_start,
+        $registration_end,
+        $status
+    ) {
         $sql = "INSERT INTO course_classes
-            (subject_id, lecturer_id, semester_id, class_code, max_students)
+            (subject_id, lecturer_id, semester_id, class_code, max_students, registration_start, registration_end, status)  
             VALUES
-            ($subject_id, $lecturer_id, $semester_id, '$class_code', $max_students)";
+            ($subject_id, $lecturer_id, $semester_id, '$class_code', $max_students, '$registration_start',
+    '$registration_end',
+    '$status')";
         $this->__query($sql);
         return mysqli_insert_id($this->connect);
     }
