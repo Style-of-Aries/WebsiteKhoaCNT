@@ -339,10 +339,44 @@ class userModel
             die();
         }
     }
+    public function editUser($role, $full_name, $email, $department, $id)
+    {
+
+            // LECTURER
+            if ($role === 'lecturer') {
+                $sql = "UPDATE lecturer SET ,full_name='$full_name',email='$email', department_id= '$department' WHERE id='$id' ";
+                return $this->__query($sql);
+            }
+
+            // TRAINING OFFICE
+            elseif ($role === 'training_office') {
+                $sql = "UPDATE training_office SET ,full_name='$full_name',email='$email' WHERE id='$id'";
+                return $this->__query($sql);
+            }
+
+            // ACADEMIC AFFAIRS
+            elseif ($role === 'academic_affairs') {
+                $sql = "UPDATE academic_affairs SET ,full_name='$full_name',email='$email' WHERE id='$id'";
+                return $this->__query($sql);
+            }
+
+            // EXAM OFFICE
+            elseif ($role === 'exam_office') {
+
+                $sql = "UPDATE exam_office SET ,full_name='$full_name',email='$email' WHERE id='$id'";
+                return $this->__query($sql);
+            }
+
+            // STUDENT AFFAIRS
+            elseif ($role === 'student_affairs') {
+                $sql = "UPDATE student_affairs SET ,full_name='$full_name',email='$email' WHERE id='$id'";
+                return $this->__query($sql);
+            }
+    }
     public function getByIdUsers($role, $id)
     {
         switch ($role) {
-            case 'Giảng viên':
+            case 'lecturer':
                 $sql = "SELECT * FROM lecturer WHERE id='$id'";
                 $query = $this->__query($sql);
                 return mysqli_fetch_assoc($query);
@@ -353,28 +387,28 @@ class userModel
             //     break;
 
             case 'training_office':
-                
+
                 $sql = "SELECT * FROM training_office WHERE id='$id'";
                 $query = $this->__query($sql);
                 return mysqli_fetch_assoc($query);
                 break;
 
             case 'academic_affairs':
-                
+
                 $sql = "SELECT * FROM academic_affairs WHERE id='$id'";
                 $query = $this->__query($sql);
                 return mysqli_fetch_assoc($query);
                 break;
 
             case 'exam_office':
-                
+
                 $sql = "SELECT * FROM exam_office WHERE id='$id'";
                 $query = $this->__query($sql);
                 return mysqli_fetch_assoc($query);
                 break;
 
             case 'student_affairs':
-                
+
                 $sql = "SELECT * FROM student_affairs WHERE id='$id'";
                 $query = $this->__query($sql);
                 return mysqli_fetch_assoc($query);
@@ -453,5 +487,4 @@ class userModel
             return false;
         }
     }
-    
 }
