@@ -8,41 +8,52 @@
 
     <!-- ID học phần -->
     <input type="hidden" name="id" value="<?= $class_sessions['id'] ?>">
-    <input  type="hidden"
+    <input type="hidden"
         name="course_class_id"
-        value="<?= $class_sessions['course_class_id'] ?>"
-        >
+        value="<?= $class_sessions['course_class_id'] ?>">
 
+    <input type="hidden" name="lecturer_id"
+        value="<?= $course_classes['lecturer_id'] ?>">
 
     <!-- Môn học -->
-    <label>Môn học</label>
-    <select disabled name="subject_id">
+     <label for="">Môn học</label>
+    <input type="hidden" name="subject_id"
+        value="<?= $course_classes['subject_id'] ?>">
+
+    <select disabled>
         <?php foreach ($subject as $s): ?>
             <option value="<?= $s['id'] ?>"
-                <?= $course_classes['id'] == $s['id'] ? 'selected' : '' ?>>
-                <?= $s['subject_name'] ?> - <?= $s['class_code'] ?> - <?= $s['lecturer_name'] ?>
+                <?= $course_classes['subject_id'] == $s['id'] ? 'selected' : '' ?>>
+                <?= $s['subject_name'] ?>
+                - <?= $s['class_code'] ?>
+                - <?= $s['lecturer_name'] ?>
             </option>
         <?php endforeach; ?>
     </select>
+
     <?php if (!empty($errors['subject_id'])): ?>
         <small style="color:red"><?= $errors['subject_id'] ?></small>
     <?php endif; ?>
-  
-    
 
-  
+
+
+
 
 
     <!-- Sĩ số -->
-    
+
 
 
     <label>Ngày học</label>
-    <input type="date" name="session_date" value="<?= $class_sessions['session_date'] ?>">
+    <input type="date" name="session_date" id="session_date" value="<?= $class_sessions['session_date'] ?>">
+    <?php if (!empty($errors['session_date'])): ?>
+        <small style="color:red"><?= $errors['session_date'] ?></small>
+    <?php endif; ?>
 
     <!-- Thứ -->
     <label>Thứ</label>
-    <select name="day_of_week">
+    
+    <select name="day_of_week" id="day_of_week" >
         <option value="">-- Chọn thứ --</option>
         <?php for ($i = 2; $i <= 7; $i++): ?>
             <option value="<?= $i ?>"

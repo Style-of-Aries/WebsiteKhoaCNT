@@ -40,7 +40,7 @@ ob_start();
           <tr>
             <td><?= $index + 1 ?></td>
             <td><?= htmlspecialchars($subject['subject_name']) ?></td>
-            <td><?= htmlspecialchars($subject['full_name']) ?></td>
+            <td><?= htmlspecialchars($subject['full_name']) ?>-<?= htmlspecialchars($subject['lecturer_code'])?></td>
             <td><?= htmlspecialchars($subject['session_date']) ?></td>
             <td><?= htmlspecialchars($subject['day_of_week']) ?></td>
             <td><?= htmlspecialchars($subject['session']) ?></td>

@@ -248,6 +248,16 @@ ORDER BY S.name
         return $this->__query($sql);
     }
 
+    public function cancelRegister($studentId, $classId)
+    {
+        $sql = "
+            IDELETE FROM student_course_classes
+WHERE student_id = '$studentId'
+AND course_class_id = $classId
+        ";
+        return $this->__query($sql);
+    }
+
     // Đếm số SV đã đăng ký
     public function countStudents($classId)
     {

@@ -691,7 +691,8 @@ class timetableController
 
             $id = (int) $_POST['id'];
             $subject_id = (int) $_POST['subject_id'];
-            // $lecturer_id = (int) $_POST['lecturer_id'];
+            $lecturer_id = (int) $_POST['lecturer_id'];
+            // var_dump($lecturer_id);die();
             // $max_students = (int) $_POST['max_students'];
             $course_class_id = (int)$_POST['course_class_id'];
             // $class_code = $_POST['class_code'];
@@ -700,6 +701,7 @@ class timetableController
             $session = $_POST['session'];
             $room_id = (int) $_POST['room_id'];
             $session_date =  $_POST['session_date'];
+
 
 
             // $startWeek = (int) $_POST['start_week'];
@@ -723,6 +725,17 @@ class timetableController
             if (!$room_id)
                 $errors['room_id'] = "Chọn phòng học";
 
+            $isConflict = $this->timetableModel
+                ->checkTrungLichGv(
+                    $lecturer_id,
+                    $session_date,
+                    $session,
+                    $id
+                );
+
+            if ($isConflict) {
+                $errors['session_date'] = "Giảng viên đã có lịch dạy";
+            }
             // if (!$startWeek || !$endWeek || $startWeek > $endWeek) {
             //     $errors['week'] = "Tuần học không hợp lệ";
             // }
@@ -775,7 +788,7 @@ class timetableController
             $course_classes = [
                 'id' => $id,
                 'subject_id' => $subject_id,
-                // 'lecturer_id' => $lecturer_id,
+                'lecturer_id' => $lecturer_id
                 // 'max_students' => $max_students,
                 // 'class_code' => $class_code
             ];

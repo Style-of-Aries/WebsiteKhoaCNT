@@ -1,6 +1,24 @@
 //#region ================= SORT MODULE =================
+document.getElementById("session_date").addEventListener("change", function () {
 
-let sortDirection = true;
+    const dateValue = this.value;
+    if (!dateValue) return;
+
+    const date = new Date(dateValue);
+    const jsDay = date.getDay(); 
+    // 0 = CN, 1 = Thứ 2, ..., 6 = Thứ 7
+
+    if (jsDay === 0) {
+        alert("Chủ nhật nghỉ");
+        return;
+    }
+
+    const thu = jsDay + 1;
+
+    // GÁN THẲNG VÀO SELECT
+    document.getElementById("day_of_week").value = thu;
+});
+  let sortDirection = true;
 function sortTable(colIndex) {
   let tbody = document.querySelector("#mainTable tbody");
   if (!tbody) return;
@@ -444,3 +462,5 @@ document.getElementById("departmentSelect").addEventListener("change", function(
             lecturerSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
         });
 });
+
+

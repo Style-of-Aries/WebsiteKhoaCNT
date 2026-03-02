@@ -26,7 +26,7 @@ ob_start();
                 $remaining = $row['max_students'] - $row['current_students'];
                 ?>
                 <tr>
-                    <td><?= $stt++;?></td>
+                    <td><?= $stt++; ?></td>
                     <td><?= htmlspecialchars($row['class_code']) ?></td>
                     <td><?= htmlspecialchars($row['subject_name']) ?></td>
                     <td class="text-center"><?= $row['day_of_week'] ?></td>
@@ -48,9 +48,10 @@ ob_start();
                     <td class="text-center">
                         <?php if ($row['is_registered']): ?>
 
-                            <button class="btn btn-secondary btn-sm" disabled>
-                                Đã đăng ký
-                            </button>
+                            <a href="index.php?controller=student&action=cancelCourseClass&class_id=<?= $row['id'] ?>"
+                                class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn hủy đăng ký lớp này?')">
+                                Hủy đăng ký
+                            </a>
 
 
                         <?php elseif ($remaining > 0): ?>
