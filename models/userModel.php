@@ -424,9 +424,9 @@ class userModel
                 throw new Exception("Role không hợp lệ");
         }
     }
-    public function deleteUser($id)
+    public function deleteUser($ref_id)
     {
-        $sql = "DELETE FROM users WHERE id = $id";
+        $sql = "DELETE FROM users WHERE ref_id = $ref_id";
         return $this->__query($sql);
     }
     public function deleteUsers($id, $ref_id, $role)

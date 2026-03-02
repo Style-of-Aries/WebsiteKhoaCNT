@@ -13,6 +13,8 @@
         value="<?= $class_sessions['course_class_id'] ?>"
         >
 
+    <input type="hidden" name="lecturer_id" 
+    value="<?= $course_classes['lecturer_id'] ?>">
 
     <!-- Môn học -->
     <label>Môn học</label>
