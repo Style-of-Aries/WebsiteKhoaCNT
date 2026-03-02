@@ -15,6 +15,20 @@ class timetableModel
         return mysqli_query($this->connect, $sql);
     }
 
+    public function checkTrungLichGv($lecturer_id, $session_date, $session, $id)
+{
+    $sql = "SELECT cs.id
+            FROM class_sessions cs
+            JOIN course_classes cc ON cs.course_class_id = cc.id
+            WHERE cc.lecturer_id = '$lecturer_id'
+            AND cs.session_date = '$session_date'
+            AND cs.session = '$session'
+            AND cs.id != '$id'";
+
+    $result = $this->__query($sql);
+
+    return mysqli_num_rows($result) > 0;
+}
     public function getAllNoAdd()
     {
         $sql = "SELECT 
