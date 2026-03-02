@@ -217,5 +217,29 @@ class studentController
 
         $_SESSION['success'] = 'Đăng ký thành công';
         $this->getCourseClass();
+        exit();
+    }
+
+    public function cancelCourseClass()
+    {
+        if (!isset($_GET['class_id'])) {
+            $_SESSION['error'] = "Thiếu mã lớp.";
+            $this->getCourseClass();
+            exit;
+        }
+
+        $studentId = $_SESSION['user']['ref_id'];
+        $classId = (int) $_GET['class_id'];
+
+        try {
+            $this->courseClassModel->cancelRegister($studentId, $classId);
+
+            $_SESSION['success'] = "Hủy đăng ký thành công.";
+        } catch (Exception $e) {
+            $_SESSION['error'] = $e->getMessage();
+        }
+
+        $this->getCourseClass();
+        exit;
     }
 }
