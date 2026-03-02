@@ -81,3 +81,13 @@
 =======
 2026-03-01 21:24:47 | Đồ án chỉ dành cho năm 3 trở lên
 >>>>>>> 56d5fe02023468f5ca6c9807edfd1a788bc950d1
+2026-03-02 16:53:22 | Unknown column 'registration_start' in 'field list'
+2026-03-02 16:53:39 | Unknown column 'registration_start' in 'field list'
+2026-03-02 16:53:51 | Unknown column 'registration_start' in 'field list'
+2026-03-02 16:54:01 | Unknown column 'registration_start' in 'field list'
+2026-03-02 16:54:26 | Unknown column 'registration_start' in 'field list'
+2026-03-02 16:56:35 | Duplicate entry '53-62-1' for key 'course_classes.uq_subject_lecturer_semester'
+2026-03-02 16:56:41 | Duplicate entry '53-62-1' for key 'course_classes.uq_subject_lecturer_semester'
+2026-03-02 17:02:13 | Duplicate entry '57-63-1' for key 'course_classes.uq_subject_lecturer_semester'
+2026-03-02 17:03:45 | Duplicate entry '57-63-1' for key 'course_classes.uq_subject_lecturer_semester'
+2026-03-02 17:04:31 | Duplicate entry '57-63-1' for key 'course_classes.uq_subject_lecturer_semester'

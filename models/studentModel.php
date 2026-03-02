@@ -380,9 +380,9 @@ WHERE st.id = $studentId;
         $sql = "delete from student_profiles where student_id= $id";
         return $this->__query($sql);
     }
-    public function deleteStudent($id)
+    public function deleteStudent($ref_id)
     {
-        $sql = "delete from student where id= $id";
+        $sql = "delete from student where id= $ref_id";
         return $this->__query($sql);
     }
     // Sửa thông tin ở trang của sinh viên
