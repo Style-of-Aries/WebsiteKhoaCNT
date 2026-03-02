@@ -151,24 +151,24 @@ class userController
         require_once './../views/admin/users/edit.php';
     }
     public function editSv()
-        {
-            $errorEmail = $errorMaSv = $errorName = "";
-            $id = $_GET['ref_id'];
-            // var_dump($id);die();
-            $classes = $this->classesModel->getAll();
-            $department = $this->departmentModel->getAll();
-            $student = $this->studentModel->getById($id);
-            $studentprf = $this->studentModel->getById($id);
-            $userNd = $this->userModel->getByRef_id($id);
+    {
+        $errorEmail = $errorMaSv = $errorName = "";
+        $id = $_GET['ref_id'];
+        // var_dump($id);die();
+        $classes = $this->classesModel->getAll();
+        $department = $this->departmentModel->getAll();
+        $student = $this->studentModel->getById($id);
+        $studentprf = $this->studentModel->getById($id);
+        $userNd = $this->userModel->getByRef_id($id);
 
-            require_once './../views/admin/student/edit.php';
-        }
+        require_once './../views/admin/student/edit.php';
+    }
     public function edit()
     {
         $department = null;
         if (isset($_POST['btn_edit'])) {
             $id = $_POST['id'];
-            $role = $_POST['role']; 
+            $role = $_POST['role'];
             $full_name = $_POST['full_name'] ?? null;
             $email = $_POST['email'] ?? null;
             // if ($role === 'lecturer') {
@@ -176,26 +176,21 @@ class userController
             $department = $_POST['department_id'] ?? null;
 
 
-            $errorEmail = $this->userModel->checkEmailByRole($role, $email);
-            // $code = $this->generateCode($role);
-            // if ($role === 'lecturer') {
+            $checkEmail = $this->userModel->checkEmailByRole($role, $email);
 
-            //     $user = $this->lecturerModel->addGiangVien($full_name, $code, $email, $department);
-            // } else {
-            if (!isset($errorEmail)) {
-                $user = $this->userModel->editUser($role, $full_name, $email, $department,$id);
+
+            // var_dump($user);die();
+            if (($checkEmail)) {
+                $errorEmail = "Email đã tồn tại!";
+            } else {
+                $user = $this->userModel->editUser($role, $full_name, $email, $department, $id);
                 if ($user) {
                     $this->getAllUser();
                     exit();
                 }
-                elseif($errorEmail){
-                    
-                $errorEmail = "Email đã tồn tại!";}
-                
             }
         }
         include_once "./../views/admin/users/edit.php";
-
     }
     public function deleteUsers()
     {

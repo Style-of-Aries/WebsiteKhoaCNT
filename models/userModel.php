@@ -169,7 +169,8 @@ class userModel
                 break;
 
             default:
-                return false; // role không hợp lệ
+            
+                return "role k tồn tại". false; // role không hợp lệ
         }
 
         $sql = "SELECT id FROM $table 
@@ -344,32 +345,32 @@ class userModel
 
             // LECTURER
             if ($role === 'lecturer') {
-                $sql = "UPDATE lecturer SET ,full_name='$full_name',email='$email', department_id= '$department' WHERE id='$id' ";
+                $sql = "UPDATE lecturer SET full_name='$full_name',email='$email', department_id= '$department' WHERE id='$id' ";
                 return $this->__query($sql);
             }
 
             // TRAINING OFFICE
             elseif ($role === 'training_office') {
-                $sql = "UPDATE training_office SET ,full_name='$full_name',email='$email' WHERE id='$id'";
+                $sql = "UPDATE training_office SET full_name='$full_name',email='$email' WHERE id='$id'";
                 return $this->__query($sql);
             }
 
             // ACADEMIC AFFAIRS
             elseif ($role === 'academic_affairs') {
-                $sql = "UPDATE academic_affairs SET ,full_name='$full_name',email='$email' WHERE id='$id'";
+                $sql = "UPDATE academic_affairs SET full_name='$full_name',email='$email' WHERE id='$id'";
                 return $this->__query($sql);
             }
 
             // EXAM OFFICE
             elseif ($role === 'exam_office') {
 
-                $sql = "UPDATE exam_office SET ,full_name='$full_name',email='$email' WHERE id='$id'";
+                $sql = "UPDATE exam_office SET full_name='$full_name',email='$email' WHERE id='$id'";
                 return $this->__query($sql);
             }
 
             // STUDENT AFFAIRS
             elseif ($role === 'student_affairs') {
-                $sql = "UPDATE student_affairs SET ,full_name='$full_name',email='$email' WHERE id='$id'";
+                $sql = "UPDATE student_affairs SET full_name='$full_name',email='$email' WHERE id='$id'";
                 return $this->__query($sql);
             }
     }

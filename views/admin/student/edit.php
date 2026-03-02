@@ -11,10 +11,10 @@ ob_start();
     <input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
 
     <!-- Quốc hiệu -->
-    <div class="national">
+    <!-- <div class="national">
         <h2>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h2>
         <p>Độc lập - Tự do - Hạnh phúc</p>
-    </div>
+    </div> -->
 
     <div class="form-title">
         HỒ SƠ SINH VIÊN

@@ -34,7 +34,7 @@ unset($_SESSION['old']);
                 </select>
             </div>
 
-            <div class="col">
+            <!-- <div class="col">
                 <label>Học kỳ</label>
                 <select name="semester_id" required>
                     <option value="">-- Chọn học kỳ --</option>
@@ -45,7 +45,7 @@ unset($_SESSION['old']);
                         </option>
                     <?php endforeach; ?>
                 </select>
-            </div>
+            </div> -->
         </div>
 
         <div class="row">
@@ -66,6 +66,19 @@ unset($_SESSION['old']);
                 <label>Sĩ số tối đa</label>
                 <input type="number" name="max_students" required
                     value="<?= htmlspecialchars($old['max_students'] ?? '') ?>">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Thời gian bắt đầu đăng ký</label>
+                <input type="date" name="registration_start"
+                    value="<?= htmlspecialchars($old['registration_start'] ?? '') ?>">
+            </div>
+
+            <div class="col">
+                <label>Thời gian kết thúc đăng ký</label>
+                <input type="date" name="registration_end"
+                    value="<?= htmlspecialchars($old['registration_end'] ?? '') ?>">
             </div>
         </div>
         <button name="btn_add" type="submit" class="btn-submit">Thêm lớp học phần</button>

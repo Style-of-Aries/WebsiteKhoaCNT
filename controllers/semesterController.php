@@ -8,7 +8,7 @@ require_once "./../models/departmentModel.php";
 require_once "./../models/subjectModel.php";
 require_once "./../models/course_classesModel.php";
 require_once "./../models/semesterModel.php";
-class course_classesController
+class semesterController
 {
     private $userModel;private $connect;
     private $studentModel;
@@ -107,5 +107,10 @@ class course_classesController
         $id = $_GET['id'];
         $this->subjectModel->deleteMonHoc($id);
         $this->getAllHocPhan();
+    }
+
+    public function getAllSemester()
+    {
+        include_once './../views/admin/semester/add.php';
     }
 }

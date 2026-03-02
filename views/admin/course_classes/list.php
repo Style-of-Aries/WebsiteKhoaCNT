@@ -48,13 +48,13 @@ ob_start();
             </td>
 
             <td class="action">
-              <button class="view-button"
+              <!-- <button class="view-button"
                 onclick="location.href='index.php?controller=timetable&action=tkb&id=<?= $subject['id'] ?>'">
                 <svg xmlns="http://www.w3.org/2000/svg" class="view-svgIcon" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd">
                   </path>
                 </svg>
-              </button>
+              </button> -->
               <button class="edit-button"
                 onclick="location.href='index.php?controller=course_classes&action=editHocPhan&id=<?= $subject['id'] ?>'">
                 <svg class="edit-svgIcon" viewBox="0 0 512 512">

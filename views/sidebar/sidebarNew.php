@@ -68,6 +68,10 @@ $role = $_SESSION['user']['role'];
                 <a href="index.php?controller=classes&action=getAllLopHoc">Lớp hành chính</a>
             </li>
 
+            <!-- <li class="<?= PermissionService::has($role, 'semesters') ? 'dropdown' : 'locked' ?>">
+                <a href="index.php?controller=semester&action=getAllSemester">Học kỳ</a>
+            </li> -->
+
             <li class="<?= PermissionService::has($role, 'course_classes') ? 'dropdown' : 'locked' ?>">
                 <a href="index.php?controller=course_classes&action=getAllHocPhan">Lớp học phần</a>
             </li>

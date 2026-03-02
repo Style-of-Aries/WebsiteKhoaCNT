@@ -5,10 +5,10 @@ ob_start();
 <form class="profile-paper" action="index.php?controller=admin&action=add" method="POST" enctype="multipart/form-data">
 
     <!-- Quốc hiệu -->
-    <div class="national">
+    <!-- <div class="national">
         <h2>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h2>
         <p>Độc lập - Tự do - Hạnh phúc</p>
-    </div>
+    </div> -->
 
     <div class="form-title">
         Hồ sơ sinh viên

@@ -409,20 +409,20 @@ class course_classesController
         }
 
         $error = '';
-
+        $startTime = null;
+        $endTime = null;
         $subject_id = $_POST['subject_id'] ?? '';
-        $semester_id = $_POST['semester_id'] ?? '';
+        // $semester_id = $_POST['semester_id'] ?? '';
         $lecturer_id = $_POST['lecturer_id'] ?? '';
         $max_students = $_POST['max_students'] ?? '';
+        $registration_start = $_POST['registration_start'] ?? null;
+        $registration_end = $_POST['registration_end'] ?? null;
+        // $status = $_POST['status'] ?? 'draft';
 
         /* ================= VALIDATE ================= */
 
-        if (empty($subject_id) && $error === '') {
+        if (empty($subject_id)) {
             $error = "Vui lòng chọn môn học";
-        }
-
-        if (empty($semester_id) && $error === '') {
-            $error = "Vui lòng chọn học kỳ";
         }
 
         if (empty($lecturer_id) && $error === '') {
@@ -430,10 +430,61 @@ class course_classesController
         }
 
         if (
-            (empty($max_students) || !is_numeric($max_students) || $max_students <= 0)
+            (empty($max_students) || !filter_var($max_students, FILTER_VALIDATE_INT) || $max_students <= 0)
             && $error === ''
         ) {
-            $error = "Sĩ số phải là số lớn hơn 0";
+            $error = "Sĩ số phải là số nguyên lớn hơn 0";
+        }
+
+        /* ===== Validate thời gian ===== */
+
+        if (empty($registration_start) && $error === '') {
+            $error = "Vui lòng nhập thời gian bắt đầu đăng ký.";
+        } else {
+            $startTime = strtotime($registration_start . ' 00:00:00');
+            if ($startTime === false) {
+                $error = "Thời gian bắt đầu không hợp lệ.";
+            } else {
+                $registration_start = date('Y-m-d 00:00:00', $startTime);
+            }
+        }
+
+        if (empty($registration_end) && $error === '') {
+            $error = "Vui lòng nhập thời gian kết thúc đăng ký.";
+        } else {
+            $endTime = strtotime($registration_end . ' 23:59:59');
+            if ($endTime === false) {
+                $error = "Thời gian kết thúc không hợp lệ.";
+            } else {
+                $registration_end = date('Y-m-d 23:59:59', $endTime);
+            }
+        }
+
+        /* ===== So sánh thời gian ===== */
+
+        if ($startTime !== null && $endTime !== null && $error === '') {
+            if ($endTime <= $startTime) {
+                $error = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.";
+            }
+            if ($startTime < time() && $error === '') {
+                $error = "Thời gian bắt đầu không được nhỏ hơn thời điểm hiện tại.";
+            }
+        }
+
+
+
+
+        if ($error === '') {
+
+            $now = time();
+
+            if ($now < $startTime) {
+                $status = 'draft';
+            } elseif ($now <= $endTime) {
+                $status = 'open';
+            } else {
+                $status = 'closed';
+            }
         }
 
         if ($error !== '') {
@@ -446,7 +497,8 @@ class course_classesController
         /* ================= INSERT ================= */
 
         try {
-
+            $semester = $this->semesterModel->layHocKyDangHoatDong();
+            $semester_id = $semester['id'];
             $class_code = $this->course_classesModel->malop($subject_id);
 
             $course_class_id = $this->course_classesModel->themHocPhan(
@@ -454,7 +506,10 @@ class course_classesController
                 $lecturer_id,
                 $semester_id,
                 $class_code,
-                $max_students
+                $max_students,
+                $registration_start,
+                $registration_end,
+                $status
             );
 
             if (!$course_class_id) {

@@ -84,7 +84,7 @@ class subjectController
         $department_id = (int) ($_POST['department_id'] ?? 0);
         $subject_type = $_POST['subject_type'] ?? '';
 
-
+        $recommended_year = $_POST['recommended_year'];
         $components = $_POST['components'] ?? [];
 
         $error = '';
@@ -111,8 +111,16 @@ class subjectController
             $error = "Vui lòng chọn khoa";
         }
 
+        if (!in_array($recommended_year, [1, 2, 3, 4]) && $error === '') {
+            $error = "Năm đào tạo không hợp lệ";
+        }
+
         if (!in_array($subject_type, ['NORMAL', 'PROJECT']) && $error === '') {
             $error = "Loại môn không hợp lệ";
+        }
+
+        if ($subject_type == 'PROJECT' && $recommended_year < 3 && $error === '') {
+            $error = "Đồ án chỉ dành cho năm 3 trở lên";
         }
 
         if ($subject_type === 'NORMAL')
@@ -238,7 +246,8 @@ class subjectController
                 // $subject_code,
                 $credits,
                 $department_id,
-                $subject_type
+                $subject_type,
+                $recommended_year
             );
 
             if (!$subject_id) {
@@ -296,12 +305,12 @@ class subjectController
             $subject_code = $_POST['subject_code'];
             $credits = $_POST['credits'];
             $department_id = $_POST['department_id'];
-            $subject_type= $_POST['subject_type'];
+            $subject_type = $_POST['subject_type'];
             if ($this->subjectModel->checkMonHoc($id, $name)) {
                 $errorMaSv = "Khoa đã tồn tại";
             }
             if (empty($errorMaSv)) {
-                $this->subjectModel->editMonHoc($id, $name,$subject_code, $credits, $department_id,$subject_type);
+                $this->subjectModel->editMonHoc($id, $name, $subject_code, $credits, $department_id, $subject_type);
                 $this->getAllMonHoc();
 
                 exit;
@@ -327,164 +336,71 @@ class subjectController
             exit;
         }
 
-        $errors = "";
-
-        // ================= POST =================
-        if (isset($_POST['btn_edit'])) {
-
-            $id = $_POST['id'];
-            $name = trim($_POST['name']);
-            $subject_code = trim($_POST['subject_code']);
-            $credits = trim($_POST['credits']);
-            $department_id = $_POST['department_id'];
-            $subject_type = $_POST['subject_type'];
-            $components = $_POST['components'] ?? [];
-            $subjectNormal = ($subject_type === 'NORMAL');
-            $subjectProject = ($subject_type === 'PROJECT');
-            $errors = "";
-            $totalWeight = 0;
-            $hasTX = false;
-            $hasDK = false;
-            $hasCK = false;
-            $isProject = false;
-
-            // ================= VALIDATE SUBJECT =================
-
-            if (empty($name) && $errors === "") {
-                $errors = "Tên môn học không được để trống";
-            }
-
-            if (empty($subject_code) && $errors === "") {
-                $errors = "Mã môn học không được để trống";
-            }
-
-            if (($credits === '' || !is_numeric($credits) || $credits <= 0) && $errors === "") {
-                $errors = "Số tín chỉ phải lớn hơn 0";
-            }
-
-            if (empty($department_id) && $errors === "") {
-                $errors = "Vui lòng chọn khoa";
-            }
-
-            // ================= VALIDATE COMPONENT =================
-
-            if (empty($components) && $errors === "") {
-                $errors = "Phải có ít nhất 1 thành phần điểm";
-            }
-
-
-            if ($errors === '') {
-
-                foreach ($components as $c) {
-
-                    $type = $c['type'] ?? '';
-                    $weight = (int) ($c['weight'] ?? 0);
-                    $nameComponent = trim($c['name'] ?? '');
-
-                    if ($nameComponent === '' && $errors === '') {
-                        $errors = "Tên thành phần điểm không được để trống";
-                    }
-
-                    if (!in_array($type, ['TX', 'DK', 'CK', 'PROJECT']) && $errors === '') {
-                        $errors = "Loại điểm không hợp lệ";
-                    }
-
-                    if (($weight <= 0 || $weight > 100) && $errors === '') {
-                        $errors = "Trọng số phải từ 1 đến 100";
-                    }
-
-                    if ($type === 'TX') {
-                        $hasTX = true;
-                    }
-
-                    if ($type === 'DK') {
-                        $hasDK = true;
-                    }
-
-                    if ($type === 'CK') {
-                        $hasCK = true;
-                    }
-
-                    if ($type === 'PROJECT') {
-                        $isProject = true;
-                    }
-
-                    $totalWeight += $weight;
-                }
-                if ($subjectNormal && (!$hasTX || !$hasDK) && $errors === '') {
-                    $errors = "Môn thường phải có ít nhất 1 điểm thường xuyên và định kì";
-                }
-
-                if ($totalWeight !== 100 && $errors === '') {
-                    $errors = "Tổng trọng số phải bằng 100%";
-                }
-
-                if ($subjectNormal && !$isProject && !$hasCK && $errors === '') {
-                    $errors = "Phải có ít nhất 1 điểm CK";
-                }
-
-                if ($subjectProject && count($components) > 1 && $errors === '') {
-                    $errors = "Môn đồ án chỉ được có 1 thành phần PROJECT";
-                }
-
-                if ($subjectProject && !$isProject && $errors === '') {
-                    $errors = "Môn đồ án phải có thành phần đồ án";
-                }
-            }
-
-            if ($totalWeight != 100 && $errors === "") {
-                $errors = "Tổng trọng số phải bằng 100";
-            }
-
-            // ================= Nếu có lỗi =================
-            if ($errors !== "") {
-
-                $subject = [
-                    'id' => $id,
-                    'name' => $name,
-                    'subject_code' => $subject_code,
-                    'credits' => $credits,
-                    'subject_type' => $subject_type,
-                    'department_id' => $department_id
-                ];
-                $department = $this->departmentModel->getAll();
-                $components = $this->subjectScoreComponentsModel->getBySubject($id);
-                $_SESSION['error'] = $errors;
-                include "./../views/admin/subject/edit.php";
-                return;
-            }
-
-            // ================= UPDATE SUBJECT =================
-            $this->subjectModel->editMonHoc(
-                $id,
-                $name,
-                $subject_code,
-                $credits,
-                $department_id,
-                $subject_type
-            );
-            // echo "<pre>";
-            // print_r($components);
-            // var_dump($id);
-            // die();
-            // ================= UPDATE COMPONENT =================
-            $this->subjectScoreComponentsModel->deleteBySubjectId($id);
-
-            foreach ($components as $comp) {
-                $this->subjectScoreComponentsModel->add(
-                    $id,
-                    $comp['name'],
-                    $comp['type'],    // đúng vị trí
-                    $comp['weight']   // đúng vị trí
-                );
-            }
-
-            $_SESSION['success'] = "Cập nhật môn học thành công!";
-            $this->getAllMonHoc();
-            exit;
+        if (!isset($_POST['btn_edit'])) {
+            include "./../views/admin/subject/edit.php";
+            return;
         }
 
-        include "./../views/admin/subject/edit.php";
+        $id = $_POST['id'];
+        $name = trim($_POST['name']);
+        $subject_code = trim($_POST['subject_code']);
+        $credits = trim($_POST['credits']);
+        $department_id = $_POST['department_id'];
+        $subject_type = $_POST['subject_type'];
+        $recommended_year = $_POST['recommended_year'];
+        $errors = "";
+
+        // ===== VALIDATE =====
+        if ($name === "") {
+            $errors = "Tên môn học không được để trống";
+        } elseif ($subject_code === "") {
+            $errors = "Mã môn học không được để trống";
+        } elseif ($credits === "" || !is_numeric($credits) || $credits <= 0) {
+            $errors = "Số tín chỉ phải lớn hơn 0";
+        } elseif (empty($department_id)) {
+            $errors = "Vui lòng chọn khoa";
+        }
+
+        if (!in_array($recommended_year, [1, 2, 3, 4]) && $errors === '') {
+            $errors = "Năm đào tạo không hợp lệ";
+        }
+
+        if ($subject_type == 'PROJECT' && $recommended_year < 3 && $errors === '') {
+            $errors = "Đồ án chỉ dành cho năm 3 trở lên";
+        }
+
+        // ===== Nếu có lỗi =====
+        if ($errors !== "") {
+
+            $subject = [
+                'id' => $id,
+                'name' => $name,
+                'subject_code' => $subject_code,
+                'credits' => $credits,
+                'subject_type' => $subject_type,
+                'department_id' => $department_id
+            ];
+
+            $department = $this->departmentModel->getAll();
+            $_SESSION['error'] = $errors;
+
+            include "./../views/admin/subject/edit.php";
+            return;
+        }
+
+        // ===== UPDATE SUBJECT =====
+        $this->subjectModel->editMonHoc(
+            $id,
+            $name,
+            $subject_code,
+            $credits,
+            $department_id,
+            $subject_type
+        );
+
+        $_SESSION['success'] = "Cập nhật môn học thành công!";
+        $this->getAllMonHoc();
+        exit;
     }
     public function deleteMonHoc()
     {
