@@ -1,7 +1,7 @@
 :root {
   --sidebar-width: 250px;
   --header-height: 60px;
-  --sidebar-bg-color: #5a5efb;
+  --sidebar-bg-color: #1e20a1;
   --sidebar-text-color: #ecf0f1;
   --blue-dark: #1e5fa8;
   --blue-main: #2f6fb3;
@@ -159,7 +159,7 @@
 .card-title {
   font-size: 20px;
   margin-bottom: 16px;
-  color: #2f80ed;
+  color: var(--sidebar-bg-color);
 }
 
 /* ===== SELECT WEEK ===== */
@@ -735,7 +735,7 @@
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
   transition: 0.2s ease;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .main-table tbody tr:hover {
@@ -811,4 +811,69 @@
 /* Căn giữa các dòng TX / ĐK */
 .grade-table .score-process div {
   text-align: center;
+}
+
+.btn-cancel {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #f61212;
+  color: #ffffff;
+  font-weight: Bold;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.btn-cancel:hover {
+  background-color: #f15050;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+.btn-cancel:active {
+  background-color: #f15050;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.btn-register {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #2bfb43;
+  color: #ffffff;
+  font-weight: Bold;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.btn-register:hover {
+  background-color: #6fff87;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+.btn-register:active {
+  background-color: #4ecf3d;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.register-table th:nth-child(5),
+.register-table th:nth-child(6),
+.register-table th:nth-child(7),
+.register-table th:nth-child(8) {
+  text-align: center;
+}
+
+.register-table td:nth-child(5),
+.register-table td:nth-child(6),
+.register-table td:nth-child(7),
+.register-table td:nth-child(8) {
+  text-align: center;
+  vertical-align: middle;
 }

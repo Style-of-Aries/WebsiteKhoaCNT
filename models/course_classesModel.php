@@ -165,6 +165,7 @@ ORDER BY
     cc.class_code,
     s.name AS subject_name,
     cc.max_students,
+    l.full_name as lecturer_name,
     COUNT(scc.student_id) AS current_students,
     CASE t.day_of_week
         WHEN 2 THEN 'Thứ 2'
@@ -183,6 +184,7 @@ ORDER BY
     ) AS is_registered
 FROM course_classes cc
 JOIN subjects s ON cc.subject_id = s.id
+JOIN lecturer l ON cc.lecturer_id = l.id
 JOIN semesters sem ON cc.semester_id = sem.id AND sem.is_active = 1
 LEFT JOIN timetables t ON cc.id = t.course_class_id
 LEFT JOIN student_course_classes scc ON cc.id = scc.course_class_id
@@ -248,10 +250,83 @@ ORDER BY S.name
         return $this->__query($sql);
     }
 
+    public function registerNew($student_id, $course_class_id)
+    {
+        $student_id = (int) $student_id;
+        $course_class_id = (int) $course_class_id;
+
+        mysqli_begin_transaction($this->connect);
+
+        try {
+
+            // 1️⃣ Lấy thông tin lớp (khóa record tránh race condition)
+            $sql = "
+                SELECT subject_id, semester_id, max_students, status
+                FROM course_classes
+                WHERE id = $course_class_id
+                FOR UPDATE
+            ";
+
+            $result = mysqli_query($this->connect, $sql);
+
+            if (!$result || mysqli_num_rows($result) == 0) {
+                throw new Exception("Lớp học phần không tồn tại.");
+            }
+
+            $course = mysqli_fetch_assoc($result);
+
+            if ($course['status'] !== 'open') {
+                throw new Exception("Lớp chưa mở đăng ký.");
+            }
+
+            // 2️⃣ Kiểm tra sĩ số
+            $sql = "
+                SELECT COUNT(*) AS total
+                FROM student_course_classes
+                WHERE course_class_id = $course_class_id
+            ";
+
+            $result = mysqli_query($this->connect, $sql);
+            $row = mysqli_fetch_assoc($result);
+
+            if ($row['total'] >= $course['max_students']) {
+                throw new Exception("Lớp đã đủ số lượng sinh viên.");
+            }
+
+            $subject_id = (int) $course['subject_id'];
+            $semester_id = (int) $course['semester_id'];
+
+            // 3️⃣ Insert (DB sẽ tự chặn trùng môn cùng kỳ bằng UNIQUE)
+            $sql = "
+                INSERT INTO student_course_classes
+                (student_id, course_class_id, subject_id, semester_id)
+                VALUES ($student_id, $course_class_id, $subject_id, $semester_id)
+            ";
+
+            if (!mysqli_query($this->connect, $sql)) {
+
+                // Lỗi duplicate key (MySQL error 1062)
+                if (mysqli_errno($this->connect) == 1062) {
+                    throw new Exception("Bạn đã đăng ký môn này trong học kỳ rồi.");
+                }
+
+                throw new Exception("Lỗi hệ thống: " . mysqli_error($this->connect));
+            }
+
+            mysqli_commit($this->connect);
+            return true;
+
+        } catch (Exception $e) {
+
+            mysqli_rollback($this->connect);
+            throw $e;
+        }
+    }
+
     public function cancelRegister($studentId, $classId)
     {
         $sql = "
-            IDELETE FROM student_course_classes
+            DELETE FROM student_course_classes
 WHERE student_id = '$studentId'
 AND course_class_id = $classId
         ";

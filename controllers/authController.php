@@ -33,39 +33,52 @@ class authController
     {
         $errorLogin = "";
         $oldUsername = "";
+
         if (isset($_POST['btn_login'])) {
-            $name = $_POST['username'];
+
+            $name = trim($_POST['username']);
+            $password = trim($_POST['password']);
             $oldUsername = $name;
-            $password = $_POST['password'];
-            $user = $this->userModel->getByUsername($name);
-            $user = mysqli_fetch_assoc($user);
+
+            $result = $this->userModel->getByUsername($name);
+            $user = mysqli_fetch_assoc($result);
+
+            // ❗ 1. Kiểm tra user tồn tại trước
+            if (!$user) {
+                $errorLogin = "Tài khoản không tồn tại";
+                include_once "./../views/auth/login.php";
+                return;
+            }
+
+            // ❗ 2. Kiểm tra mật khẩu
+            if (trim($user['password']) !== $password) {
+                $errorLogin = "Sai mật khẩu";
+                include_once "./../views/auth/login.php";
+                return;
+            }
+
+            // ❗ 3. Lấy profile sau khi chắc chắn user tồn tại
             $profile = $this->userModel->getUserProfile(
                 $user['role'],
                 $user['ref_id']
             );
-            if ($user && trim($user['password']) === $password) {
-                // session_start();
-                $_SESSION['user'] = [
-                    'id' => $user['id'],
-                    'role' => $user['role'],
-                    'ref_id' => $user['ref_id'],
-                    'name' => $user['username'],
-                    'full_name' => $profile['full_name'] ?? 'Unknown',
-                    'gender' => $profile['gender'] ?? 'Nam'
-                ];
-                if ($user['role'] == 'student') {
-                    // $profile = $this->studentModel->getAllProfile($user['ref_id']);
-                    // $_SESSION['profile'] = $profile;
-                    // include_once "./../views/user/profile.php";
-                    header('Location: index.php?controller=student&action=profile');
-                } else {
-                    header('Location: index.php?controller=admin&action=index');
-                }
-                exit();
+
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'role' => $user['role'],
+                'ref_id' => $user['ref_id'],
+                'name' => $user['username'],
+                'full_name' => $profile['full_name'] ?? 'Unknown',
+                'gender' => $profile['gender'] ?? 'Nam'
+            ];
+
+            if ($user['role'] == 'student') {
+                header('Location: index.php?controller=student&action=profile');
             } else {
-                $errorLogin = "Thông tin tài khoản mật khẩu không chính xác";
-                include_once "./../views/auth/login.php";
+                header('Location: index.php?controller=admin&action=index');
             }
+
+            exit();
         }
     }
 

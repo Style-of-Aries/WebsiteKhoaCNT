@@ -75,9 +75,8 @@ function sortTable(colIndex) {
 //       alertBox.classList.add("hide");
 //     }, 3000);
 //   }
-  // const fullNameInput = document.querySelector('input[name="full_name"]');
-  document.addEventListener("DOMContentLoaded", function () {
-
+// const fullNameInput = document.querySelector('input[name="full_name"]');
+document.addEventListener("DOMContentLoaded", function () {
   // ================= FORMAT HỌ TÊN =================
 
   const fullNameInput = document.querySelector('input[name="full_name"]');
@@ -94,9 +93,7 @@ function sortTable(colIndex) {
       .trim()
       .replace(/\s+/g, " ")
       .split(" ")
-      .map(word =>
-        word.charAt(0).toUpperCase() + word.slice(1)
-      )
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
 
@@ -117,14 +114,13 @@ function sortTable(colIndex) {
 
     alertBox.classList.remove("alert-success", "alert-error", "hide");
     alertBox.classList.add(
-      type === "success" ? "alert-success" : "alert-error"
+      type === "success" ? "alert-success" : "alert-error",
     );
 
     setTimeout(() => {
       alertBox.classList.add("hide");
     }, 3000);
   }
-
 
   //#endregion
 
@@ -408,39 +404,45 @@ function sortTable(colIndex) {
 });
 
 function toggleDepartment() {
-    var role = document.getElementById("roleSelect").value;
-    var departmentField = document.getElementById("department_id");
+  var role = document.getElementById("roleSelect").value;
+  var departmentField = document.getElementById("department_id");
 
-    if (role === "lecturer") {
-        departmentField.style.display = "block";
-    } else {
-        departmentField.style.display = "none";
-    }
+  if (role === "lecturer") {
+    departmentField.style.display = "block";
+  } else {
+    departmentField.style.display = "none";
+  }
 }
 
 // chạy khi load trang
 window.onload = toggleDepartment;
 
-// load giảng viên trang classes add 
-document.getElementById("departmentSelect").addEventListener("change", function() {
+// load giảng viên trang classes add
+document
+  .getElementById("departmentSelect")
+  .addEventListener("change", function () {
     let departmentId = this.value;
     let lecturerSelect = document.getElementById("lecturerSelect");
 
     lecturerSelect.innerHTML = '<option value="">Đang tải...</option>';
 
-    fetch("index.php?controller=classes&action=getLecturerByDepartment&id=" + departmentId)
-        .then(response => response.json())
-        .then(data => {
-            lecturerSelect.innerHTML = '<option value="">-- Chọn giảng viên --</option>';
+    fetch(
+      "index.php?controller=classes&action=getLecturerByDepartment&id=" +
+        departmentId,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        lecturerSelect.innerHTML =
+          '<option value="">-- Chọn giảng viên --</option>';
 
-            data.forEach(function(lecturer) {
-                let option = document.createElement("option");
-                option.value = lecturer.id;
-                option.textContent = lecturer.full_name;
-                lecturerSelect.appendChild(option);
-            });
-        })
-        .catch(error => {
-            lecturerSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
+        data.forEach(function (lecturer) {
+          let option = document.createElement("option");
+          option.value = lecturer.id;
+          option.textContent = lecturer.full_name;
+          lecturerSelect.appendChild(option);
         });
-});
+      })
+      .catch((error) => {
+        lecturerSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
+      });
+  });

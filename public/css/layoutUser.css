@@ -1,7 +1,7 @@
 :root {
   --sidebar-width: 250px;
   --header-height: 60px;
-  --sidebar-bg-color: #5a5efb;
+  --sidebar-bg-color: #1e20a1;
   --sidebar-text-color: #ecf0f1;
   --blue-dark: #1e5fa8;
   --blue-main: #2f6fb3;
@@ -416,7 +416,6 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
 
   .portal-header {
     height: 250px;
-
   }
 }
 /* ================= TABLE STYLES ================= */
