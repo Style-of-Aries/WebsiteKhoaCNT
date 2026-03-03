@@ -1,4 +1,5 @@
 //#region ================= SORT MODULE =================
+{/* <script> */}
 document.getElementById("session_date").addEventListener("change", function () {
 
     const dateValue = this.value;
@@ -18,7 +19,8 @@ document.getElementById("session_date").addEventListener("change", function () {
     // GÁN THẲNG VÀO SELECT
     document.getElementById("day_of_week").value = thu;
 });
-  let sortDirection = true;
+{/* </script> */}
+let sortDirection = true;
 function sortTable(colIndex) {
   let tbody = document.querySelector("#mainTable tbody");
   if (!tbody) return;
