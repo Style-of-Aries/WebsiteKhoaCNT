@@ -1,24 +1,6 @@
 //#region ================= SORT MODULE =================
-document.getElementById("session_date").addEventListener("change", function () {
 
-    const dateValue = this.value;
-    if (!dateValue) return;
-
-    const date = new Date(dateValue);
-    const jsDay = date.getDay(); 
-    // 0 = CN, 1 = Thứ 2, ..., 6 = Thứ 7
-
-    if (jsDay === 0) {
-        alert("Chủ nhật nghỉ");
-        return;
-    }
-
-    const thu = jsDay + 1;
-
-    // GÁN THẲNG VÀO SELECT
-    document.getElementById("day_of_week").value = thu;
-});
-  let sortDirection = true;
+let sortDirection = true;
 function sortTable(colIndex) {
   let tbody = document.querySelector("#mainTable tbody");
   if (!tbody) return;
@@ -93,10 +75,9 @@ function sortTable(colIndex) {
 //       alertBox.classList.add("hide");
 //     }, 3000);
 //   }
-  // const fullNameInput = document.querySelector('input[name="full_name"]');
-  document.addEventListener("DOMContentLoaded", function () {
-
-  // ================= FORMAT HỌ TÊN =================
+// const fullNameInput = document.querySelector('input[name="full_name"]');
+document.addEventListener("DOMContentLoaded", function () {
+  //#region ================= FORMAT HỌ TÊN =================
 
   const fullNameInput = document.querySelector('input[name="full_name"]');
 
@@ -112,13 +93,12 @@ function sortTable(colIndex) {
       .trim()
       .replace(/\s+/g, " ")
       .split(" ")
-      .map(word =>
-        word.charAt(0).toUpperCase() + word.slice(1)
-      )
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
+  //#endregion
 
-  // ================= ALERT MODULE =================
+  //#region ================= ALERT MODULE =================
   const alertBox = document.getElementById("autoHideAlert");
   const alertMessage = document.getElementById("alertMessage");
 
@@ -135,14 +115,13 @@ function sortTable(colIndex) {
 
     alertBox.classList.remove("alert-success", "alert-error", "hide");
     alertBox.classList.add(
-      type === "success" ? "alert-success" : "alert-error"
+      type === "success" ? "alert-success" : "alert-error",
     );
 
     setTimeout(() => {
       alertBox.classList.add("hide");
     }, 3000);
   }
-
 
   //#endregion
 
@@ -425,42 +404,64 @@ function sortTable(colIndex) {
   //#endregion
 });
 
-function toggleDepartment() {
-    var role = document.getElementById("roleSelect").value;
-    var departmentField = document.getElementById("department_id");
+document.getElementById("session_date").addEventListener("change", function () {
+  const dateValue = this.value;
+  if (!dateValue) return;
 
-    if (role === "lecturer") {
-        departmentField.style.display = "block";
-    } else {
-        departmentField.style.display = "none";
-    }
+  const date = new Date(dateValue);
+  const jsDay = date.getDay();
+  // 0 = CN, 1 = Thứ 2, ..., 6 = Thứ 7
+
+  if (jsDay === 0) {
+    alert("Chủ nhật nghỉ");
+    return;
+  }
+
+  const thu = jsDay + 1;
+
+  // GÁN THẲNG VÀO SELECT
+  document.getElementById("day_of_week").value = thu;
+});
+function toggleDepartment() {
+  var role = document.getElementById("roleSelect").value;
+  var departmentField = document.getElementById("department_id");
+
+  if (role === "lecturer") {
+    departmentField.style.display = "block";
+  } else {
+    departmentField.style.display = "none";
+  }
 }
 
 // chạy khi load trang
 window.onload = toggleDepartment;
 
-// load giảng viên trang classes add 
-document.getElementById("departmentSelect").addEventListener("change", function() {
+// load giảng viên trang classes add
+document
+  .getElementById("departmentSelect")
+  .addEventListener("change", function () {
     let departmentId = this.value;
     let lecturerSelect = document.getElementById("lecturerSelect");
 
     lecturerSelect.innerHTML = '<option value="">Đang tải...</option>';
 
-    fetch("index.php?controller=classes&action=getLecturerByDepartment&id=" + departmentId)
-        .then(response => response.json())
-        .then(data => {
-            lecturerSelect.innerHTML = '<option value="">-- Chọn giảng viên --</option>';
+    fetch(
+      "index.php?controller=classes&action=getLecturerByDepartment&id=" +
+        departmentId,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        lecturerSelect.innerHTML =
+          '<option value="">-- Chọn giảng viên --</option>';
 
-            data.forEach(function(lecturer) {
-                let option = document.createElement("option");
-                option.value = lecturer.id;
-                option.textContent = lecturer.full_name;
-                lecturerSelect.appendChild(option);
-            });
-        })
-        .catch(error => {
-            lecturerSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
+        data.forEach(function (lecturer) {
+          let option = document.createElement("option");
+          option.value = lecturer.id;
+          option.textContent = lecturer.full_name;
+          lecturerSelect.appendChild(option);
         });
-});
-
-
+      })
+      .catch((error) => {
+        lecturerSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
+      });
+  });
