@@ -1,17 +1,17 @@
 :root {
   --sidebar-width: 250px;
   --header-height: 60px;
-  --sidebar-bg-color: #5a5efb;
+  --sidebar-bg-color: #1e20a1;
   --sidebar-text-color: #ecf0f1;
   --blue-dark: #1e5fa8;
   --blue-main: #2f6fb3;
   --blue-light: #4f8fd8;
 
-  --green-main: #2fae60;
+  --green-main: #249316;
   --green-light: #5bc98a;
 
   --orange-main: #f39c3d;
-  --red-main: #e55353;
+  --red-main: #b11616;
 
   --bg-main: #f4f6f9;
   --bg-card: #ffffff;
@@ -159,7 +159,7 @@
 .card-title {
   font-size: 20px;
   margin-bottom: 16px;
-  color: #2f80ed;
+  color: var(--sidebar-bg-color);
 }
 
 /* ===== SELECT WEEK ===== */
@@ -735,7 +735,7 @@
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
   transition: 0.2s ease;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .main-table tbody tr:hover {
@@ -811,4 +811,100 @@
 /* Căn giữa các dòng TX / ĐK */
 .grade-table .score-process div {
   text-align: center;
+}
+
+.btn-cancel {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #ae0a0a;
+  color: #ffffff;
+  font-weight: Bold;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background-color: #882e2e;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+.btn-cancel:active {
+  background-color: #7e2a2a;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.btn-register {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #099320;
+  color: #ffffff;
+  font-weight: Bold;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  cursor: pointer;
+}
+
+.btn-register:hover {
+  background-color: #398345;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+.btn-register:active {
+  background-color: #2b6f22;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.btn-closed {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #5c665e;
+  color: #ffffff;
+  font-weight: Bold;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.btn-closed:hover {
+  background-color: #617464;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+.btn-closed:active {
+  background-color: #777a77;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.register-table th:nth-child(5),
+.register-table th:nth-child(6),
+.register-table th:nth-child(7),
+.register-table th:nth-child(8),
+.register-table th:nth-child(9),
+.register-table th:nth-child(10) {
+  text-align: center;
+}
+
+.register-table td:nth-child(5),
+.register-table td:nth-child(6),
+.register-table td:nth-child(7),
+.register-table td:nth-child(8),
+.register-table td:nth-child(9),
+.register-table td:nth-child(10) {
+  text-align: center;
+  vertical-align: middle;
 }

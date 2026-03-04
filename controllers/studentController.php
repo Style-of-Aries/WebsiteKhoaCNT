@@ -194,11 +194,17 @@ class studentController
     public function getCourseClass()
     {
         $studentId = $_SESSION['user']['ref_id'];
+        
         $classes = $this->courseClassModel->getCourseClassSV($studentId);
         require_once '../views/user/student/dangKyLop.php';
     }
     public function registerCourseClass()
     {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'student') {
+            $_SESSION['error'] = "Bạn không có quyền thực hiện.";
+            header("Location: index.php");
+            exit;
+        }
         $studentId = $_SESSION['user']['ref_id'];
         $classId = $_GET['class_id'];
         // var_dump($studentId);
@@ -212,10 +218,20 @@ class studentController
             exit;
         }
 
-        // 2. Thực hiện đăng ký
-        $this->courseClassModel->register($studentId, $classId);
 
-        $_SESSION['success'] = 'Đăng ký thành công';
+        try {
+            // 2. Thực hiện đăng ký
+            $this->courseClassModel->registerNew($studentId, $classId);
+            $_SESSION['success'] = 'Đăng ký thành công';
+        } catch (Exception $e) {
+            error_log(
+                date('Y-m-d H:i:s') . " | " . $e->getMessage() . PHP_EOL,
+                3,
+                __DIR__ . "/../logs/error.log"
+            );
+            $_SESSION['error'] = $e->getMessage();
+        }
+
         $this->getCourseClass();
         exit();
     }
@@ -236,6 +252,11 @@ class studentController
 
             $_SESSION['success'] = "Hủy đăng ký thành công.";
         } catch (Exception $e) {
+            error_log(
+                date('Y-m-d H:i:s') . " | " . $e->getMessage() . PHP_EOL,
+                3,
+                __DIR__ . "/../logs/error.log"
+            );
             $_SESSION['error'] = $e->getMessage();
         }
 

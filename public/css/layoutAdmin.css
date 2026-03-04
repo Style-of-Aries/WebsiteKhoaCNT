@@ -1,7 +1,7 @@
 :root {
   --sidebar-width: 250px;
   --header-height: 60px;
-  --sidebar-bg-color: #5a5efb;
+  --sidebar-bg-color: #1e20a1;
   --sidebar-text-color: #ecf0f1;
   --blue-dark: #1e5fa8;
   --blue-main: #2f6fb3;
@@ -912,7 +912,7 @@ select {
 .add-button:hover {
   width: 300px;
   transition-duration: 0.3s;
-  background-color: rgb(61, 227, 77);
+  background-color: rgb(22, 189, 39);
 }
 
 .add-button:hover .sign {
@@ -1816,4 +1816,8 @@ select {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.component-type {
+  pointer-events: none;
 }

@@ -1,3 +1,52 @@
+function addSchedule() {
+  const wrapper = document.getElementById("schedule-wrapper");
+
+  // Nếu trang không có schedule-wrapper thì thoát luôn
+  if (!wrapper) return;
+
+  const firstItem = wrapper.querySelector(".schedule-item");
+
+  if (!firstItem) return;
+
+  const clone = firstItem.cloneNode(true);
+
+  // Reset value của select
+  clone.querySelectorAll("select").forEach(function (select) {
+    select.selectedIndex = 0;
+  });
+
+  // Xóa input value nếu có
+  clone.querySelectorAll("input").forEach(function (input) {
+    input.value = "";
+  });
+
+  // Chỉ thêm nút X nếu chưa có
+  if (!clone.querySelector(".remove-btn")) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.innerText = "X";
+    btn.className = "remove-btn";
+    btn.addEventListener("click", function () {
+      removeSchedule(this);
+    });
+    clone.appendChild(btn);
+  }
+
+  wrapper.appendChild(clone);
+}
+
+function removeSchedule(btn) {
+  const wrapper = document.getElementById("schedule-wrapper");
+  if (!wrapper) return;
+
+  // Không cho xóa nếu chỉ còn 1 schedule-item
+  if (wrapper.querySelectorAll(".schedule-item").length <= 1) {
+    return;
+  }
+
+  btn.closest(".schedule-item").remove();
+}
+
 //#region ================= SORT MODULE =================
 
 let sortDirection = true;
@@ -295,112 +344,171 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   //#endregion
 
-  //#region ================= FORM ADD SUBJECT =================
+  //#region ================= SCORE STRUCTURE FORM =================
+  (function () {
+    "use strict";
 
-  const table = document.getElementById("score-structure");
-  const tbody = table.querySelector("tbody");
-  const addBtn = document.getElementById("btnAddComponent");
-  const totalWeightSpan = document.getElementById("totalWeight");
-  let index = tbody.querySelectorAll("tr").length;
-  // =============================
-  // TÍNH TỔNG TRỌNG SỐ
-  // =============================
-  function updateTotalWeight() {
-    let total = 0;
+    const table = document.getElementById("score-structure");
+    if (!table) return;
 
-    document.querySelectorAll(".weight-input").forEach((input) => {
-      total += parseInt(input.value) || 0;
-    });
+    const tbody = table.querySelector("tbody");
+    const totalWeightSpan = document.getElementById("totalWeight");
+    const creditInput = document.getElementById("creditInput");
+    const subjectTypeSelect = document.getElementById("subjectType");
+    const useProjectCheckbox = document.getElementById(
+      "useProjectInsteadOfExam",
+    );
 
-    totalWeightSpan.textContent = total;
+    if (!tbody || !totalWeightSpan) return;
 
-    if (total > 100) {
-      totalWeightSpan.style.color = "red";
-    } else {
-      totalWeightSpan.style.color = "green";
+    let index = 0;
+
+    // =============================
+    function updateTotalWeight() {
+      let total = 0;
+
+      tbody.querySelectorAll(".component-weight").forEach((input) => {
+        total += parseFloat(input.value) || 0;
+      });
+
+      totalWeightSpan.textContent = total.toFixed(2);
+      totalWeightSpan.style.color = total !== 100 ? "red" : "green";
     }
-  }
 
-  // =============================
-  // TẠO 1 DÒNG
-  // =============================
-  function createRow() {
-    const tr = document.createElement("tr");
+    // =============================
+    function autoCalculateTX_DK() {
+      const rows = tbody.querySelectorAll("tr");
 
-    tr.innerHTML = `
-            <td>
-                <input type="text" 
-                       name="components[${index}][name]" 
-                       required>
-            </td>
+      let txInputs = [];
+      let dkInputs = [];
 
-            <td>
-                <select name="components[${index}][type]" required>
-                    <option value="TX">Thường xuyên</option>
-                    <option value="DK">Định kỳ</option>
-                    <option value="CK">Điểm thi</option>
-                    <option value="PROJECT">Đồ án</option>
-                </select>
-            </td>
+      rows.forEach((row) => {
+        const type = row.querySelector(".component-type")?.value;
+        const weightInput = row.querySelector(".component-weight");
 
-            <td>
-                <input type="number"
-                       name="components[${index}][weight]"
-                       min="0"
-                       max="100"
-                       class="weight-input"
-                       required>
-            </td>
+        if (!type || !weightInput) return;
 
-            <td>
-                <button type="button" class="btn-remove btn-delete">
-                    <span class="X"></span>
-                    <span class="Y"></span>
-                    <div class="close">Xóa</div>
-                </button>
-            </td>
-        `;
+        if (type === "TX") txInputs.push(weightInput);
+        if (type === "DK") dkInputs.push(weightInput);
+      });
 
-    tbody.appendChild(tr);
-    index++;
+      const n = txInputs.length;
+      const m = dkInputs.length;
 
-    updateTotalWeight();
-  }
+      if (n === 0 && m === 0) return;
 
-  // =============================
-  // THÊM DÒNG
-  // =============================
-  addBtn.addEventListener("click", function (e) {
-    e.preventDefault(); // tránh submit form
-    createRow();
-  });
+      const x = 40 / (n + 2 * m);
 
-  // =============================
-  // XÓA DÒNG (event delegation)
-  // =============================
-  tbody.addEventListener("click", function (e) {
-    if (e.target.closest(".btn-remove")) {
-      e.preventDefault();
-      const row = e.target.closest("tr");
-      row.remove();
+      txInputs.forEach((input) => {
+        input.value = x.toFixed(2);
+        input.readOnly = true;
+      });
+
+      dkInputs.forEach((input) => {
+        input.value = (2 * x).toFixed(2);
+        input.readOnly = true;
+      });
+    }
+
+    // =============================
+    function createRow(type, weight = null, lock = false) {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+      <td>
+        <select name="components[${index}][type]" 
+                class="component-type" required>
+          <option value="TX" ${type === "TX" ? "selected" : ""}>Thường xuyên</option>
+          <option value="DK" ${type === "DK" ? "selected" : ""}>Định kỳ</option>
+          <option value="CK" ${type === "CK" ? "selected" : ""}>Điểm thi</option>
+          <option value="PROJECT" ${type === "PROJECT" ? "selected" : ""}>Đồ án</option>
+        </select>
+      </td>
+
+      <td>
+        <input type="number"
+               name="components[${index}][weight]"
+               min="0"
+               max="100"
+               step="0.01"
+               class="component-weight"
+               required>
+      </td>
+
+      <td></td>
+    `;
+
+      const weightInput = tr.querySelector(".component-weight");
+
+      if (weight !== null) {
+        weightInput.value = weight;
+      }
+
+      if (lock) {
+        weightInput.readOnly = true;
+        // tr.querySelector(".component-type").disabled = true;
+      }
+
+      tbody.appendChild(tr);
+      index++;
+    }
+
+    // =============================
+    function generateNormal(credit) {
+      tbody.innerHTML = "";
+      index = 0;
+
+      let txCount = credit;
+      let dkCount = Math.floor(credit / 2);
+
+      for (let i = 0; i < txCount; i++) createRow("TX");
+      for (let i = 0; i < dkCount; i++) createRow("DK");
+
+      // 🔥 TÙY CHỌN CK hoặc PROJECT 60%
+      if (useProjectCheckbox?.checked) {
+        createRow("PROJECT", 60, true);
+      } else {
+        createRow("CK", 60, true);
+      }
+
+      autoCalculateTX_DK();
       updateTotalWeight();
     }
-  });
 
-  // =============================
-  // LẮNG NGHE THAY ĐỔI TRỌNG SỐ
-  // =============================
-  tbody.addEventListener("input", function (e) {
-    if (e.target.classList.contains("weight-input")) {
+    // =============================
+    function generateProjectSubject() {
+      tbody.innerHTML = "";
+      index = 0;
+
+      createRow("PROJECT", 100, true);
       updateTotalWeight();
     }
-  });
 
-  // TẠO DÒNG ĐẦU MẶC ĐỊNH
-  if (tbody.querySelectorAll("tr").length === 0) {
-    createRow();
-  }
-  updateTotalWeight();
+    // =============================
+    function regenerate() {
+      const credit = parseInt(creditInput?.value);
+      const subjectType = subjectTypeSelect?.value;
+
+      if (subjectType === "PROJECT") {
+        generateProjectSubject();
+      } else if (credit && credit > 0) {
+        generateNormal(credit);
+      }
+    }
+
+    // =============================
+    if (creditInput) {
+      creditInput.addEventListener("input", regenerate);
+    }
+
+    if (subjectTypeSelect) {
+      subjectTypeSelect.addEventListener("change", regenerate);
+    }
+
+    if (useProjectCheckbox) {
+      useProjectCheckbox.addEventListener("change", regenerate);
+    }
+  })();
   //#endregion
 });
 

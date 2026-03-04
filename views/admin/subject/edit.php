@@ -91,10 +91,10 @@ function getValue($key, $default = '', $data = null)
         <table class="main-table" id="score-structure">
             <thead>
                 <tr>
-                    <th>Tên thành phần</th>
+                    <!-- <th>Tên thành phần</th> -->
                     <th>Loại</th>
                     <th>Trọng số (%)</th>
-                    <th>Xóa</th>
+                    <!-- <th>Xóa</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -105,10 +105,10 @@ function getValue($key, $default = '', $data = null)
 
                 <?php foreach ($dataComponents as $index => $comp): ?>
                     <tr>
-                        <td>
+                        <!-- <td>
                             <input type="text" name="components[<?= $index ?>][name]"
                                 value="<?= htmlspecialchars($comp['name']) ?>" readonly>
-                        </td>
+                        </td> -->
 
                         <td>
                             <select name="components[<?= $index ?>][type]" disabled>
@@ -124,20 +124,20 @@ function getValue($key, $default = '', $data = null)
                                 value="<?= htmlspecialchars($comp['weight']) ?>" readonly>
                         </td>
 
-                        <td>
+                        <!-- <td>
                             <button type="button" class="btn-remove btn-delete" disabled>
                                 <span class="X"></span>
                                 <span class="Y"></span>
                                 <div class="close">Xóa</div>
                             </button>
-                        </td>
+                        </td> -->
                     </tr>
                 <?php endforeach; ?>
 
             </tbody>
         </table>
 
-        <button type="button" class="add-button" id="btnAddComponent" disabled>
+        <!-- <button type="button" class="add-button" id="btnAddComponent" disabled>
             <div class="sign">+</div>
             <div class="text">Thêm thành phần</div>
         </button>
@@ -145,7 +145,7 @@ function getValue($key, $default = '', $data = null)
         <div class="info-box">
             Tổng trọng số:
             <strong><span id="totalWeight">0</span>%</strong>
-        </div>
+        </div> -->
 
         <button name="btn_edit" type="submit" class="btn-submit">
             Cập nhật môn học

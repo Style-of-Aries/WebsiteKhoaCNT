@@ -20,6 +20,17 @@ class attendanceController
     public function sessions()
     {
         $courseClassId = $_GET['course_class_id'];
+        $statusCourseClass = "";
+        $timeStudying = $this->courseClassesModel->getTimeStudying($courseClassId);
+        $now = date('Y-m-d',NOW);
+        // $now = date('2025-10-02');
+        // print_r($timeStudying);
+        // print_r($now);
+        if ($now >= $timeStudying['first_session'] && $now <= $timeStudying['last_session']) {
+            $statusCourseClass = "studying";
+        }
+        // print_r($statusCourseClass);
+        // die();
 
         // Lấy danh sách buổi học
         $sessions = $this->classSessionsModel->getByCourseClassId($courseClassId);

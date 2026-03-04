@@ -3,7 +3,9 @@ require_once __DIR__ . "/../config/config.php";
 require_once __DIR__ . "/../middleware/PermissionMiddleware.php";
 
 session_start(); 
-
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+define('NOW', time());
+// define('NOW', strtotime('2025-09-03'));
 $controllerName = $_GET['controller'] ?? 'auth';
 $action = $_GET['action'] ?? 'login';
 

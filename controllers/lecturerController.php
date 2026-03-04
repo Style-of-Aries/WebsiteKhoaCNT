@@ -56,6 +56,7 @@ class lecturerController
         } else {
             $classes = $this->courseClassModel->getCourseClassGV($lecturerId);
         }
+        
         require_once '../views/admin/lecturer/listCourseClass.php';
     }
     public function getStudentsWithExamConditions()
@@ -110,12 +111,24 @@ class lecturerController
         // 1️⃣ Lấy thông tin lớp học phần
         $courseClass = $this->courseClassModel->getById($classId);
 
+
         if (!$courseClass) {
             $_SESSION['error'] = "Lớp học phần không tồn tại";
             header('Location: index.php?controller=lecturer&action=getCourseClass&type=score');
             exit;
         }
 
+        $statusCourseClass = "";
+        $timeStudying = $this->courseClassModel->getTimeStudying($classId);
+        $now = date('Y-m-d',NOW);
+        // $now = date('2025-10-02');
+        // print_r($timeStudying);
+        // print_r($now);
+        if ($now >= $timeStudying['first_session'] && $now <= $timeStudying['last_session']) {
+            $statusCourseClass = "studying";
+        }
+        // print_r($statusCourseClass);
+        // die();
         $subjectId = $courseClass['subject_id'];
 
         // 2️⃣ Lấy sinh viên
@@ -340,5 +353,5 @@ class lecturerController
         exit;
     }
 
-    
+
 }
