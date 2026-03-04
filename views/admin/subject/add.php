@@ -27,22 +27,22 @@ function getOld($key, $default = '', $data = null)
     <form action="index.php?controller=subject&action=addNew" method="POST">
         <div class="row">
             <div class="col">
-            <label>Ngành</label>
-            <select name="department_id" required>
-                <option value="">-- Chọn ngành --</option>
+                <label>Ngành</label>
+                <select name="department_id" required>
+                    <option value="">-- Chọn ngành --</option>
 
-                <?php foreach ($department as $dept): ?>
-                    <option value="<?= $dept['id'] ?>" <?= ($old['department_id'] ?? '') == $dept['id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($dept['faculty_name']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+                    <?php foreach ($department as $dept): ?>
+                        <option value="<?= $dept['id'] ?>" <?= ($old['department_id'] ?? '') == $dept['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($dept['faculty_name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <div class="col">
                 <label>Tên Môn học</label>
                 <input type="text" name="name" value="<?= htmlspecialchars($old['name'] ?? '') ?>" required>
             </div>
-            
+
         </div>
 
         <div class="row">
@@ -52,7 +52,7 @@ function getOld($key, $default = '', $data = null)
             </div> -->
             <div class="col">
                 <label>Loại môn</label>
-                <select name="subject_type" required>
+                <select name="subject_type" id="subjectType" required>
                     <option value="NORMAL" <?= ($old['subject_type'] ?? '') == 'NORMAL' ? 'selected' : '' ?>>
                         Môn thường
                     </option>
@@ -64,7 +64,7 @@ function getOld($key, $default = '', $data = null)
             </div>
             <div class="col">
                 <label>Số tín chỉ</label>
-                <input type="number" name="credits" min="1" value="<?= htmlspecialchars($old['credits'] ?? '') ?>"
+                <input type="number" id="creditInput" name="credits" min="1" value="<?= htmlspecialchars($old['credits'] ?? '') ?>"
                     required>
             </div>
             <div class="col">
@@ -84,30 +84,33 @@ function getOld($key, $default = '', $data = null)
             </div>
         </div>
 
-        
-        
-        <h3>Cấu trúc điểm</h3>
 
+
+        <h3>Cấu trúc điểm</h3>
+        <label>
+            <input type="checkbox" id="useProjectInsteadOfExam">
+            Dùng bài tập lớn thay cho thi cuối kỳ
+        </label>
         <table class="main-table" id="score-structure">
             <thead>
                 <tr>
-                    <th>Tên thành phần</th>
+                    <!-- <th>Tên thành phần</th> -->
                     <th>Loại</th>
                     <th>Trọng số (%)</th>
-                    <th>Xóa</th>
+                    <!-- <th>Xóa</th> -->
                 </tr>
             </thead>
             <tbody>
                 <?php if (!empty($old['components'])): ?>
                     <?php foreach ($old['components'] as $index => $comp): ?>
                         <tr>
-                            <td>
+                            <!-- <td>
                                 <input type="text" name="components[<?= $index ?>][name]"
                                     value="<?= htmlspecialchars($comp['name']) ?>">
-                            </td>
+                            </td> -->
 
                             <td>
-                                <select name="components[<?= $index ?>][type]">
+                                <select class="component-type" name="components[<?= $index ?>][type]">
                                     <option value="TX" <?= $comp['type'] == 'TX' ? 'selected' : '' ?>>Thường xuyên</option>
                                     <option value="DK" <?= $comp['type'] == 'DK' ? 'selected' : '' ?>>Định kì</option>
                                     <option value="CK" <?= $comp['type'] == 'CK' ? 'selected' : '' ?>>Điểm thi</option>
@@ -116,17 +119,17 @@ function getOld($key, $default = '', $data = null)
                             </td>
 
                             <td>
-                                <input type="number" name="components[<?= $index ?>][weight]"
+                                <input type="number" class="component-weight" name="components[<?= $index ?>][weight]"
                                     value="<?= htmlspecialchars($comp['weight']) ?>">
                             </td>
 
-                            <td>
+                            <!-- <td>
                                 <button type="button" class="btn-remove btn-delete">
                                     <span class="X"></span>
                                     <span class="Y"></span>
                                     <div class="close">Xóa</div>
                                 </button>
-                            </td>
+                            </td> -->
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -136,10 +139,10 @@ function getOld($key, $default = '', $data = null)
         <!-- <button type="button" class="btn btn-add" id="btnAddComponent">
                 + Thêm thành phần
             </button> -->
-        <button type="button" class="add-button" id="btnAddComponent">
+        <!-- <button type="button" class="add-button" id="btnAddComponent">
             <div class="sign">+</div>
             <div class="text">Thêm thành phần</div>
-        </button>
+        </button> -->
 
 
         <div class="info-box">

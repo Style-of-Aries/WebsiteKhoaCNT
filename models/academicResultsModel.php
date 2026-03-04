@@ -75,7 +75,7 @@ class academicResultsModel
         letter_grade = VALUES(letter_grade),
         gpa_4 = VALUES(gpa_4),
         result_status = VALUES(result_status),
-        approval_status = 'DRAFT'
+        approval_status = 'PUBLISHED'
     ";
 
         return $this->__query($insert);

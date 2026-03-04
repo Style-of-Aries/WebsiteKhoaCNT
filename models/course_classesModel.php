@@ -23,14 +23,34 @@ class course_classesModel
     s.name AS subject_name,
     l.full_name AS lecturer_name,
     se.name AS semester_name,
+    se.academic_year,
     cc.max_students,
-    COUNT(scc.student_id) AS total_students
+    cc.registration_start,
+    cc.registration_end,
+    cc.status,
+
+    COUNT(DISTINCT scc.student_id) AS total_students,
+
+    MIN(cs.session_date) AS first_session,
+    MAX(cs.session_date) AS last_session
+
 FROM course_classes cc
-JOIN subjects s ON cc.subject_id = s.id
-JOIN lecturer l ON cc.lecturer_id = l.id
-JOIN semesters se ON cc.semester_id = se.id
+
+JOIN subjects s 
+    ON cc.subject_id = s.id
+
+JOIN lecturer l 
+    ON cc.lecturer_id = l.id
+
+JOIN semesters se 
+    ON cc.semester_id = se.id
+
 LEFT JOIN student_course_classes scc 
-       ON scc.course_class_id = cc.id
+    ON scc.course_class_id = cc.id
+
+LEFT JOIN class_sessions cs
+    ON cs.course_class_id = cc.id
+
 GROUP BY 
     cc.id,
     cc.class_code,
@@ -38,6 +58,7 @@ GROUP BY
     l.full_name,
     se.name,
     cc.max_students
+
 ORDER BY 
     se.name ASC,
     cc.class_code ASC;
@@ -108,21 +129,59 @@ ORDER BY
         return $year . $deptCode . $newNumber;
     }
 
-    public function editHocPhan($id, $subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
-    {
+    public function capNhatHocPhan(
+        $id,
+        $subject_id,
+        $lecturer_id,
+        $max_students,
+        $registration_start,
+        $registration_end,
+        $status
+    ) {
+        // Ép kiểu an toàn
+        $id = (int) $id;
+        $subject_id = (int) $subject_id;
+        $lecturer_id = (int) $lecturer_id;
+        $max_students = (int) $max_students;
 
-        $sql = "
-            UPDATE course_classes
-        SET 
-            subject_id = '$subject_id',
-            lecturer_id = '$lecturer_id',
-            semester_id = '$semester_id',
-            class_code = '$class_code',
-            max_students = '$max_students'
-        WHERE id = '$id'
-        ";
-        return $this->__query($sql);
+        // Escape chuỗi
+        $registration_start = mysqli_real_escape_string($this->connect, $registration_start);
+        $registration_end = mysqli_real_escape_string($this->connect, $registration_end);
+        $status = mysqli_real_escape_string($this->connect, $status);
+
+        $sql = "UPDATE course_classes SET
+                subject_id = $subject_id,
+                lecturer_id = $lecturer_id,
+                max_students = $max_students,
+                registration_start = '$registration_start',
+                registration_end = '$registration_end',
+                status = '$status'
+            WHERE id = $id";
+
+        $result = mysqli_query($this->connect, $sql);
+
+        if (!$result) {
+            throw new Exception("Lỗi update: " . mysqli_error($this->connect));
+        }
+
+        return true;
     }
+
+    // public function editHocPhan($id, $subject_id, $lecturer_id, $semester_id, $class_code, $max_students)
+    // {
+
+    //     $sql = "
+    //         UPDATE course_classes
+    //     SET 
+    //         subject_id = '$subject_id',
+    //         lecturer_id = '$lecturer_id',
+    //         semester_id = '$semester_id',
+    //         class_code = '$class_code',
+    //         max_students = '$max_students'
+    //     WHERE id = '$id'
+    //     ";
+    //     return $this->__query($sql);
+    // }
     public function checkHocPhan($subject_id, $lecturer_id, $semester_id)
     {
 
@@ -156,6 +215,18 @@ ORDER BY
         return mysqli_fetch_assoc($query);
     }
 
+    public function getTimeStudying($courseClassId)
+    {
+        $courseClassId = (int) $courseClassId;
+        $sql = "SELECT 
+    MIN(session_date) AS first_session,
+    MAX(session_date) AS last_session
+FROM class_sessions
+WHERE course_class_id = $courseClassId;";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
+    }
+
     public function getCourseClassSV($studentId)
     {
 
@@ -165,31 +236,51 @@ ORDER BY
     cc.class_code,
     s.name AS subject_name,
     cc.max_students,
-    l.full_name as lecturer_name,
-    COUNT(scc.student_id) AS current_students,
-    CASE t.day_of_week
-        WHEN 2 THEN 'Thứ 2'
-        WHEN 3 THEN 'Thứ 3'
-        WHEN 4 THEN 'Thứ 4'
-        WHEN 5 THEN 'Thứ 5'
-        WHEN 6 THEN 'Thứ 6'
-        WHEN 7 THEN 'Thứ 7'
-        ELSE 'CN'
-    END AS day_of_week,
-    CONCAT('Tuần ', t.start_week, ' - ', t.end_week, ' (', t.session, ')') AS time_range,
+    l.full_name AS lecturer_name,
+
+    -- ✅ Thêm thời gian đăng ký
+    cc.registration_start,
+    cc.registration_end,
+
+    COUNT(DISTINCT scc.student_id) AS current_students,
+
+    GROUP_CONCAT(
+        DISTINCT CONCAT(
+            CASE t.day_of_week
+                WHEN 2 THEN 'Thứ 2'
+                WHEN 3 THEN 'Thứ 3'
+                WHEN 4 THEN 'Thứ 4'
+                WHEN 5 THEN 'Thứ 5'
+                WHEN 6 THEN 'Thứ 6'
+                WHEN 7 THEN 'Thứ 7'
+                ELSE 'CN'
+            END,
+            ' (Tuần ', t.start_week, '-', t.end_week,
+            ' ', t.session, ')'
+        )
+        SEPARATOR '<br>'
+    ) AS schedule,
+
     EXISTS (
-        SELECT 1 FROM student_course_classes sc2 
+        SELECT 1 
+        FROM student_course_classes sc2 
         WHERE sc2.course_class_id = cc.id 
         AND sc2.student_id = '$studentId'
     ) AS is_registered
+
 FROM course_classes cc
 JOIN subjects s ON cc.subject_id = s.id
 JOIN lecturer l ON cc.lecturer_id = l.id
 JOIN semesters sem ON cc.semester_id = sem.id AND sem.is_active = 1
 LEFT JOIN timetables t ON cc.id = t.course_class_id
 LEFT JOIN student_course_classes scc ON cc.id = scc.course_class_id
-GROUP BY cc.id, t.day_of_week, t.session, t.start_week, t.end_week
-ORDER BY S.name
+WHERE cc.status <> 'finished'
+GROUP BY 
+    cc.id,
+    cc.registration_start,
+    cc.registration_end
+
+ORDER BY s.name;
     ";
 
         return $this->__query($sql);
@@ -261,11 +352,12 @@ ORDER BY S.name
 
             // 1️⃣ Lấy thông tin lớp (khóa record tránh race condition)
             $sql = "
-                SELECT subject_id, semester_id, max_students, status
-                FROM course_classes
-                WHERE id = $course_class_id
-                FOR UPDATE
-            ";
+            SELECT subject_id, semester_id, max_students, status,
+                   registration_start, registration_end
+            FROM course_classes
+            WHERE id = $course_class_id
+            FOR UPDATE
+        ";
 
             $result = mysqli_query($this->connect, $sql);
 
@@ -279,12 +371,23 @@ ORDER BY S.name
                 throw new Exception("Lớp chưa mở đăng ký.");
             }
 
-            // 2️⃣ Kiểm tra sĩ số
+            // ✅ 2️⃣ Kiểm tra thời gian đăng ký
+            $now = date('Y-m-d H:i:s',NOW);
+
+            if ($now < $course['registration_start']) {
+                throw new Exception("Chưa đến thời gian đăng ký.");
+            }
+
+            if ($now > $course['registration_end']) {
+                throw new Exception("Đã hết thời gian đăng ký.");
+            }
+
+            // 3️⃣ Kiểm tra sĩ số
             $sql = "
-                SELECT COUNT(*) AS total
-                FROM student_course_classes
-                WHERE course_class_id = $course_class_id
-            ";
+            SELECT COUNT(*) AS total
+            FROM student_course_classes
+            WHERE course_class_id = $course_class_id
+        ";
 
             $result = mysqli_query($this->connect, $sql);
             $row = mysqli_fetch_assoc($result);
@@ -293,33 +396,63 @@ ORDER BY S.name
                 throw new Exception("Lớp đã đủ số lượng sinh viên.");
             }
 
-            $subject_id = (int) $course['subject_id'];
+            // 4️⃣ Kiểm tra trùng lịch học (cùng học kỳ)
+
             $semester_id = (int) $course['semester_id'];
 
-            // 3️⃣ Insert (DB sẽ tự chặn trùng môn cùng kỳ bằng UNIQUE)
             $sql = "
-                INSERT INTO student_course_classes
-                (student_id, course_class_id, subject_id, semester_id)
-                VALUES ($student_id, $course_class_id, $subject_id, $semester_id)
-            ";
+SELECT 1
+FROM timetables t_new
 
-            if (!mysqli_query($this->connect, $sql)) {
+JOIN timetables t_old 
+    ON t_old.day_of_week = t_new.day_of_week
+    AND t_old.session = t_new.session
+    AND NOT (
+        t_old.end_week < t_new.start_week
+        OR
+        t_old.start_week > t_new.end_week
+    )
 
-                // Lỗi duplicate key (MySQL error 1062)
-                if (mysqli_errno($this->connect) == 1062) {
-                    throw new Exception("Bạn đã đăng ký môn này trong học kỳ rồi.");
-                }
+JOIN student_course_classes scc
+    ON scc.course_class_id = t_old.course_class_id
+    AND scc.student_id = $student_id
+    AND scc.semester_id = $semester_id
 
-                throw new Exception("Lỗi hệ thống: " . mysqli_error($this->connect));
+WHERE t_new.course_class_id = $course_class_id
+
+LIMIT 1
+";
+
+            $result = mysqli_query($this->connect, $sql);
+
+            if (mysqli_num_rows($result) > 0) {
+                throw new Exception("Lịch học bị trùng với một lớp đã đăng ký trong học kỳ này.");
             }
+
+            $subject_id = (int) $course['subject_id'];
+
+
+            // 4️⃣ Insert (DB sẽ tự chặn trùng môn cùng kỳ bằng UNIQUE)
+            $sql = "
+            INSERT INTO student_course_classes
+            (student_id, course_class_id, subject_id, semester_id)
+            VALUES ($student_id, $course_class_id, $subject_id, $semester_id)
+        ";
+
+            $this->__query($sql);
 
             mysqli_commit($this->connect);
             return true;
 
-        } catch (Exception $e) {
+        } catch (mysqli_sql_exception $e) {
 
             mysqli_rollback($this->connect);
-            throw $e;
+
+            if ($e->getCode() == 1062) {
+                throw new Exception("Bạn đã đăng ký môn này trong học kỳ rồi.");
+            }
+
+            throw new Exception("Lỗi hệ thống: " . $e->getMessage());
         }
     }
 

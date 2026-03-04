@@ -8,6 +8,14 @@ if ($type == 'attendance') {
 } else {
     $url = "index.php?controller=lecturer&action=updateResultByCourseClass";
 }
+
+function getStatus($row) {
+    $now = date('Y-m-d',NOW);
+    // $now = date('2025-09-02');
+    // print_r($now);die();
+    if(!$row['first_session']) return;
+    if ($now >= $row['first_session'] && $now <= $row['last_session']) return 'studying';
+}
 ?>
 
 <div class="admin-table-wrapper">
@@ -36,25 +44,29 @@ if ($type == 'attendance') {
                     <td><?= $stt++; ?></td>
                     <td><?= $row['class_code'] ?></td>
                     <td><?= $row['subject_name'] ?></td>
-                    <td><?= $row['semester_name'] ?></td>
+                    <td><?= $row['semester_name'] ?> (<?= $row['academic_year'] ?>)</td>
                     <td><?= $row['total_students'] ?>/<?= $row['max_students'] ?></td>
                     <?php if ($role !== 'lecturer'): ?>
                         <td>
                             <?= $row['lecturer_name'] ?>
                         </td>
                     <?php endif; ?>
-                    <td onclick="event.stopPropagation();">
+                    <td>
                         <?php
-                        // Giả lập trạng thái khóa (test thôi)
-                        $isLocked = ($stt % 2 == 0); // dòng chẵn là locked
-                        ?>
-                        <label class="switch-lock">
-                            <input type="checkbox" name="isLock" <?= $isLocked ? 'checked' : '' ?>     <?= ($role == 'exam_office' && $isLocked) ? 'disabled' : '' ?>>
-                            <span>
-                                <em></em>
-                                <strong></strong>
-                            </span>
-                        </label>
+                        $statusCourseClass = getStatus($row);
+                        if ($statusCourseClass === "studying"): ?>
+                            <div class="statusStudying">
+                                Đang diễn ra
+                            </div>
+                        <?php elseif ($row['status'] === "open"): ?>
+                            <div class="statusRegistering">
+                                Đang mở đăng ký
+                            </div>
+                        <?php elseif ($row['status'] === "finished"): ?>
+                            <div class="statusFinished">
+                                Hoàn thành
+                            </div>
+                        <?php endif; ?>
                     </td>
                     <!-- <td class="action-btn">
                             <a href="index.php?controller=lecturer&action=getStudentsWithExamConditions&course_class_id=<?= $row['id'] ?>"

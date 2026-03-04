@@ -194,6 +194,7 @@ class studentController
     public function getCourseClass()
     {
         $studentId = $_SESSION['user']['ref_id'];
+        
         $classes = $this->courseClassModel->getCourseClassSV($studentId);
         require_once '../views/user/student/dangKyLop.php';
     }
@@ -251,6 +252,11 @@ class studentController
 
             $_SESSION['success'] = "Hủy đăng ký thành công.";
         } catch (Exception $e) {
+            error_log(
+                date('Y-m-d H:i:s') . " | " . $e->getMessage() . PHP_EOL,
+                3,
+                __DIR__ . "/../logs/error.log"
+            );
             $_SESSION['error'] = $e->getMessage();
         }
 

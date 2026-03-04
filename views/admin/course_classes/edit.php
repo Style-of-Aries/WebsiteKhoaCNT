@@ -23,8 +23,8 @@ $data = $old ?: $course_classes;
 
     <h2>Sửa lớp học phần</h2>
 
-    <form class="form_add_course_class" method="POST"
-        action="index.php?controller=course_classes&action=update&id=<?= $courseClass['id'] ?>">
+    <form class="form_add_course_class" method="POST" action="index.php?controller=course_classes&action=updateNew">
+        <input type="hidden" name="id" value=" <?= $_GET['id'] ?>">
 
         <h3>Thông tin lớp học phần</h3>
 

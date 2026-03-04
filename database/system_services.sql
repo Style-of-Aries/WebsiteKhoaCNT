@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th3 03, 2026 lúc 10:11 AM
+-- Thời gian đã tạo: Th3 04, 2026 lúc 04:13 PM
 -- Phiên bản máy phục vụ: 8.4.3
 -- Phiên bản PHP: 8.3.30
 
@@ -120,13 +120,33 @@ CREATE TABLE `class_sessions` (
 --
 
 INSERT INTO `class_sessions` (`id`, `course_class_id`, `session_date`, `day_of_week`, `session`, `week_number`, `room_id`, `created_at`) VALUES
-(102, 39, '2025-09-10', 4, 'Sáng', 1, 1, '2026-03-02 02:59:39'),
-(103, 39, '2025-09-25', 5, 'Sáng', 2, 1, '2026-03-02 02:59:39'),
-(104, 39, '2025-09-16', 2, 'Sáng', 3, 1, '2026-03-02 02:59:39'),
-(105, 39, '2025-09-23', 2, 'Sáng', 4, 1, '2026-03-02 02:59:39'),
-(106, 39, '2025-09-30', 2, 'Sáng', 5, 1, '2026-03-02 02:59:39'),
-(107, 39, '2025-10-07', 2, 'Sáng', 6, 1, '2026-03-02 02:59:39'),
-(108, 39, '2025-10-14', 2, 'Sáng', 7, 1, '2026-03-02 02:59:39');
+(119, 45, '2025-09-03', 3, 'Chiều', 1, 2, '2026-03-03 19:36:16'),
+(120, 45, '2025-09-10', 3, 'Chiều', 2, 2, '2026-03-03 19:36:16'),
+(121, 45, '2025-09-17', 3, 'Chiều', 3, 2, '2026-03-03 19:36:16'),
+(122, 45, '2025-09-24', 3, 'Chiều', 4, 2, '2026-03-03 19:36:16'),
+(123, 45, '2025-10-01', 3, 'Chiều', 5, 2, '2026-03-03 19:36:16'),
+(124, 46, '2025-09-02', 2, 'Sáng', 1, 3, '2026-03-03 19:37:28'),
+(125, 46, '2025-09-09', 2, 'Sáng', 2, 3, '2026-03-03 19:37:28'),
+(126, 46, '2025-09-16', 2, 'Sáng', 3, 3, '2026-03-03 19:37:28'),
+(127, 46, '2025-09-23', 2, 'Sáng', 4, 3, '2026-03-03 19:37:28'),
+(128, 46, '2025-09-30', 2, 'Sáng', 5, 3, '2026-03-03 19:37:28'),
+(129, 46, '2025-10-07', 2, 'Sáng', 6, 3, '2026-03-03 19:37:28'),
+(130, 46, '2025-10-14', 2, 'Sáng', 7, 3, '2026-03-03 19:37:28'),
+(131, 46, '2025-10-21', 2, 'Sáng', 8, 3, '2026-03-03 19:37:28'),
+(132, 46, '2025-10-28', 2, 'Sáng', 9, 3, '2026-03-03 19:37:28'),
+(133, 46, '2025-11-04', 2, 'Sáng', 10, 3, '2026-03-03 19:37:28'),
+(134, 47, '2025-09-03', 3, 'Chiều', 1, 1, '2026-03-03 19:38:18'),
+(135, 47, '2025-09-09', 2, 'Chiều', 2, 1, '2026-03-03 19:38:18'),
+(136, 47, '2025-09-16', 2, 'Chiều', 3, 1, '2026-03-03 19:38:18'),
+(137, 47, '2025-09-23', 2, 'Chiều', 4, 1, '2026-03-03 19:38:18'),
+(138, 47, '2025-09-30', 2, 'Chiều', 5, 1, '2026-03-03 19:38:18'),
+(139, 47, '2025-10-07', 2, 'Chiều', 6, 1, '2026-03-03 19:38:18'),
+(140, 47, '2025-10-14', 2, 'Chiều', 7, 1, '2026-03-03 19:38:18'),
+(141, 48, '2025-09-04', 4, 'Sáng', 1, 3, '2026-03-03 21:05:37'),
+(142, 48, '2025-09-11', 4, 'Sáng', 2, 3, '2026-03-03 21:05:37'),
+(143, 48, '2025-09-18', 4, 'Sáng', 3, 3, '2026-03-03 21:05:37'),
+(144, 48, '2025-09-25', 4, 'Sáng', 4, 3, '2026-03-03 21:05:37'),
+(145, 48, '2025-10-02', 4, 'Sáng', 5, 3, '2026-03-03 21:05:37');
 
 -- --------------------------------------------------------
 
@@ -143,7 +163,7 @@ CREATE TABLE `course_classes` (
   `max_students` int DEFAULT '60',
   `registration_start` datetime DEFAULT NULL,
   `registration_end` datetime DEFAULT NULL,
-  `status` enum('draft','open','closed','finished') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft'
+  `status` enum('draft','open','studying','closed','finished') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -151,9 +171,13 @@ CREATE TABLE `course_classes` (
 --
 
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`, `registration_start`, `registration_end`, `status`) VALUES
-(39, 53, 62, 1, '2026CNTT000001', 30, '2026-03-03 00:00:00', '2026-03-10 23:59:59', 'draft'),
-(40, 55, 62, 1, '2026CNTT000002', 30, '2026-03-03 00:00:00', '2026-03-11 23:59:59', 'draft'),
-(43, 53, 63, 1, '2026CNTT000003', 30, '2026-03-04 00:00:00', '2026-03-11 23:59:59', 'draft');
+(45, 54, 62, 1, '2026CNTT000004', 20, '2026-03-05 00:00:00', '2026-03-09 23:59:59', 'open'),
+(46, 56, 62, 1, '2026CNTT000005', 30, '2026-03-04 00:00:00', '2026-03-13 23:59:59', 'open'),
+(47, 54, 63, 1, '2026CNTT000006', 30, '2026-02-24 00:00:00', '2026-03-01 23:59:59', 'open'),
+(48, 56, 63, 1, '2026CNTT000007', 20, '2026-03-02 00:00:00', '2026-03-12 23:59:59', 'open'),
+(49, 55, 63, 1, '2026CNTT000008', 20, '2026-03-04 00:00:00', '2026-03-12 23:59:59', 'open'),
+(50, 53, 63, 1, '2026CNTT000009', 20, '2026-03-04 00:00:00', '2026-03-12 23:59:59', 'open'),
+(51, 58, 62, 1, '2026CNTT000010', 30, '2026-03-04 00:00:00', '2026-03-10 23:59:59', 'open');
 
 -- --------------------------------------------------------
 
@@ -337,15 +361,18 @@ CREATE TABLE `student_component_scores` (
 
 CREATE TABLE `student_course_classes` (
   `student_id` bigint UNSIGNED NOT NULL,
-  `course_class_id` bigint UNSIGNED NOT NULL
+  `course_class_id` bigint UNSIGNED NOT NULL,
+  `subject_id` bigint UNSIGNED NOT NULL,
+  `semester_id` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `student_course_classes`
 --
 
-INSERT INTO `student_course_classes` (`student_id`, `course_class_id`) VALUES
-(29, 39);
+INSERT INTO `student_course_classes` (`student_id`, `course_class_id`, `subject_id`, `semester_id`) VALUES
+(29, 46, 56, 1),
+(29, 51, 58, 1);
 
 -- --------------------------------------------------------
 
@@ -420,7 +447,9 @@ INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`
 (53, 'LTCB00001', 'Lập trình căn bản', 3, 13, 'NORMAL', 1),
 (54, 'TH00001', 'Tin học', 3, 13, 'NORMAL', 1),
 (55, 'ĐáTN00001', 'Đồ án tốt nghiệp', 6, 13, 'PROJECT', 3),
-(56, 'LTHđT00001', 'Lập trình hướng đối tượng', 3, 13, 'NORMAL', 2);
+(56, 'LTHđT00001', 'Lập trình hướng đối tượng', 3, 13, 'NORMAL', 2),
+(57, 'HQTCSDL00001', 'Hệ quản trị cơ sở dữ liệu', 3, 13, 'NORMAL', 2),
+(58, 'TA00001', 'Tiếng Anh', 3, 13, 'NORMAL', 1);
 
 -- --------------------------------------------------------
 
@@ -431,7 +460,7 @@ INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`
 CREATE TABLE `subject_score_components` (
   `id` bigint UNSIGNED NOT NULL,
   `subject_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(100) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
   `type` enum('TX','DK','CK','PROJECT') NOT NULL,
   `weight` decimal(5,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
@@ -454,7 +483,16 @@ INSERT INTO `subject_score_components` (`id`, `subject_id`, `name`, `type`, `wei
 (65, 56, 'Chuyên cần', 'TX', 10.00, '2026-03-01 21:25:56'),
 (66, 56, 'Bài kiểm tra 1', 'TX', 10.00, '2026-03-01 21:25:56'),
 (67, 56, 'Bài kiểm tra 2', 'DK', 20.00, '2026-03-01 21:25:56'),
-(68, 56, 'Bài thi', 'CK', 60.00, '2026-03-01 21:25:56');
+(68, 56, 'Bài thi', 'CK', 60.00, '2026-03-01 21:25:56'),
+(69, 57, NULL, 'TX', 10.00, '2026-03-04 12:01:04'),
+(70, 57, NULL, 'TX', 10.00, '2026-03-04 12:01:04'),
+(71, 57, NULL, 'CK', 60.00, '2026-03-04 12:01:04'),
+(72, 57, NULL, 'DK', 20.00, '2026-03-04 12:01:04'),
+(73, 58, NULL, 'TX', 8.00, '2026-03-04 13:36:04'),
+(74, 58, NULL, 'TX', 8.00, '2026-03-04 13:36:04'),
+(75, 58, NULL, 'TX', 8.00, '2026-03-04 13:36:04'),
+(76, 58, NULL, 'DK', 16.00, '2026-03-04 13:36:04'),
+(77, 58, NULL, 'CK', 60.00, '2026-03-04 13:36:04');
 
 -- --------------------------------------------------------
 
@@ -477,7 +515,10 @@ CREATE TABLE `timetables` (
 --
 
 INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `session`, `start_week`, `end_week`) VALUES
-(15, 39, 1, 2, 'Sáng', 1, 7);
+(19, 45, 2, 3, 'Chiều', 1, 5),
+(20, 46, 3, 2, 'Sáng', 1, 10),
+(21, 47, 1, 2, 'Chiều', 1, 7),
+(22, 48, 3, 4, 'Sáng', 1, 5);
 
 -- --------------------------------------------------------
 
@@ -657,6 +698,7 @@ ALTER TABLE `student_component_scores`
 --
 ALTER TABLE `student_course_classes`
   ADD PRIMARY KEY (`student_id`,`course_class_id`),
+  ADD UNIQUE KEY `uq_student_subject_semester` (`student_id`,`subject_id`,`semester_id`),
   ADD KEY `course_class_id` (`course_class_id`);
 
 --
@@ -728,7 +770,7 @@ ALTER TABLE `academic_affairs`
 -- AUTO_INCREMENT cho bảng `academic_results`
 --
 ALTER TABLE `academic_results`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `attendance`
@@ -746,13 +788,13 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT cho bảng `class_sessions`
 --
 ALTER TABLE `class_sessions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
 
 --
 -- AUTO_INCREMENT cho bảng `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT cho bảng `department`
@@ -818,7 +860,7 @@ ALTER TABLE `student_semesters`
 -- AUTO_INCREMENT cho bảng `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT cho bảng `subject_score_components`
@@ -830,7 +872,7 @@ ALTER TABLE `subject_score_components`
 -- AUTO_INCREMENT cho bảng `timetables`
 --
 ALTER TABLE `timetables`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `training_office`

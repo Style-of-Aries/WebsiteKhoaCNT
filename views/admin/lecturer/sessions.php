@@ -2,7 +2,9 @@
 ob_start();
 // var_dump($sessions);
 // var_dump($students);
-// var_dump($attendanceResult);
+// var_dump($attendanceResult)."<br>";
+// print_r($timeStudying);
+
 // die();
 ?>
 
@@ -40,7 +42,7 @@ ob_start();
                 <tbody>
                     <?php mysqli_data_seek($sessions, 0); ?>
                     <?php $stt = 1 ?>
-                    <?php while ($sv = mysqli_fetch_assoc($students)): ?>
+                    <?php foreach ($students as $sv): ?>
                         <tr>
                             <td><?= $stt++ ?></td>
                             <td><?= $sv['student_code'] ?></td>
@@ -85,14 +87,16 @@ ob_start();
 
                             <?php mysqli_data_seek($sessions, 0); ?>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
         <div class="att-action">
-            <button class="att-btn" type="submit"> 
-                <span>💾Lưu điểm danh</span>
-            </button>
+            <?php if ($statusCourseClass === "studying"): ?>
+                <button class="att-btn" type="submit">
+                    <span>💾 Lưu điểm danh</span>
+                </button>
+            <?php endif; ?>
         </div>
 
 

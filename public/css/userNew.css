@@ -7,11 +7,11 @@
   --blue-main: #2f6fb3;
   --blue-light: #4f8fd8;
 
-  --green-main: #2fae60;
+  --green-main: #249316;
   --green-light: #5bc98a;
 
   --orange-main: #f39c3d;
-  --red-main: #e55353;
+  --red-main: #b11616;
 
   --bg-main: #f4f6f9;
   --bg-card: #ffffff;
@@ -817,21 +817,22 @@
   padding: 12.5px 30px;
   border: 0;
   border-radius: 100px;
-  background-color: #f61212;
+  background-color: #ae0a0a;
   color: #ffffff;
   font-weight: Bold;
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
+  cursor: pointer;
 }
 
 .btn-cancel:hover {
-  background-color: #f15050;
+  background-color: #882e2e;
   box-shadow: 0 0 20px #6fc5ff50;
   transform: scale(1.1);
 }
 
 .btn-cancel:active {
-  background-color: #f15050;
+  background-color: #7e2a2a;
   transition: all 0.25s;
   -webkit-transition: all 0.25s;
   box-shadow: none;
@@ -842,21 +843,47 @@
   padding: 12.5px 30px;
   border: 0;
   border-radius: 100px;
-  background-color: #2bfb43;
+  background-color: #099320;
+  color: #ffffff;
+  font-weight: Bold;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  cursor: pointer;
+}
+
+.btn-register:hover {
+  background-color: #398345;
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+.btn-register:active {
+  background-color: #2b6f22;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.btn-closed {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #5c665e;
   color: #ffffff;
   font-weight: Bold;
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
 }
 
-.btn-register:hover {
-  background-color: #6fff87;
+.btn-closed:hover {
+  background-color: #617464;
   box-shadow: 0 0 20px #6fc5ff50;
   transform: scale(1.1);
 }
 
-.btn-register:active {
-  background-color: #4ecf3d;
+.btn-closed:active {
+  background-color: #777a77;
   transition: all 0.25s;
   -webkit-transition: all 0.25s;
   box-shadow: none;
@@ -866,14 +893,18 @@
 .register-table th:nth-child(5),
 .register-table th:nth-child(6),
 .register-table th:nth-child(7),
-.register-table th:nth-child(8) {
+.register-table th:nth-child(8),
+.register-table th:nth-child(9),
+.register-table th:nth-child(10) {
   text-align: center;
 }
 
 .register-table td:nth-child(5),
 .register-table td:nth-child(6),
 .register-table td:nth-child(7),
-.register-table td:nth-child(8) {
+.register-table td:nth-child(8),
+.register-table td:nth-child(9),
+.register-table td:nth-child(10) {
   text-align: center;
   vertical-align: middle;
 }

@@ -1,7 +1,8 @@
 <?php
 ob_start();
-// $now = date('Y-m-d H:i:s');
-// var_dump($now);die();
+$now = date('Y-m-d H:i:s',NOW);
+// $now = $GLOBALS['now'];
+// var_dump(date('Y-m-d H:i:s',NOW));die();
 ?>
 
 <div class="admin-table-wrapper">
@@ -15,6 +16,8 @@ ob_start();
                 <th>Mã Lớp</th>
                 <th>Tên Môn Học</th>
                 <th>Giảng viên</th>
+                <th>Lịch học</th>
+                <th>Thời hạn</th>
                 <!-- <th>Thứ</th>
                 <th>Thời Gian</th> -->
                 <th>Sĩ Số Tối Đa</th>
@@ -33,6 +36,12 @@ ob_start();
                     <td><?= htmlspecialchars($row['class_code']) ?></td>
                     <td><?= htmlspecialchars($row['subject_name']) ?></td>
                     <td><?= htmlspecialchars($row['lecturer_name']) ?></td>
+                    <td><?= $row['schedule'] ?></td>
+                    <td>
+                        <?= date('d/m/Y', strtotime($row['registration_start'])) ?>
+                        -
+                        <?= date('d/m/Y', strtotime($row['registration_end'])) ?>
+                    </td>
                     <!-- <td class="text-center"><?= $row['day_of_week'] ?></td>
                     <td class="text-center"><?= $row['time_range'] ?></td> -->
                     <td class="text-center"><?= $row['max_students'] ?></td>
@@ -50,7 +59,17 @@ ob_start();
                     </td>
 
                     <td class="text-center">
-                        <?php if ($row['is_registered']): ?>
+                        <?php if ($row['registration_end'] < $now): ?>
+
+                            <!-- <a href="index.php?controller=student&action=cancelCourseClass&class_id=<?= $row['id'] ?>"
+                                class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn hủy đăng ký lớp này?')">
+                                Hủy đăng ký
+                            </a> -->
+
+                            <button class="btn-closed" disabled>
+                                Đã đóng
+                            </button>
+                        <?php elseif ($row['is_registered']): ?>
 
                             <!-- <a href="index.php?controller=student&action=cancelCourseClass&class_id=<?= $row['id'] ?>"
                                 class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn hủy đăng ký lớp này?')">
@@ -69,7 +88,8 @@ ob_start();
                                 class="btn btn-primary btn-sm">
                                 Đăng Ký
                             </a> -->
-                            <button class="btn-register" onclick="location.href='index.php?controller=student&action=registerCourseClass&class_id=<?= $row['id'] ?>'">
+                            <button class="btn-register"
+                                onclick="location.href='index.php?controller=student&action=registerCourseClass&class_id=<?= $row['id'] ?>'">
                                 Đăng ký
                             </button>
 

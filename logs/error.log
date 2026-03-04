@@ -75,9 +75,36 @@
 2026-02-26 17:00:08 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
 2026-02-26 17:00:09 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
 2026-02-26 17:00:16 | You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PROJECT')' at line 2
-<<<<<<< HEAD
 2026-03-01 17:36:39 | Môn thường phải có ít nhất 1 điểm thường xuyên và định kì
 2026-03-01 17:36:55 | Môn thường phải có ít nhất 1 điểm thường xuyên và định kì
-=======
 2026-03-01 21:24:47 | Đồ án chỉ dành cho năm 3 trở lên
->>>>>>> 56d5fe02023468f5ca6c9807edfd1a788bc950d1
+2026-03-04 01:41:32 | Lớp chưa mở đăng ký.
+2026-03-04 01:41:33 | Lớp chưa mở đăng ký.
+2026-03-04 01:41:58 | Lớp chưa mở đăng ký.
+2026-03-04 02:47:25 | Lớp chưa mở đăng ký.
+2026-03-04 02:49:03 | Lớp chưa mở đăng ký.
+2026-03-04 02:50:04 | Lớp chưa mở đăng ký.
+2026-03-04 03:03:37 | Duplicate entry '29-54-1' for key 'student_course_classes.uq_student_subject_semester'
+2026-03-04 03:03:42 | Duplicate entry '29-54-1' for key 'student_course_classes.uq_student_subject_semester'
+2026-03-04 03:04:27 | Duplicate entry '29-54-1' for key 'student_course_classes.uq_student_subject_semester'
+2026-03-04 03:05:02 | Duplicate entry '29-54-1' for key 'student_course_classes.uq_student_subject_semester'
+2026-03-04 03:05:07 | Duplicate entry '29-54-1' for key 'student_course_classes.uq_student_subject_semester'
+2026-03-04 03:05:16 | Duplicate entry '29-54-1' for key 'student_course_classes.uq_student_subject_semester'
+2026-03-04 03:09:21 | Duplicate entry '29-54-1' for key 'student_course_classes.uq_student_subject_semester'
+2026-03-04 03:12:26 | Duplicate entry '29-54-1' for key 'student_course_classes.uq_student_subject_semester'
+2026-03-04 03:22:11 | Bạn đã đăng ký môn này trong học kỳ rồi.
+2026-03-04 03:22:42 | Bạn đã đăng ký môn này trong học kỳ rồi.
+2026-03-04 03:33:40 | Chưa đến thời gian đăng ký.
+2026-03-04 03:33:42 | Chưa đến thời gian đăng ký.
+2026-03-04 03:33:43 | Chưa đến thời gian đăng ký.
+2026-03-04 03:40:28 | Chưa đến thời gian đăng ký.
+2026-03-04 03:46:56 | Đã hết thời gian đăng ký.
+2026-03-04 03:53:36 | Chưa đến thời gian đăng ký.
+2026-03-04 03:57:28 | Chưa đến thời gian đăng ký.
+2026-03-04 03:57:29 | Chưa đến thời gian đăng ký.
+2026-03-04 03:57:29 | Chưa đến thời gian đăng ký.
+2026-03-04 04:20:03 | Lịch học bị trùng với một lớp đã đăng ký trong học kỳ này.
+2026-03-04 04:23:53 | Lịch học bị trùng với một lớp đã đăng ký trong học kỳ này.
+2026-03-04 22:27:40 | Chưa đến thời gian đăng ký.
+2026-03-04 23:17:20 | Chưa đến thời gian đăng ký.
+2026-03-04 23:17:26 | Bạn đã đăng ký môn này trong học kỳ rồi.

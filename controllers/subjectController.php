@@ -155,11 +155,11 @@ class subjectController
 
                 $type = $c['type'] ?? '';
                 $weight = (int) ($c['weight'] ?? 0);
-                $nameComponent = trim($c['name'] ?? '');
+                // $nameComponent = trim($c['name'] ?? '');
 
-                if ($nameComponent === '' && $error === '') {
-                    $error = "Tên thành phần điểm không được để trống";
-                }
+                // if ($nameComponent === '' && $error === '') {
+                //     $error = "Tên thành phần điểm không được để trống";
+                // }
 
                 if (!in_array($type, ['TX', 'DK', 'CK', 'PROJECT']) && $error === '') {
                     $error = "Loại điểm không hợp lệ";
@@ -257,17 +257,17 @@ class subjectController
             // 🔥 Thêm từng component
             foreach ($components as $component) {
 
-                $nameComponent = trim($component['name'] ?? '');
+                // $nameComponent = trim($component['name'] ?? '');
 
-                if ($nameComponent === '') {
-                    throw new Exception("Tên thành phần điểm không được để trống");
-                }
+                // if ($nameComponent === '') {
+                //     throw new Exception("Tên thành phần điểm không được để trống");
+                // }
 
                 $type = $component['type'] ?? '';
                 $weight = (int) ($component['weight'] ?? 0);
 
                 $result = $this->subjectScoreComponentsModel
-                    ->add($subject_id, $nameComponent, $type, $weight);
+                    ->add($subject_id, $type, $weight);
 
                 if (!$result) {
                     throw new Exception("Không thể thêm cấu trúc điểm");

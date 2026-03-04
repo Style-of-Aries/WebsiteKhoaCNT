@@ -463,11 +463,12 @@ class course_classesController
         /* ===== So sánh thời gian ===== */
 
         if ($startTime !== null && $endTime !== null && $error === '') {
-            if ($endTime <= $startTime) {
+            if ($endTime <= $startTime && $error === '') {
                 $error = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.";
             }
-            if ($startTime < time() && $error === '') {
-                $error = "Thời gian bắt đầu không được nhỏ hơn thời điểm hiện tại.";
+
+            if (date("Y-m-d") > date("Y-m-d", $startTime) && $error === '') {
+                $error = "Ngày bắt đầu không được nhỏ hơn hôm nay.";
             }
         }
 
@@ -476,11 +477,9 @@ class course_classesController
 
         if ($error === '') {
 
-            $now = time();
+            $now = NOW;
 
-            if ($now < $startTime) {
-                $status = 'draft';
-            } elseif ($now <= $endTime) {
+            if ($now <= $endTime) {
                 $status = 'open';
             } else {
                 $status = 'closed';
@@ -529,6 +528,139 @@ class course_classesController
             $_SESSION['error'] = $e->getMessage();
             $_SESSION['old'] = $_POST;
             header("Location: index.php?controller=course_classes&action=addHocPhan");
+            exit;
+        }
+    }
+
+    public function updateNew()
+    {
+        if (!isset($_POST['btn_update'])) {
+            header("Location: index.php?controller=course_classes&action=getAllHocPhan");
+            exit;
+        }
+
+        $error = '';
+        $startTime = null;
+        $endTime = null;
+
+        $id = $_POST['id'] ?? '';
+        $subject_id = $_POST['subject_id'] ?? '';
+        $lecturer_id = $_POST['lecturer_id'] ?? '';
+        $max_students = $_POST['max_students'] ?? '';
+        $registration_start = $_POST['registration_start'] ?? null;
+        $registration_end = $_POST['registration_end'] ?? null;
+
+        /* ================= VALIDATE ================= */
+
+        if (empty($id)) {
+            $error = "Không tìm thấy lớp học phần.";
+        }
+
+        if (empty($subject_id) && $error === '') {
+            $error = "Vui lòng chọn môn học";
+        }
+
+        if (empty($lecturer_id) && $error === '') {
+            $error = "Vui lòng chọn giảng viên";
+        }
+
+        if (
+            (empty($max_students) || !filter_var($max_students, FILTER_VALIDATE_INT) || $max_students <= 0)
+            && $error === ''
+        ) {
+            $error = "Sĩ số phải là số nguyên lớn hơn 0";
+        }
+
+        /* ===== Validate thời gian ===== */
+
+        if (empty($registration_start) && $error === '') {
+            $error = "Vui lòng nhập thời gian bắt đầu đăng ký.";
+        } else {
+            $startTime = strtotime($registration_start . ' 00:00:00');
+            if ($startTime === false) {
+                $error = "Thời gian bắt đầu không hợp lệ.";
+            } else {
+                $registration_start = date('Y-m-d 00:00:00', $startTime);
+            }
+        }
+
+        if (empty($registration_end) && $error === '') {
+            $error = "Vui lòng nhập thời gian kết thúc đăng ký.";
+        } else {
+            $endTime = strtotime($registration_end . ' 23:59:59');
+            if ($endTime === false) {
+                $error = "Thời gian kết thúc không hợp lệ.";
+            } else {
+                $registration_end = date('Y-m-d 23:59:59', $endTime);
+            }
+        }
+
+        /* ===== So sánh thời gian ===== */
+
+        if ($startTime !== null && $endTime !== null && $error === '') {
+
+            if ($endTime <= $startTime) {
+                $error = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.";
+            }
+
+            // Khi sửa: không cho sửa start < hôm nay nếu lớp chưa bắt đầu
+            if (date("Y-m-d") > date("Y-m-d", $startTime) && $error === '') {
+                $error = "Ngày bắt đầu không được nhỏ hơn hôm nay.";
+            }
+        }
+
+        /* ===== Xác định lại trạng thái ===== */
+
+        if ($error === '') {
+
+            $now = NOW;
+            if ($now <= $endTime) {
+                $status = 'open';
+            } else {
+                $status = 'closed';
+            }
+        }
+
+        if ($error !== '') {
+            $_SESSION['error'] = $error;
+            $_SESSION['old'] = $_POST;
+            header("Location: index.php?controller=course_classes&action=editHocPhan&id=" . $id);
+            exit;
+        }
+
+        /* ================= UPDATE ================= */
+
+        try {
+
+            $result = $this->course_classesModel->capNhatHocPhan(
+                $id,
+                $subject_id,
+                $lecturer_id,
+                $max_students,
+                $registration_start,
+                $registration_end,
+                $status
+            );
+
+            if (!$result) {
+                throw new Exception("Không thể cập nhật lớp học phần");
+            }
+
+            $_SESSION['success'] = "Cập nhật lớp học phần thành công";
+            header("Location: index.php?controller=course_classes&action=getAllHocPhan");
+            exit;
+
+        } catch (Exception $e) {
+
+            error_log(
+                date('Y-m-d H:i:s') . " | " . $e->getMessage() . PHP_EOL,
+                3,
+                __DIR__ . "/../logs/error.log"
+            );
+
+            $_SESSION['error'] = $e->getMessage();
+            $_SESSION['old'] = $_POST;
+            header("Location: index.php?controller=course_classes&action=editHocPhan&id=" . $id);
             exit;
         }
     }

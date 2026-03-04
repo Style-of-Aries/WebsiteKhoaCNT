@@ -271,6 +271,7 @@ class adminController
                 );
             }
             $student = $this->studentModel->addSinhVien($student_code, $class_id, $gender, $education_type, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar);
+            
             if ($student) {
                 $this->getAllSinhVien();
             } else {
