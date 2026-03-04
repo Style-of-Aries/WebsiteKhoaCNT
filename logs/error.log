@@ -97,3 +97,6 @@
 2026-03-02 16:06:16 | Unknown column 'registration_start' in 'field list'
 2026-03-02 16:38:57 | Unknown column 'registration_start' in 'field list'
 >>>>>>> 03508104f685ee1e4a2912d0a3481526efcfe529
+2026-03-04 17:47:53 | Duplicate entry '59-64-1' for key 'course_classes.uq_subject_lecturer_semester'
+2026-03-04 17:48:00 | Duplicate entry '59-64-1' for key 'course_classes.uq_subject_lecturer_semester'
+2026-03-04 17:48:09 | Duplicate entry '59-64-1' for key 'course_classes.uq_subject_lecturer_semester'

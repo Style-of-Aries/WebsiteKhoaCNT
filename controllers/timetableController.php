@@ -297,23 +297,27 @@ class timetableController
                     }
 
                     // check trùng phòng theo tuần
+                    // if (
+                    //     $this->timetableModel->checkRoomConflict(
+                    //         $room_id,
+                    //         $day,
+                    //         $session,
+                    //         $semester_id,
+                    //         $startWeek,
+                    //         $endWeek
+                    //     )
+                    // ) {
+                    //     $errors['schedule'] = "Phòng bị trùng lịch trong khoảng tuần đã chọn";
+                    //     break;
+                    // }
                     if (
-                        $this->timetableModel->checkRoomConflict(
+                        $this->timetableModel->checkRoomTuan(
                             $room_id,
                             $day,
                             $session,
+                            $semester_id,
                             $startWeek,
                             $endWeek
-                        )
-                    ) {
-                        $errors['schedule'] = "Phòng bị trùng lịch trong khoảng tuần đã chọn";
-                        break;
-                    }
-                    if (
-                        $this->timetableModel->phongDaCoLich(
-                            $room_id,
-                            $day,
-                            $session
                         )
                     ) {
                         $errors['room_id'] = "Phòng học đã có lịch";
@@ -702,8 +706,16 @@ class timetableController
             $room_id = (int) $_POST['room_id'];
             $session_date =  $_POST['session_date'];
 
+            // Lấy start_date của học kỳ
 
+            $start_date = $this->timetableModel->getStartDate($course_class_id);
+            $start_date = $start_date['start_date'];
+            // var_dump(strtotime($session_date));
+            // var_dump(str($start_date));
+            // var_dump(($session_date));
+            // die();
 
+            $week_number = floor((strtotime($session_date) - strtotime($start_date)) / (60 * 60 * 24 * 7))  + 1;
             // $startWeek = (int) $_POST['start_week'];
             // $endWeek = (int) $_POST['end_week'];
 
@@ -743,7 +755,7 @@ class timetableController
             if (
                 $this->timetableModel->phongDaCoLichEdit(
                     $room_id,
-                    $day,
+                    $session_date,
                     $session,
                     $course_class_id
                 )
@@ -762,13 +774,14 @@ class timetableController
                 //     $_POST['class_code'],
                 //     $max_students
                 // );
-
+                // $this->timetableModel->updateWeek($id,$session_date, $week_number);
                 $this->timetableModel->updateClass_sessions(
                     $id,
                     $room_id,
                     $day,
                     $session,
-                    $session_date
+                    $session_date,
+                    $week_number
                     // $startWeek,
                     // $endWeek
                 );
