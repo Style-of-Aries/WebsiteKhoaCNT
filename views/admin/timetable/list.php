@@ -25,7 +25,7 @@ ob_start();
       <thead>
         <tr>
           <th onclick="sortTable(0)">STT</th>
-          <th onclick="sortTable(1)">Tên học phần</th>
+          <th onclick="sortTable(1)">Học phần</th>
           <th onclick="sortTable(1)">Giảng viên</th>
           <th onclick="sortTable(2)">Ngày học</th>
           <th onclick="sortTable(3)">Thứ</th>
@@ -39,12 +39,12 @@ ob_start();
         <?php foreach ($tkb as $index => $subject): ?>
           <tr>
             <td><?= $index + 1 ?></td>
-            <td><?= htmlspecialchars($subject['subject_name']) ?></td>
-            <td><?= htmlspecialchars($subject['full_name']) ?>-<?= htmlspecialchars($subject['lecturer_code'])?></td>
+            <td><?= htmlspecialchars($subject['subject_name']) ?> - <?= htmlspecialchars($subject['class_code'])?></td>
+            <td><?= htmlspecialchars($subject['full_name']) ?> - <?= htmlspecialchars($subject['lecturer_code'])?></td>
             <td><?= htmlspecialchars($subject['session_date']) ?></td>
-            <td><?= htmlspecialchars($subject['day_of_week']) ?></td>
+            <td>Thứ <?= htmlspecialchars($subject['day_of_week']) ?></td>
             <td><?= htmlspecialchars($subject['session']) ?></td>
-            <td><?= htmlspecialchars($subject['week_number']) ?></td>
+            <td>Tuần <?= htmlspecialchars($subject['week_number']) ?></td>
             <td><?= htmlspecialchars($subject['room_name']) ?></td>
 
             <td class="action">

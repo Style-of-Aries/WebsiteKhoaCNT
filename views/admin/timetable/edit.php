@@ -35,15 +35,6 @@
         <small style="color:red"><?= $errors['subject_id'] ?></small>
     <?php endif; ?>
 
-
-
-
-
-
-    <!-- Sĩ số -->
-
-
-
     <label>Ngày học</label>
     <input type="date" name="session_date" id="session_date" value="<?= $class_sessions['session_date'] ?>">
     <?php if (!empty($errors['session_date'])): ?>

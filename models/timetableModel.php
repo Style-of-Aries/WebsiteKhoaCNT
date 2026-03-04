@@ -83,7 +83,8 @@ JOIN semesters se
                 r.room_name,
                 r.building,
                 l.full_name,
-                l.lecturer_code
+                l.lecturer_code,
+                cc.class_code
             FROM class_sessions cs
             JOIN course_classes cc ON cs.course_class_id = cc.id
             JOIN subjects s ON cc.subject_id = s.id
@@ -146,34 +147,35 @@ JOIN semesters se
     public function lichHocSvTheoTuan($studentId, $week)
     {
         $sql = "
-    SELECT
+SELECT
     sb.name AS subject_name,
-    t.day_of_week,
-    t.session,
+    cs.day_of_week,
+    cs.session,
     r.room_name,
     l.full_name AS lecturer_name,
 
-    -- Gộp các lớp hành chính học chung
     GROUP_CONCAT(DISTINCT c.class_name ORDER BY c.class_name SEPARATOR '+') 
         AS admin_classes
 
 FROM student_course_classes scc
+
 JOIN course_classes cc 
     ON cc.id = scc.course_class_id
 
 JOIN subjects sb 
     ON sb.id = cc.subject_id
 
-JOIN timetables t 
-    ON t.course_class_id = cc.id
+-- Lấy lịch từ class_sessions thay vì timetables
+JOIN class_sessions cs 
+    ON cs.course_class_id = cc.id
 
 JOIN rooms r 
-    ON r.id = t.room_id
+    ON r.id = cs.room_id
 
 JOIN lecturer l 
     ON l.id = cc.lecturer_id
 
--- Lấy toàn bộ sinh viên trong học phần
+-- Lấy toàn bộ sinh viên học chung học phần
 JOIN student_course_classes scc2 
     ON scc2.course_class_id = cc.id
 
@@ -184,28 +186,84 @@ JOIN classes c
     ON c.id = st.class_id
 
 WHERE scc.student_id = $studentId
-  AND t.start_week <= $week
-  AND t.end_week >= $week
+  AND cs.week_number = $week
 
 GROUP BY 
     sb.name,
-    t.day_of_week,
-    t.session,
+    cs.day_of_week,
+    cs.session,
     r.room_name,
     l.full_name
 
 ORDER BY 
-    t.day_of_week,
-    FIELD(t.session, 'Sáng', 'Chiều');
-    ";
+    cs.day_of_week,
+    FIELD(cs.session, 'Sáng', 'Chiều');
+";
 
         return $this->__query($sql);
     }
+    //     public function lichHocSvTheoTuan($studentId, $week)
+    //     {
+    //         $sql = "
+    //     SELECT
+    //     sb.name AS subject_name,
+    //     t.day_of_week,
+    //     t.session,
+    //     r.room_name,
+    //     l.full_name AS lecturer_name,
 
-    public function lichHocSv($id)
+    //     -- Gộp các lớp hành chính học chung
+    //     GROUP_CONCAT(DISTINCT c.class_name ORDER BY c.class_name SEPARATOR '+') 
+    //         AS admin_classes
+
+    // FROM student_course_classes scc
+    // JOIN course_classes cc 
+    //     ON cc.id = scc.course_class_id
+
+    // JOIN subjects sb 
+    //     ON sb.id = cc.subject_id
+
+    // JOIN timetables t 
+    //     ON t.course_class_id = cc.id
+
+    // JOIN rooms r 
+    //     ON r.id = t.room_id
+
+    // JOIN lecturer l 
+    //     ON l.id = cc.lecturer_id
+
+    // -- Lấy toàn bộ sinh viên trong học phần
+    // JOIN student_course_classes scc2 
+    //     ON scc2.course_class_id = cc.id
+
+    // JOIN student st 
+    //     ON st.id = scc2.student_id
+
+    // JOIN classes c 
+    //     ON c.id = st.class_id
+
+    // WHERE scc.student_id = $studentId
+    //   AND t.start_week <= $week
+    //   AND t.end_week >= $week
+
+    // GROUP BY 
+    //     sb.name,
+    //     t.day_of_week,
+    //     t.session,
+    //     r.room_name,
+    //     l.full_name
+
+    // ORDER BY 
+    //     t.day_of_week,
+    //     FIELD(t.session, 'Sáng', 'Chiều');
+    //     ";
+
+    //         return $this->__query($sql);
+    //     }
+
+    public function lichHocSv($studentId)
     {
-        $sql = "
-    SELECT
+        $sql = "  SELECT
     s.id                AS student_id,
     s.student_code,
 
@@ -218,29 +276,43 @@ ORDER BY
     se.name             AS semester_name,
     se.academic_year,
 
-    t.day_of_week,
-    t.session,
+    cs.session_date,
+    cs.day_of_week,
+    cs.session,
+    cs.week_number,
 
     r.room_name,
     r.building,
 
     l.full_name         AS lecturer_name
+
 FROM student AS s
+
 INNER JOIN student_course_classes AS scc
         ON scc.student_id = s.id
+
 INNER JOIN course_classes AS cc
         ON cc.id = scc.course_class_id
+
 INNER JOIN subjects AS sb
         ON sb.id = cc.subject_id
+
 INNER JOIN semesters AS se
         ON se.id = cc.semester_id
-INNER JOIN timetables AS t
-        ON t.course_class_id = cc.id
+
+
+INNER JOIN class_sessions AS cs
+        ON cs.course_class_id = cc.id
+
 INNER JOIN rooms AS r
-        ON r.id = t.room_id
+        ON r.id = cs.room_id
+
 INNER JOIN lecturer AS l
         ON l.id = cc.lecturer_id
-WHERE s.id = $id";
+
+WHERE s.id = $studentId
+
+ORDER BY cs.session_date ASC";
 
         return $this->__query($sql);
     }
@@ -449,12 +521,12 @@ ORDER BY
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
-    public function phongDaCoLichEdit($room_id, $day, $session, $course_class_id)
+    public function phongDaCoLichEdit($room_id, $session_date, $session, $course_class_id)
     {
         $sql = "
-        SELECT id FROM timetables
-        WHERE room_id = $room_id
-          AND day_of_week = $day
+        SELECT id FROM class_sessions
+        WHERE room_id = '$room_id'
+          AND session_date = '$session_date'
           AND session = '$session'
           AND course_class_id != $course_class_id
     ";
@@ -481,12 +553,31 @@ ORDER BY
     ";
         return $this->__query($sql);
     }
+
+    public function updateWeek($id, $session_date, $week_number)
+    {
+        $sql = "UPDATE class_sessions
+        SET session_date = '$session_date', week_number = '$week_number'
+        WHERE id = '$id'";
+
+        return $this->__query($sql);
+    }
+    public function getStartDate($course_class_id)
+    {
+        $sql = "SELECT s.start_date
+        FROM course_classes cc
+        JOIN semesters s ON cc.semester_id = s.id
+        WHERE cc.id = $course_class_id";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
+    }
     public function updateClass_sessions(
         $id,
         $room_id,
         $day,
         $session,
-        $session_date
+        $session_date,
+        $week_number
         // $start_week,
         // $end_week
     ) {
@@ -496,7 +587,9 @@ ORDER BY
             room_id = $room_id,
             day_of_week = $day,
             session = '$session',
-            session_date = '$session_date'
+            session_date = '$session_date',
+            week_number= '$week_number'
+            
             
         WHERE id = $id
     ";
@@ -540,18 +633,22 @@ ORDER BY
         $sql = "DELETE FROM timetables WHERE course_class_id = $course_class_id";
         return $this->__query($sql);
     }
-    public function checkRoomConflict(
+    public function checkRoomTuan(
         $room_id,
         $day,
         $session,
+        $semester_id,
         $startWeek,
         $endWeek
     ) {
         $sql = "
-        SELECT id FROM timetables
-        WHERE room_id = $room_id
-        AND day_of_week = $day
-        AND session = '$session'
+        SELECT t.*
+FROM timetables t
+JOIN course_classes cc ON t.course_class_id = cc.id
+WHERE t.room_id = '$room_id'
+  AND t.day_of_week = '$day'
+  AND t.session = '$session'
+  AND cc.semester_id = $semester_id
         AND (
             ($startWeek BETWEEN start_week AND end_week)
             OR
@@ -560,6 +657,7 @@ ORDER BY
             (start_week BETWEEN $startWeek AND $endWeek)
         )
     ";
+    // var_dump($sql);
 
         return mysqli_num_rows($this->__query($sql)) > 0;
     }
