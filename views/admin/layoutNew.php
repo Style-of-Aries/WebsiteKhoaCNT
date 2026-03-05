@@ -84,6 +84,7 @@ require_once __DIR__ . "/../../config/config.php";
         <script src="<?= BASE_URL ?>js/validateScore.js"></script>
     <?php endif; ?>
     <script src="<?= BASE_URL ?>js/layoutNew.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </body>
 
 </html>

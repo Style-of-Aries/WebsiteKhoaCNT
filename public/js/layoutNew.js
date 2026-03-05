@@ -87,8 +87,44 @@ function sortTable(colIndex) {
 }
 //#endregion
 
-//#region ================= PREVIEW AVATAR ==============
+//#region ================= exportExcel ==============
+function exportExcel(tableId = "mainTable", fileName = "DanhSach.xlsx") {
+  const table = document.getElementById(tableId);
 
+  if (!table) {
+    alert("Không tìm thấy bảng!");
+    return;
+  }
+
+  // Clone bảng để không ảnh hưởng giao diện
+  let clonedTable = table.cloneNode(true);
+
+  // Chuyển input/select thành text
+  clonedTable.querySelectorAll("input, select").forEach((el) => {
+    let text = el.value || el.options?.[el.selectedIndex]?.text || "";
+    el.parentNode.textContent = text;
+  });
+
+  // Xoá các button trong bảng (nếu có)
+  clonedTable.querySelectorAll("button").forEach((btn) => btn.remove());
+
+  // Nếu có input/select thì chuyển thành text
+  clonedTable.querySelectorAll("input, select").forEach((el) => {
+    let text =
+      el.value || (el.options ? el.options[el.selectedIndex].text : "");
+    el.parentNode.textContent = text;
+  });
+
+  // Tạo workbook
+  const wb = XLSX.utils.table_to_book(clonedTable, {
+    sheet: "Sheet1",
+    raw: true,
+  });
+
+  // Xuất file
+  XLSX.writeFile(wb, fileName);
+}
+//#endregion
 //#region ================= INPUT FULL NAME ==============
 // const fullNameInput = document.querySelector('input[name="full_name"]');
 

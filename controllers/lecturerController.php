@@ -336,7 +336,7 @@ class lecturerController
             }
 
             mysqli_commit($this->connect);
-            $_SESSION['success'] = "Đã lưu {$result['successCount']} điểm!";
+            $_SESSION['success'] = "Đã lưu điểm thành công!";
 
         } catch (Exception $e) {
 

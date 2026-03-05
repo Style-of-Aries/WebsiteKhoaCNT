@@ -92,6 +92,9 @@ ob_start();
             </table>
         </div>
         <div class="att-action">
+            <button type="button" onclick="exportExcel()" class="export-btn">
+                📥 Xuất Excel
+            </button>
             <?php if ($statusCourseClass === "studying"): ?>
                 <button class="att-btn" type="submit">
                     <span>💾 Lưu điểm danh</span>
