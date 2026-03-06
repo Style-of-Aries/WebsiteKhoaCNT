@@ -299,6 +299,7 @@ select {
   border-bottom-left-radius: 50px;
   border-top-left-radius: 50px;
   color: var(--sidebar-bg-color);
+
 }
 
 /* Submenu */
@@ -307,7 +308,7 @@ select {
   top: 0;
   left: 100%; /* bay ra ngoài sidebar */
 
-  min-width: 200px;
+  min-width: 210px;
   padding: 8px;
   list-style: none;
 
@@ -321,7 +322,7 @@ select {
   transform: translateX(10px);
   pointer-events: none;
   transition: 0.25s ease;
-
+  white-space: nowrap;
   z-index: 9999;
 }
 
@@ -343,7 +344,9 @@ select {
 
 /* Hover submenu */
 .submenu li a:hover {
-  background: linear-gradient(90deg, var(--sidebar-bg-color), white);
+  background: var(--sidebar-bg-color);
+  /* border: 1px solid var(--sidebar-bg-color); */
+  transition: 0.3s;
   color: white;
 }
 

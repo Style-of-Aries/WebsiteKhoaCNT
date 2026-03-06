@@ -3,15 +3,15 @@ return [
     'admin' => ['*'],
 
     'lecturer' => [
-        'attendance', 'score', 'view_scores', 'dashboard'
+        'attendance', 'score', 'dashboard', 'result'
     ],
 
     'academic_affairs' => [
-        'students', 'classes', 'course_classes', 'view_scores', 'dashboard'
+        'students', 'classes', 'course_classes', 'view_scores', 'dashboard', 'timetable'
     ],
 
     'training_office' => [
-        'departments', 'subjects', 'classes', 'course_classes', 'timetable', 'dashboard', 'training'
+        'departments', 'subjects', 'classes', 'course_classes', 'dashboard', 'training'
     ],
 
     'student_affairs' => [
