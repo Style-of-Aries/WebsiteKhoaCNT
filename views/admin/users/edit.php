@@ -29,7 +29,7 @@ ob_start();
         style="<?= ($user['role'] === 'lecturer') ? '' : 'display:none;' ?>">
 
         <label>Khoa</label>
-        <select name="department_id">
+        <select name="department_id" style="pointer-events: none;">
             <option value="">-- Chọn Khoa --</option>
 
             <?php foreach ($department as $dept): ?>

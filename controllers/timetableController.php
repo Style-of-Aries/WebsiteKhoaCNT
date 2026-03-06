@@ -429,41 +429,41 @@ class timetableController
         include_once "./../views/admin/course_classes/add.php";
     }
     // sửa 
-    public function edithp()
-    {
-        if ($_POST['btn_edit']) {
-            $id = $_POST['id'];
-            $subject_id = $_POST['subject_id'];
-            $lecturer_id = $_POST['lecturer_id'];
-            $semester_id = $_POST['semester_id'];
-            $max_students = $_POST['max_students'];
-            $class_code = $_POST['class_code'];
-            if ($this->course_classesModel->checkHocPhan($subject_id, $lecturer_id, $semester_id)) {
-                $errorHocPhan = "Giảng viên đã dạy môn này!";
-            }
-            if (empty($errorHocPhan)) {
-                $course_classes = $this->course_classesModel->editHocPhan($id, $subject_id, $lecturer_id, $semester_id, $class_code, $max_students);
-                if ($course_classes) {
-                    $this->getAllHocPhan();
-                    exit();
-                }
-            } else {
+    // public function edithp()
+    // {
+    //     if ($_POST['btn_edit']) {
+    //         $id = $_POST['id'];
+    //         $subject_id = $_POST['subject_id'];
+    //         $lecturer_id = $_POST['lecturer_id'];
+    //         $semester_id = $_POST['semester_id'];
+    //         $max_students = $_POST['max_students'];
+    //         $class_code = $_POST['class_code'];
+    //         if ($this->course_classesModel->checkHocPhan($subject_id, $lecturer_id, $semester_id)) {
+    //             $errorHocPhan = "Giảng viên đã dạy môn này!";
+    //         }
+    //         if (empty($errorHocPhan)) {
+    //             $course_classes = $this->course_classesModel->editHocPhan($id, $subject_id, $lecturer_id, $semester_id, $class_code, $max_students);
+    //             if ($course_classes) {
+    //                 $this->getAllHocPhan();
+    //                 exit();
+    //             }
+    //         } else {
 
-                $course_classes = [
-                    'max_students' => $max_students,
-                    'class_code' => $class_code,
-                    'id' => $id,
-                    'subject_id' => $subject_id,
-                    'lecturer_id' => $lecturer_id,
-                    'semester_id' => $semester_id
-                ];
-                $subject = $this->subjectModel->getAll();
-                $lecturer = $this->lecturerModel->getAll();
-                $semester = $this->semesterModel->getAll();
-            }
-        }
-        include_once "./../views/admin/course_classes/edit.php";
-    }
+    //             $course_classes = [
+    //                 'max_students' => $max_students,
+    //                 'class_code' => $class_code,
+    //                 'id' => $id,
+    //                 'subject_id' => $subject_id,
+    //                 'lecturer_id' => $lecturer_id,
+    //                 'semester_id' => $semester_id
+    //             ];
+    //             $subject = $this->subjectModel->getAll();
+    //             $lecturer = $this->lecturerModel->getAll();
+    //             $semester = $this->semesterModel->getAll();
+    //         }
+    //     }
+    //     include_once "./../views/admin/course_classes/edit.php";
+    // }
 
 
 

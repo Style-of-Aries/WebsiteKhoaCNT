@@ -58,6 +58,14 @@ class adminController
     }
 
 
+    public function getClassesByDepartment()
+{
+    $department_id = $_GET['department_id'];
+
+    $classes = $this->classesModel->getByDepartment($department_id);
+
+    echo json_encode($classes);
+}
     // giao diện danh sách sinh viên 
     public function getAllSinhVien()
     {
@@ -94,7 +102,7 @@ class adminController
         $errorEmail = $errorMaSv = $errorName = "";
         $id = $_GET['id'];
         $classes = $this->classesModel->getAll();
-        $department = $this->departmentModel->getAll();
+        $department = $this->departmentModel->getAllDepartment();
         $student = $this->studentModel->getById($id);
         $studentprf = $this->studentModel->getById($id);
         $userNd = $this->userModel->getByRef_id($id);
@@ -154,9 +162,6 @@ class adminController
                 $errorName = "Tài khoản đã tồn tại";
             }
             if ($this->studentModel->KtEmail($email, $id)) {
-                $errorEmail = "Email đã tồn tại";
-            }
-            if ($this->lecturerModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
             }
             if ($this->studentModel->isStudentCodeExists($student_code, $id)) {

@@ -233,7 +233,7 @@ WHERE st.id = $studentId;
     {
         $email = trim($email);
         $id = (int)$id;
-        $sql = "Select *from student_profiles where email='$email'AND id != $id
+        $sql = "Select *from student_profiles where email='$email'AND student_id != $id
         LIMIT 1";
         $query = $this->__query($sql);
         if (mysqli_num_rows($query) > 0) {

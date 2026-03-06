@@ -547,7 +547,24 @@ document.addEventListener("DOMContentLoaded", function () {
   })();
   //#endregion
 });
+document.getElementById("departmentSelect").addEventListener("change", function(){
 
+    let department_id = this.value;
+
+    fetch("index.php?controller=admin&action=getClassesByDepartment&department_id=" + department_id)
+    .then(response => response.json())
+    .then(data => {
+
+        let classSelect = document.getElementById("classSelect");
+        classSelect.innerHTML = '<option value="">-- Chọn lớp --</option>';
+
+        data.forEach(cls => {
+            classSelect.innerHTML += `<option value="${cls.id}">${cls.class_name}</option>`;
+        });
+
+    });
+
+});
 document.getElementById("session_date").addEventListener("change", function () {
   const dateValue = this.value;
   if (!dateValue) return;

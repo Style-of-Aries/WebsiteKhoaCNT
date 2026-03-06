@@ -46,9 +46,9 @@ class subjectModel
     ";
 
         //     echo "<pre>";
-// var_dump($sql);
-// echo "</pre>";
-// die();
+        // var_dump($sql);
+        // echo "</pre>";
+        // die();
         $this->__query($sql);
         return mysqli_insert_id($this->connect);
     }
@@ -69,10 +69,45 @@ class subjectModel
 
         return $initials;
     }
+    // public function generateSubjectCode($name)
+    // {
+    //     $prefix = $this->getInitials($name);
+
+    //     $sql = "SELECT subject_code 
+    //         FROM subjects 
+    //         WHERE subject_code LIKE '$prefix%' 
+    //         ORDER BY id DESC 
+    //         LIMIT 1";
+
+    //     $result = $this->__query($sql);
+    //     $row = mysqli_fetch_assoc($result);
+
+    //     if ($row) {
+    //         $number = intval(substr($row['subject_code'], strlen($prefix)));
+    //         $number++;
+    //     } else {
+    //         $number = 1;
+    //     }
+
+    //     return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT);
+    // }
     public function generateSubjectCode($name)
     {
-        $prefix = $this->getInitials($name);
+        // bỏ dấu và viết thường
+        $name = $this->removeVietnameseAccents($name);
+        $name = strtolower($name);
 
+        // lấy chữ cái đầu
+        $words = explode(' ', $name);
+        $prefix = '';
+
+        foreach ($words as $word) {
+            if (!empty($word)) {
+                $prefix .= strtoupper($word[0]);
+            }
+        }
+
+        // tìm mã cuối cùng
         $sql = "SELECT subject_code 
             FROM subjects 
             WHERE subject_code LIKE '$prefix%' 
@@ -91,6 +126,30 @@ class subjectModel
 
         return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT);
     }
+    public function removeVietnameseAccents($name)
+{
+    $search = [
+        'à','á','ạ','ả','ã','â','ầ','ấ','ậ','ẩ','ẫ','ă','ằ','ắ','ặ','ẳ','ẵ',
+        'è','é','ẹ','ẻ','ẽ','ê','ề','ế','ệ','ể','ễ',
+        'ì','í','ị','ỉ','ĩ',
+        'ò','ó','ọ','ỏ','õ','ô','ồ','ố','ộ','ổ','ỗ','ơ','ờ','ớ','ợ','ở','ỡ',
+        'ù','ú','ụ','ủ','ũ','ư','ừ','ứ','ự','ử','ữ',
+        'ỳ','ý','ỵ','ỷ','ỹ',
+        'đ'
+    ];
+
+    $replace = [
+        'a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a',
+        'e','e','e','e','e','e','e','e','e','e','e',
+        'i','i','i','i','i',
+        'o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o',
+        'u','u','u','u','u','u','u','u','u','u','u',
+        'y','y','y','y','y',
+        'd'
+    ];
+
+    return str_replace($search, $replace, $name);
+}
     public function editMonHoc($id, $name, $subject_code, $credits, $department_id, $subject_type)
     {
 
@@ -105,7 +164,6 @@ class subjectModel
         WHERE id = '$id'
         ";
         return $this->__query($sql);
-
     }
 
     public function isSubjectCodeExists($subject_code)
@@ -134,7 +192,19 @@ class subjectModel
     public function checkMonHoc($name, $id)
     {
 
-        $sql = "Select *from subjects where name = '$name'AND id != '$id'
+        $sql = "Select *from subjects where name = '$name'
+         AND id != '$id'
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
+            return true;
+        }
+    }
+    public function checkMonHocAdd($name, $department_id)
+    {
+
+        $sql = "Select *from subjects where name = '$name'
+        AND department_id = $department_id
         LIMIT 1";
         $query = $this->__query($sql);
         if (mysqli_num_rows($query) > 0) {

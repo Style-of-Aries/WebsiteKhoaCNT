@@ -32,19 +32,35 @@ class classesModel
         }
     }
     public function getLecturerByDepartment($department_id)
-{
-    $department_id = intval($department_id);
+    {
+        $department_id = intval($department_id);
 
-    $sql = "
+        $sql = "
         SELECT l.id, l.full_name
         FROM lecturer l
         JOIN department d ON d.id = $department_id
         WHERE l.department_id = d.parent_id
     ";
 
-    $result = mysqli_query($this->connect, $sql);
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
+        $result = mysqli_query($this->connect, $sql);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+    public function getByDepartment($department_id)
+    {
+        $sql = "SELECT id, class_name 
+            FROM classes 
+            WHERE department_id = '$department_id'";
+
+        $result = $this->__query($sql);
+
+        $data = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
     public function addLopHoc($class_name, $class_code, $department_id, $lecturer_id)
     {
         $sql = "INSERT INTO `classes` (`class_name`, `class_code`, `department_id`, `lecturer_id`) VALUES ('$class_name', '$class_code', '$department_id', '$lecturer_id')";

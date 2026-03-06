@@ -98,6 +98,11 @@ class subjectController
         if ($name === '' && $error === '') {
             $error = "Tên môn không được để trống";
         }
+        $chekname = $this->subjectModel->checkMonHocAdd($name, $department_id);
+        if ($chekname && $error === '') {
+            $error = "Môn học đã tồn tại";
+        }
+
 
         // if ($subject_code === '' && $error === '') {
         //     $error = "Mã môn không được để trống";
@@ -279,7 +284,6 @@ class subjectController
             $_SESSION['success'] = "Thêm môn học thành công";
             header("Location: index.php?controller=subject&action=getAllMonHoc");
             exit;
-
         } catch (Exception $e) {
 
             $this->connect->rollback();
@@ -323,7 +327,6 @@ class subjectController
                     'credits' => $credits,
                 ];
                 $department = $this->departmentModel->getAll();
-
             }
         }
         include_once "./../views/admin/subject/edit.php";

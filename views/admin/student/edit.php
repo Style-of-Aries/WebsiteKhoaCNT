@@ -102,8 +102,19 @@ ob_start();
         <h3>Thông tin học vụ</h3>
 
         <div class="info-row">
+            <label>Ngành</label>
+            <select name="department_id" id="departmentSelect" required>
+                <option value="">-- Chọn ngành --</option>
+                <?php foreach ($department as $dept): ?>
+                    <option value="<?= $dept['id'] ?>" <?= $student['department_id'] == $dept['id'] ? 'selected' : '' ?>>
+                        <?= $dept['faculty_name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="info-row">
             <label>Lớp hành chính</label>
-            <select name="class_id" required>
+            <select name="class_id" id="classSelect" required>
                 <option value="">-- Chọn lớp --</option>
                 <?php foreach ($classes as $class): ?>
                     <option value="<?= $class['id'] ?>" <?= $student['class_id'] == $class['id'] ? 'selected' : '' ?>>
@@ -113,17 +124,7 @@ ob_start();
             </select>
         </div>
 
-        <div class="info-row">
-            <label>Khoa</label>
-            <select name="department_id" required>
-                <option value="">-- Chọn khoa --</option>
-                <?php foreach ($department as $dept): ?>
-                    <option value="<?= $dept['id'] ?>" <?= $student['department_id'] == $dept['id'] ? 'selected' : '' ?>>
-                        <?= $dept['faculty_name'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+        
 
         <div class="info-row">
             <label>Hệ đào tạo</label>

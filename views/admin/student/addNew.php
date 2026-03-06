@@ -97,7 +97,7 @@ ob_start();
 
         <div class="info-row">
             <label>Ngành học</label>
-            <select name="department_id" required>
+            <select name="department_id" id="departmentSelect"  required>
                 <option value="">-- Chọn ngành học --</option>
                 <?php foreach ($department as $dept): ?>
                     <option value="<?= $dept['id'] ?>">
@@ -109,7 +109,7 @@ ob_start();
         <div class="info-row">
             <label>Lớp hành chính</label>
             <!-- <input type="text" name="class_name"> -->
-            <select name="class_id" required>
+            <select name="class_id" id="classSelect"  required>
                 <option value="">-- Chọn lớp --</option>
                 <?php foreach ($classes as $class): ?>
                     <option value="<?= $class['id'] ?>">
