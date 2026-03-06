@@ -377,18 +377,27 @@ class timetableController
                 // 'max_students' => $max_students,
                 // 'class_code' => $class_code
             ];
-            $class_sessions = [
-                'day_of_week' => $day,
-                'session' => $session,
-                'room_id' => $room_id,
-                // 'session_date' => $session_date,
-                // 'id' => $id,
-                'course_class_id' => $course_class_id
-                // 'start_week' => $startWeek,
-                // 'end_week' => $endWeek
-            ];
+            // $class_sessions = [
+            //     'day_of_week' => $day,
+            //     'session' => $session,
+            //     'room_id' => $room_id,
+            //     // 'session_date' => $session_date,
+            //     // 'id' => $id,
+            //     'course_class_id' => $course_class_id
+            //     // 'start_week' => $startWeek,
+            //     // 'end_week' => $endWeek
+            // ];
+            // $old = [
+            //     'course_class_id' => $course_class_id,
+            //     'day_of_week' => $day,
+            //     'session' => $session,
+            //     'room_id' => $room_id,
+            //     'start_week' => $startWeek,
+            //     'end_week' => $endWeek
+            // ];
 
-            // ⚠️ BẮT BUỘC: cấp lại dữ liệu học kỳ cho view
+
+            //  BẮT BUỘC: cấp lại dữ liệu học kỳ cho view
             $semester = $this->semesterModel->getActiveSemester();
             $semesterStart = $semester['start_date'];
             $semesterEnd = $semester['end_date'];
