@@ -88,7 +88,7 @@ class lecturerController
             $timetables = [];
         }
 
-        require_once './../views/user/lecturer/lichDay.php';
+        require_once './../views/admin/lecturer/lichDay.php';
     }
 
 

@@ -31,6 +31,7 @@
 
 body {
   overflow: hidden;
+  /* background-color: red; */
 }
 
 a {
@@ -1823,4 +1824,142 @@ select {
 
 .component-type {
   pointer-events: none;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--sidebar-bg-color);
+}
+
+/* ===== SELECT WEEK ===== */
+.selectWeek {
+  margin-bottom: 20px;
+}
+
+.week-select {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 30%;
+}
+
+.week-select:hover {
+  border-color: #3b82f6;
+}
+
+/* ===== GRID ===== */
+.tkb-grid {
+  display: grid;
+  grid-template-columns: 80px repeat(6, 1fr);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+.tkb-header {
+  background: var(--sidebar-bg-color);
+  color: white;
+  font-weight: 500;
+  text-align: center;
+  padding: 12px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== TIME COLUMN ===== */
+.tkb-time {
+  background: #f1f5f9;
+  text-align: center;
+  padding: 15px 5px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid #e5e7eb;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.tkb-time .dash {
+  margin: 4px 0;
+  color: #94a3b8;
+}
+
+/* ===== CELL ===== */
+.tkb-cell {
+  min-height: 130px;
+  border-right: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+  padding: 8px;
+  background: #ffffff;
+  transition: background 0.2s ease;
+}
+
+.tkb-cell:hover {
+  background: #f8fafc;
+}
+
+/* Ô có lớp */
+.tkb-cell.has-class {
+  background: #eff6ff;
+}
+
+/* ===== ITEM ===== */
+.tkb-item {
+  background: #ffffff;
+  border-left: 4px solid var(--sidebar-bg-color);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease;
+}
+
+.tkb-item:hover {
+  transform: translateY(-2px);
+}
+
+.tkb-item strong {
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.tkb-item span {
+  color: #475569;
+  display: block;
+  margin-top: 2px;
+}
+
+.tkb-class {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 6px;
+  background: #dbeafe;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--sidebar-bg-color);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .tkb-grid {
+    font-size: 12px;
+  }
+
+  .tkb-item {
+    font-size: 12px;
+  }
 }

@@ -3,7 +3,7 @@ return [
     'admin' => ['*'],
 
     'lecturer' => [
-        'attendance', 'score', 'dashboard', 'result'
+        'attendance', 'score', 'dashboard', 'result', 'timetable'
     ],
 
     'academic_affairs' => [
