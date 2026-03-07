@@ -27,7 +27,7 @@ ob_start();
         <?php foreach ($users as $index => $user): ?>
           <tr>
             <td><?= $index + 1 ?></td>
-            <td><?= htmlspecialchars($user['username']) ?></td>
+            <td><?= htmlspecialchars($user['full_name']) ?> - <?= htmlspecialchars($user['username']) ?></td>
             <td><?= htmlspecialchars($user['password']) ?></td>
             <td><?= htmlspecialchars($user['role']) ?></td>
             <td ><?= htmlspecialchars($user['ref_id']) ?></td>

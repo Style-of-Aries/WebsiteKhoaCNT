@@ -63,23 +63,53 @@ class userModel
     public function getAll()
     {
         $sql = "
-        SELECT 
-            id,
-            username,
-            password,
-            ref_id,
-            CASE role
-                WHEN 'admin' THEN 'Quản trị viên'
-                WHEN 'lecturer' THEN 'Giảng viên'
-                WHEN 'student' THEN 'Sinh viên'
-                WHEN 'training_office' THEN 'Phòng đào tạo'
-                WHEN 'academic_affairs' THEN 'Phòng học vụ'
-                WHEN 'exam_office' THEN 'Phòng khảo thí'
-                WHEN 'student_affairs' THEN 'Phòng công tác sinh viên'
-                ELSE role
-            END AS role
-        FROM users
-    ";
+SELECT 
+    u.id,
+    u.username,
+    u.password,
+    u.ref_id,
+
+    COALESCE(
+        l.full_name,
+        sp.full_name,
+        toff.full_name,
+        aa.full_name,
+        eo.full_name,
+        sa.full_name,
+        'Admin'
+    ) AS full_name,
+
+    CASE u.role
+        WHEN 'admin' THEN 'Quản trị viên'
+        WHEN 'lecturer' THEN 'Giảng viên'
+        WHEN 'student' THEN 'Sinh viên'
+        WHEN 'training_office' THEN 'Phòng đào tạo'
+        WHEN 'academic_affairs' THEN 'Phòng học vụ'
+        WHEN 'exam_office' THEN 'Phòng khảo thí'
+        WHEN 'student_affairs' THEN 'Phòng công tác sinh viên'
+        ELSE u.role
+    END AS role
+
+FROM users u
+
+LEFT JOIN lecturer l 
+    ON u.ref_id = l.id AND u.role = 'lecturer'
+
+LEFT JOIN student_profiles sp 
+    ON u.ref_id = sp.student_id AND u.role = 'student'
+
+LEFT JOIN training_office toff 
+    ON u.ref_id = toff.id AND u.role = 'training_office'
+
+LEFT JOIN academic_affairs aa 
+    ON u.ref_id = aa.id AND u.role = 'academic_affairs'
+
+LEFT JOIN exam_office eo 
+    ON u.ref_id = eo.id AND u.role = 'exam_office'
+
+LEFT JOIN student_affairs sa 
+    ON u.ref_id = sa.id AND u.role = 'student_affairs'
+";
 
         return $this->__query($sql);
     }
@@ -169,8 +199,8 @@ class userModel
                 break;
 
             default:
-            
-                return "role k tồn tại". false; // role không hợp lệ
+
+                return "role k tồn tại" . false; // role không hợp lệ
         }
 
         $sql = "SELECT id FROM $table 
@@ -343,36 +373,36 @@ class userModel
     public function editUser($role, $full_name, $email, $department, $id)
     {
 
-            // LECTURER
-            if ($role === 'lecturer') {
-                $sql = "UPDATE lecturer SET full_name='$full_name',email='$email', department_id= '$department' WHERE id='$id' ";
-                return $this->__query($sql);
-            }
+        // LECTURER
+        if ($role === 'lecturer') {
+            $sql = "UPDATE lecturer SET full_name='$full_name',email='$email', department_id= '$department' WHERE id='$id' ";
+            return $this->__query($sql);
+        }
 
-            // TRAINING OFFICE
-            elseif ($role === 'training_office') {
-                $sql = "UPDATE training_office SET full_name='$full_name',email='$email' WHERE id='$id'";
-                return $this->__query($sql);
-            }
+        // TRAINING OFFICE
+        elseif ($role === 'training_office') {
+            $sql = "UPDATE training_office SET full_name='$full_name',email='$email' WHERE id='$id'";
+            return $this->__query($sql);
+        }
 
-            // ACADEMIC AFFAIRS
-            elseif ($role === 'academic_affairs') {
-                $sql = "UPDATE academic_affairs SET full_name='$full_name',email='$email' WHERE id='$id'";
-                return $this->__query($sql);
-            }
+        // ACADEMIC AFFAIRS
+        elseif ($role === 'academic_affairs') {
+            $sql = "UPDATE academic_affairs SET full_name='$full_name',email='$email' WHERE id='$id'";
+            return $this->__query($sql);
+        }
 
-            // EXAM OFFICE
-            elseif ($role === 'exam_office') {
+        // EXAM OFFICE
+        elseif ($role === 'exam_office') {
 
-                $sql = "UPDATE exam_office SET full_name='$full_name',email='$email' WHERE id='$id'";
-                return $this->__query($sql);
-            }
+            $sql = "UPDATE exam_office SET full_name='$full_name',email='$email' WHERE id='$id'";
+            return $this->__query($sql);
+        }
 
-            // STUDENT AFFAIRS
-            elseif ($role === 'student_affairs') {
-                $sql = "UPDATE student_affairs SET full_name='$full_name',email='$email' WHERE id='$id'";
-                return $this->__query($sql);
-            }
+        // STUDENT AFFAIRS
+        elseif ($role === 'student_affairs') {
+            $sql = "UPDATE student_affairs SET full_name='$full_name',email='$email' WHERE id='$id'";
+            return $this->__query($sql);
+        }
     }
     public function getByIdUsers($role, $id)
     {

@@ -75,7 +75,7 @@ JOIN semesters se
         $sql = "SELECT 
                 cs.id,
                 s.name AS subject_name,
-                cs.session_date,
+                DATE_FORMAT(cs.session_date, '%d/%m/%Y') AS session_date,
                 cs.course_class_id,
                 cs.day_of_week,
                 cs.session,
@@ -98,7 +98,7 @@ JOIN semesters se
         $sql = "SELECT 
             cs.id,
             s.name AS subject_name,
-            cs.session_date,
+            DATE_FORMAT(cs.session_date, '%d/%m/%Y') AS session_date,
             cs.course_class_id,
             cs.day_of_week,
             cs.session,
@@ -106,7 +106,8 @@ JOIN semesters se
             r.room_name,
             r.building,
             l.full_name,
-            l.lecturer_code
+            l.lecturer_code,
+            cc.class_code
         FROM class_sessions cs
         JOIN course_classes cc ON cs.course_class_id = cc.id
         JOIN subjects s ON cc.subject_id = s.id
@@ -657,8 +658,33 @@ WHERE t.room_id = '$room_id'
             (start_week BETWEEN $startWeek AND $endWeek)
         )
     ";
-    // var_dump($sql);
+        // var_dump($sql);
 
         return mysqli_num_rows($this->__query($sql)) > 0;
+    }
+    // public function deleteHocPhanOnly($id)
+    // {
+    //     $sql = "DELETE FROM class_sessions WHERE id = $id";
+    //     return $this->__query($sql);
+    // }
+    public function deleteHocPhanTrigger($id_buoihoc)
+    {
+        $session = $this->getByClass_sessionId($id_buoihoc);
+
+        $courseClassId = $session['course_class_id'];
+
+        $this->__query("DELETE FROM class_sessions WHERE id=$id_buoihoc");
+
+        $sql = "SELECT COUNT(*) as total 
+            FROM class_sessions 
+            WHERE course_class_id=$courseClassId";
+
+        $result = mysqli_fetch_assoc($this->__query($sql));
+
+        if ($result['total'] == 0) {
+            $this->__query("DELETE FROM timetables WHERE course_class_id=$courseClassId");
+        }
+        return true;
+
     }
 }

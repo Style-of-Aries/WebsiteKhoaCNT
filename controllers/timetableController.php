@@ -358,7 +358,7 @@ class timetableController
                     $_SESSION['error'] = "lỗi hàm tự sinh";
                     exit();
                 }
-                $this->getAllHocPhan();
+                $this->getAllTkbEdit($course_class_id);
                 exit();
             }
             // nếu lỗi → load lại view + giữ dữ liệu
@@ -851,8 +851,7 @@ class timetableController
             return;
         }
 
-        $id = (int) $_GET['id'];
-
+        $id_buoihoc = (int) $_GET['id'];
         // // Xóa điểm
         // $this->course_classesModel->deleteAcademicResults($id);
 
@@ -866,9 +865,12 @@ class timetableController
         // $this->timetableModel->deleteByCourseClassId($id);
 
         // // Xóa học phần
-        $this->course_classesModel->deleteHocPhanOnly($id);
-
+        $deleteBuoiHoc = $this->timetableModel->deleteHocPhanTrigger($id_buoihoc);
         // Quay lại danh sách
-        $this->getAllHocPhan();
+        if ($deleteBuoiHoc) {
+            $this->getAllTkb();
+            exit();
+        }
     }
+    
 }
