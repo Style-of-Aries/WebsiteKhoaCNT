@@ -673,18 +673,24 @@ WHERE t.room_id = '$room_id'
 
         $courseClassId = $session['course_class_id'];
 
+        $dayOfWeek = $session['day_of_week'];
         $this->__query("DELETE FROM class_sessions WHERE id=$id_buoihoc");
 
         $sql = "SELECT COUNT(*) as total 
             FROM class_sessions 
-            WHERE course_class_id=$courseClassId";
+            WHERE course_class_id=$courseClassId
+            AND day_of_week='$dayOfWeek'";
 
         $result = mysqli_fetch_assoc($this->__query($sql));
 
+        // Nếu không còn buổi nào của thứ đó thì xóa timetable tương ứng
         if ($result['total'] == 0) {
-            $this->__query("DELETE FROM timetables WHERE course_class_id=$courseClassId");
+            $sqlDelete = "DELETE FROM timetables
+                      WHERE course_class_id=$courseClassId
+                      AND day_of_week='$dayOfWeek'";
+
+            $this->__query($sqlDelete);
         }
         return true;
-
     }
 }
