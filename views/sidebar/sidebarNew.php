@@ -92,7 +92,9 @@ $role = $_SESSION['user']['role'];
             </li>
 
             <li class="<?= PermissionService::has($role, 'score') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=lecturer&action=getCourseClass&type=score">Nhập điểm</a>
+                <a href="index.php?controller=lecturer&action=getCourseClass&type=score">
+                    Nhập điểm <?= $role == 'lecturer' ? 'thành phần' : ($role == 'exam_office' ? 'thi' : '') ?>
+                </a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'view_scores') ? 'dropdown' : 'locked' ?>">

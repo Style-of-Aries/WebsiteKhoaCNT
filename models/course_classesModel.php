@@ -487,12 +487,20 @@ AND course_class_id = $classId
     s.name AS subject_name,
     se.name AS semester_name,
     cc.max_students,
-    COUNT(scc.student_id) AS total_students
+    se.academic_year,
+    cc.registration_start,
+    cc.registration_end,
+    cc.status,
+    COUNT(scc.student_id) AS total_students,
+    MIN(cs.session_date) AS first_session,
+    MAX(cs.session_date) AS last_session
 FROM course_classes cc
 JOIN subjects s ON cc.subject_id = s.id
 JOIN semesters se ON cc.semester_id = se.id
 LEFT JOIN student_course_classes scc 
        ON cc.id = scc.course_class_id
+       LEFT JOIN class_sessions cs
+    ON cs.course_class_id = cc.id
 WHERE cc.lecturer_id = $lecturerId
 GROUP BY cc.id
 ORDER BY se.id DESC, cc.class_code;
