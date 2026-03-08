@@ -31,6 +31,7 @@
 
 body {
   overflow: hidden;
+  /* background-color: red; */
 }
 
 a {
@@ -124,6 +125,41 @@ select {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.custom-checkbox input {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #3498db;
+  border-radius: 4px;
+  position: relative;
+  transition: 0.2s;
+}
+
+.custom-checkbox input:checked + .checkmark {
+  background: #3498db;
+}
+
+.custom-checkbox input:checked + .checkmark::after {
+  content: "✓";
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  left: 3px;
+  top: -1px;
 }
 .info-box {
   margin-top: 15px;
@@ -299,7 +335,6 @@ select {
   border-bottom-left-radius: 50px;
   border-top-left-radius: 50px;
   color: var(--sidebar-bg-color);
-
 }
 
 /* Submenu */
@@ -477,12 +512,14 @@ select {
 }
 
 .admin-table-wrapper {
+  /* margin-top: var(--header-height); */
   height: calc(100% - var(--header-height));
+  /* height: 100vh; */
   background: #fff;
   padding: 18px;
   border-radius: 16px;
   box-shadow: 0 12px 28px rgba(16, 24, 40, 0.08);
-  overflow: hidden;
+  overflow: auto;
 }
 
 .container-main {
@@ -548,13 +585,7 @@ select {
 }
 
 .table-wrap {
-  max-height: 600px;
-  overflow-y: auto;
-  border-radius: 14px;
-  border: 1px solid #e6ecf5;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  margin-top: 10px;
-  width: 100%;
+  overflow-x: auto;
 }
 
 .main-table {
@@ -634,10 +665,16 @@ select {
 }
 
 .main-table .dkthi {
-  min-width: 100px;
+  min-width: 140px;
 }
 
 /* ================= Bảng điểm danh ================= */
+
+.today-col {
+  /* border:2px solid #ff9800; */
+  background: #fff8e1;
+}
+
 /* ===== TABLE ===== */
 .attendance-table {
   border-collapse: separate; /* quan trọng để sticky không lỗi */
@@ -1375,8 +1412,11 @@ select {
 
 /* ===== Save Button ===== */
 .save-score-wrapper {
-  margin-top: 20px;
-  text-align: right;
+  display: flex;
+  margin-top: 10px;
+  /* text-align: right; */
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .btn-save-score {
@@ -1790,7 +1830,6 @@ select {
   margin-top: 3px;
 }
 
-
 /* ===== BẢNG ĐIỂM SINH VIÊN ===== */
 
 .grade-table th:nth-child(4),
@@ -1823,4 +1862,179 @@ select {
 
 .component-type {
   pointer-events: none;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--sidebar-bg-color);
+}
+
+/* ===== SELECT WEEK ===== */
+.selectWeek {
+  margin-bottom: 20px;
+}
+
+.week-select {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 30%;
+}
+
+.week-select:hover {
+  border-color: #3b82f6;
+}
+
+/* ===== GRID ===== */
+.tkb-grid {
+  display: grid;
+  grid-template-columns: 80px repeat(6, 1fr);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+.tkb-header {
+  background: var(--sidebar-bg-color);
+  color: white;
+  font-weight: 500;
+  text-align: center;
+  padding: 12px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== TIME COLUMN ===== */
+.tkb-time {
+  background: #f1f5f9;
+  text-align: center;
+  padding: 15px 5px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid #e5e7eb;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.tkb-time .dash {
+  margin: 4px 0;
+  color: #94a3b8;
+}
+
+/* ===== CELL ===== */
+.tkb-cell {
+  min-height: 130px;
+  border-right: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+  padding: 8px;
+  background: #ffffff;
+  transition: background 0.2s ease;
+}
+
+.tkb-cell:hover {
+  background: #f8fafc;
+}
+
+/* Ô có lớp */
+.tkb-cell.has-class {
+  background: #eff6ff;
+}
+
+/* ===== ITEM ===== */
+.tkb-item {
+  background: #ffffff;
+  border-left: 4px solid var(--sidebar-bg-color);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease;
+}
+
+.tkb-item:hover {
+  transform: translateY(-2px);
+}
+
+.tkb-item strong {
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.tkb-item span {
+  color: #475569;
+  display: block;
+  margin-top: 2px;
+}
+
+.tkb-class {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 6px;
+  background: #dbeafe;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--sidebar-bg-color);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .tkb-grid {
+    font-size: 12px;
+  }
+
+  .tkb-item {
+    font-size: 12px;
+  }
+}
+
+.eligible {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.not-eligible {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.export-btn {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #27ae60, #219150);
+}
+
+.export-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }

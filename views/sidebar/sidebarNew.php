@@ -5,7 +5,13 @@ $role = $_SESSION['user']['role'];
 // var_dump($role);
 // var_dump(PermissionService::has($role, 'attendance'));
 // die;
+$urlTimetable = "";
+if($role === 'lecturer') {
+    $urlTimetable = 'index.php?controller=lecturer&action=lichDayGv';
+} else $urlTimetable = 'index.php?controller=timetable&action=getAllTkb';
 
+// print_r($urlTimetable);
+// die();
 ?>
 
 <div class="logo">
@@ -104,8 +110,11 @@ $role = $_SESSION['user']['role'];
         </ul>
     </li>
 
+    <!-- <li class="<?= PermissionService::has($role, 'timetable') ? 'dropdown' : 'locked-hide' ?>">
+        <a class="drop-btn" href="index.php?controller=timetable&action=getAllTkb">Lịch dạy</a>
+    </li> -->
     <li class="<?= PermissionService::has($role, 'timetable') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn" href="index.php?controller=timetable&action=getAllTkb">Thời khóa biểu</a>
+        <a class="drop-btn" href="<?= $urlTimetable ?>">Thời khóa biểu</a>
     </li>
 
 </ul>

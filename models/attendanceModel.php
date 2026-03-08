@@ -1,4 +1,5 @@
 <?php
+
 class AttendanceModel
 {
     protected $connect;
@@ -81,5 +82,41 @@ class AttendanceModel
         }
 
         return $success;
+    }
+
+    public function checkAttendance($studentId, $courseClassId)
+    {
+        $studentId = (int) $studentId;
+        $courseClassId = (int) $courseClassId;
+        $sql = "SELECT 
+            COUNT(cs.id) AS total_sessions,
+            SUM(
+                CASE 
+                    WHEN a.status IN ('present','late') THEN 1 
+                    ELSE 0 
+                END
+            ) AS attended_sessions
+        FROM class_sessions cs
+        LEFT JOIN attendance a 
+            ON cs.id = a.session_id 
+            AND a.student_id = $studentId
+        WHERE cs.course_class_id = $courseClassId";
+        $result = $this->__query($sql);
+        if (!$result) {
+            return false;
+        }
+
+        $row = mysqli_fetch_assoc($result);
+
+        $total = (int) $row['total_sessions'];
+        $attended = (int) $row['attended_sessions'];
+
+        if ($total == 0) {
+            return false;
+        }
+
+        $percent = ($attended / $total) * 100;
+
+        return $percent >= 80;
     }
 }

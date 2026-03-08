@@ -39,8 +39,8 @@ ob_start();
         <?php foreach ($tkb as $index => $subject): ?>
           <tr>
             <td><?= $index + 1 ?></td>
-            <td><?= htmlspecialchars($subject['subject_name']) ?> - <?= htmlspecialchars($subject['class_code'])?></td>
-            <td><?= htmlspecialchars($subject['full_name']) ?> - <?= htmlspecialchars($subject['lecturer_code'])?></td>
+            <td><?= htmlspecialchars($subject['subject_name']) ?><br><?= htmlspecialchars($subject['class_code'])?></td>
+            <td><?= htmlspecialchars($subject['full_name']) ?><br><?= htmlspecialchars($subject['lecturer_code'])?></td>
             <td><?= htmlspecialchars($subject['session_date']) ?></td>
             <td>Thứ <?= htmlspecialchars($subject['day_of_week']) ?></td>
             <td><?= htmlspecialchars($subject['session']) ?></td>

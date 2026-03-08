@@ -3,11 +3,11 @@ return [
     'admin' => ['*'],
 
     'lecturer' => [
-        'attendance', 'score', 'dashboard', 'result'
+        'attendance', 'score', 'dashboard', 'result', 'timetable'
     ],
 
     'academic_affairs' => [
-        'students', 'classes', 'course_classes', 'view_scores', 'dashboard', 'timetable'
+        'dashboard', 'timetable'
     ],
 
     'training_office' => [

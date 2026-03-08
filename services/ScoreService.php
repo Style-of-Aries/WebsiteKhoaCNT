@@ -1,4 +1,5 @@
 <?php
+require_once '../models/attendanceModel.php';
 class ScoreService
 {
     protected $conn;
@@ -6,11 +7,15 @@ class ScoreService
     protected $componentModel;
     protected $academicResultsModel;
     protected $courseClassModel;
+    protected $attendanceModel;
+    protected $studentModel;
 
     public function __construct($conn)
     {
         $this->conn = $conn;
         $this->academicResultsModel = new academicResultsModel($conn);
+        $this->attendanceModel = new AttendanceModel($conn);
+        $this->studentModel = new studentModel($conn);
         $this->scoreModel = new studentComponentScoresModel($conn);
         $this->componentModel = new subjectScoreComponentsModel($conn);
         $this->courseClassModel = new course_classesModel($conn);
@@ -44,9 +49,14 @@ class ScoreService
 
             $eligibility = $this->scoreModel
                 ->checkEligibility($studentId, $courseClassId);
-
+            $studentprf = $this->studentModel->getAllProfile($studentId);
+            $studentName = $studentprf['full_name'];
+            $checkAttendance = $this->attendanceModel->checkAttendance($studentId, $courseClassId);
+            if (!$checkAttendance) {
+                throw new Exception("$studentName không đủ điều kiện chuyên cần (< 80%)");
+            }
             if ($eligibility < 5) {
-                throw new Exception("SV $studentId không đủ điều kiện dự thi");
+                throw new Exception("$studentName không đủ điều kiện dự thi");
             }
         }
 
@@ -64,6 +74,10 @@ class ScoreService
 
         // 4️⃣ Nếu là CK hoặc Project thì tính điểm tổng
         if ($component['type'] === 'CK' || $component['type'] === 'PROJECT') {
+
+            if ($this->courseClassModel->checkAllFinalScoresEntered($courseClassId)) {
+                $this->courseClassModel->updateFinished($courseClassId);
+            }
             $this->academicResultsModel->calculateFinalResult($studentId, $courseClassId);
         }
 

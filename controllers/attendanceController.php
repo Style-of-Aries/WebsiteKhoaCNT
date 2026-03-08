@@ -60,6 +60,7 @@ class attendanceController
         //         $attendanceMap[$row['student_id']] = $row['status'];
         //     }
         // }
+        // $check = $this->attendanceModel->checkAttendance(29,46);
 
         require_once "./../views/admin/lecturer/sessions.php";
     }

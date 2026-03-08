@@ -64,8 +64,8 @@ function getOld($key, $default = '', $data = null)
             </div>
             <div class="col">
                 <label>Số tín chỉ</label>
-                <input type="number" id="creditInput" name="credits" min="1" value="<?= htmlspecialchars($old['credits'] ?? '') ?>"
-                    required>
+                <input type="number" id="creditInput" name="credits" min="1"
+                    value="<?= htmlspecialchars($old['credits'] ?? '') ?>" required>
             </div>
             <div class="col">
                 <label>Năm đào tạo</label>
@@ -87,8 +87,9 @@ function getOld($key, $default = '', $data = null)
 
 
         <h3>Cấu trúc điểm</h3>
-        <label>
+        <label class="custom-checkbox">
             <input type="checkbox" id="useProjectInsteadOfExam">
+            <span class="checkmark"></span>
             Dùng bài tập lớn thay cho thi cuối kỳ
         </label>
         <table class="main-table" id="score-structure">
