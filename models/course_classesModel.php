@@ -238,7 +238,6 @@ WHERE course_class_id = $courseClassId;";
     cc.max_students,
     l.full_name AS lecturer_name,
 
-    -- ✅ Thêm thời gian đăng ký
     cc.registration_start,
     cc.registration_end,
 
@@ -269,12 +268,30 @@ WHERE course_class_id = $courseClassId;";
     ) AS is_registered
 
 FROM course_classes cc
-JOIN subjects s ON cc.subject_id = s.id
-JOIN lecturer l ON cc.lecturer_id = l.id
-JOIN semesters sem ON cc.semester_id = sem.id AND sem.is_active = 1
-LEFT JOIN timetables t ON cc.id = t.course_class_id
-LEFT JOIN student_course_classes scc ON cc.id = scc.course_class_id
-WHERE cc.status <> 'finished'
+
+JOIN subjects s 
+    ON cc.subject_id = s.id
+
+JOIN student st                 
+    ON st.id = '$studentId'
+
+JOIN lecturer l 
+    ON cc.lecturer_id = l.id
+
+JOIN semesters sem 
+    ON cc.semester_id = sem.id 
+    AND sem.is_active = 1
+
+LEFT JOIN timetables t 
+    ON cc.id = t.course_class_id
+
+LEFT JOIN student_course_classes scc 
+    ON cc.id = scc.course_class_id
+
+WHERE 
+    cc.status <> 'finished'
+    AND s.department_id = st.department_id   -- ✅ lọc đúng ngành
+
 GROUP BY 
     cc.id,
     cc.registration_start,
@@ -372,7 +389,7 @@ ORDER BY s.name;
             }
 
             // ✅ 2️⃣ Kiểm tra thời gian đăng ký
-            $now = date('Y-m-d H:i:s',NOW);
+            $now = date('Y-m-d H:i:s', NOW);
 
             if ($now < $course['registration_start']) {
                 throw new Exception("Chưa đến thời gian đăng ký.");
@@ -380,6 +397,24 @@ ORDER BY s.name;
 
             if ($now > $course['registration_end']) {
                 throw new Exception("Đã hết thời gian đăng ký.");
+            }
+
+            // 3️⃣ Kiểm tra số môn đã đăng ký trong học kỳ
+
+            $semester_id = (int) $course['semester_id'];
+
+            $sql = "
+SELECT COUNT(DISTINCT subject_id) AS total_subjects
+FROM student_course_classes
+WHERE student_id = $student_id
+AND semester_id = $semester_id
+";
+
+            $result = mysqli_query($this->connect, $sql);
+            $row = mysqli_fetch_assoc($result);
+
+            if ($row['total_subjects'] >= 5) {
+                throw new Exception("Sinh viên chỉ được đăng ký tối đa 5 môn trong học kỳ.");
             }
 
             // 3️⃣ Kiểm tra sĩ số
@@ -491,7 +526,7 @@ AND course_class_id = $classId
     cc.registration_start,
     cc.registration_end,
     cc.status,
-    COUNT(scc.student_id) AS total_students,
+    COUNT(DISTINCT scc.student_id) AS total_students,
     MIN(cs.session_date) AS first_session,
     MAX(cs.session_date) AS last_session
 FROM course_classes cc
@@ -634,5 +669,46 @@ GROUP BY
     {
         $sql = "DELETE FROM course_classes WHERE id = $id";
         return $this->__query($sql);
+    }
+
+    public function updateFinished($course_class_id)
+    {
+        $course_class_id = (int) $course_class_id;
+
+        $sql = "
+UPDATE course_classes
+SET status = 'finished'
+WHERE id = $course_class_id
+";
+
+        mysqli_query($this->connect, $sql);
+    }
+
+    public function checkAllFinalScoresEntered($courseClassId)
+    {
+        $courseClassId = (int) $courseClassId;
+
+        $sql = "
+        SELECT COUNT(*) AS missing
+        FROM student_course_classes scc
+        JOIN subject_score_components sc 
+            ON sc.subject_id = scc.subject_id
+        LEFT JOIN student_component_scores scs 
+            ON scs.student_id = scc.student_id
+            AND scs.course_class_id = scc.course_class_id
+            AND scs.subject_component_id = sc.id
+        WHERE scc.course_class_id = $courseClassId
+        AND sc.type IN ('CK','PROJECT')
+        AND scs.score IS NULL
+    ";
+
+        $result = $this->__query($sql);
+
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['missing'] == 0; // true nếu đã nhập hết
+        }
+
+        return false;
     }
 }

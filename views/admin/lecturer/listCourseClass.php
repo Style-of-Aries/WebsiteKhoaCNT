@@ -9,12 +9,15 @@ if ($type == 'attendance') {
     $url = "index.php?controller=lecturer&action=updateResultByCourseClass";
 }
 
-function getStatus($row) {
-    $now = date('Y-m-d',NOW);
+function getStatus($row)
+{
+    $now = date('Y-m-d', NOW);
     // $now = date('2025-09-02');
     // print_r($now);die();
-    if(!$row['first_session']) return;
-    if ($now >= $row['first_session'] && $now <= $row['last_session']) return 'studying';
+    if (!$row['first_session'])
+        return;
+    if ($now >= $row['first_session'] && $now <= $row['last_session'])
+        return 'studying';
 }
 ?>
 
@@ -23,52 +26,53 @@ function getStatus($row) {
         <h2>Danh sách lớp học phần</h2>
         <input type="text" id="searchTable" placeholder="Tìm kiếm mã lớp học phần...">
     </div>
-    <table class="main-table" id="mainTable">
-        <thead>
-            <tr>
-                <th onclick="sortTable(0)">STT</th>
-                <th onclick="sortTable(1)">Mã lớp</th>
-                <th onclick="sortTable(2)">Môn học</th>
-                <th onclick="sortTable(3)">Học kỳ</th>
-                <th onclick="sortTable(4)">Sĩ số</th>
-                <?php if ($role !== 'lecturer'): ?>
-                    <th onclick="sortTable(5)">Giảng viên</th>
-                <?php endif; ?>
-                <th>Trạng thái</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $stt = 1;
-            while ($row = mysqli_fetch_assoc($classes)): ?>
-                <tr class="trOnclick" onclick="window.location='<?= $url ?>&course_class_id=<?= $row['id'] ?>'">
-                    <td><?= $stt++; ?></td>
-                    <td><?= $row['class_code'] ?></td>
-                    <td><?= $row['subject_name'] ?></td>
-                    <td><?= $row['semester_name'] ?> (<?= $row['academic_year'] ?>)</td>
-                    <td><?= $row['total_students'] ?>/<?= $row['max_students'] ?></td>
+    <div class="table-wrap">
+        <table class="main-table" id="mainTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">STT</th>
+                    <th onclick="sortTable(1)">Mã lớp</th>
+                    <th onclick="sortTable(2)">Môn học</th>
+                    <th onclick="sortTable(3)">Học kỳ</th>
+                    <th onclick="sortTable(4)">Sĩ số</th>
                     <?php if ($role !== 'lecturer'): ?>
-                        <td>
-                            <?= $row['lecturer_name'] ?>
-                        </td>
+                        <th onclick="sortTable(5)">Giảng viên</th>
                     <?php endif; ?>
-                    <td>
-                        <?php
-                        $statusCourseClass = getStatus($row);
-                        if ($statusCourseClass === "studying"): ?>
-                            <div class="statusStudying">
-                                Đang diễn ra
-                            </div>
-                        <?php elseif ($row['status'] === "open"): ?>
-                            <div class="statusRegistering">
-                                Đang mở đăng ký
-                            </div>
-                        <?php elseif ($row['status'] === "finished"): ?>
-                            <div class="statusFinished">
-                                Hoàn thành
-                            </div>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $stt = 1;
+                while ($row = mysqli_fetch_assoc($classes)): ?>
+                    <tr class="trOnclick" onclick="window.location='<?= $url ?>&course_class_id=<?= $row['id'] ?>'">
+                        <td><?= $stt++; ?></td>
+                        <td><?= $row['class_code'] ?></td>
+                        <td><?= $row['subject_name'] ?></td>
+                        <td><?= $row['semester_name'] ?> (<?= $row['academic_year'] ?>)</td>
+                        <td><?= $row['total_students'] ?>/<?= $row['max_students'] ?></td>
+                        <?php if ($role !== 'lecturer'): ?>
+                            <td>
+                                <?= $row['lecturer_name'] ?>
+                            </td>
                         <?php endif; ?>
-                    </td>
-                    <!-- <td class="action-btn">
+                        <td>
+                            <?php
+                            $statusCourseClass = getStatus($row);
+                            if ($row['status'] === "finished"): ?>
+                                <div class="statusFinished">
+                                    Hoàn thành
+                                </div>
+                            <?php elseif ($statusCourseClass === "studying"): ?>
+                                <div class="statusStudying">
+                                    Đang diễn ra
+                                </div>
+                            <?php elseif ($row['status'] === "open"): ?>
+                                <div class="statusRegistering">
+                                    Đang mở đăng ký
+                                </div>
+                            <?php endif; ?>
+                        </td>
+                        <!-- <td class="action-btn">
                             <a href="index.php?controller=lecturer&action=getStudentsWithExamConditions&course_class_id=<?= $row['id'] ?>"
                                 class="btn btn-primary btn-sm">
                                 Danh sách lớp
@@ -82,10 +86,11 @@ function getStatus($row) {
                                 Điểm danh
                             </a>
                         </td> -->
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 </div>
 

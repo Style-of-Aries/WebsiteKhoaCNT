@@ -90,38 +90,68 @@ function sortTable(colIndex) {
 //#region ================= exportExcel ==============
 function exportExcel(tableId = "mainTable", fileName = "DanhSach.xlsx") {
   const table = document.getElementById(tableId);
-
   if (!table) {
     alert("Không tìm thấy bảng!");
     return;
   }
 
-  // Clone bảng để không ảnh hưởng giao diện
-  let clonedTable = table.cloneNode(true);
+  const clonedTable = table.cloneNode(true);
 
-  // Chuyển input/select thành text
-  clonedTable.querySelectorAll("input, select").forEach((el) => {
-    let text = el.value || el.options?.[el.selectedIndex]?.text || "";
-    el.parentNode.textContent = text;
+  const statusMap = {
+    present: "Có mặt",
+    late: "Muộn",
+    absent: "Vắng",
+  };
+
+  // convert select/input -> text
+  clonedTable.querySelectorAll("select, input").forEach((el) => {
+    let text = "";
+
+    if (el.tagName === "SELECT") {
+      text = statusMap[el.value] || el.value;
+    } else {
+      text = el.value;
+    }
+
+    const td = el.closest("td");
+    if (td) td.textContent = text;
   });
 
-  // Xoá các button trong bảng (nếu có)
   clonedTable.querySelectorAll("button").forEach((btn) => btn.remove());
 
-  // Nếu có input/select thì chuyển thành text
-  clonedTable.querySelectorAll("input, select").forEach((el) => {
-    let text =
-      el.value || (el.options ? el.options[el.selectedIndex].text : "");
-    el.parentNode.textContent = text;
-  });
+  // tạo sheet
+  const ws = XLSX.utils.table_to_sheet(clonedTable, { raw: true });
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "DiemDanh");
 
-  // Tạo workbook
-  const wb = XLSX.utils.table_to_book(clonedTable, {
-    sheet: "Sheet1",
-    raw: true,
-  });
+  const range = XLSX.utils.decode_range(ws["!ref"]);
 
-  // Xuất file
+  // ===== FIX DATE HEADER =====
+  for (let C = range.s.c; C <= range.e.c; C++) {
+    const cell = ws[XLSX.utils.encode_cell({ r: 0, c: C })]; // hàng header
+    if (cell && /^\d{1,2}\/\d{1,2}$/.test(cell.v)) {
+      cell.t = "s"; // ép kiểu string
+    }
+  }
+
+  // ===== AUTO WIDTH =====
+  const colWidths = [];
+  for (let C = range.s.c; C <= range.e.c; C++) {
+    let max = 8;
+
+    for (let R = range.s.r; R <= range.e.r; R++) {
+      const cell = ws[XLSX.utils.encode_cell({ r: R, c: C })];
+      if (cell && cell.v) {
+        const len = cell.v.toString().length;
+        if (len > max) max = len;
+      }
+    }
+
+    colWidths.push({ wch: max + 2 });
+  }
+
+  ws["!cols"] = colWidths;
+
   XLSX.writeFile(wb, fileName);
 }
 //#endregion
@@ -494,8 +524,22 @@ document.addEventListener("DOMContentLoaded", function () {
       tbody.innerHTML = "";
       index = 0;
 
-      let txCount = credit;
-      let dkCount = Math.floor(credit / 2);
+      let txCount = 0;
+      let dkCount = 0;
+
+      if (credit <= 2) {
+        txCount = 1;
+        dkCount = 1;
+      } else if (credit === 3) {
+        txCount = 2;
+        dkCount = 1;
+      } else if (credit <= 5) {
+        txCount = 3;
+        dkCount = 2;
+      } else {
+        txCount = 4;
+        dkCount = 2;
+      }
 
       for (let i = 0; i < txCount; i++) createRow("TX");
       for (let i = 0; i < dkCount; i++) createRow("DK");
@@ -547,6 +591,12 @@ document.addEventListener("DOMContentLoaded", function () {
   })();
   //#endregion
 });
+
+// đổi màu khi chọn điểm danh
+function changeColor(select) {
+  let cls = select.options[select.selectedIndex].dataset.class;
+  select.parentElement.className = cls;
+}
 
 document.getElementById("session_date").addEventListener("change", function () {
   const dateValue = this.value;
