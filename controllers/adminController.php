@@ -59,13 +59,13 @@ class adminController
 
 
     public function getClassesByDepartment()
-{
-    $department_id = $_GET['department_id'];
+    {
+        $department_id = $_GET['department_id'];
 
-    $classes = $this->classesModel->getByDepartment($department_id);
+        $classes = $this->classesModel->getByDepartment($department_id);
 
-    echo json_encode($classes);
-}
+        echo json_encode($classes);
+    }
     // giao diện danh sách sinh viên 
     public function getAllSinhVien()
     {
@@ -99,7 +99,7 @@ class adminController
 
     public function editSv()
     {
-        $errorEmail = $errorMaSv = $errorName = "";
+        $errorEmail = $errorMaSv = $errorName = $errorDate = "";
         $id = $_GET['id'];
         $classes = $this->classesModel->getAll();
         $department = $this->departmentModel->getAllDepartment();
@@ -128,6 +128,10 @@ class adminController
         $errorName = '';
         $errorEmail = '';
         $errorMaSv = '';
+        $errorDate = '';
+        $errorCccd = '';
+        $errorSdt = '';
+
 
 
         if (isset($_POST['btn_edit'])) {
@@ -161,15 +165,31 @@ class adminController
             if ($this->userModel->KtUserName($username, $id)) {
                 $errorName = "Tài khoản đã tồn tại";
             }
-            if ($this->studentModel->KtEmail($email, $id)) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errorEmail =  "Email không đúng định dạng";
+            } elseif ($this->studentModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
+            }
+
+            $today = date('Y-m-d');
+
+            if ($date_of_birth > $today) {
+                $errorDate = "Không được lớn hơn ngày hiện tại";
             }
             if ($this->studentModel->isStudentCodeExists($student_code, $id)) {
                 $errorMaSv = "Mã sinh viên đã tồn tại";
             }
+            if (!preg_match('/^(03|05|07|08|09)[0-9]{8}$/', $phone)) {
+                $errorSdt = "Số điện thoại phải 10 số và bắt đầu bằng 03,05,07,08,09";
+            }
+
+            /* Validate CCCD / CMND */
+            if (!preg_match('/^([0-9]{9}|[0-9]{12})$/', $identity_number)) {
+                $errorCccd = "CMND hoặc CCCD không hợp lệ";
+            }
 
 
-            if (empty($errorName) && empty($errorEmail) && empty($errorMaSv)) {
+            if (empty($errorName) && empty($errorEmail) && empty($errorMaSv) && empty($errorDate) && empty($errorSdt) && empty($errorCccd)) {
                 $this->studentModel->updateStudent($id, $student_code, $department_id, $class_id);
                 $this->studentModel->updateStudent_profiles($id, $gender, $full_name, $email, $phone, $date_of_birth, $address, $education_type, $status, $identity_number, $avatarupdate);
                 $this->userModel->updateUser($id, $username, $password);
@@ -239,22 +259,40 @@ class adminController
     }
     public function addSinhVien()
     {
+        $errorName = '';
+        $errorEmail = '';
+        $errorMaSv = '';
+        $errorDate = '';
+        $errorCccd = '';
+        $errorSdt = '';
+
         $classes = $this->classesModel->getAll();
 
-        $student = $this->studentModel->generateStudentCode();
         $department = $this->departmentModel->getAllDepartment();
+        $student_code = $this->studentModel->generateStudentCode();
 
         require_once './../views/admin/student/addNew.php';
     }
     // thêm mới sinh Đ
     public function add()
     {
+        $errorName = '';
+        $errorEmail = '';
+        $errorMaSv = '';
+        $errorDate = '';
+        $errorCccd = '';
+        $errorSdt = '';
         $student_code = $this->studentModel->generateStudentCode();
+        $old = [];
         if (isset($_POST['btn_add'])) {
+            $old = $_POST; // lưu toàn bộ dữ liệu form
+
             $class_id = $_POST['class_id'];
             $department_id = $_POST['department_id'];
             // $year= date('dd/mm/YYYY');
 
+
+            $student_code = $this->studentModel->generateStudentCode();
 
             $full_name = $_POST['full_name'];
             $gender = $_POST['gender'];
@@ -275,14 +313,39 @@ class adminController
                     'upload/avatar/' . $avatar
                 );
             }
-            $student = $this->studentModel->addSinhVien($student_code, $class_id, $gender, $education_type, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar);
-            
-            if ($student) {
-                $this->getAllSinhVien();
-            } else {
-                $this->no_index();
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errorEmail =  "Email không đúng định dạng";
+            } elseif (!preg_match("/^[a-zA-Z0-9._%+-]+@gmail\.com$/", $email)) {
+                $errorEmail = "Email phải là @gmail.com";
+            } elseif ($this->studentModel->KtEmailAdd($email)) {
+                $errorEmail = "Email đã tồn tại";
             }
+            if (!preg_match('/^(03|05|07|08|09)[0-9]{8}$/', $phone)) {
+                $errorSdt = "Số điện thoại phải 10 số và bắt đầu bằng 03,05,07,08,09";
+            }
+
+            /* Validate CCCD / CMND */
+            if (!preg_match('/^([0-9]{9}|[0-9]{12})$/', $identity_number)) {
+                $errorCccd = "CMND hoặc CCCD không hợp lệ";
+            }
+
+            $today = date('Y-m-d');
+
+            if ($date_of_birth > $today) {
+                $errorDate = "Không được lớn hơn ngày hiện tại";
+            }
+            if (empty($errorName) && empty($errorEmail) && empty($errorMaSv) && empty($errorDate) && empty($errorSdt) && empty($errorCccd)) {
+                $student = $this->studentModel->addSinhVien($student_code, $class_id, $gender, $education_type, $department_id, $full_name, $email, $phone, $date_of_birth, $address, $identity_number, $avatar);
+
+                if ($student) {
+                    $this->getAllSinhVien();
+                }
+            }
+            $classes = $this->classesModel->getAll();
+
+            $department = $this->departmentModel->getAllDepartment();
         }
+        include_once "./../views/admin/student/addNew.php";
         // var_dump($student_code);
         // die;
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 04, 2026 at 04:24 PM
+-- Generation Time: Mar 07, 2026 at 02:02 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -34,13 +34,6 @@ CREATE TABLE `academic_affairs` (
   `email` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `academic_affairs`
---
-
-INSERT INTO `academic_affairs` (`id`, `full_name`, `office_code`, `email`, `created_at`) VALUES
-(1, 'Phòng Học vụ CNTT', 'HV_CNTT', 'hocvu_cntt@university.edu.vn', '2026-02-16 16:06:51');
 
 -- --------------------------------------------------------
 
@@ -96,7 +89,8 @@ CREATE TABLE `classes` (
 --
 
 INSERT INTO `classes` (`id`, `class_name`, `class_code`, `department_id`, `lecturer_id`) VALUES
-(11, 'CNTT K19A', 'CNTT K19A', 13, 62);
+(11, 'CNTT K19A', 'CNTT K19A', 13, NULL),
+(12, 'Tkdh01', 'Tkdh01', 14, 64);
 
 -- --------------------------------------------------------
 
@@ -116,37 +110,21 @@ CREATE TABLE `class_sessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `class_sessions`
+-- Triggers `class_sessions`
 --
-
-INSERT INTO `class_sessions` (`id`, `course_class_id`, `session_date`, `day_of_week`, `session`, `week_number`, `room_id`, `created_at`) VALUES
-(119, 45, '2025-09-03', 3, 'Chiều', 1, 2, '2026-03-03 19:36:16'),
-(120, 45, '2025-09-10', 3, 'Chiều', 2, 2, '2026-03-03 19:36:16'),
-(121, 45, '2025-09-17', 3, 'Chiều', 3, 2, '2026-03-03 19:36:16'),
-(122, 45, '2025-09-24', 3, 'Chiều', 4, 2, '2026-03-03 19:36:16'),
-(123, 45, '2025-10-01', 3, 'Chiều', 5, 2, '2026-03-03 19:36:16'),
-(124, 46, '2025-09-02', 2, 'Sáng', 1, 3, '2026-03-03 19:37:28'),
-(125, 46, '2025-09-09', 2, 'Sáng', 2, 3, '2026-03-03 19:37:28'),
-(126, 46, '2025-09-16', 2, 'Sáng', 3, 3, '2026-03-03 19:37:28'),
-(127, 46, '2025-09-23', 2, 'Sáng', 4, 3, '2026-03-03 19:37:28'),
-(128, 46, '2025-09-30', 2, 'Sáng', 5, 3, '2026-03-03 19:37:28'),
-(129, 46, '2025-10-07', 2, 'Sáng', 6, 3, '2026-03-03 19:37:28'),
-(130, 46, '2025-10-14', 2, 'Sáng', 7, 3, '2026-03-03 19:37:28'),
-(131, 46, '2025-10-21', 2, 'Sáng', 8, 3, '2026-03-03 19:37:28'),
-(132, 46, '2025-10-28', 2, 'Sáng', 9, 3, '2026-03-03 19:37:28'),
-(133, 46, '2025-11-04', 2, 'Sáng', 10, 3, '2026-03-03 19:37:28'),
-(134, 47, '2025-09-03', 3, 'Chiều', 1, 1, '2026-03-03 19:38:18'),
-(135, 47, '2025-09-09', 2, 'Chiều', 2, 1, '2026-03-03 19:38:18'),
-(136, 47, '2025-09-16', 2, 'Chiều', 3, 1, '2026-03-03 19:38:18'),
-(137, 47, '2025-09-23', 2, 'Chiều', 4, 1, '2026-03-03 19:38:18'),
-(138, 47, '2025-09-30', 2, 'Chiều', 5, 1, '2026-03-03 19:38:18'),
-(139, 47, '2025-10-07', 2, 'Chiều', 6, 1, '2026-03-03 19:38:18'),
-(140, 47, '2025-10-14', 2, 'Chiều', 7, 1, '2026-03-03 19:38:18'),
-(141, 48, '2025-09-04', 4, 'Sáng', 1, 3, '2026-03-03 21:05:37'),
-(142, 48, '2025-09-11', 4, 'Sáng', 2, 3, '2026-03-03 21:05:37'),
-(143, 48, '2025-09-18', 4, 'Sáng', 3, 3, '2026-03-03 21:05:37'),
-(144, 48, '2025-09-25', 4, 'Sáng', 4, 3, '2026-03-03 21:05:37'),
-(145, 48, '2025-10-02', 4, 'Sáng', 5, 3, '2026-03-03 21:05:37');
+DELIMITER $$
+CREATE TRIGGER `delete_timetable_when_no_sessions` AFTER DELETE ON `class_sessions` FOR EACH ROW BEGIN
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM class_sessions
+        WHERE course_class_id = OLD.course_class_id
+    ) THEN
+        DELETE FROM timetables
+        WHERE course_class_id = OLD.course_class_id;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -171,13 +149,8 @@ CREATE TABLE `course_classes` (
 --
 
 INSERT INTO `course_classes` (`id`, `subject_id`, `lecturer_id`, `semester_id`, `class_code`, `max_students`, `registration_start`, `registration_end`, `status`) VALUES
-(45, 54, 62, 1, '2026CNTT000004', 20, '2026-03-05 00:00:00', '2026-03-09 23:59:59', 'open'),
-(46, 56, 62, 1, '2026CNTT000005', 30, '2026-03-04 00:00:00', '2026-03-13 23:59:59', 'open'),
-(47, 54, 63, 1, '2026CNTT000006', 30, '2026-02-24 00:00:00', '2026-03-01 23:59:59', 'open'),
-(48, 56, 63, 1, '2026CNTT000007', 20, '2026-03-02 00:00:00', '2026-03-12 23:59:59', 'open'),
-(49, 55, 63, 1, '2026CNTT000008', 20, '2026-03-04 00:00:00', '2026-03-12 23:59:59', 'open'),
-(50, 53, 63, 1, '2026CNTT000009', 20, '2026-03-04 00:00:00', '2026-03-12 23:59:59', 'open'),
-(51, 58, 62, 1, '2026CNTT000010', 30, '2026-03-04 00:00:00', '2026-03-10 23:59:59', 'open');
+(52, 59, 64, 1, '2026CNTT000001', 20, '2026-03-06 00:00:00', '2026-03-07 23:59:59', 'draft'),
+(60, 63, 64, 1, '2026CNTT000004', 2, '2026-03-07 00:00:00', '2026-03-08 23:59:59', 'open');
 
 -- --------------------------------------------------------
 
@@ -200,9 +173,10 @@ CREATE TABLE `department` (
 --
 
 INSERT INTO `department` (`id`, `name`, `type`, `parent_id`, `staff_count`, `created_at`, `updated_at`) VALUES
-(8, 'Trường Công nghệ Thông tin và Truyền thông', 'school', NULL, 120, '2026-02-28 16:04:00', '2026-02-28 16:04:00'),
+(8, 'Trường Công nghệ Thông tin và Truyền thông', 'school', 8, 120, '2026-02-28 16:04:00', '2026-02-28 16:04:00'),
 (12, 'Khoa Công nghệ thông tin', 'faculty', 8, NULL, '2026-03-01 21:21:36', NULL),
-(13, 'Công nghệ thông tin', 'department', 12, NULL, '2026-03-01 21:22:05', NULL);
+(13, 'Công nghệ thông tin', 'department', 12, NULL, '2026-03-01 21:22:05', NULL),
+(14, 'Thiết kế đồ họa', 'department', 12, NULL, '2026-03-06 03:53:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -217,13 +191,6 @@ CREATE TABLE `exam_office` (
   `email` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `exam_office`
---
-
-INSERT INTO `exam_office` (`id`, `full_name`, `office_code`, `email`, `created_at`) VALUES
-(1, 'Phòng Khảo thí CNTT', 'KT_CNTT', 'khaothi_cntt@university.edu.vn', '2026-02-16 16:06:51');
 
 -- --------------------------------------------------------
 
@@ -244,8 +211,7 @@ CREATE TABLE `lecturer` (
 --
 
 INSERT INTO `lecturer` (`id`, `full_name`, `lecturer_code`, `email`, `department_id`) VALUES
-(62, 'Nguyễn Đức Trọng', 'GV00001', 'ductrong34end@gmail.com', 12),
-(63, 'Nguyễn Văn Tứ', 'GV00002', 'ductrong34end@gmail.comdd', 12);
+(64, 'Nguyễn Văn Tứ', 'GV00001', 'tutue9692@gmail.comw', 12);
 
 -- --------------------------------------------------------
 
@@ -366,14 +332,6 @@ CREATE TABLE `student_course_classes` (
   `semester_id` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `student_course_classes`
---
-
-INSERT INTO `student_course_classes` (`student_id`, `course_class_id`, `subject_id`, `semester_id`) VALUES
-(29, 46, 56, 1),
-(29, 51, 58, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -400,7 +358,7 @@ CREATE TABLE `student_profiles` (
 --
 
 INSERT INTO `student_profiles` (`id`, `student_id`, `full_name`, `gender`, `date_of_birth`, `email`, `phone`, `address`, `identity_number`, `avatar`, `education_type`, `status`) VALUES
-(17, 29, 'Nguyễn Đức Trọng', 'Nam', '2005-04-03', 'ductrong34end@gmail.comf', '0968843380', 'Xã Thư Lâm - Tỉnh Hà Nội', '001205022394', '749455.png', 'Chính quy', 'Đang học');
+(17, 29, 'Nguyễn Đức Trọng', 'Nam', '2005-04-03', 'ductrong34end@gmail.comf', '0968843380', 'Xã Thư Lâm - Tỉnh Hà Nội', '001205022394', '', 'Chính quy', 'Đang học');
 
 -- --------------------------------------------------------
 
@@ -444,12 +402,10 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`id`, `subject_code`, `name`, `credits`, `department_id`, `subject_type`, `recommended_year`) VALUES
-(53, 'LTCB00001', 'Lập trình căn bản', 3, 13, 'NORMAL', 1),
-(54, 'TH00001', 'Tin học', 3, 13, 'NORMAL', 1),
-(55, 'ĐáTN00001', 'Đồ án tốt nghiệp', 6, 13, 'PROJECT', 3),
-(56, 'LTHđT00001', 'Lập trình hướng đối tượng', 3, 13, 'NORMAL', 2),
-(57, 'HQTCSDL00001', 'Hệ quản trị cơ sở dữ liệu', 3, 13, 'NORMAL', 2),
-(58, 'TA00001', 'Tiếng Anh', 3, 13, 'NORMAL', 1);
+(59, 'ĐáRT00001', 'Đồ án ra trường', 3, 13, 'PROJECT', 3),
+(60, 'NMI00001', 'Nhập môn IT', 3, 13, 'PROJECT', 3),
+(62, 'ĐáRT200001', 'Đồ án ra trường 2', 3, 13, 'PROJECT', 3),
+(63, 'OA00001', 'ồ án', 3, 13, 'PROJECT', 3);
 
 -- --------------------------------------------------------
 
@@ -471,28 +427,10 @@ CREATE TABLE `subject_score_components` (
 --
 
 INSERT INTO `subject_score_components` (`id`, `subject_id`, `name`, `type`, `weight`, `created_at`) VALUES
-(56, 53, 'Chuyên cần', 'TX', 10.00, '2026-03-01 21:22:59'),
-(57, 53, 'Bài kiểm tra 1', 'TX', 10.00, '2026-03-01 21:22:59'),
-(58, 53, 'Bài kiểm tra 2', 'DK', 20.00, '2026-03-01 21:22:59'),
-(59, 53, 'Bài thi', 'CK', 60.00, '2026-03-01 21:22:59'),
-(60, 54, 'Chuyên cần', 'TX', 10.00, '2026-03-01 21:24:22'),
-(61, 54, 'Bài kiểm tra 1', 'TX', 10.00, '2026-03-01 21:24:22'),
-(62, 54, 'Bài kiểm tra 2', 'DK', 20.00, '2026-03-01 21:24:22'),
-(63, 54, 'Bài thi', 'CK', 60.00, '2026-03-01 21:24:22'),
-(64, 55, 'Đồ án', 'PROJECT', 100.00, '2026-03-01 21:24:56'),
-(65, 56, 'Chuyên cần', 'TX', 10.00, '2026-03-01 21:25:56'),
-(66, 56, 'Bài kiểm tra 1', 'TX', 10.00, '2026-03-01 21:25:56'),
-(67, 56, 'Bài kiểm tra 2', 'DK', 20.00, '2026-03-01 21:25:56'),
-(68, 56, 'Bài thi', 'CK', 60.00, '2026-03-01 21:25:56'),
-(69, 57, NULL, 'TX', 10.00, '2026-03-04 12:01:04'),
-(70, 57, NULL, 'TX', 10.00, '2026-03-04 12:01:04'),
-(71, 57, NULL, 'CK', 60.00, '2026-03-04 12:01:04'),
-(72, 57, NULL, 'DK', 20.00, '2026-03-04 12:01:04'),
-(73, 58, NULL, 'TX', 8.00, '2026-03-04 13:36:04'),
-(74, 58, NULL, 'TX', 8.00, '2026-03-04 13:36:04'),
-(75, 58, NULL, 'TX', 8.00, '2026-03-04 13:36:04'),
-(76, 58, NULL, 'DK', 16.00, '2026-03-04 13:36:04'),
-(77, 58, NULL, 'CK', 60.00, '2026-03-04 13:36:04');
+(78, 59, 'Chuyên cần', 'PROJECT', 100.00, '2026-03-04 17:45:27'),
+(79, 60, 'Đồ án', 'PROJECT', 100.00, '2026-03-04 17:47:22'),
+(81, 62, NULL, 'PROJECT', 100.00, '2026-03-06 04:19:15'),
+(82, 63, NULL, 'PROJECT', 100.00, '2026-03-06 04:29:43');
 
 -- --------------------------------------------------------
 
@@ -510,16 +448,6 @@ CREATE TABLE `timetables` (
   `end_week` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `timetables`
---
-
-INSERT INTO `timetables` (`id`, `course_class_id`, `room_id`, `day_of_week`, `session`, `start_week`, `end_week`) VALUES
-(19, 45, 2, 3, 'Chiều', 1, 5),
-(20, 46, 3, 2, 'Sáng', 1, 10),
-(21, 47, 1, 2, 'Chiều', 1, 7),
-(22, 48, 3, 4, 'Sáng', 1, 5);
-
 -- --------------------------------------------------------
 
 --
@@ -534,14 +462,6 @@ CREATE TABLE `training_office` (
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `training_office`
---
-
-INSERT INTO `training_office` (`id`, `full_name`, `office_code`, `email`, `phone`, `created_at`) VALUES
-(1, 'Phòng Đào Tạo Khoa Công Nghệ Thông Tin', 'PDT_CNTT', 'daotao_cntt@university.edu.vn', '02438889999', '2026-02-06 07:42:38'),
-(2, 'Nguyễn Thị Hương – Cán bộ đào tạo', 'CB_DT_01', 'huongdt@university.edu.vn', '0988777666', '2026-02-06 07:42:38');
 
 -- --------------------------------------------------------
 
@@ -563,15 +483,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `ref_id`) VALUES
 (1, 'admin123', '123', 'admin', 0),
-(4, 'nvt', '123', 'student', 16),
-(23, 'nguyenductrong', '123', 'student', 22),
-(26, 'pdt', '123', 'training_office', 1),
-(31, 'hocvu', '123', 'academic_affairs', 1),
-(32, 'khaothi', '123', 'exam_office', 1),
-(33, 'ctsv', '123', 'student_affairs', 1),
-(34, 'GV00001', 'GV00001', 'lecturer', 62),
-(37, '202600001', '202600001', 'student', 29),
-(38, 'GV00002', 'GV00002', 'lecturer', 63);
+(39, 'GV00001', 'GV00001', 'lecturer', 64);
 
 --
 -- Indexes for dumped tables
@@ -781,25 +693,25 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `classes`
 --
 ALTER TABLE `classes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `class_sessions`
 --
 ALTER TABLE `class_sessions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
 
 --
 -- AUTO_INCREMENT for table `course_classes`
 --
 ALTER TABLE `course_classes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `exam_office`
@@ -811,7 +723,7 @@ ALTER TABLE `exam_office`
 -- AUTO_INCREMENT for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `rooms`
@@ -859,19 +771,19 @@ ALTER TABLE `student_semesters`
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `subject_score_components`
 --
 ALTER TABLE `subject_score_components`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `timetables`
 --
 ALTER TABLE `timetables`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `training_office`
@@ -883,7 +795,7 @@ ALTER TABLE `training_office`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- Constraints for dumped tables
