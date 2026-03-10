@@ -290,4 +290,40 @@ class semesterController
         header("Location:index.php?controller=semester&action=getAllSemester");
         exit();
     }
+
+    public function deactivateSemester()
+    {
+        if (!isset($_GET['id'])) {
+            $_SESSION['error'] = "Không tìm thấy học kỳ";
+            header("Location:index.php?controller=semester&action=getAllSemester");
+            exit();
+        }
+
+        $id = (int) $_GET['id'];
+
+        $semester = $this->semesterModel->getById($id);
+
+        if (!$semester) {
+            $_SESSION['error'] = "Học kỳ không tồn tại";
+            header("Location:index.php?controller=semester&action=getAllSemester");
+            exit();
+        }
+
+        if ($semester['is_active'] == 0) {
+            $_SESSION['error'] = "Học kỳ đã tắt";
+            header("Location:index.php?controller=semester&action=getAllSemester");
+            exit();
+        }
+
+        $result = $this->semesterModel->deactivateSemester($id);
+
+        if ($result) {
+            $_SESSION['success'] = "Đã tắt học kỳ";
+        } else {
+            $_SESSION['error'] = "Không thể tắt học kỳ";
+        }
+
+        header("Location:index.php?controller=semester&action=getAllSemester");
+        exit();
+    }
 }

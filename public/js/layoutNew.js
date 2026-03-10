@@ -242,19 +242,17 @@ function exportExcel(tableId = "mainTable", fileName = "DanhSach.xlsx") {
 document.addEventListener("DOMContentLoaded", function () {
   initSemesterDate();
   //#region ================= checkbox-semester =================
-  const switches = document.querySelectorAll(".checkbox-semester");
+  document.querySelectorAll(".checkbox-semester").forEach((cb) => {
+    cb.addEventListener("change", function () {
+      let id = this.dataset.id;
 
-  switches.forEach(function (checkbox) {
-    checkbox.addEventListener("change", function () {
-      const id = this.dataset.id;
-
-      if (!confirm("Bạn có chắc muốn kích hoạt học kỳ này?")) {
-        this.checked = false;
-        return;
+      if (this.checked) {
+        window.location.href =
+          "index.php?controller=semester&action=activateSemester&id=" + id;
+      } else {
+        window.location.href =
+          "index.php?controller=semester&action=deactivateSemester&id=" + id;
       }
-
-      window.location.href =
-        "index.php?controller=semester&action=activateSemester&id=" + id;
     });
   });
   //#endregion

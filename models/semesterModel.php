@@ -161,4 +161,14 @@ class semesterModel
 
         return $this->__query($sql);
     }
+    public function deactivateSemester($id)
+    {
+        $id = (int) $id;
+
+        $sql = "UPDATE semesters 
+            SET is_active = 0
+            WHERE id = $id";
+
+        return $this->__query( $sql);
+    }
 }
