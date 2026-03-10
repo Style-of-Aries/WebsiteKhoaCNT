@@ -99,6 +99,9 @@
                 </div>
 
             <?php endfor; ?>
+            <?php if (!empty($errors['schedule'])): ?>
+                <small style="color:red"><?= $errors['schedule'] ?></small>
+            <?php endif; ?>
 
         </div>
 
