@@ -30,10 +30,16 @@ class subjectController
     }
 
     public function getAllMonHoc()
-    {
-        $subjects = $this->subjectModel->getAll();
-        require_once './../views/admin/subject/list.php';
+{
+    $subjects = $this->subjectModel->getAll();
+
+    $data = [];
+    while ($row = mysqli_fetch_assoc($subjects)) {
+        $data[] = $row;
     }
+
+    require_once './../views/admin/subject/list.php';
+}
 
     public function getAllGiangVienCuaKhoa()
     {

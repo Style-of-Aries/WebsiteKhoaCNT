@@ -2,12 +2,13 @@
 ob_start();
 $now = date('Y-m-d H:i:s', NOW);
 // $now = $GLOBALS['now'];
+// print_r($semesterNow);
 // var_dump(date('Y-m-d H:i:s',NOW));die();
 ?>
 
 <div class="admin-table-wrapper">
 
-    <h2>Các lớp đang mở ở kì này</h2>
+    <h2>Các lớp đang mở ở <?= $semesterNow['name'] ?> (<?= $semesterNow['academic_year'] ?>)</h2>
     <div class="table-wrap">
         <table class="main-table register-table">
             <thead>

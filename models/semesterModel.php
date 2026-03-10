@@ -1,6 +1,6 @@
 <?php
 require_once "./../config/database.php";
-class semesterModel extends database
+class semesterModel
 {
 
     protected $connect;
@@ -16,12 +16,20 @@ class semesterModel extends database
     }
     public function getAll()
     {
-        $sql = "
-           SELECT * FROM semesters;
-        ";
+        $sql = "SELECT * FROM semesters";
 
-        return $this->__query($sql);
+        $query = $this->__query($sql);
+
+        $data = [];
+
+        while ($row = mysqli_fetch_assoc($query)) {
+            $data[] = $row;
+        }
+
+        return $data;
     }
+
+
     public function getActiveSemester()
     {
         $sql = "SELECT * FROM semesters WHERE is_active = 1 LIMIT 1";
@@ -30,10 +38,10 @@ class semesterModel extends database
     }
 
     public function layHocKyDangHoatDong()
-{
-    $sql = "SELECT * FROM semesters WHERE is_active = 1 LIMIT 1";
-    return mysqli_fetch_assoc($this->__query($sql));
-}
+    {
+        $sql = "SELECT * FROM semesters WHERE is_active = 1 LIMIT 1";
+        return mysqli_fetch_assoc($this->__query($sql));
+    }
 
 
     public function addMonHoc($name, $subject_code, $credits, $department_id)
@@ -82,8 +90,85 @@ class semesterModel extends database
     }
     public function getById($id)
     {
-        $sql = "SELECT * FROM subjects WHERE id='$id'";
-        $query = $this->__query($sql);
-        return mysqli_fetch_assoc($query);
+        $id = (int) $id; // ép kiểu để tránh SQL injection
+
+        $sql = "SELECT * FROM semesters WHERE id = $id";
+
+        $result = $this->__query($sql);
+
+        return mysqli_fetch_assoc($result);
+    }
+
+    public function addSemester($name, $academic_year, $semester_number, $start_date, $end_date)
+    {
+        $name = mysqli_real_escape_string($this->connect, $name);
+        $academic_year = mysqli_real_escape_string($this->connect, $academic_year);
+        $semester_number = (int) $semester_number;
+        $start_date = mysqli_real_escape_string($this->connect, $start_date);
+        $end_date = mysqli_real_escape_string($this->connect, $end_date);
+
+        $sql = "INSERT INTO semesters (name, academic_year, semester_number, start_date, end_date, is_active)
+            VALUES ('$name', '$academic_year', $semester_number, '$start_date', '$end_date', 0)";
+
+        return $this->__query($sql);
+    }
+
+    public function semesterExists($academic_year, $semester_number)
+    {
+        $academic_year = mysqli_real_escape_string($this->connect, $academic_year);
+        $semester_number = (int) $semester_number;
+
+        $sql = "SELECT id 
+            FROM semesters 
+            WHERE academic_year='$academic_year' 
+            AND semester_number=$semester_number";
+
+        $result = mysqli_query($this->connect, $sql);
+
+        return mysqli_num_rows($result) > 0;
+    }
+    public function updateSemester($id, $name, $academic_year, $semester_number, $start_date, $end_date)
+    {
+        $id = (int) $id;
+
+        $sql = "UPDATE semesters 
+            SET 
+                name = '$name',
+                academic_year = '$academic_year',
+                semester_number = '$semester_number',
+                start_date = '$start_date',
+                end_date = '$end_date'
+            WHERE id = $id";
+
+        return $this->__query($sql);
+    }
+    public function deleteSemester($id)
+    {
+        $sql = "delete from semesters where id= '$id'";
+        return $this->__query($sql);
+    }
+    public function activateSemester($id)
+    {
+        $id = (int) $id;
+
+        $sql = "
+        UPDATE semesters
+        SET is_active = CASE 
+            WHEN id = $id THEN 1
+            ELSE 0
+        END
+    ";
+
+        return $this->__query($sql);
+    }
+    public function deactivateSemester($id)
+    {
+        $id = (int) $id;
+
+        $sql = "UPDATE semesters 
+            SET is_active = 0
+            WHERE id = $id";
+
+        return $this->__query( $sql);
     }
 }

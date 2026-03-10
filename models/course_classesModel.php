@@ -227,8 +227,10 @@ WHERE course_class_id = $courseClassId;";
         return mysqli_fetch_assoc($query);
     }
 
-    public function getCourseClassSV($studentId)
+    public function getCourseClassSV($studentId, $academic_year)
     {
+        $academic_year = (int) $academic_year;
+        $studentId = (int) $studentId;
 
         $sql = "
         SELECT 
@@ -257,6 +259,7 @@ WHERE course_class_id = $courseClassId;";
             ' (Tuần ', t.start_week, '-', t.end_week,
             ' ', t.session, ')'
         )
+        ORDER BY t.day_of_week
         SEPARATOR '<br>'
     ) AS schedule,
 
@@ -264,7 +267,7 @@ WHERE course_class_id = $courseClassId;";
         SELECT 1 
         FROM student_course_classes sc2 
         WHERE sc2.course_class_id = cc.id 
-        AND sc2.student_id = '$studentId'
+        AND sc2.student_id = 29
     ) AS is_registered
 
 FROM course_classes cc
@@ -272,14 +275,11 @@ FROM course_classes cc
 JOIN subjects s 
     ON cc.subject_id = s.id
 
-JOIN student st                 
-    ON st.id = '$studentId'
-
 JOIN lecturer l 
     ON cc.lecturer_id = l.id
 
 JOIN semesters sem 
-    ON cc.semester_id = sem.id 
+    ON cc.semester_id = sem.id
     AND sem.is_active = 1
 
 LEFT JOIN timetables t 
@@ -290,14 +290,18 @@ LEFT JOIN student_course_classes scc
 
 WHERE 
     cc.status <> 'finished'
-    AND s.department_id = st.department_id   -- ✅ lọc đúng ngành
+    AND s.recommended_year = $academic_year
+    AND s.department_id = (
+        SELECT department_id 
+        FROM student 
+        WHERE id = $studentId
+    )
 
 GROUP BY 
-    cc.id,
-    cc.registration_start,
-    cc.registration_end
+    cc.id
 
-ORDER BY s.name;
+ORDER BY 
+    s.name;
     ";
 
         return $this->__query($sql);

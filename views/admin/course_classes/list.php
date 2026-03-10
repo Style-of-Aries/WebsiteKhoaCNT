@@ -40,7 +40,7 @@ ob_start();
             <td><?= htmlspecialchars($subject['class_code']) ?></td>
             <td><?= htmlspecialchars($subject['subject_name']) ?></td>
             <td><?= htmlspecialchars($subject['lecturer_name']) ?></td>
-            <td><?= htmlspecialchars($subject['semester_name']) ?></td>
+            <td><?= htmlspecialchars($subject['semester_name']) ?> (<?= htmlspecialchars($subject['academic_year']) ?>)</td>
             <td>
               <?= htmlspecialchars($subject['total_students']) ?>
               /

@@ -11,7 +11,7 @@ return [
     ],
 
     'training_office' => [
-        'departments', 'subjects', 'classes', 'course_classes', 'dashboard', 'training'
+        'departments', 'subjects', 'classes', 'course_classes', 'dashboard', 'training', 'semesters'
     ],
 
     'student_affairs' => [
@@ -19,6 +19,6 @@ return [
     ],
 
     'exam_office' => [
-        'score', 'view_scores', 'dashboard'
+        'score', 'view_scores', 'dashboard', 'result'
     ]
 ];

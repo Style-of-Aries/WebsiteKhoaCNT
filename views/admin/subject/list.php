@@ -1,6 +1,7 @@
 <!-- views/admin/songs/list.php -->
 <?php
 ob_start();
+// print_r($data);die();
 ?>
 <div class="admin-table-wrapper">
   <div class="table-toolbar">
@@ -29,17 +30,27 @@ ob_start();
           <th onclick="sortTable(2)">Mã môn học</th>
           <th onclick="sortTable(3)">Số tín chỉ</th>
           <th onclick="sortTable(4)">Ngành</th>
+          <th onclick="sortTable(5)">Năm đào tạo</th>
           <th class="action">Hành động</th>
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($subjects as $index => $subject): ?>
+        <?php foreach ($data as $index => $subject): ?>
           <tr>
             <td><?= $index + 1 ?></td>
             <td><?= htmlspecialchars($subject['name']) ?></td>
             <td><?= htmlspecialchars($subject['subject_code']) ?></td>
             <td><?= htmlspecialchars($subject['credits']) ?></td>
             <td><?= htmlspecialchars($subject['department_name']) ?></td>
+            <td>
+              <?php if ($subject['recommended_year'] == 1): ?>
+                Năm nhất
+              <?php elseif ($subject['recommended_year'] == 2): ?>
+                Năm hai
+              <?php else: ?>
+                Năm ba
+              <?php endif; ?>
+            </td>
             <td class="action">
               <!-- <a href="index.php?controller=subject&action=getAllSinhVienCuaMonHoc&id=<?= $subject['id'] ?>&user=<?= $subject['name'] ?>" class="action-btn yt-btn"><i class="ri-pencil-line"></i>Xem danh sách sinh viên</a>
               <a href="index.php?controller=subject&action=editMonHoc&id=<?= $subject['id'] ?>&user=<?= $subject['name'] ?>"

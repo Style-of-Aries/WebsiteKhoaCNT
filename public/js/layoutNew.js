@@ -47,6 +47,54 @@ function removeSchedule(btn) {
   btn.closest(".schedule-item").remove();
 }
 
+//#region ================= semesterSelect MODULE =================
+function initSemesterDate() {
+  const semesterSelect = document.getElementById("semester_number");
+  const academicYearInput = document.getElementById("academic_year");
+  const startDateInput = document.getElementById("start_date");
+  const endDateInput = document.getElementById("end_date");
+
+  // nếu không phải trang semester thì dừng
+  if (
+    !semesterSelect ||
+    !academicYearInput ||
+    !startDateInput ||
+    !endDateInput
+  ) {
+    return;
+  }
+
+  const semesterConfig = {
+    1: { start: "09-01", end: "01-10" },
+    2: { start: "01-15", end: "05-30" },
+  };
+
+  function updateSemesterDate() {
+    const semester = semesterSelect.value;
+    const yearText = academicYearInput.value;
+
+    if (!yearText.includes("-")) return;
+
+    const years = yearText.split("-");
+    const year1 = years[0];
+    const year2 = years[1];
+
+    const config = semesterConfig[semester];
+
+    let startYear = semester == 1 ? year1 : year2;
+    let endYear = year2;
+
+    startDateInput.value = startYear + "-" + config.start;
+    endDateInput.value = endYear + "-" + config.end;
+  }
+
+  semesterSelect.addEventListener("change", updateSemesterDate);
+  academicYearInput.addEventListener("input", updateSemesterDate);
+
+  updateSemesterDate();
+}
+
+//#endregion
 //#region ================= SORT MODULE =================
 
 let sortDirection = true;
@@ -192,6 +240,22 @@ function exportExcel(tableId = "mainTable", fileName = "DanhSach.xlsx") {
 //   }
 // const fullNameInput = document.querySelector('input[name="full_name"]');
 document.addEventListener("DOMContentLoaded", function () {
+  initSemesterDate();
+  //#region ================= checkbox-semester =================
+  document.querySelectorAll(".checkbox-semester").forEach((cb) => {
+    cb.addEventListener("change", function () {
+      let id = this.dataset.id;
+
+      if (this.checked) {
+        window.location.href =
+          "index.php?controller=semester&action=activateSemester&id=" + id;
+      } else {
+        window.location.href =
+          "index.php?controller=semester&action=deactivateSemester&id=" + id;
+      }
+    });
+  });
+  //#endregion
   //#region ================= FORMAT HỌ TÊN =================
 
   const fullNameInput = document.querySelector('input[name="full_name"]');
@@ -240,6 +304,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //#endregion
 
+  //#region ================= FORMAT DATE =================
+  // const start = document.querySelector("#start_date");
+  // const end = document.querySelector("#end_date");
+
+  // if (start) {
+  //   flatpickr("#start_date", {
+  //     dateFormat: "d/m/Y",
+  //     locale: "vn",
+  //   });
+  // }
+
+  // if (end) {
+  //   flatpickr("#end_date", {
+  //     dateFormat: "d/m/Y",
+  //     locale: "vn",
+  //   });
+  // }
+  //#endregion
   //#region ================= SEARCH MODULE =================
   const searchInput = document.getElementById("searchTable");
 
@@ -465,17 +547,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const x = 40 / (n + 2 * m);
 
-      txInputs.forEach((input) => {
-        input.value = x.toFixed(2);
+      let total = 0;
+
+      // TX
+      txInputs.forEach((input, i) => {
+        let val = parseFloat(x.toFixed(2));
+        input.value = val;
         input.readOnly = true;
+        total += val;
       });
 
-      dkInputs.forEach((input) => {
-        input.value = (2 * x).toFixed(2);
+      // DK
+      dkInputs.forEach((input, i) => {
+        let val = parseFloat((2 * x).toFixed(2));
+
+        // nếu là phần tử cuối thì bù sai số
+        if (i === dkInputs.length - 1) {
+          val = parseFloat((40 - total).toFixed(2));
+        }
+
+        input.value = val;
         input.readOnly = true;
+        total += val;
       });
     }
-
     // =============================
     function createRow(type, weight = null, lock = false) {
       const tr = document.createElement("tr");
@@ -591,24 +686,25 @@ document.addEventListener("DOMContentLoaded", function () {
   })();
   //#endregion
 });
-document.getElementById("departmentSelect").addEventListener("change", function(){
-
+document
+  .getElementById("departmentSelect")
+  .addEventListener("change", function () {
     let department_id = this.value;
 
-    fetch("index.php?controller=admin&action=getClassesByDepartment&department_id=" + department_id)
-    .then(response => response.json())
-    .then(data => {
-
+    fetch(
+      "index.php?controller=admin&action=getClassesByDepartment&department_id=" +
+        department_id,
+    )
+      .then((response) => response.json())
+      .then((data) => {
         let classSelect = document.getElementById("classSelect");
         classSelect.innerHTML = '<option value="">-- Chọn lớp --</option>';
 
-        data.forEach(cls => {
-            classSelect.innerHTML += `<option value="${cls.id}">${cls.class_name}</option>`;
+        data.forEach((cls) => {
+          classSelect.innerHTML += `<option value="${cls.id}">${cls.class_name}</option>`;
         });
-
-    });
-
-});
+      });
+  });
 // đổi màu khi chọn điểm danh
 function changeColor(select) {
   let cls = select.options[select.selectedIndex].dataset.class;
