@@ -29,6 +29,33 @@ class timetableModel
 
         return mysqli_num_rows($result) > 0;
     }
+    public function checkTrungLichGvTheoTuan($lecturer_id, $day_of_week, $session, $start_week, $end_week)
+    {
+        $sql = "SELECT t.id
+            FROM timetables t
+            JOIN course_classes cc ON t.course_class_id = cc.id
+            WHERE cc.lecturer_id = '$lecturer_id'
+            AND t.day_of_week = '$day_of_week'
+            AND t.session = '$session'
+            AND (
+                t.start_week <= '$end_week'
+                AND t.end_week >= '$start_week'
+            )";
+
+        $result = $this->__query($sql);
+
+        return mysqli_num_rows($result) > 0;
+    }
+    public function getLecturerByCourseClass($course_class_id)
+    {
+        $sql = "SELECT lecturer_id 
+            FROM course_classes 
+            WHERE id = '$course_class_id'";
+
+        $result = $this->__query($sql);
+
+        return mysqli_fetch_assoc($result);
+    }
     public function getAllNoAdd()
     {
         $sql = "SELECT 

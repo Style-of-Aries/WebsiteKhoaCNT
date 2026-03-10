@@ -27,8 +27,8 @@ ob_start();
         <label class="avatar-box" for="realFile">
             <div class="file-info">
                 <img id="avatarPreview" src="<?= !empty($studentprf['avatar'])
-                    ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
-                    : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
+                                                    ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
+                                                    : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
                 <span>
                     <?= !empty($studentprf['avatar'])
                         ? $studentprf['avatar']
@@ -38,6 +38,7 @@ ob_start();
         </label>
 
         <input type="file" name="avatar" id="realFile" hidden accept="image/*">
+        <input type="hidden" name="old_avatar" value="<?= $studentprf['avatar'] ?>">
 
 
         <div class="header-info">
@@ -50,8 +51,8 @@ ob_start();
             <div class="info-row">
                 <label>Mã sinh viên</label>
                 <input type="text" name="student_code" value="<?= $student['student_code'] ?>" required>
-                <span style="color:red"><?= $errorMaSv ?? '' ?></span>
             </div>
+            <span style="color:red"><?= $errorMaSv ?? '' ?></span>
 
         </div>
     </div>
@@ -73,27 +74,32 @@ ob_start();
         <div class="info-row">
             <label>Ngày sinh</label>
             <input type="date" name="date_of_birth" value="<?= $studentprf['date_of_birth'] ?>">
+
         </div>
+        <span style="color:red"><?= $errorDate ?? '' ?></span>
 
         <div class="info-row">
             <label>Email</label>
             <input type="email" name="email" value="<?= $studentprf['email'] ?>">
-            <span style="color:red"><?= $errorEmail ?? '' ?></span>
         </div>
+        <span style="color:red"><?= $errorEmail ?? '' ?></span>
 
         <div class="info-row">
             <label>Số điện thoại</label>
-            <input type="text" name="phone" value="<?= $studentprf['phone'] ?>">
+            <input type="text" name="phone" value="<?= $studentprf['phone'] ?>" required>
+
         </div>
+        <span style="color:red"><?= $errorSdt ?? '' ?></span>
 
         <div class="info-row">
             <label>CCCD / CMND</label>
-            <input type="text" name="identity_number" value="<?= $studentprf['identity_number'] ?>">
+            <input type="text" name="identity_number" value="<?= $studentprf['identity_number'] ?>" required>
         </div>
+        <span style="color:red"><?= $errorCccd ?? '' ?></span>
 
         <div class="info-row">
             <label>Địa chỉ</label>
-            <input type="text" name="address" value="<?= $studentprf['address'] ?>">
+            <input type="text" name="address" value="<?= $studentprf['address'] ?>" required>
         </div>
     </div>
 
@@ -124,7 +130,7 @@ ob_start();
             </select>
         </div>
 
-        
+
 
         <div class="info-row">
             <label>Hệ đào tạo</label>
@@ -162,13 +168,13 @@ ob_start();
         <h3>Tài khoản đăng nhập</h3>
 
         <div class="info-row">
-            <label>Username</label>
+            <label>Tài Khoản</label>
             <input type="text" name="username" value="<?= $userNd['username'] ?>">
             <span style="color:red"><?= $errorName ?? '' ?></span>
         </div>
 
         <div class="info-row">
-            <label>Password</label>
+            <label>Mật Khẩu</label>
             <input type="text" name="password" value="<?= $userNd['password'] ?>">
         </div>
     </div>
