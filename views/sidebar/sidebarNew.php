@@ -58,7 +58,7 @@ if($role === 'lecturer') {
     <li class="<?= PermissionService::has($role, 'students') ? 'dropdown' : 'locked' ?>">
         <a class="drop-btn" href="index.php?controller=admin&action=getAllUser">Người dùng</a>
     </li>
-    <li class="dropdown">
+    <li class="<?= PermissionService::has($role, 'training') ? 'dropdown' : 'locked' ?>">
         <a class="drop-btn">Đào tạo ▸</a>
         <ul class="submenu">
 
@@ -74,9 +74,9 @@ if($role === 'lecturer') {
                 <a href="index.php?controller=classes&action=getAllLopHoc">Lớp hành chính</a>
             </li>
 
-            <!-- <li class="<?= PermissionService::has($role, 'semesters') ? 'dropdown' : 'locked' ?>">
+            <li class="<?= PermissionService::has($role, 'semesters') ? 'dropdown' : 'locked' ?>">
                 <a href="index.php?controller=semester&action=getAllSemester">Học kỳ</a>
-            </li> -->
+            </li>
 
             <li class="<?= PermissionService::has($role, 'course_classes') ? 'dropdown' : 'locked' ?>">
                 <a href="index.php?controller=course_classes&action=getAllHocPhan">Lớp học phần</a>
@@ -89,7 +89,7 @@ if($role === 'lecturer') {
         <a class="drop-btn" href="index.php?controller=admin&action=getAllSinhVien">Hồ sơ sinh viên</a>
     </li>
 
-    <li class="dropdown">
+    <li class="<?= PermissionService::has($role, 'result') ? 'dropdown' : 'locked' ?>">
         <a class="drop-btn">Kết quả học tập ▸</a>
         <ul class="submenu">
 

@@ -80,10 +80,14 @@ require_once __DIR__ . "/../../config/config.php";
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script src="<?= BASE_URL ?>js/adminNew.js"></script> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vn.js"></script>
     <?php if ($_GET['controller'] === 'lecturer' && $_GET['action'] === 'updateResultByCourseClass'): ?>
         <script src="<?= BASE_URL ?>js/validateScore.js"></script>
     <?php endif; ?>
     <script src="<?= BASE_URL ?>js/layoutNew.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </body>
 

@@ -54,11 +54,31 @@ class studentSemesterModel
             WHERE student_id = $studentId
             AND status = 'studying'";
 
-        $result = $this->__query( $sql);
+        $result = $this->__query($sql);
         $row = mysqli_fetch_assoc($result);
 
         $year = (int) $row['academic_year'];
 
         return $year > 0 ? $year : 1;
+    }
+
+    public function createForNewSemester($semesterId)
+    {
+        $semesterId = (int) $semesterId;
+
+        $sql = "
+    INSERT INTO student_semesters (student_id, semester_id, status)
+    SELECT s.id, $semesterId, 'studying'
+    FROM student s
+    JOIN student_profiles sp ON sp.student_id = s.id
+    WHERE sp.status = 'Đang học'
+    AND NOT EXISTS (
+        SELECT 1
+        FROM student_semesters ss
+        WHERE ss.student_id = s.id
+        AND ss.semester_id = $semesterId
+    )";
+
+        return $this->__query( $sql);
     }
 }

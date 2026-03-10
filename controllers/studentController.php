@@ -11,22 +11,28 @@ require_once '../config/config.php';
 require_once '../models/classesModel.php';
 require_once '../models/departmentModel.php';
 require_once '../models/academicResultsModel.php';
+require_once '../models/studentSemesterModel.php';
+require_once '../models/semesterModel.php';
 class studentController
 {
     private $academicResultsModel;
     private $connect;
     private $courseClassModel;
+    private $semesterModel;
     private $studentModel;
     private $classesModel;
     private $departmentModel;
     private $timetableModel;
+    private $studentSemesterModel;
     private $userModel;
     public function __construct($connect)
     {
         $this->connect = $connect;
         $this->academicResultsModel = new academicResultsModel($connect);
         $this->userModel = new userModel($connect);
+        $this->semesterModel = new semesterModel($connect);
         $this->classesModel = new classesModel($connect);
+        $this->studentSemesterModel = new studentSemesterModel($connect);
         $this->departmentModel = new departmentModel($connect);
         $this->studentModel = new studentModel($connect);
         $this->timetableModel = new timetableModel($connect);
@@ -50,6 +56,7 @@ class studentController
         $student = $this->studentModel->getById($id);
         $studentprf = $this->studentModel->getById($id);
         $userNd = $this->userModel->getByRef_id($id);
+        $academic_year = $this->studentSemesterModel->getAcademicYear($id);
         // include "./../views/user/profile.php";
         require_once '../views/user/student/profileNew.php';
     }
@@ -193,9 +200,10 @@ class studentController
 
     public function getCourseClass()
     {
+        $semesterNow = $this->semesterModel->getActiveSemester();
         $studentId = $_SESSION['user']['ref_id'];
-        
-        $classes = $this->courseClassModel->getCourseClassSV($studentId);
+        $academic_year = $this->studentSemesterModel->getAcademicYear($studentId);
+        $classes = $this->courseClassModel->getCourseClassSV($studentId, $academic_year);
         require_once '../views/user/student/dangKyLop.php';
     }
     public function registerCourseClass()

@@ -166,3 +166,5 @@
 2026-03-08 21:21:56 | Nguyễn Đức Trọng không đủ điều kiện chuyên cần (< 80%)
 2026-03-08 21:21:56 | SV 29: Nguyễn Đức Trọng không đủ điều kiện chuyên cần (< 80%)
 >>>>>>> 1c494f538741627def7b7029d1848af2f5cfb060
+2026-03-10 16:52:26 | Tổng trọng số phải bằng 100%
+2026-03-10 16:53:25 | Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb3_general_ci,COERCIBLE) for operation 'like'

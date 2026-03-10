@@ -467,7 +467,7 @@ class course_classesController
                 $error = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.";
             }
 
-            if (date("Y-m-d") > date("Y-m-d", $startTime) && $error === '') {
+            if (date("Y-m-d",NOW) > date("Y-m-d", $startTime) && $error === '') {
                 $error = "Ngày bắt đầu không được nhỏ hơn hôm nay.";
             }
         }
@@ -604,7 +604,7 @@ class course_classesController
             }
 
             // Khi sửa: không cho sửa start < hôm nay nếu lớp chưa bắt đầu
-            if (date("Y-m-d") > date("Y-m-d", $startTime) && $error === '') {
+            if (date("Y-m-d",NOW) > date("Y-m-d", $startTime) && $error === '') {
                 $error = "Ngày bắt đầu không được nhỏ hơn hôm nay.";
             }
         }

@@ -2,6 +2,8 @@
 ob_start();
 $old = $_SESSION['old'] ?? [];
 unset($_SESSION['old']);
+$startDay = date('Y-m-d', NOW);
+$endDay = date('Y-m-d', strtotime('+10 days', NOW));
 ?>
 
 <div class="container-main">
@@ -72,13 +74,13 @@ unset($_SESSION['old']);
             <div class="col">
                 <label>Thời gian bắt đầu đăng ký</label>
                 <input type="date" name="registration_start"
-                    value="<?= htmlspecialchars($old['registration_start'] ?? '') ?>">
+                    value="<?= htmlspecialchars($old['registration_start'] ?? $startDay) ?>" readonly>
             </div>
 
             <div class="col">
                 <label>Thời gian kết thúc đăng ký</label>
                 <input type="date" name="registration_end"
-                    value="<?= htmlspecialchars($old['registration_end'] ?? '') ?>">
+                    value="<?= htmlspecialchars($old['registration_end'] ?? $endDay) ?>" readonly>
             </div>
         </div>
         <button name="btn_add" type="submit" class="btn-submit">Thêm lớp học phần</button>

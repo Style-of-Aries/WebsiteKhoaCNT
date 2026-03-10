@@ -1,5 +1,6 @@
 <?php
 ob_start();
+// var_dump($academic_year);die();
 ?>
 
 <div class="profile-paper">

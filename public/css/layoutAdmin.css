@@ -7,7 +7,7 @@
   --blue-main: #2f6fb3;
   --blue-light: #4f8fd8;
 
-  --green-main: #2fae60;
+  --green-main: #339a47;
   --green-light: #5bc98a;
 
   --orange-main: #f39c3d;
@@ -37,6 +37,16 @@ body {
 a {
   display: block;
   text-decoration: none;
+}
+
+.input-error {
+    border: 2px solid #ff4d4f;
+    background-color: #fff1f0;
+}
+
+.error-text {
+    color: #ff4d4f;
+    font-size: 13px;
 }
 
 /* ===============================
@@ -126,7 +136,11 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
+.col-center {
+  /* text-align: none; */
+  text-align: center;
+  /* margin: auto; */
+}
 .custom-checkbox {
   display: flex;
   align-items: center;
@@ -653,6 +667,7 @@ select {
   justify-content: start;
   gap: 5px;
   width: 320px;
+  align-items: center;
 }
 /* Name column*/
 .main-table .thName,
@@ -849,6 +864,10 @@ select {
   font-size: 12px;
   font-weight: 600;
   color: #475569;
+}
+.count-badge.green {
+  background-color: var(--green-main);
+  color: #fff;
 }
 
 .btn-submit {
@@ -1830,6 +1849,19 @@ select {
   margin-top: 3px;
 }
 
+.semester-table th:nth-child(4),
+.semester-table th:nth-child(5),
+.semester-table th:nth-child(6) {
+  text-align: center;
+}
+
+.semester-table td:nth-child(4),
+.semester-table td:nth-child(5),
+.semester-table td:nth-child(6) {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* ===== BẢNG ĐIỂM SINH VIÊN ===== */
 
 .grade-table th:nth-child(4),
@@ -2037,4 +2069,47 @@ select {
 .export-btn:active {
   transform: translateY(0);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.checkbox-semester {
+  display: none;
+}
+
+.slider-semester {
+  width: 60px;
+  height: 30px;
+  background-color: lightgray;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border: 4px solid transparent;
+  transition: .3s;
+  box-shadow: 0 0 10px 0 rgb(0, 0, 0, 0.25) inset;
+  cursor: pointer;
+}
+
+.slider-semester::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  transform: translateX(-30px);
+  border-radius: 20px;
+  transition: .3s;
+  box-shadow: 0 0 10px 3px rgb(0, 0, 0, 0.25);
+}
+
+.checkbox-semester:checked ~ .slider-semester::before {
+  transform: translateX(30px);
+  box-shadow: 0 0 10px 3px rgb(0, 0, 0, 0.25);
+}
+
+.checkbox-semester:checked ~ .slider-semester {
+  background-color: #2196F3;
+}
+
+.checkbox-semester:active ~ .slider-semester::before {
+  transform: translate(0);
 }

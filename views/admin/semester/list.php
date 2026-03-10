@@ -1,0 +1,93 @@
+<?php
+ob_start();
+?>
+<div class="admin-table-wrapper">
+    <div class="table-toolbar">
+        <h2>Danh sách Học kỳ</h2>
+        <input type="text" id="searchTable" placeholder="Tìm kiếm học kỳ, năm học...">
+    </div>
+
+    <button class="add-button" onclick="location.href='index.php?controller=semester&action=addSemester'">
+        <div class="sign">+</div>
+        <div class="text">Thêm Học kỳ</div>
+    </button>
+
+    <div class="table-wrap">
+        <table class="main-table semester-table" id="mainTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">STT</th>
+                    <th onclick="sortTable(1)">Tên học kỳ</th>
+                    <th onclick="sortTable(2)">Năm học</th>
+                    <!-- <th onclick="sortTable(3)">Số học kỳ</th> -->
+                    <th onclick="sortTable(3)">Ngày bắt đầu</th>
+                    <th onclick="sortTable(4)">Ngày kết thúc</th>
+                    <th onclick="sortTable(5)">Trạng thái</th>
+                    <th class="action">Hành động</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php $stt = 1;
+                foreach ($semesters as $semester): ?>
+                    <tr>
+
+                        <td><?= $stt++; ?></td>
+
+                        <td><?= htmlspecialchars($semester['name']) ?></td>
+
+                        <td><?= htmlspecialchars($semester['academic_year']) ?></td>
+
+                        <!-- <td><?= htmlspecialchars($semester['semester_number']) ?></td> -->
+
+                        <td><?= date('d/m/Y', strtotime($semester['start_date'])) ?></td>
+
+                        <td><?= date('d/m/Y', strtotime($semester['end_date'])) ?></td>
+
+                        <td>
+                            <?php if ($semester['is_active']): ?>
+                                <span class="count-badge green">Đang hoạt động</span>
+                            <?php else: ?>
+                                <span class="count-badge">Đã đóng</span>
+                            <?php endif; ?>
+                        </td>
+
+                        <td class="action">
+                            <label class="switch-semester">
+                                <input type="checkbox" class="checkbox-semester" data-id="<?= $semester['id'] ?>"
+                                    <?= $semester['is_active'] ? 'checked' : '' ?>>
+                                <div class="slider-semester"></div>
+                            </label>
+                            <button class="edit-button"
+                                onclick="location.href='index.php?controller=semester&action=editSemester&id=<?= $semester['id'] ?>'">
+                                <svg class="edit-svgIcon" viewBox="0 0 512 512">
+                                    <path
+                                        d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z">
+                                    </path>
+                                </svg>
+                            </button>
+
+                            <button class="delete-button"
+                                onclick="if(confirm('Xóa học kỳ này?')) location.href='index.php?controller=semester&action=deleteSemester&id=<?= $semester['id'] ?>'">
+                                <svg class="delete-svgIcon" viewBox="0 0 448 512">
+                                    <path
+                                        d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z">
+                                    </path>
+                                </svg>
+                            </button>
+
+                        </td>
+
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+</div>
+
+<?php
+$content = ob_get_clean();
+include "../views/admin/layoutNew.php";
+?>
