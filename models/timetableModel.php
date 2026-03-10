@@ -179,6 +179,7 @@ SELECT
     sb.name AS subject_name,
     cs.day_of_week,
     cs.session,
+    cs.session_date, 
     r.room_name,
     l.full_name AS lecturer_name,
 
@@ -190,10 +191,12 @@ FROM student_course_classes scc
 JOIN course_classes cc 
     ON cc.id = scc.course_class_id
 
+JOIN semesters se
+    ON se.id = cc.semester_id
+
 JOIN subjects sb 
     ON sb.id = cc.subject_id
 
--- Lấy lịch từ class_sessions thay vì timetables
 JOIN class_sessions cs 
     ON cs.course_class_id = cc.id
 
@@ -203,7 +206,6 @@ JOIN rooms r
 JOIN lecturer l 
     ON l.id = cc.lecturer_id
 
--- Lấy toàn bộ sinh viên học chung học phần
 JOIN student_course_classes scc2 
     ON scc2.course_class_id = cc.id
 
@@ -215,11 +217,13 @@ JOIN classes c
 
 WHERE scc.student_id = $studentId
   AND cs.week_number = $week
+  AND se.is_active = 1   -- học kỳ đang hoạt động
 
 GROUP BY 
     sb.name,
     cs.day_of_week,
     cs.session,
+    cs.session_date,
     r.room_name,
     l.full_name
 

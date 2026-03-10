@@ -8,7 +8,12 @@ $schedule = [];
 foreach ($timetables as $row) {
     $schedule[$row['session']][$row['day_of_week']][] = $row;
 }
-?>
+// $dates = [];
+
+// foreach ($timetables as $row) {
+//     $dates[$row['day_of_week']] = date('d/m/Y', strtotime($row['session_date']));
+// }
+// ?>
 
 <div class="card">
     <h2 class="card-title">Thời khóa biểu</h2>
@@ -43,10 +48,14 @@ foreach ($timetables as $row) {
             6 => 'Thứ 6',
             7 => 'Thứ 7'
         ];
-        foreach ($days as $d):
-            ?>
-            <div class="tkb-header"><?= $d ?></div>
+        ?>
+        <?php foreach ($days as $dayKey => $dayLabel): ?>
+            <div class="tkb-header">
+                <?= $dayLabel ?><br>
+                <!-- <small><?= $dates[$dayKey] ?? '' ?></small> -->
+            </div>
         <?php endforeach; ?>
+
 
         <!-- ===== CA SÁNG ===== -->
         <div class="tkb-time">
