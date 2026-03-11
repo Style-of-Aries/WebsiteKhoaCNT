@@ -127,7 +127,7 @@ class userController
         }
 
         include_once "./../views/admin/users/add.php";
-    }
+    }   
     public function editUser()
     {
         $id_user = $_GET['id'];
