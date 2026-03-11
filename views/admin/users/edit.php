@@ -16,6 +16,9 @@ ob_start();
         <label>Email</label>
         <input type="email" name="email" value="<?= $if_user['email'] ?>">
     </div>
+    <?php if (!empty($errorEmail)): ?>
+        <p style="color:red;"><?= $errorEmail ?></p>
+    <?php endif; ?>
     <label>Role</label>
     <input type="text" value="<?=
         $user['role'] == 'training_office' ? 'Phòng đào tạo' : ($user['role'] == 'lecturer' ? 'Giảng viên' : ($user['role'] == 'academic_affairs' ? 'Học vụ' : ($user['role'] == 'exam_office' ? 'Khảo thí' : ($user['role'] == 'student_affairs' ? 'Công tác SV' : ''))))

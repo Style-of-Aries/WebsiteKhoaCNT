@@ -338,6 +338,11 @@ class timetableController
                     ) {
                         $errors['room_id'] = "Phòng học đã có lịch";
                     }
+                    $course_classes = $this->course_classesModel->getByCoures_class_id($course_class_id);
+                    $soLuong = $course_classes['max_students'];
+                    if($this->timetableModel->checkSoLuong($soLuong,$room_id)){
+                            $errors['room_id'] = "Phòng học này có số lượng tối đa :.$soLuong";
+                    }
                 }
             }
 

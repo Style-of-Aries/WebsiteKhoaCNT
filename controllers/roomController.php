@@ -11,9 +11,10 @@ require_once "./../models/semesterModel.php";
 require_once "./../models/timetableModel.php";
 require_once "./../models/roomModel.php";
 
-class timetableController
+class roomController
 {
-    private $userModel;private $connect;
+    private $userModel;
+    private $connect;
     private $studentModel;
     private $lecturerModel;
     private $classesModel;
@@ -39,103 +40,103 @@ class timetableController
         $this->roomModel = new roomModel($connect);
     }
 
-    public function getAllHocPhan()
+    public function getAll()
     {
-        $course_classes = $this->course_classesModel->getAll();
-        require_once './../views/admin/course_classes/list.php';
+        $room = $this->roomModel->getAll();
+        require_once './../views/admin/room/list.php';
     }
 
-
-    public function lichHoc()
+    public function addPhongHoc()
+    {
+        require_once './../views/admin/room/add.php';
+    }
+    public function editPhongHoc()
     {
         $id = $_GET['id'];
-        // $timetables = ;
-        require_once './../views/admin/timetable/listGv.php';
-    }
-    public function addHocPhan()
-    {
-        $errorHocPhan = "";
-        $subject = $this->subjectModel->getAll();
-        $lecturer = $this->lecturerModel->getAll();
-        $semester = $this->semesterModel->getAll();
-        require_once './../views/admin/course_classes/add.php';
-    }
-    public function editHocPhan()
-    {
-        $id = $_GET['id'];
-        $subject = $this->subjectModel->getAll();
-        $lecturer = $this->lecturerModel->getAll();
-        $semester = $this->semesterModel->getAll();
-        $course_classes=$this->course_classesModel->getById($id);
-        require_once './../views/admin/course_classes/edit.php';
+        $rooms = $this->roomModel->getById($id);
+        require_once './../views/admin/room/edit.php';
     }
     // thêm 
     public function add()
     {
-        if ($_POST['btn_add']) {
+        $errorName = null;
+        $old = [];
 
-            $subject_id = $_POST['subject_id'];
-            $lecturer_id = $_POST['lecturer_id'];
-            $semester_id = $_POST['semester_id'];
-            $max_students = $_POST['max_students'];
-            $class_code = $this->course_classesModel->malop($subject_id);
-            if ($this->course_classesModel->checkHocPhan($subject_id, $lecturer_id, $semester_id)) {
-                $errorHocPhan = "Giảng viên đã dạy môn này!";
-            }
-            if (empty($errorHocPhan)) {
-                $course_classes = $this->course_classesModel->addHocPhan($subject_id, $lecturer_id, $semester_id, $class_code, $max_students);
-                if ($course_classes) {
-                    $this->getAllHocPhan();
+        if (isset($_POST['btn_add'])) {
+
+            $room_name = $_POST['room_name'] ?? null;
+            $building = $_POST['building'] ?? null;
+            $capacity = $_POST['capacity'] ?? null;
+            $type = $_POST['type'] ?? null;
+
+            // Lưu lại dữ liệu cũ
+            $old = [
+                'room_name' => $room_name,
+                'building' => $building,
+                'capacity' => $capacity,
+                'type' => $type
+            ];
+
+            // 1Kiểm tra email trùng
+            $checkName = $this->roomModel->checkName($room_name, $building);
+
+            if ($checkName) {
+                $errorName = "Phòng học đã tồn tại!";
+            } else {
+                $room = $this->roomModel->addRoom(
+                    $room_name,
+                    $building,
+                    $capacity,
+                    $type
+                );
+
+                if ($room) {
+                    $this->getAll();
                     exit();
                 }
-            } else {
-                $subject = $this->subjectModel->getAll();
-                $lecturer = $this->lecturerModel->getAll();
-                $semester = $this->semesterModel->getAll();
             }
         }
-        include_once "./../views/admin/course_classes/add.php";
+
+        include_once "./../views/admin/room/add.php";
     }
     // sửa 
     public function edit()
     {
         if ($_POST['btn_edit']) {
             $id = $_POST['id'];
-            $subject_id = $_POST['subject_id'];
-            $lecturer_id = $_POST['lecturer_id'];
-            $semester_id = $_POST['semester_id'];
-            $max_students = $_POST['max_students'];
-            $class_code = $_POST['class_code'];
-            if ($this->course_classesModel->checkHocPhan($subject_id, $lecturer_id, $semester_id)) {
-                $errorHocPhan = "Giảng viên đã dạy môn này!";
+            $room_name = $_POST['room_name'] ?? null;
+            $building = $_POST['building'] ?? null;
+            $capacity = $_POST['capacity'] ?? null;
+            $type = $_POST['type'] ?? null;
+            $checkName = $this->roomModel->checkNameId($id, $room_name, $building);
+            if ($checkName) {
+                $errorName = "Phòng học đã tồn tại!";
             }
-            if (empty($errorHocPhan)) {
-                $course_classes = $this->course_classesModel->editHocPhan($id, $subject_id, $lecturer_id, $semester_id, $class_code, $max_students);
-                if ($course_classes) {
-                    $this->getAllHocPhan();
+
+            if (empty($errorName)) {
+                $room = $this->roomModel->editPhongHoc($id,$room_name,$building,$capacity,$type);
+                if ($room) {
+                    $this->getAll();
                     exit();
                 }
             } else {
 
-                $course_classes = [
-                    'max_students' => $max_students,
-                    'class_code' => $class_code,
+                $rooms = [
+                    'room_name' => $room_name,
+                    'building' => $building,
                     'id' => $id,
-                    'subject_id' => $subject_id,
-                    'lecturer_id' => $lecturer_id,
-                    'semester_id' => $semester_id
+                    'capacity' => $capacity,
+                    'type' => $type
                 ];
-                $subject = $this->subjectModel->getAll();
-                $lecturer = $this->lecturerModel->getAll();
-                $semester = $this->semesterModel->getAll();
+                
             }
         }
-        include_once "./../views/admin/course_classes/edit.php";
+        include_once "./../views/admin/room/edit.php";
     }
-    public function deleteHocPhan()
+    public function deleteRoom()
     {
         $id = $_GET['id'];
-        $this->course_classesModel->deleteHocPhan($id);
-        $this->getAllHocPhan();
+        $this->roomModel->deleteRoom($id);
+        $this->getAll();
     }
 }

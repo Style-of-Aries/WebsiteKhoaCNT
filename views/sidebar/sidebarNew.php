@@ -66,6 +66,9 @@ if($role === 'lecturer') {
                 <a href="index.php?controller=department&action=getAllKhoa">Khoa</a>
             </li>
 
+            <li class="<?= PermissionService::has($role, 'room') ? 'dropdown' : 'locked' ?>">
+                <a href="index.php?controller=room&action=getAll">Phòng học</a>
+            </li>
             <li class="<?= PermissionService::has($role, 'subjects') ? 'dropdown' : 'locked' ?>">
                 <a href="index.php?controller=subject&action=getAllMonHoc">Môn học</a>
             </li>

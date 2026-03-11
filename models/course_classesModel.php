@@ -214,6 +214,12 @@ ORDER BY
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
+    public function getByCoures_class_id($course_class_id)
+    {
+        $sql = "SELECT * FROM course_classes WHERE id='$course_class_id'";
+        $query = $this->__query($sql);
+        return mysqli_fetch_assoc($query);
+    }
 
     public function getTimeStudying($courseClassId)
     {
