@@ -11,7 +11,7 @@ return [
     ],
 
     'training_office' => [
-        'departments', 'subjects', 'classes', 'course_classes', 'dashboard', 'training', 'semesters'
+        'departments', 'subjects', 'classes', 'course_classes', 'dashboard', 'training', 'semesters', 'room'
     ],
 
     'student_affairs' => [
