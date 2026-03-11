@@ -436,6 +436,10 @@ class course_classesController
             $error = "Sĩ số phải là số nguyên lớn hơn 0";
         }
 
+        if($max_students >= 50 && $error === '') {
+            $error = "Sĩ số tối đa chỉ được 50 sinh viên 1 lớp";
+        }
+
         /* ===== Validate thời gian ===== */
 
         if (empty($registration_start) && $error === '') {
