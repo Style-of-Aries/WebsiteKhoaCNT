@@ -143,12 +143,53 @@ class userController
                 $this->editSv();
                 exit();
                 // var_dump($user);
-            } else {
+            }elseif($role === 'admin') {
+                $this->editAdmin();
+                exit();
+            }
+             else {
 
                 $if_user = $this->userModel->getByIdUsers($role, $id);
             }
         }
         require_once './../views/admin/users/edit.php';
+    }
+    public function editAdmin()
+    {
+        $id_user = $_GET['id'];
+        $user = $this->userModel->getByIdUser($id_user);
+        require_once './../views/admin/users/editAdmin.php';
+    }
+    public function editAd()
+    {
+         if (isset($_POST['btn_edit'])) {
+            $id = $_POST['id'];
+            $role = $_POST['role'];
+            $username = $_POST['username'] ?? null;
+            $password = $_POST['password'] ?? null;
+            // if ($role === 'lecturer') {
+            // }
+            $checkUsername = $this->userModel->checkUsernameById($id,$username);
+            // var_dump($user);die();
+            if (($checkUsername)) {
+                $errorUsername = "Email đã tồn tại!";
+            }
+            if (empty($errorUsername)) {
+                $user = $this->userModel->editAdmin($username,$password, $id);
+                if ($user) {
+                    $this->getAllUser();
+                    exit();
+                }
+            } else {
+                $user = [
+                    'role' => $role,
+                    'username' => $username,
+                    'password' => $password
+
+                ];
+            }
+        }
+        include_once "./../views/admin/users/editAdmin.php";
     }
     public function editSv()
     {
@@ -174,20 +215,30 @@ class userController
             // if ($role === 'lecturer') {
             // }
             $department = $_POST['department_id'] ?? null;
-
-
-            $checkEmail = $this->userModel->checkEmailByRole($role, $email);
-
-
+            $checkEmail = $this->userModel->checkEmailByIdRole($id,$role, $email);
             // var_dump($user);die();
             if (($checkEmail)) {
                 $errorEmail = "Email đã tồn tại!";
-            } else {
+            }
+            if (empty($errorEmail)) {
                 $user = $this->userModel->editUser($role, $full_name, $email, $department, $id);
                 if ($user) {
                     $this->getAllUser();
                     exit();
                 }
+            } else {
+                $if_user = [
+                    'id' => $id,
+                    // 'role' => $role,
+                    'full_name' => $full_name,
+                    'email' => $email,
+                    'department_id' => $department
+                ];
+                $user = [
+                    'role' => $role,
+
+                ];
+                $department = $this->departmentModel->getAllFaculty();
             }
         }
         include_once "./../views/admin/users/edit.php";

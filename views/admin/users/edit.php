@@ -16,6 +16,9 @@ ob_start();
         <label>Email</label>
         <input type="email" name="email" value="<?= $if_user['email'] ?>">
     </div>
+    <?php if (!empty($errorEmail)): ?>
+        <p style="color:red;"><?= $errorEmail ?></p>
+    <?php endif; ?>
     <label>Role</label>
     <input type="text"
         value="<?=

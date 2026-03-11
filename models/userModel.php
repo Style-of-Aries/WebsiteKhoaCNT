@@ -215,6 +215,66 @@ LEFT JOIN student_affairs sa
 
         return false; // Email hợp lệ
     }
+    public function checkEmailByIdRole($id,$role, $email)
+    {
+        switch ($role) {
+            case 'lecturer':
+                $table = 'lecturer';
+                break;
+
+            case 'student':
+                $table = 'student_profiles';
+                break;
+
+            case 'training_office':
+                $table = 'training_office';
+                break;
+
+            case 'academic_affairs':
+                $table = 'academic_affairs';
+                break;
+
+            case 'exam_office':
+                $table = 'exam_office';
+                break;
+
+            case 'student_affairs':
+                $table = 'student_affairs';
+                break;
+
+            default:
+
+                return "role k tồn tại" . false; // role không hợp lệ
+        }
+
+        $sql = "SELECT id FROM $table 
+            WHERE email = '$email' AND id != '$id'
+            LIMIT 1";
+
+        $result = mysqli_query($this->connect, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            return true;  // Email đã tồn tại
+        }
+
+        return false; // Email hợp lệ
+    }
+    public function checkUsernameById($id,$username)
+    {
+        
+
+        $sql = "SELECT id FROM users
+            WHERE username = '$username' AND id != '$id'
+            LIMIT 1";
+
+        $result = mysqli_query($this->connect, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            return true;  // Email đã tồn tại
+        }
+
+        return false; // Email hợp lệ
+    }
     public function addUser($role, $full_name, $email, $code, $department)
     {
 
@@ -403,7 +463,12 @@ LEFT JOIN student_affairs sa
             $sql = "UPDATE student_affairs SET full_name='$full_name',email='$email' WHERE id='$id'";
             return $this->__query($sql);
         }
+    }public function editAdmin($username,$password, $id)
+    {
+            $sql = "UPDATE users SET username='$username',password='$password' WHERE id='$id'";
+            return $this->__query($sql);
     }
+    
     public function getByIdUsers($role, $id)
     {
         switch ($role) {
