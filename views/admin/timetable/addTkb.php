@@ -8,7 +8,7 @@
         <select name="course_class_id">
             <?php foreach ($subject as $s): ?>
                 <option value="<?= $s['id'] ?>">
-                    <?= $s['subject_name'] ?> - <?= $s['class_code'] ?> - <?= $s['lecturer_name'] ?>
+                    <?= $s['subject_name'] ?> - <?= $s['class_code'] ?> - <?= $s['lecturer_name'] ?> - Số lượng tối đa : <?= $s['max_students'] ?>
                 </option>
             <?php endforeach; ?>
         </select>
@@ -83,7 +83,7 @@
                         <?php foreach ($rooms as $r): ?>
                             <option value="<?= $r['id'] ?>"
                                 <?= ($oldRooms[$index] ?? '') == $r['id'] ? 'selected' : '' ?>>
-                                <?= $r['room_name'] ?> (<?= $r['building'] ?>)
+                                <?= $r['room_name'] ?> (<?= $r['building'] ?>) - Số lượng:  <?= $r['capacity'] ?>
                             </option>
                         <?php endforeach; ?>
                     </select>

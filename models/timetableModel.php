@@ -61,6 +61,7 @@ class timetableModel
         $sql = "SELECT 
         cc.id,
     cc.class_code,
+    cc.max_students,
     s.name AS subject_name,
     l.full_name AS lecturer_name,
     se.name AS semester_name,
@@ -603,6 +604,24 @@ ORDER BY
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
     }
+    public function checkSoLuong($soLuong, $room_id)
+{
+    $sql = "SELECT capacity FROM rooms WHERE id = $room_id";
+            $query = $this->__query($sql);
+
+
+    if (!$query || mysqli_num_rows($query) == 0) {
+        return false; // phòng không tồn tại
+    }
+
+    $room = mysqli_fetch_assoc($query);
+
+    if ($room['capacity'] <= $soLuong) {
+        return true; // k đủ chỗ
+    }
+
+    return false; // đủ chỗ
+}
     public function updateClass_sessions(
         $id,
         $room_id,
