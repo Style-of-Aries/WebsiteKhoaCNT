@@ -20,7 +20,7 @@ ob_start();
   </button>
 
   <div class="table-wrap">
-    <table class="main-table" id="mainTable">
+    <table class="main-table student-table" id="mainTable">
       <thead>
         <tr>
           <th onclick="sortTable(0)">STT</th>
@@ -28,6 +28,7 @@ ob_start();
           <th onclick="sortTable(2)">Mã sinh viên</th>
           <th onclick="sortTable(3)">Email</th>
           <th onclick="sortTable(4)">Khoa</th>
+          <th onclick="sortTable(5)">Năm học</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -39,6 +40,7 @@ ob_start();
             <td><?= htmlspecialchars($user['student_code']) ?></td>
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td><?= htmlspecialchars($user['department_name']) ?></td>
+            <td>Năm <?= htmlspecialchars($user['student_year']) ?></td>
             <td class="action">
               <!-- <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>"
                 class="action-btn edit-btn"><i class="ri-pencil-line"></i>Chi tiết</a>

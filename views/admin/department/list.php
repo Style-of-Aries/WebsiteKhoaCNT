@@ -25,11 +25,11 @@ ob_start();
       <thead>
         <tr>
           <th onclick="sortTable(0)">STT</th>
-          <th onclick="sortTable(1)">Tên Khoa</th>
+          <th onclick="sortTable(1)">Tên</th>
           <th onclick="sortTable(2)">Loại đơn vị</th>
           <th onclick="sortTable(3)">Thuộc</th>
-          <th onclick="sortTable(4)">Giáo viên</th>
-          <th onclick="sortTable(5)">Ngày thành lập</th>
+          <!-- <th onclick="sortTable(4)">Giáo viên</th> -->
+          <th onclick="sortTable(4)">Ngày thành lập</th>
           <th class="action">Hành động</th>
         </tr>
       </thead>
@@ -40,7 +40,7 @@ ob_start();
             <td><?= htmlspecialchars($department['faculty_name']) ?></td>
             <td><?= htmlspecialchars($department['type']) ?></td>
             <td><?= htmlspecialchars($department['parent_name']) ?></td>
-            <td><span class="count-badge"><?= htmlspecialchars($department['staff_count']) ?> GV</span></td>
+            <!-- <td><span class="count-badge"><?= htmlspecialchars($department['staff_count']) ?> GV</span></td> -->
             <td><?= date('d/m/Y', strtotime($department['created_at'])) ?></td>
             <td class="action">
               <!-- <a href="index.php?controller=department&action=getAllGiangVienCuaKhoa&id=<?= $department['id'] ?>&user=<?= $department['faculty_name'] ?>"

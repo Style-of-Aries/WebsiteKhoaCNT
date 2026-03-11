@@ -30,16 +30,16 @@ class subjectController
     }
 
     public function getAllMonHoc()
-{
-    $subjects = $this->subjectModel->getAll();
+    {
+        $subjects = $this->subjectModel->getAll();
 
-    $data = [];
-    while ($row = mysqli_fetch_assoc($subjects)) {
-        $data[] = $row;
+        $data = [];
+        while ($row = mysqli_fetch_assoc($subjects)) {
+            $data[] = $row;
+        }
+
+        require_once './../views/admin/subject/list.php';
     }
-
-    require_once './../views/admin/subject/list.php';
-}
 
     public function getAllGiangVienCuaKhoa()
     {
@@ -404,7 +404,8 @@ class subjectController
             $subject_code,
             $credits,
             $department_id,
-            $subject_type
+            $subject_type,
+            $recommended_year
         );
 
         $_SESSION['success'] = "Cập nhật môn học thành công!";

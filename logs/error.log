@@ -168,3 +168,9 @@
 >>>>>>> 1c494f538741627def7b7029d1848af2f5cfb060
 2026-03-10 16:52:26 | Tổng trọng số phải bằng 100%
 2026-03-10 16:53:25 | Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb3_general_ci,COERCIBLE) for operation 'like'
+2026-03-10 19:28:18 | Môn học đã tồn tại
+2026-03-10 19:28:29 | Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb3_general_ci,COERCIBLE) for operation 'like'
+2026-03-10 19:33:53 | Đồ án chỉ dành cho năm 3 trở lên
+2026-03-10 19:34:01 | Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb3_general_ci,COERCIBLE) for operation 'like'
+2026-03-10 19:34:19 | Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb3_general_ci,COERCIBLE) for operation 'like'
+2026-03-11 11:53:58 | Lịch học bị trùng với một lớp đã đăng ký trong học kỳ này.

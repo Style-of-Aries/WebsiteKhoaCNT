@@ -70,7 +70,7 @@ class adminController
     public function getAllSinhVien()
     {
         $keyword = $_GET['keyword'] ?? '';
-
+        // $student_year = $this->studentSemesterModel->getAcademicYear()
         if (!empty($keyword)) {
             $students = $this->studentModel->searchStudents($keyword);
         } else {

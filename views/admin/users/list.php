@@ -12,7 +12,7 @@ ob_start();
     <div class="text">Thêm Người Dùng Mới</div>
   </button>
   <div class="table-wrap">
-    <table class="main-table" id="mainTable">
+    <table class="main-table user-table" id="mainTable">
       <thead>
         <tr>
           <th onclick="sortTable(0)">STT</th>
@@ -20,7 +20,7 @@ ob_start();
           <th onclick="sortTable(2)">Mật khẩu</th>
           <th onclick="sortTable(3)">Vai trò</th>
           <th onclick="sortTable(4)">ID tham chiếu</th>
-          <th onclick="sortTable(5)">Hành động</th>
+          <th>Hành động</th>
         </tr>
       </thead>
       <tbody>

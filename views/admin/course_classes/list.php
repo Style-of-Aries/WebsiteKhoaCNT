@@ -1,6 +1,7 @@
 <!-- views/admin/songs/list.php -->
 <?php
 ob_start();
+// print_r($course_classes);die();
 ?>
 <div class="admin-table-wrapper">
   <div class="table-toolbar">
@@ -26,10 +27,11 @@ ob_start();
         <tr>
           <th onclick="sortTable(0)">STT</th>
           <th onclick="sortTable(1)">Mã lớp</th>
-          <th onclick="sortTable(2)">Môn học</th>
+          <!-- <th onclick="sortTable(2)">Môn học</th> -->
           <th onclick="sortTable(3)">Giảng viên</th>
           <th onclick="sortTable(4)">Học kỳ</th>
           <th onclick="sortTable(5)">Sĩ số</th>
+          <th>Thời hạn đăng ký</th>
           <th class="action">Hành động</th>
         </tr>
       </thead>
@@ -37,14 +39,17 @@ ob_start();
         <?php foreach ($course_classes as $index => $subject): ?>
           <tr>
             <td><?= $index + 1 ?></td>
-            <td><?= htmlspecialchars($subject['class_code']) ?></td>
-            <td><?= htmlspecialchars($subject['subject_name']) ?></td>
+            <td><?= htmlspecialchars($subject['class_code']) ?><br><?= htmlspecialchars($subject['subject_name']) ?></td>
+            <!-- <td></td> -->
             <td><?= htmlspecialchars($subject['lecturer_name']) ?></td>
             <td><?= htmlspecialchars($subject['semester_name']) ?> (<?= htmlspecialchars($subject['academic_year']) ?>)</td>
             <td>
               <?= htmlspecialchars($subject['total_students']) ?>
               /
               <?= htmlspecialchars($subject['max_students']) ?>
+            </td>
+            <td>
+              <?= date('d/m/Y',strtotime($subject['registration_start'])) ?> - <?= date('d/m/Y',strtotime($subject['registration_end'])) ?>
             </td>
 
             <td class="action">

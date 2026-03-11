@@ -150,7 +150,7 @@ class subjectModel
 
     return str_replace($search, $replace, $name);
 }
-    public function editMonHoc($id, $name, $subject_code, $credits, $department_id, $subject_type)
+    public function editMonHoc($id, $name, $subject_code, $credits, $department_id, $subject_type, $recommended_year)
     {
 
         $sql = "
@@ -160,7 +160,8 @@ class subjectModel
             subject_code = '$subject_code',
             credits = '$credits',
             department_id = '$department_id',
-            subject_type = '$subject_type'
+            subject_type = '$subject_type',
+            recommended_year = '$recommended_year'
         WHERE id = '$id'
         ";
         return $this->__query($sql);

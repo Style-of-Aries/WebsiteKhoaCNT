@@ -28,7 +28,7 @@ ob_start();
             <option value="student_affairs">Công tác SV</option>
         </select>
     </div>
-    <div class="col" id="department_id" style="display:none;">
+    <div class="row" id="department_id" style="display:none;">
         <label>Khoa</label>
         <select name="department_id">
             <option value="">-- Chọn Khoa --</option>
@@ -41,7 +41,7 @@ ob_start();
         </select>
     </div>
 
-    <input type="submit" value="Thêm người dùng" name="btn_add">
+    <button name="btn_add" type="submit" class="btn-submit">Thêm người dùng</button>
 </form>
 
 <?php

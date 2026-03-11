@@ -290,7 +290,7 @@ LEFT JOIN student_course_classes scc
 
 WHERE 
     cc.status <> 'finished'
-    AND s.recommended_year = $academic_year
+    AND s.recommended_year <= $academic_year
     AND s.department_id = (
         SELECT department_id 
         FROM student 

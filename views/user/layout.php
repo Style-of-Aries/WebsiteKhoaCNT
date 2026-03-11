@@ -61,8 +61,8 @@ $currentAction = $_GET['action'] ?? '';
                 <!-- <a href="index.php" class="<?= $currentController == '' ? 'active' : '' ?>">Trang chủ</a> -->
                 <a href="?controller=student&action=profile">Hồ sơ</a>
                 <a href="?controller=student&action=getCourseClass">Môn học</a>
-                <a href="?controller=student&action=lichHoc">Lịch học</a>
-                <a href="?controller=student&action=getAllResult">Điểm</a>
+                <a href="?controller=student&action=lichHoc">Lịch học   </a>
+                <a href="?controller=student&action=getAllResult">Kết quả học tập</a>
             <?php endif; ?>
 
             <?php if ($role === 'lecturer'): ?>

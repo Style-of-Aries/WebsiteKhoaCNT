@@ -59,35 +59,61 @@ WHERE s.id = '$id';
     public function getAll()
     {
         $sql = "SELECT
-    s.id,
-    s.student_code,
-    s.created_at,
-    s.class_id,
-    s.department_id,
+        s.id,
+        s.student_code,
+        s.created_at,
+        s.class_id,
+        s.department_id,
 
-    sp.full_name,
-    sp.gender,
-    sp.date_of_birth,
-    sp.email,
-    sp.phone,
-    sp.identity_number,
-    sp.address,
-    sp.avatar,
-    sp.education_type,
-    sp.status,
+        sp.full_name,
+        sp.gender,
+        sp.date_of_birth,
+        sp.email,
+        sp.phone,
+        sp.identity_number,
+        sp.address,
+        sp.avatar,
+        sp.education_type,
+        sp.status,
 
-    c.class_name,
-    d.name AS department_name
+        c.class_name,
+        d.name AS department_name,
+
+        CEIL(COUNT(CASE WHEN ss.status = 'studying' THEN ss.semester_id END) / 2) AS student_year
 
     FROM student s
+
     JOIN student_profiles sp 
-    ON sp.student_id = s.id
+        ON sp.student_id = s.id
 
     LEFT JOIN classes c 
-    ON c.id = s.class_id
+        ON c.id = s.class_id
 
     LEFT JOIN department d 
-    ON d.id = s.department_id";
+        ON d.id = s.department_id
+
+    LEFT JOIN student_semesters ss
+        ON ss.student_id = s.id
+
+    GROUP BY 
+        s.id,
+        s.student_code,
+        s.created_at,
+        s.class_id,
+        s.department_id,
+        sp.full_name,
+        sp.gender,
+        sp.date_of_birth,
+        sp.email,
+        sp.phone,
+        sp.identity_number,
+        sp.address,
+        sp.avatar,
+        sp.education_type,
+        sp.status,
+        c.class_name,
+        d.name
+         ORDER BY sp.status";
 
         return $this->__query($sql);
     }
@@ -232,7 +258,7 @@ WHERE st.id = $studentId;
     public function KtEmail($email, $id)
     {
         $email = trim($email);
-        $id = (int)$id;
+        $id = (int) $id;
         $sql = "Select *from student_profiles where email='$email'AND student_id != $id
         LIMIT 1";
         $query = $this->__query($sql);
@@ -294,7 +320,7 @@ WHERE st.id = $studentId;
 
             // Lấy 5 số cuối
             $lastNumber = substr($row['student_code'], 4, 5);
-            $newNumber = (int)$lastNumber + 1;
+            $newNumber = (int) $lastNumber + 1;
         } else {
             // Nếu chưa có sinh viên năm đó
             $newNumber = 1;

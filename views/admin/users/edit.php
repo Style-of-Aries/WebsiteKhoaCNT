@@ -17,31 +17,29 @@ ob_start();
         <input type="email" name="email" value="<?= $if_user['email'] ?>">
     </div>
     <label>Role</label>
-    <input type="text"
-        value="<?=
-                $user['role'] == 'training_office' ? 'Phòng đào tạo' : ($user['role'] == 'lecturer' ? 'Giảng viên' : ($user['role'] == 'academic_affairs' ? 'Học vụ' : ($user['role'] == 'exam_office' ? 'Khảo thí' : ($user['role'] == 'student_affairs' ? 'Công tác SV' : ''))))
-                ?>"
-        disabled>
+    <input type="text" value="<?=
+        $user['role'] == 'training_office' ? 'Phòng đào tạo' : ($user['role'] == 'lecturer' ? 'Giảng viên' : ($user['role'] == 'academic_affairs' ? 'Học vụ' : ($user['role'] == 'exam_office' ? 'Khảo thí' : ($user['role'] == 'student_affairs' ? 'Công tác SV' : ''))))
+        ?>" disabled>
 
     <input type="hidden" name="role" value="<?= $user['role'] ?>">
 
-    <div class="col" id="department_id"
-        style="<?= ($user['role'] === 'lecturer') ? '' : 'display:none;' ?>">
+    <div class="col" id="department_id" style="<?= ($user['role'] === 'lecturer') ? '' : 'display:none;' ?>">
 
         <label>Khoa</label>
         <select name="department_id" style="pointer-events: none;">
             <option value="">-- Chọn Khoa --</option>
 
             <?php foreach ($department as $dept): ?>
-                <option value="<?= $dept['id'] ?>"
-                    <?= ($if_user['department_id'] == $dept['id']) ? 'selected' : '' ?>>
+                <option value="<?= $dept['id'] ?>" <?= ($if_user['department_id'] == $dept['id']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($dept['faculty_name']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
     </div>
 
-    <input type="submit" value="Lưu" name="btn_edit">
+    <button name="btn_edit" type="submit" class="btn-submit">
+        Lưu
+    </button>
 </form>
 
 <?php

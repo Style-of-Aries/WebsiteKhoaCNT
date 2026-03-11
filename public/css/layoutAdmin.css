@@ -612,7 +612,7 @@ select {
 /* Header */
 .main-table thead th {
   text-align: left;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: #6b7280;
   padding: 14px 16px;
@@ -1761,8 +1761,9 @@ select {
 }
 
 .profile-paper input[name="full_name"] {
-  font-size: 1.2em;
+  font-size: 1em;
 }
+
 
 /* From uiverse.io by @satyamchaudharydev */
 /* removing default style of button */
@@ -1847,6 +1848,40 @@ select {
 .searchScore svg {
   width: 17px;
   margin-top: 3px;
+}
+.subject-table th:nth-child(4),
+.subject-table th:nth-child(5),
+.subject-table th:nth-child(6) {
+  text-align: center;
+}
+.subject-table td:nth-child(4),
+.subject-table td:nth-child(6) {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.student-table th:nth-child(6) {
+  text-align: center;
+}
+.student-table td:nth-child(6) {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.timetable-table th:nth-child(8) {
+  text-align: center;
+}
+.timetable-table td:nth-child(8) {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.user-table th:nth-child(5) {
+  text-align: center;
+}
+.user-table td:nth-child(5) {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .semester-table th:nth-child(4),

@@ -22,7 +22,7 @@ ob_start();
 
   <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
   <div class="table-wrap">
-    <table class="main-table" id="mainTable">
+    <table class="main-table subject-table" id="mainTable">
       <thead>
         <tr>
           <th onclick="sortTable(0)">STT</th>

@@ -21,17 +21,17 @@ ob_start();
 
   <!-- <a href="admin.php?action=create" class="btn-custom"><i class="ri-add-line"></i> Thêm bài hát</a> -->
   <div class="table-wrap">
-    <table class="main-table" id="mainTable">
+    <table class="main-table timetable-table" id="mainTable">
       <thead>
         <tr>
           <th onclick="sortTable(0)">STT</th>
           <th onclick="sortTable(1)">Học phần</th>
-          <th onclick="sortTable(1)">Giảng viên</th>
-          <th onclick="sortTable(2)">Ngày học</th>
-          <th onclick="sortTable(3)">Thứ</th>
-          <th onclick="sortTable(4)">Buổi</th>
-          <th onclick="sortTable(5)">Tuần</th>
-          <th onclick="sortTable(6)">Phòng học</th>
+          <th onclick="sortTable(2)">Giảng viên</th>
+          <th onclick="sortTable(3)">Ngày học</th>
+          <th onclick="sortTable(4)">Thứ</th>
+          <th onclick="sortTable(5)">Buổi</th>
+          <th onclick="sortTable(6)">Tuần</th>
+          <th onclick="sortTable(7)">Phòng học</th>
           <th class="action">Hành động</th>
         </tr>
       </thead>
