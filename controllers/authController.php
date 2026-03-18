@@ -69,6 +69,7 @@ class authController
                 'ref_id' => $user['ref_id'],
                 'name' => $user['username'],
                 'full_name' => $profile['full_name'] ?? 'Unknown',
+                'avatar' => $profile['avatar'] ?? 'Unknown',
                 'gender' => $profile['gender'] ?? 'Nam'
             ];
 

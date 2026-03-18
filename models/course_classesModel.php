@@ -16,54 +16,65 @@ class course_classesModel
     }
     public function getAll()
     {
+        $today = NOW;
         $sql = "
-            SELECT 
-    cc.id,
-    cc.class_code,
-    s.name AS subject_name,
-    l.full_name AS lecturer_name,
-    se.name AS semester_name,
-    se.academic_year,
-    cc.max_students,
-    cc.registration_start,
-    cc.registration_end,
-    cc.status,
+                SELECT 
+        cc.id,
+        cc.class_code,
+        s.name AS subject_name,
+        l.full_name AS lecturer_name,
+        se.name AS semester_name,
+        se.academic_year,
+        cc.max_students,
+        cc.registration_start,
+        cc.registration_end,
+        cc.status,
 
-    COUNT(DISTINCT scc.student_id) AS total_students,
+        COUNT(DISTINCT scc.student_id) AS total_students,
 
-    MIN(cs.session_date) AS first_session,
-    MAX(cs.session_date) AS last_session
+        -- 🔥 SORT CHUẨN
+        CASE 
+            WHEN $today BETWEEN MIN(cs.session_date) AND MAX(cs.session_date) THEN 1  -- đang diễn ra
+            WHEN cc.status = 'open' THEN 2                                          -- mở đăng ký
+            WHEN cc.status = 'finished' THEN 3                                      -- hoàn thành
+            ELSE 4
+        END AS sort_order,
 
-FROM course_classes cc
+        MIN(cs.session_date) AS first_session,
+        MAX(cs.session_date) AS last_session
 
-JOIN subjects s 
-    ON cc.subject_id = s.id
+    FROM course_classes cc
 
-JOIN lecturer l 
-    ON cc.lecturer_id = l.id
+    JOIN subjects s 
+        ON cc.subject_id = s.id
 
-JOIN semesters se 
-    ON cc.semester_id = se.id
+    JOIN lecturer l 
+        ON cc.lecturer_id = l.id
 
-LEFT JOIN student_course_classes scc 
-    ON scc.course_class_id = cc.id
+    JOIN semesters se 
+        ON cc.semester_id = se.id
 
-LEFT JOIN class_sessions cs
-    ON cs.course_class_id = cc.id
+    LEFT JOIN student_course_classes scc 
+        ON scc.course_class_id = cc.id
 
-GROUP BY 
-    cc.id,
-    cc.class_code,
-    s.name,
-    l.full_name,
-    se.name,
-    cc.max_students
+    LEFT JOIN class_sessions cs
+        ON cs.course_class_id = cc.id
 
-ORDER BY 
-    se.name ASC,
-    cc.class_code ASC;
+    GROUP BY 
+        cc.id,
+        cc.class_code,
+        s.name,
+        l.full_name,
+        se.name,
+        se.academic_year,
+        cc.max_students,
+        cc.registration_start,
+        cc.registration_end,
+        cc.status
 
-        ";
+    ORDER BY sort_order;
+
+            ";
 
         return $this->__query($sql);
     }
@@ -273,7 +284,7 @@ WHERE course_class_id = $courseClassId;";
         SELECT 1 
         FROM student_course_classes sc2 
         WHERE sc2.course_class_id = cc.id 
-        AND sc2.student_id = 29
+        AND sc2.student_id = $studentId
     ) AS is_registered
 
 FROM course_classes cc

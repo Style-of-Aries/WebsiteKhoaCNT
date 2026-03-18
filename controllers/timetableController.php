@@ -51,6 +51,12 @@ class timetableController
         $tkb = $this->timetableModel->getAllTkb();
         require_once './../views/admin/timetable/list.php';
     }
+    public function getTkbByCourseClassId()
+    {
+        $course_class_id = $_GET['id'] ?? '';
+        $tkb = $this->timetableModel->getAllTkbEdit($course_class_id);
+        require_once './../views/admin/timetable/list.php';
+    }
     public function getAllTkbEdit($course_class_id)
     {
         $tkb = $this->timetableModel->getAllTkbEdit($course_class_id);

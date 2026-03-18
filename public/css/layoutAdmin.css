@@ -11,7 +11,8 @@
   --green-light: #5bc98a;
 
   --orange-main: #f39c3d;
-  --red-main: #e55353;
+  --yellow-main: #ffc107;
+  --red-main: #dc3545;
 
   --bg-main: #f4f6f9;
   --bg-card: #ffffff;
@@ -40,13 +41,13 @@ a {
 }
 
 .input-error {
-    border: 2px solid #ff4d4f;
-    background-color: #fff1f0;
+  border: 2px solid #ff4d4f;
+  background-color: #fff1f0;
 }
 
 .error-text {
-    color: #ff4d4f;
-    font-size: 13px;
+  color: #ff4d4f;
+  font-size: 13px;
 }
 
 /* ===============================
@@ -611,7 +612,7 @@ select {
 
 /* Header */
 .main-table thead th {
-  text-align: left;
+  text-align: center;
   font-size: 16px;
   font-weight: 600;
   color: #6b7280;
@@ -643,6 +644,7 @@ select {
 
 /* Cell */
 .main-table tbody td {
+  text-align: center;
   padding: 14px 16px;
   font-size: 14px;
   color: #344054;
@@ -664,9 +666,9 @@ select {
 /* Action column */
 .main-table td.action {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   gap: 5px;
-  width: 320px;
+  width: 250px;
   align-items: center;
 }
 /* Name column*/
@@ -864,9 +866,27 @@ select {
   font-size: 12px;
   font-weight: 600;
   color: #475569;
+  white-space: nowrap;
+  /* width: 100%; */
 }
 .count-badge.green {
   background-color: var(--green-main);
+  color: #fff;
+}
+
+.count-badge.yellow {
+  background-color: var(--yellow-main);
+  color: #fff;
+}
+
+.count-badge.red {
+  background-color: var(--red-main);
+  color: #fff;
+}
+
+.count-badge.blue {
+  background-color: var(--sidebar-bg-color);
+  width: 120px;
   color: #fff;
 }
 
@@ -1059,6 +1079,69 @@ select {
   100% {
     opacity: 1;
   }
+}
+
+.viewTkb-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgb(20, 20, 20);
+  border: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none !important;
+}
+
+.viewTkb-svgIcon {
+  width: 17px;
+  transition-duration: 0.3s;
+}
+
+.viewTkb-svgIcon path {
+  fill: white;
+}
+
+.viewTkb-button:hover {
+  width: 140px;
+  border-radius: 50px;
+  transition-duration: 0.5s;
+  background-color: var(--sidebar-bg-color);
+  align-items: center;
+}
+
+.viewTkb-button:hover .viewTkb-svgIcon {
+  width: 20px;
+  transition-duration: 0.3s;
+  transform: translateY(60%);
+  -webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+
+.viewTkb-button::before {
+  display: none;
+  content: "Lịch học";
+  color: white;
+  transition-duration: 0.3s;
+  font-size: 2px;
+}
+
+.viewTkb-button:hover::before {
+  display: block;
+  padding-right: 10px;
+  font-size: 13px;
+  opacity: 1;
+  transform: translateY(0px);
+  transition-duration: 0.3s;
 }
 
 .view-button {
@@ -1705,6 +1788,7 @@ select {
 
 .avatar-box .file-info {
   width: 100%;
+  position: relative;
   height: 100%;
 }
 
@@ -1712,6 +1796,16 @@ select {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.avatar-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #666;
+  font-size: 16px;
+  pointer-events: none;
 }
 
 .profile-header .header-info {
@@ -1763,7 +1857,6 @@ select {
 .profile-paper input[name="full_name"] {
   font-size: 1em;
 }
-
 
 /* From uiverse.io by @satyamchaudharydev */
 /* removing default style of button */
@@ -1867,6 +1960,7 @@ select {
   text-align: center;
   vertical-align: middle;
 }
+
 
 .timetable-table th:nth-child(8) {
   text-align: center;
@@ -2119,20 +2213,20 @@ select {
   display: flex;
   align-items: center;
   border: 4px solid transparent;
-  transition: .3s;
+  transition: 0.3s;
   box-shadow: 0 0 10px 0 rgb(0, 0, 0, 0.25) inset;
   cursor: pointer;
 }
 
 .slider-semester::before {
-  content: '';
+  content: "";
   display: block;
   width: 100%;
   height: 100%;
   background-color: #fff;
   transform: translateX(-30px);
   border-radius: 20px;
-  transition: .3s;
+  transition: 0.3s;
   box-shadow: 0 0 10px 3px rgb(0, 0, 0, 0.25);
 }
 
@@ -2142,9 +2236,89 @@ select {
 }
 
 .checkbox-semester:checked ~ .slider-semester {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 .checkbox-semester:active ~ .slider-semester::before {
   transform: translate(0);
+}
+
+.chartBox {
+  width: 600px;
+  height: 350px;
+  /* margin: 40px auto; */
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-student-new {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-header h3 {
+  font-size: 18px;
+}
+
+.card-header a {
+  font-size: 13px;
+  color: #3498db;
+  text-decoration: none;
+}
+
+.student-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.student-item:last-child {
+  border-bottom: none;
+}
+
+.student-item img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.student-item .info {
+  flex: 1;
+}
+
+.student-item .name {
+  font-weight: 600;
+  margin: 0;
+}
+
+.student-item .meta {
+  font-size: 13px;
+  color: #777;
+  margin: 2px 0 0;
+}
+
+.student-item .date {
+  font-size: 12px;
+  color: #999;
+}
+
+.select-filter {
+    padding: 10px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 30%;
 }

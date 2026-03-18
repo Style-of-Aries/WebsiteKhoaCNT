@@ -3,7 +3,8 @@ ob_start();
 $now = date('Y-m-d H:i:s', NOW);
 // $now = $GLOBALS['now'];
 // print_r($semesterNow);
-// var_dump(date('Y-m-d H:i:s',NOW));die();
+// var_dump(date('Y-m-d H:i:s',NOW));
+// print_r($classes);die();
 ?>
 
 <div class="admin-table-wrapper">
@@ -96,7 +97,7 @@ $now = date('Y-m-d H:i:s', NOW);
 
                             <?php else: ?>
 
-                                <button class="btn btn-secondary btn-sm" disabled>
+                                <button class="btn-closed" disabled>
                                     Đã Đầy
                                 </button>
 

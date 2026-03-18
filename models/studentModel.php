@@ -56,8 +56,14 @@ WHERE s.id = '$id';
         return mysqli_fetch_assoc($query);
     }
     // lấy toàn bộ thông tin của sinh viên
-    public function getAll()
+    public function getAll($faculty_id = null)
     {
+        $where = "";
+
+        if (!empty($faculty_id)) {
+            $where .= " AND f.id = " . intval($faculty_id);
+        }
+
         $sql = "SELECT
         s.id,
         s.student_code,
@@ -78,6 +84,7 @@ WHERE s.id = '$id';
 
         c.class_name,
         d.name AS department_name,
+        f.name AS faculty_name,
 
         CEIL(COUNT(CASE WHEN ss.status = 'studying' THEN ss.semester_id END) / 2) AS student_year
 
@@ -92,8 +99,13 @@ WHERE s.id = '$id';
     LEFT JOIN department d 
         ON d.id = s.department_id
 
+    LEFT JOIN department f 
+        ON d.parent_id = f.id
+
     LEFT JOIN student_semesters ss
         ON ss.student_id = s.id
+
+    WHERE 1=1 $where
 
     GROUP BY 
         s.id,
@@ -112,8 +124,18 @@ WHERE s.id = '$id';
         sp.education_type,
         sp.status,
         c.class_name,
-        d.name
-         ORDER BY sp.status";
+        d.name,
+        f.name
+
+    ORDER BY 
+    CASE 
+        WHEN sp.status = 'Đang học' THEN 1
+        WHEN sp.status = 'Bảo lưu' THEN 2
+        WHEN sp.status = 'Thôi học' THEN 3
+        WHEN sp.status = 'Đã tốt nghiệp' THEN 4
+        ELSE 5
+    END,
+    s.created_at DESC";
 
         return $this->__query($sql);
     }
@@ -476,5 +498,56 @@ WHERE st.id = $studentId;
         $row = mysqli_fetch_assoc($result);
 
         return $row ? $row['id'] : null;
+    }
+
+    public function getStudentByFaculty()
+    {
+        $sql = "
+        SELECT f.name AS faculty_name, COUNT(s.id) AS total_students
+        FROM department f
+        LEFT JOIN department d ON d.parent_id = f.id AND d.type = 'department'
+        LEFT JOIN student s ON s.department_id = d.id
+        WHERE f.type = 'faculty'
+        GROUP BY f.id
+        ";
+
+        $result = $this->__query($sql);
+
+        $data = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
+    public function getNewStudents()
+    {
+        $sql = "SELECT 
+    s.id,
+    s.student_code,
+    sp.full_name,
+    sp.gender,
+    sp.avatar,
+    d.name AS department_name,
+    c.class_name,
+    s.created_at
+FROM student s
+LEFT JOIN student_profiles sp ON sp.student_id = s.id
+LEFT JOIN department d ON d.id = s.department_id
+LEFT JOIN classes c ON c.id = s.class_id
+WHERE sp.status = 'Đang học'
+ORDER BY s.created_at DESC
+LIMIT 5;";
+
+        $result = $this->__query($sql);
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
     }
 }

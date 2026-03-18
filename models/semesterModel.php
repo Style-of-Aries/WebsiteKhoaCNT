@@ -16,7 +16,7 @@ class semesterModel
     }
     public function getAll()
     {
-        $sql = "SELECT * FROM semesters";
+        $sql = "SELECT * FROM semesters s ORDER BY s.academic_year,s.semester_number";
 
         $query = $this->__query($sql);
 

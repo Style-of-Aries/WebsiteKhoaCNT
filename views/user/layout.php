@@ -5,9 +5,10 @@ $user = $_SESSION['user'] ?? null;
 $role = $user['role'] ?? 'guest';
 $fullName = $user['full_name'] ?? 'Guest';
 $gender = $user['gender'] ?? 'Nam';
-
+$avatar = $user['avatar'] ?? 'Unknown';
 $currentController = $_GET['controller'] ?? '';
 $currentAction = $_GET['action'] ?? '';
+// print_r($user);die();
 ?>
 
 <!DOCTYPE html>
@@ -58,18 +59,27 @@ $currentAction = $_GET['action'] ?? '';
         <!-- NAV -->
         <nav class="header-nav">
             <?php if ($role === 'student'): ?>
-                <!-- <a href="index.php" class="<?= $currentController == '' ? 'active' : '' ?>">Trang chủ</a> -->
-                <a href="?controller=student&action=profile">Hồ sơ</a>
-                <a href="?controller=student&action=getCourseClass">Môn học</a>
-                <a href="?controller=student&action=lichHoc">Lịch học   </a>
-                <a href="?controller=student&action=getAllResult">Kết quả học tập</a>
-            <?php endif; ?>
 
-            <?php if ($role === 'lecturer'): ?>
-                <!-- <a href="index.php">Trang chủ</a> -->
-                <a href="?controller=lecturer&action=getCourseClass">Lớp dạy</a>
-                <!-- <a href="?controller=lecturer&action=updateResultByCourseClass">Chấm điểm</a> -->
-                <a href="?controller=lecturer&action=lichDayGv">Lịch dạy</a>
+                <a href="?controller=student&action=profile"
+                    class="<?= ($currentController == 'student' && $currentAction == 'profile') ? 'active' : '' ?>">
+                    Hồ sơ
+                </a>
+
+                <a href="?controller=student&action=getCourseClass"
+                    class="<?= ($currentController == 'student' && $currentAction == 'getCourseClass') ? 'active' : '' ?>">
+                    Môn học
+                </a>
+
+                <a href="?controller=student&action=lichHoc"
+                    class="<?= ($currentController == 'student' && $currentAction == 'lichHoc') ? 'active' : '' ?>">
+                    Thời khóa biểu
+                </a>
+
+                <a href="?controller=student&action=getAllResult"
+                    class="<?= ($currentController == 'student' && $currentAction == 'getAllResult') ? 'active' : '' ?>">
+                    Kết quả học tập
+                </a>
+
             <?php endif; ?>
         </nav>
 
@@ -79,7 +89,11 @@ $currentAction = $_GET['action'] ?? '';
             <i class='bx bx-bell'></i>
 
             <div class="user-menu">
-                <img src="<?= BASE_URL ?>img/<?= $gender === 'Nam' ? 'male.jpg' : 'avatar-nu.jpg' ?>">
+                <img src="<?=
+                    !empty($avatar)
+                    ? BASE_URL . 'upload/avatar/' . $avatar
+                    : BASE_URL . 'img/' . ($gender === 'Nữ' ? 'female.jpg' : 'male.jpg')
+                    ?>">
                 <span><?= htmlspecialchars($fullName) ?></span>
                 <i class='bx bx-chevron-down'></i>
 

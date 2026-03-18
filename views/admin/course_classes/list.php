@@ -1,6 +1,17 @@
 <!-- views/admin/songs/list.php -->
 <?php
 ob_start();
+$now = date('Y-m-d', NOW);
+function getStatus($row, $now)
+{
+
+  // $now = date('2025-09-02');
+  // print_r($now);die();
+  if (!$row['first_session'])
+    return;
+  if ($now >= $row['first_session'] && $now <= $row['last_session'])
+    return 'studying';
+}
 // print_r($course_classes);die();
 ?>
 <div class="admin-table-wrapper">
@@ -31,7 +42,8 @@ ob_start();
           <th onclick="sortTable(3)">Giảng viên</th>
           <th onclick="sortTable(4)">Học kỳ</th>
           <th onclick="sortTable(5)">Sĩ số</th>
-          <th>Thời hạn đăng ký</th>
+          <th onclick="sortTable(6)">Thời hạn đăng ký</th>
+          <th onclick="sortTable(7)">Trạng thái</th>
           <th class="action">Hành động</th>
         </tr>
       </thead>
@@ -42,17 +54,46 @@ ob_start();
             <td><?= htmlspecialchars($subject['class_code']) ?><br><?= htmlspecialchars($subject['subject_name']) ?></td>
             <!-- <td></td> -->
             <td><?= htmlspecialchars($subject['lecturer_name']) ?></td>
-            <td><?= htmlspecialchars($subject['semester_name']) ?> (<?= htmlspecialchars($subject['academic_year']) ?>)</td>
+            <td style="width: 250px;"><?= htmlspecialchars($subject['semester_name']) ?>
+              (<?= htmlspecialchars($subject['academic_year']) ?>)
+            </td>
             <td>
               <?= htmlspecialchars($subject['total_students']) ?>
               /
               <?= htmlspecialchars($subject['max_students']) ?>
             </td>
-            <td>
-              <?= date('d/m/Y',strtotime($subject['registration_start'])) ?> - <?= date('d/m/Y',strtotime($subject['registration_end'])) ?>
+            <td style="width: 200px;">
+              <?= date('d/m', strtotime($subject['registration_start'])) ?> -
+              <?= date('d/m/Y', strtotime($subject['registration_end'])) ?>
             </td>
+            <td>
+              <?php
+              $statusCourseClass = getStatus($subject, $now);
+              $start = date('d/m/Y', strtotime($subject['registration_start']));
+              $end = date('d/m/Y', strtotime($subject['registration_end']));
+              $firstSession = !empty($subject['first_session'])
+                ? strtotime($subject['first_session'])
+                : null;
+              ?>
 
-            <td class="action">
+              <?php if ($subject['status'] === "finished"): ?>
+                <span class="count-badge blue">Hoàn thành</span>
+
+              <?php elseif ($statusCourseClass === "studying"): ?>
+                <span class="count-badge green">Đang diễn ra</span>
+
+              <?php elseif ($now >= $start && $now <= $end): ?>
+                <span class="count-badge yellow">Đang mở đăng ký</span>
+
+              <?php elseif ($now > $end): ?>
+                <span class="count-badge orange">Đã đóng đăng ký</span>
+
+
+              <?php else: ?>
+                <span class="count-badge">Không xác định</span>
+              <?php endif; ?>
+            </td>
+            <td style="display: flex; width: 250px; justify-content: center;">
               <!-- <button class="view-button"
                 onclick="location.href='index.php?controller=timetable&action=tkb&id=<?= $subject['id'] ?>'">
                 <svg xmlns="http://www.w3.org/2000/svg" class="view-svgIcon" viewBox="0 0 20 20" fill="currentColor">
@@ -60,6 +101,13 @@ ob_start();
                   </path>
                 </svg>
               </button> -->
+              <button class="viewTkb-button"
+                onclick="location.href='index.php?controller=timetable&action=getTkbByCourseClassId&id=<?= $subject['id'] ?>'">
+                <svg class="viewTkb-svgIcon" viewBox="0 0 24 24">
+                  <path
+                    d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v2H3V6a2 2 0 0 1 2-2h1V3a1 1 0 0 1 1-1zm14 8v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8h18zM7 12h4v4H7v-4z" />
+                </svg>
+              </button>
               <button class="edit-button"
                 onclick="location.href='index.php?controller=course_classes&action=editHocPhan&id=<?= $subject['id'] ?>'">
                 <svg class="edit-svgIcon" viewBox="0 0 512 512">

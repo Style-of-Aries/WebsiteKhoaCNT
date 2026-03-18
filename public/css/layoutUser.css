@@ -78,12 +78,13 @@ a {
 
 .header-nav a {
   position: relative;
-  font-size: 18px;
+  font-size: 16px;
   color: white;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
   margin-right: 30px;
 }
+
 .header-nav a::after {
   content: "";
   position: absolute;
@@ -97,7 +98,11 @@ a {
   transition: 0.3s;
   opacity: 0;
 }
-.header-nav a:hover::after {
+
+/* Hover */
+.header-nav a:hover::after,
+/* Active (giữ lại khi đang ở trang đó) */
+.header-nav a.active::after {
   transform: translateY(0);
   opacity: 1;
 }

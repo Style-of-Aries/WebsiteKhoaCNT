@@ -8,6 +8,17 @@ ob_start();
     <h2>Danh sách Sinh viên</h2>
     <input type="text" id="searchTable" placeholder="Tìm kiếm sinh viên, mã sinh viên, email...">
   </div>
+  <form method="GET">
+    <input type="hidden" name="controller" value="admin">
+    <input type="hidden" name="action" value="getAllSinhVien">
+
+    <?php
+    $selected = $_GET['faculty_id'] ?? null; // đổi tên chuẩn
+    $name = 'faculty_id';
+
+    require __DIR__ . '/../../components/fillter.php'; // sửa lại tên file
+    ?>
+  </form>
   <!-- <div class="add">
     <a href="index.php?controller=admin&action=addSinhVien">
       <i class="ri-add-circle-line"></i> Thêm Sinh Viên Mới
@@ -27,8 +38,9 @@ ob_start();
           <th onclick="sortTable(1)">Tên sinh viên</th>
           <th onclick="sortTable(2)">Mã sinh viên</th>
           <th onclick="sortTable(3)">Email</th>
-          <th onclick="sortTable(4)">Khoa</th>
+          <th onclick="sortTable(4)">Ngành</th>
           <th onclick="sortTable(5)">Năm học</th>
+          <th onclick="sortTable(6)">Trạng thái</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -41,6 +53,23 @@ ob_start();
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td><?= htmlspecialchars($user['department_name']) ?></td>
             <td>Năm <?= htmlspecialchars($user['student_year']) ?></td>
+            <td class="status">
+              <?php if ($user['status'] == 'Đang học'): ?>
+                <span class="count-badge green">Đang học</span>
+
+              <?php elseif ($user['status'] == 'Bảo lưu'): ?>
+                <span class="count-badge yellow">Bảo lưu</span>
+
+              <?php elseif ($user['status'] == 'Thôi học'): ?>
+                <span class="count-badge red">Thôi học</span>
+
+              <?php elseif ($user['status'] == 'Đã tốt nghiệp'): ?>
+                <span class="count-badge blue">Đã tốt nghiệp</span>
+
+              <?php else: ?>
+                <span class="count-badge">Không xác định</span>
+              <?php endif; ?>
+            </td>
             <td class="action">
               <!-- <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>"
                 class="action-btn edit-btn"><i class="ri-pencil-line"></i>Chi tiết</a>

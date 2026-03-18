@@ -241,6 +241,7 @@ function exportExcel(tableId = "mainTable", fileName = "DanhSach.xlsx") {
 // const fullNameInput = document.querySelector('input[name="full_name"]');
 document.addEventListener("DOMContentLoaded", function () {
   initSemesterDate();
+
   //#region ================= checkbox-semester =================
   document.querySelectorAll(".checkbox-semester").forEach((cb) => {
     cb.addEventListener("change", function () {
@@ -476,13 +477,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const realFile = document.getElementById("realFile");
   const preview = document.getElementById("avatarPreview");
   const fileName = document.getElementById("fileName");
+  const placeholder = document.querySelector(".avatar-placeholder");
 
   if (realFile) {
     realFile.addEventListener("change", function () {
       const file = this.files[0];
       if (!file) return;
 
+      // Hiển thị preview ảnh
       preview.src = URL.createObjectURL(file);
+
+      // Ẩn chữ "Ảnh thẻ"
+      if (placeholder) {
+        placeholder.style.display = "none";
+      }
 
       // Ẩn tên file
       if (fileName) {

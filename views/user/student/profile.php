@@ -4,7 +4,8 @@ $title = "Hồ sơ cá nhân";
 ?>
 
 
-<form action="index.php?controller=student&action=updateProfile" method="POST" enctype="multipart/form-data" class="profile-card">
+<form action="index.php?controller=student&action=updateProfile" method="POST" enctype="multipart/form-data"
+    class="profile-card">
 
     <!-- ===== HEADER ===== -->
     <div class="profile-header">
@@ -40,7 +41,7 @@ $title = "Hồ sơ cá nhân";
 
         <div class="info-row">
             <label>Ngày sinh</label>
-            <input type="date" name="date_of_birth" value="<?= $profile['date_of_birth'] ?>" readonly>
+            <input type="text" value="<?= date('d/m/Y', strtotime($profile['date_of_birth'])) ?>" readonly>
         </div>
 
         <div class="info-row">

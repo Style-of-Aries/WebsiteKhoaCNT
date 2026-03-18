@@ -26,14 +26,11 @@ ob_start();
         <!-- Avatar -->
         <label class="avatar-box" for="realFile">
             <div class="file-info">
-                <img id="avatarPreview" src="<?= !empty($studentprf['avatar'])
-                                                    ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
-                                                    : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
-                <span>
-                    <?= !empty($studentprf['avatar'])
-                        ? $studentprf['avatar']
-                        : 'Chọn ảnh' ?>
-                </span>
+                <?php if (!empty($studentprf['avatar'])): ?>
+                    <img id="avatarPreview" src="<?= BASE_URL . 'upload/avatar/' . $studentprf['avatar'] ?>">
+                <?php else: ?>
+                    <img id="avatarPreview">
+                <?php endif; ?>
             </div>
         </label>
 

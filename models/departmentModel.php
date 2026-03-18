@@ -169,6 +169,17 @@ GROUP BY
         return $departments;
         // return $this->__query($sql);
     }
+
+    public function getTotalFaculty()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM department WHERE type = 'faculty'";
+
+        $result = $this->__query($sql);
+
+        $row = mysqli_fetch_assoc($result);
+
+        return $row['total'];
+    }
     public function getAllGiangVienCuaKhoa($id)
     {
         $sql = "SELECT 
@@ -235,5 +246,14 @@ GROUP BY
         $sql = "SELECT * FROM department WHERE id='$id'";
         $query = $this->__query($sql);
         return mysqli_fetch_assoc($query);
+    }
+
+    public function getAllFacultyNew()
+    {
+        $sql = "SELECT id, name 
+            FROM department 
+            WHERE type = 'faculty'";
+
+        return $this->__query($sql);
     }
 }

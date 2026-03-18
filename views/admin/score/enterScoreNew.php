@@ -57,21 +57,21 @@ $hasEditableInput = false;
                             <td><?= $stt++ ?></td>
                             <td><?= $student['student_code'] ?></td>
                             <td class="tdName"><?= $student['full_name'] ?></td>
-                            <td class="tdDate"><?= $student['date_of_birth'] ?></td>
+                            <td class="tdDate">
+                                <?= date('d/m/Y', strtotime($student['date_of_birth'])) ?>
+                            </td>
                             <?php while ($c = mysqli_fetch_assoc($components)): ?>
                                 <td class="tdInputScore">
                                     <?php
                                     $canEdit = false;
 
                                     // Nếu lớp đã finished thì khóa toàn bộ
-                            
-
-                                    // Admin nhập tất cả
-                                    if ($role === 'admin') {
-                                        $canEdit = true;
-                                    }
-                                    if ($courseClass['status'] !== 'finished') {    
+                                    if ($courseClass['status'] !== 'finished') {
                                         // Giảng viên nhập TX DK khi đang học
+                                        // Admin nhập tất cả
+                                        if ($role === 'admin') {
+                                            $canEdit = true;
+                                        }
                                         if (
                                             $role === 'lecturer' &&
                                             $statusCourseClass === 'studying' &&
@@ -83,6 +83,7 @@ $hasEditableInput = false;
                                         // Giảng viên nhập PROJECT sau khi kết thúc môn
                                         if (
                                             $role === 'lecturer' &&
+                                            $statusCourseClass !== 'studying' &&
                                             $c['type'] === 'PROJECT'
                                         ) {
                                             $canEdit = true;
@@ -144,7 +145,8 @@ $hasEditableInput = false;
                 📥 Xuất Excel
             </button>
             <button class="att-btn" type="submit" <?= !$hasEditableInput ? 'disabled' : '' ?>>
-                <span>💾Lưu điểm</span>
+                <span>💾Lưu điểm
+                    <?= $role == 'lecturer' ? 'thành phần' : ($role == 'exam_office' ? 'thi' : '') ?></span>
             </button>
         </div>
 

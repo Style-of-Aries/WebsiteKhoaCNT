@@ -1,5 +1,6 @@
 <?php
 ob_start();
+// print_r($newStudents);die();    
 ?>
 <div class="containerDashboard">
     <div class="dashboard-cards">
@@ -20,16 +21,91 @@ ob_start();
             <p><?= count($totalKhoa) ?></p>
         </div>
     </div>
-    <div class="studentChart">
-        <h3>Thống kê sinh viên theo lớp học</h3>
-        <div>
-            <canvas id="studentChart"></canvas>
+
+    <div style="display: flex;">
+        <!-- CHART -->
+        <div class="chartBox">
+
+            <h2>Sinh viên theo khoa</h2>
+
+            <canvas id="facultyChart"></canvas>
+
+        </div>
+
+        <div class="card-student-new">
+            <div class="card-header">
+                <h3>🎓 Sinh viên mới</h3>
+                <a href="index.php?controller=admin&action=getAllSinhVien">Xem tất cả</a>
+            </div>
+
+            <div class="card-body">
+                <?php if (!empty($newStudents)): ?>
+                    <?php foreach ($newStudents as $sv): ?>
+                        <div class="student-item">
+                            <img src="<?=
+                                    $sv['gender'] === 'Nữ'
+                                    ? BASE_URL . 'img/female.jpg'
+                                    : BASE_URL . 'img/male.jpg'
+                                ?>" alt="avatar">
+
+                            <div class="info">
+                                <p class="name"><?= $sv['full_name'] ?></p>
+                                <p class="meta">
+                                    MSSV: <?= $sv['student_code'] ?> <br>
+                                    <?= $sv['department_name'] ?>
+                                </p>
+                            </div>
+
+                            <div class="date">
+                                <?= date("d/m/Y", strtotime($sv['created_at'])) ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>Không có sinh viên mới</p>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
+
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const labels = <?= json_encode($facultyLabels) ?>;
+    const data = <?= json_encode($facultyCount) ?>;
+
+    new Chart(document.getElementById("facultyChart"), {
+
+        type: 'bar',
+
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Số sinh viên",
+                data: data,
+                borderWidth: 1
+            }]
+        },
+
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+
+    });
+
+</script>
+
+
 <?php
 $content = ob_get_clean();
 include "../views/admin/layoutNew.php";
 ?>
-
-    

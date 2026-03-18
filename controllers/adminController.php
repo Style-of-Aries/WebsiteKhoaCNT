@@ -39,7 +39,17 @@ class adminController
         $totalSinhVien = $this->studentModel->getAllds();
         $totalGiangVien = $this->lecturerModel->getAll();
         $totalLopHoc = $this->classesModel->getAll();
-        $totalKhoa = $this->departmentModel->getAllKhoa();
+        $totalKhoa = $this->departmentModel->getAllFaculty();
+        $newStudents = $this->studentModel->getNewStudents();
+        $facultyData = $this->studentModel->getStudentByFaculty();
+
+        $facultyLabels = [];
+        $facultyCount = [];
+
+        foreach ($facultyData as $row) {
+            $facultyLabels[] = $row['faculty_name'];
+            $facultyCount[] = $row['total_students'];
+        }
         require_once './../views/admin/dashboard/dashboard.php';
     }
     // giao diện danh sách người dùng
@@ -71,10 +81,12 @@ class adminController
     {
         $keyword = $_GET['keyword'] ?? '';
         // $student_year = $this->studentSemesterModel->getAcademicYear()
+        $faculty_id = $_GET['faculty_id'] ?? null;
+        $departments = $this->departmentModel->getAllFacultyNew();
         if (!empty($keyword)) {
             $students = $this->studentModel->searchStudents($keyword);
         } else {
-            $students = $this->studentModel->getAll();
+            $students = $this->studentModel->getAll($faculty_id);
         }
 
         require_once './../views/admin/student/list.php';
@@ -166,7 +178,7 @@ class adminController
                 $errorName = "Tài khoản đã tồn tại";
             }
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errorEmail =  "Email không đúng định dạng";
+                $errorEmail = "Email không đúng định dạng";
             } elseif ($this->studentModel->KtEmail($email, $id)) {
                 $errorEmail = "Email đã tồn tại";
             }
@@ -306,15 +318,13 @@ class adminController
 
             // upload avatar
             $avatar = null;
+            $uploadDir = __DIR__ . '/../public/upload/avatar/';
             if (!empty($_FILES['avatar']['name'])) {
                 $avatar = time() . '_' . $_FILES['avatar']['name'];
-                move_uploaded_file(
-                    $_FILES['avatar']['tmp_name'],
-                    'upload/avatar/' . $avatar
-                );
+                move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadDir . $avatar);
             }
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errorEmail =  "Email không đúng định dạng";
+                $errorEmail = "Email không đúng định dạng";
             } elseif (!preg_match("/^[a-zA-Z0-9._%+-]+@gmail\.com$/", $email)) {
                 $errorEmail = "Email phải là @gmail.com";
             } elseif ($this->studentModel->KtEmailAdd($email)) {
@@ -339,6 +349,7 @@ class adminController
 
                 if ($student) {
                     $this->getAllSinhVien();
+                    exit();
                 }
             }
             $classes = $this->classesModel->getAll();

@@ -58,18 +58,19 @@ function getStatus($row)
                         <td>
                             <?php
                             $statusCourseClass = getStatus($row);
-                            if ($row['status'] === "finished"): ?>
-                                <div class="statusFinished">
-                                    Hoàn thành
-                                </div>
+                            ?>
+
+                            <?php if ($row['status'] === "finished"): ?>
+                                <span class="count-badge blue">Hoàn thành</span>
+
                             <?php elseif ($statusCourseClass === "studying"): ?>
-                                <div class="statusStudying">
-                                    Đang diễn ra
-                                </div>
+                                <span class="count-badge green">Đang diễn ra</span>
+
                             <?php elseif ($row['status'] === "open"): ?>
-                                <div class="statusRegistering">
-                                    Đang mở đăng ký
-                                </div>
+                                <span class="count-badge yellow">Đang mở đăng ký</span>
+
+                            <?php else: ?>
+                                <span class="count-badge">Không xác định</span>
                             <?php endif; ?>
                         </td>
                         <!-- <td class="action-btn">

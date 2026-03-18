@@ -51,7 +51,7 @@ require_once __DIR__ . "/../../config/config.php";
                 $fullName = $_SESSION['user']['full_name'] ?? 'Admin';
                 $gender = $_SESSION['user']['gender'] ?? 'Nam';
                 if ($gender === 'Nam'): ?>
-                    <img src="<?= BASE_URL ?>img/male.jpg" alt="avatar" id="avatarBtn">
+                    <img src="<?= BASE_URL ?>img/avatar.jpg" alt="avatar" id="avatarBtn">
                 <?php else: ?>
                     <img src="<?= BASE_URL ?>img/avatar-nu.jpg" alt="avatar" id="avatarBtn">
                 <?php endif; ?>

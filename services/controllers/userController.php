@@ -1,0 +1,257 @@
+<?php
+require_once '../models/userModel.php';
+require_once '../models/adminModel.php';
+require_once "./../models/studentModel.php";
+require_once "./../models/lecturerModel.php";
+require_once "./../models/classesModel.php";
+require_once "./../models/departmentModel.php";
+class userController
+{
+    private $userModel;
+    private $adminModel;
+    private $connect;
+    private $studentModel;
+    private $lecturerModel;
+    private $classesModel;
+    private $departmentModel;
+    public function __construct($connect)
+    {
+        $this->connect = $connect;
+        $this->userModel = new UserModel($connect);
+        $this->adminModel = new adminModel($connect);
+        $this->studentModel = new studentModel($connect);
+        $this->lecturerModel = new lecturerModel($connect);
+        $this->classesModel = new classesModel($connect);
+        $this->departmentModel = new departmentModel($connect);
+    }
+    public function getAllUser()
+    {
+
+        $users = $this->userModel->getAll();
+        require_once './../views/admin/users/list.php';
+        // require_once './../views/user/profile.php';
+    }
+    public function generateCode($role)
+    {
+        // 1. Xác định tiền tố
+        switch ($role) {
+            case 'student':
+                $prefix = 'SV';
+                break;
+            case 'lecturer':
+                $prefix = 'GV';
+                break;
+            case 'training_office':
+                $prefix = 'PDT';
+                break;
+            case 'academic_affairs':
+                $prefix = 'HV';
+                break;
+            case 'exam_office':
+                $prefix = 'KT';
+                break;
+            case 'student_affairs':
+                $prefix = 'CTSV';
+                break;
+            default:
+                return false;
+        }
+
+        // 2. Lấy mã lớn nhất theo prefix
+        $sql = "SELECT MAX(username) as max_code 
+            FROM users 
+            WHERE role = '$role' 
+            AND username LIKE '$prefix%'";
+
+        $result = mysqli_query($this->connect, $sql);
+        $row = mysqli_fetch_assoc($result);
+
+        if ($row['max_code']) {
+            // Lấy phần số phía sau prefix
+            $number = (int) substr($row['max_code'], strlen($prefix));
+            $number++;
+        } else {
+            $number = 1;
+        }
+
+        // 3. Tạo mã mới
+        $newCode = $prefix . str_pad($number, 5, "0", STR_PAD_LEFT);
+
+        return $newCode;
+    }
+    public function add()
+    {
+        $errorEmail = null;
+        $old = [];
+        $department = $this->departmentModel->getAllFaculty(); // load khoa trước
+
+        if (isset($_POST['btn_add'])) {
+
+            $role = $_POST['role'] ?? null;
+            $full_name = $_POST['full_name'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $department_id = $_POST['department_id'] ?? null;
+
+            // Lưu lại dữ liệu cũ
+            $old = [
+                'role' => $role,
+                'full_name' => $full_name,
+                'email' => $email,
+                'department_id' => $department_id
+            ];
+
+            // 1Kiểm tra email trùng
+            $checkEmail = $this->userModel->checkEmailByRole($role, $email);
+
+            if ($checkEmail) {
+                $errorEmail = "Email đã tồn tại!";
+            } else {
+
+                // 2 Tạo mã tự động
+                $code = $this->generateCode($role);
+
+                // 3 Thêm user
+                $user = $this->userModel->addUser(
+                    $role,
+                    $full_name,
+                    $email,
+                    $code,
+                    $department_id
+                );
+
+                if ($user) {
+                    $this->getAllUser();
+                    exit();
+                }
+            }
+        }
+
+        include_once "./../views/admin/users/add.php";
+    }   
+    public function editUser()
+    {
+        $id_user = $_GET['id'];
+        $user = $this->userModel->getByIdUser($id_user);
+        $department = $this->departmentModel->getAllFaculty();
+
+        if ($user) {
+
+            $id = $user['ref_id'];
+            $role = $user['role'];
+
+            if ($role === 'student') {
+                $this->editSv();
+                exit();
+                // var_dump($user);
+            }elseif($role === 'admin') {
+                $this->editAdmin();
+                exit();
+            }
+             else {
+
+                $if_user = $this->userModel->getByIdUsers($role, $id);
+            }
+        }
+        require_once './../views/admin/users/edit.php';
+    }
+    public function editAdmin()
+    {
+        $id_user = $_GET['id'];
+        $user = $this->userModel->getByIdUser($id_user);
+        require_once './../views/admin/users/editAdmin.php';
+    }
+    public function editAd()
+    {
+         if (isset($_POST['btn_edit'])) {
+            $id = $_POST['id'];
+            $role = $_POST['role'];
+            $username = $_POST['username'] ?? null;
+            $password = $_POST['password'] ?? null;
+            // if ($role === 'lecturer') {
+            // }
+            $checkUsername = $this->userModel->checkUsernameById($id,$username);
+            // var_dump($user);die();
+            if (($checkUsername)) {
+                $errorUsername = "Email đã tồn tại!";
+            }
+            if (empty($errorUsername)) {
+                $user = $this->userModel->editAdmin($username,$password, $id);
+                if ($user) {
+                    $this->getAllUser();
+                    exit();
+                }
+            } else {
+                $user = [
+                    'role' => $role,
+                    'username' => $username,
+                    'password' => $password
+
+                ];
+            }
+        }
+        include_once "./../views/admin/users/editAdmin.php";
+    }
+    public function editSv()
+    {
+        $errorEmail = $errorMaSv = $errorName = "";
+        $id = $_GET['ref_id'];
+        // var_dump($id);die();
+        $classes = $this->classesModel->getAll();
+        $department = $this->departmentModel->getAll();
+        $student = $this->studentModel->getById($id);
+        $studentprf = $this->studentModel->getById($id);
+        $userNd = $this->userModel->getByRef_id($id);
+
+        require_once './../views/admin/student/edit.php';
+    }
+    public function edit()
+    {
+        $department = null;
+        if (isset($_POST['btn_edit'])) {
+            $id = $_POST['id'];
+            $role = $_POST['role'];
+            $full_name = $_POST['full_name'] ?? null;
+            $email = $_POST['email'] ?? null;
+            // if ($role === 'lecturer') {
+            // }
+            $department = $_POST['department_id'] ?? null;
+            $checkEmail = $this->userModel->checkEmailByIdRole($id,$role, $email);
+            // var_dump($user);die();
+            if (($checkEmail)) {
+                $errorEmail = "Email đã tồn tại!";
+            }
+            if (empty($errorEmail)) {
+                $user = $this->userModel->editUser($role, $full_name, $email, $department, $id);
+                if ($user) {
+                    $this->getAllUser();
+                    exit();
+                }
+            } else {
+                $if_user = [
+                    'id' => $id,
+                    // 'role' => $role,
+                    'full_name' => $full_name,
+                    'email' => $email,
+                    'department_id' => $department
+                ];
+                $user = [
+                    'role' => $role,
+
+                ];
+                $department = $this->departmentModel->getAllFaculty();
+            }
+        }
+        include_once "./../views/admin/users/edit.php";
+    }
+    public function deleteUsers()
+    {
+        $id = $_GET['id'];
+        $ref_id = $_GET['ref_id'];
+        $role = $_GET['role'];
+        $deleteUser = $this->userModel->deleteUsers($id, $ref_id, $role);
+        if ($deleteUser) {
+            $this->getAllUser();
+            exit();
+        }
+    }
+}

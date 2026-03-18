@@ -29,7 +29,7 @@ class userModel
                 break;
 
             case 'student':
-                $sql = "SELECT full_name, gender FROM student_profiles WHERE student_id = $refId";
+                $sql = "SELECT full_name, gender, avatar FROM student_profiles WHERE student_id = $refId";
                 break;
 
             case 'training_office':

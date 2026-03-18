@@ -24,13 +24,16 @@ ob_start();
 
         <label class="avatar-box" for="realFile">
             <div class="file-info">
-                <img id="avatarPreview" src="<?= !empty($studentprf['avatar'])
-                                                    ? BASE_URL . 'upload/avatar/' . $studentprf['avatar']
-                                                    : BASE_URL . 'uploads/avatars/default.png' ?>" alt="Avatar">
+                <?php if (!empty($studentprf['avatar'])): ?>
+                    <img id="avatarPreview" src="<?= BASE_URL . 'upload/avatar/' . $studentprf['avatar'] ?>">
+                <?php else: ?>
+                    <img id="avatarPreview">
+                <?php endif; ?>
 
                 <!-- <span id="fileName">
                     <?= !empty($studentprf['avatar']) ? $studentprf['avatar'] : 'Chọn ảnh' ?>
                 </span> -->
+                <span class="avatar-placeholder">Ảnh thẻ</span>
             </div>
         </label>
 
@@ -40,7 +43,8 @@ ob_start();
         <div class="header-info">
             <div class="info-row">
                 <label>Họ và tên</label>
-                <input type="text" name="full_name" placeholder="Nguyễn Văn A" value="<?= $old['full_name'] ?? '' ?>" required>
+                <input type="text" name="full_name" placeholder="Nguyễn Văn A" value="<?= $old['full_name'] ?? '' ?>"
+                    required>
             </div>
 
             <div class="info-row">
@@ -63,18 +67,15 @@ ob_start();
             <label>Giới tính</label>
             <select name="gender" required>
                 <option value="">-- Chọn --</option>
-                <option value="Nam"
-                    <?= ($old['gender'] ?? '') == 'Nam' ? 'selected' : '' ?>>
+                <option value="Nam" <?= ($old['gender'] ?? '') == 'Nam' ? 'selected' : '' ?>>
                     Nam
                 </option>
 
-                <option value="Nữ"
-                    <?= ($old['gender'] ?? '') == 'Nữ' ? 'selected' : '' ?>>
+                <option value="Nữ" <?= ($old['gender'] ?? '') == 'Nữ' ? 'selected' : '' ?>>
                     Nữ
                 </option>
 
-                <option value="Khác"
-                    <?= ($old['gender'] ?? '') == 'Khác' ? 'selected' : '' ?>>
+                <option value="Khác" <?= ($old['gender'] ?? '') == 'Khác' ? 'selected' : '' ?>>
                     Khác
                 </option>
             </select>
@@ -96,7 +97,8 @@ ob_start();
 
             <div class="info-row">
                 <label>Số điện thoại</label>
-                <input type="text" name="phone" placeholder="0969768666" pattern="^(03|05|07|08|09)[0-9]{8}$" value="<?= $old['phone'] ?? '' ?>" required>
+                <input type="text" name="phone" placeholder="0969768666" pattern="^(03|05|07|08|09)[0-9]{8}$"
+                    value="<?= $old['phone'] ?? '' ?>" required>
                 <span style="color:red"><?= $errorSdt ?? '' ?></span>
 
             </div>
@@ -111,7 +113,8 @@ ob_start();
 
             <div class="info-row">
                 <label>Địa chỉ</label>
-                <input type="text" name="address" placeholder="Đường Phan Trọng Tuệ - Thanh Trì - Hà Nội" value="<?= $old['address'] ?? '' ?>" required>
+                <input type="text" name="address" placeholder="Đường Phan Trọng Tuệ - Thanh Trì - Hà Nội"
+                    value="<?= $old['address'] ?? '' ?>" required>
             </div>
         </div>
 
@@ -124,8 +127,7 @@ ob_start();
                 <select name="department_id" id="departmentSelect" required>
                     <option value="">-- Chọn ngành học --</option>
                     <?php foreach ($department as $dept): ?>
-                        <option value="<?= $dept['id'] ?>"
-                            <?= (isset($old['department_id']) && $old['department_id'] == $dept['id']) ? 'selected' : '' ?>>
+                        <option value="<?= $dept['id'] ?>" <?= (isset($old['department_id']) && $old['department_id'] == $dept['id']) ? 'selected' : '' ?>>
                             <?= $dept['faculty_name'] ?>
                         </option>
                     <?php endforeach; ?>
@@ -140,8 +142,7 @@ ob_start();
                         <!-- <option value="<?= $class['id'] ?>">
                             <?= $class['class_name'] ?>
                         </option> -->
-                        <option value="<?= $class['id'] ?>"
-                            <?= (isset($old['class_id']) && $old['class_id'] == $class['id']) ? 'selected' : '' ?>>
+                        <option value="<?= $class['id'] ?>" <?= (isset($old['class_id']) && $old['class_id'] == $class['id']) ? 'selected' : '' ?>>
                             <?= $class['class_name'] ?>
                         </option>
                     <?php endforeach; ?>
@@ -152,12 +153,10 @@ ob_start();
                 <label>Hệ đào tạo</label>
                 <select name="education_type" required>
                     <option value="">-- Chọn hệ đào tạo --</option>
-                    <option value="Chính quy"
-                        <?= ($old['education_type'] ?? '') == 'Chính quy' ? 'selected' : '' ?>>
+                    <option value="Chính quy" <?= ($old['education_type'] ?? '') == 'Chính quy' ? 'selected' : '' ?>>
                         Chính quy
                     </option>
-                    <option value="Liên thông"
-                        <?= ($old['education_type'] ?? '') == 'Liên thông' ? 'selected' : '' ?>>
+                    <option value="Liên thông" <?= ($old['education_type'] ?? '') == 'Liên thông' ? 'selected' : '' ?>>
                         Liên thông
                     </option>
                 </select>

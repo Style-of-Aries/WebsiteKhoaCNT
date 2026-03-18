@@ -53,7 +53,7 @@ ob_start();
 
         <div class="info-row">
             <label>Ngày sinh</label>
-            <input type="date" name="date_of_birth" value="<?= $studentprf['date_of_birth'] ?>" readonly>
+            <input type="text" value="<?= date('d/m/Y', strtotime($profile['date_of_birth'])) ?>" readonly>
         </div>
 
         <div class="info-row">
@@ -83,13 +83,13 @@ ob_start();
         <h3>Thông tin học vụ</h3>
 
         <div class="info-row">
-            <label>Lớp hành chính</label>
-            <input type="text" value="<?= $student['class_name'] ?>" readonly>
+            <label>Ngành học</label>
+            <input type="text" value="<?= $student['department_name'] ?>" readonly>
         </div>
 
         <div class="info-row">
-            <label>Khoa</label>
-            <input type="text" value="<?= $student['department_name'] ?>" readonly>
+            <label>Lớp hành chính</label>
+            <input type="text" value="<?= $student['class_name'] ?>" readonly>
         </div>
 
         <div class="info-row">
@@ -97,10 +97,10 @@ ob_start();
             <input type="text" value="<?= $studentprf['education_type'] ?>" readonly>
         </div>
 
-        <div class="info-row">
+        <!-- <div class="info-row">
             <label>Trạng thái học tập</label>
             <input type="text" value="<?= $studentprf['status'] ?>" readonly>
-        </div>
+        </div> -->
     </div>
 
 </div>

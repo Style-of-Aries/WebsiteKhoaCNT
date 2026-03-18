@@ -16,9 +16,16 @@ class subjectModel
     }
     public function getAll()
     {
-        $sql = "SELECT s.*, d.name AS department_name
-                FROM subjects s
-                LEFT JOIN department d ON s.department_id = d.id";
+        $sql = "SELECT 
+    s.*, 
+    d.name AS department_name
+FROM subjects s
+LEFT JOIN department d 
+    ON s.department_id = d.id
+
+ORDER BY 
+    s.recommended_year ASC,   -- năm 1 → 2 → 3 → 4
+    d.name ASC";
         return $this->__query($sql);
     }
     public function getAllGiangVienCuaKhoa($id)
@@ -127,29 +134,149 @@ class subjectModel
         return $prefix . str_pad($number, 5, '0', STR_PAD_LEFT);
     }
     public function removeVietnameseAccents($name)
-{
-    $search = [
-        'à','á','ạ','ả','ã','â','ầ','ấ','ậ','ẩ','ẫ','ă','ằ','ắ','ặ','ẳ','ẵ',
-        'è','é','ẹ','ẻ','ẽ','ê','ề','ế','ệ','ể','ễ',
-        'ì','í','ị','ỉ','ĩ',
-        'ò','ó','ọ','ỏ','õ','ô','ồ','ố','ộ','ổ','ỗ','ơ','ờ','ớ','ợ','ở','ỡ',
-        'ù','ú','ụ','ủ','ũ','ư','ừ','ứ','ự','ử','ữ',
-        'ỳ','ý','ỵ','ỷ','ỹ',
-        'đ'
-    ];
+    {
+        $search = [
+            'à',
+            'á',
+            'ạ',
+            'ả',
+            'ã',
+            'â',
+            'ầ',
+            'ấ',
+            'ậ',
+            'ẩ',
+            'ẫ',
+            'ă',
+            'ằ',
+            'ắ',
+            'ặ',
+            'ẳ',
+            'ẵ',
+            'è',
+            'é',
+            'ẹ',
+            'ẻ',
+            'ẽ',
+            'ê',
+            'ề',
+            'ế',
+            'ệ',
+            'ể',
+            'ễ',
+            'ì',
+            'í',
+            'ị',
+            'ỉ',
+            'ĩ',
+            'ò',
+            'ó',
+            'ọ',
+            'ỏ',
+            'õ',
+            'ô',
+            'ồ',
+            'ố',
+            'ộ',
+            'ổ',
+            'ỗ',
+            'ơ',
+            'ờ',
+            'ớ',
+            'ợ',
+            'ở',
+            'ỡ',
+            'ù',
+            'ú',
+            'ụ',
+            'ủ',
+            'ũ',
+            'ư',
+            'ừ',
+            'ứ',
+            'ự',
+            'ử',
+            'ữ',
+            'ỳ',
+            'ý',
+            'ỵ',
+            'ỷ',
+            'ỹ',
+            'đ'
+        ];
 
-    $replace = [
-        'a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a',
-        'e','e','e','e','e','e','e','e','e','e','e',
-        'i','i','i','i','i',
-        'o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o',
-        'u','u','u','u','u','u','u','u','u','u','u',
-        'y','y','y','y','y',
-        'd'
-    ];
+        $replace = [
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'a',
+            'e',
+            'e',
+            'e',
+            'e',
+            'e',
+            'e',
+            'e',
+            'e',
+            'e',
+            'e',
+            'e',
+            'i',
+            'i',
+            'i',
+            'i',
+            'i',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'o',
+            'u',
+            'u',
+            'u',
+            'u',
+            'u',
+            'u',
+            'u',
+            'u',
+            'u',
+            'u',
+            'u',
+            'y',
+            'y',
+            'y',
+            'y',
+            'y',
+            'd'
+        ];
 
-    return str_replace($search, $replace, $name);
-}
+        return str_replace($search, $replace, $name);
+    }
     public function editMonHoc($id, $name, $subject_code, $credits, $department_id, $subject_type, $recommended_year)
     {
 

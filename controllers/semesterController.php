@@ -260,6 +260,21 @@ class semesterController
             exit();
         }
 
+
+        if (strtotime($semester['end_date']) < NOW) {
+            $_SESSION['error'] = "Không thể kích hoạt học kỳ đã kết thúc";
+            header("Location:index.php?controller=semester&action=getAllSemester");
+            exit();
+        }
+
+        $daysBeforeStart = (strtotime($semester['start_date']) - NOW) / (60 * 60 * 24);
+
+        if (strtotime($semester['start_date']) > NOW && $daysBeforeStart > 5) {
+            $_SESSION['error'] = "Chỉ được kích hoạt trước tối đa 5 ngày khi học kỳ bắt đầu";
+            header("Location:index.php?controller=semester&action=getAllSemester");
+            exit();
+        }
+
         // Kiểm tra có học kỳ đang active không
         $activeSemester = $this->semesterModel->getActiveSemester();
 
