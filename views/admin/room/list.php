@@ -20,7 +20,7 @@ ob_start();
           <th onclick="sortTable(2)">Tòa</th>
           <th onclick="sortTable(3)">Số lượng</th>
           <th onclick="sortTable(4)">Loại phòng</th>
-          <th onclick="sortTable(5)">Hành động</th>
+          <th class="action">Hành động</th>
         </tr>
       </thead>
       <tbody>

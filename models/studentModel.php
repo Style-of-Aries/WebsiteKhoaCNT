@@ -540,16 +540,21 @@ WHERE st.id = $studentId;
         return $row ? $row['id'] : null;
     }
 
-    public function getStudentByFaculty()
+    public function getStudentGenderByITDepartments()
     {
         $sql = "
-        SELECT f.name AS faculty_name, COUNT(s.id) AS total_students
-        FROM department f
-        LEFT JOIN department d ON d.parent_id = f.id AND d.type = 'department'
-        LEFT JOIN student s ON s.department_id = d.id
-        WHERE f.type = 'faculty'
-        GROUP BY f.id
-        ";
+    SELECT 
+        d.name AS department_name,
+        COUNT(s.id) AS total_students,
+        SUM(CASE WHEN sp.gender = 'Nam' THEN 1 ELSE 0 END) AS total_male,
+        SUM(CASE WHEN sp.gender = 'Nữ' THEN 1 ELSE 0 END) AS total_female
+    FROM department d
+    LEFT JOIN student s ON s.department_id = d.id
+    LEFT JOIN student_profiles sp ON sp.student_id = s.id
+    WHERE d.parent_id = 12
+      AND d.type = 'department'
+    GROUP BY d.id
+    ";
 
         $result = $this->__query($sql);
 

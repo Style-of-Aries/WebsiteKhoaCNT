@@ -39,16 +39,20 @@ class adminController
         $totalSinhVien = $this->studentModel->getAllds();
         $totalGiangVien = $this->lecturerModel->getAll();
         $totalLopHoc = $this->classesModel->getAll();
-        $totalKhoa = $this->departmentModel->getAllFaculty();
+        $totalKhoa = $this->departmentModel->getAllDepartment();
         $newStudents = $this->studentModel->getNewStudents();
-        $facultyData = $this->studentModel->getStudentByFaculty();
+        $data = $this->studentModel->getStudentGenderByITDepartments();
 
-        $facultyLabels = [];
-        $facultyCount = [];
+        $labels = [];
+        $total = [];
+        $male = [];
+        $female = [];
 
-        foreach ($facultyData as $row) {
-            $facultyLabels[] = $row['faculty_name'];
-            $facultyCount[] = $row['total_students'];
+        foreach ($data as $row) {
+            $labels[] = $row['department_name'];
+            $total[] = $row['total_students'];
+            $male[] = $row['total_male'];
+            $female[] = $row['total_female'];
         }
         require_once './../views/admin/dashboard/dashboard.php';
     }

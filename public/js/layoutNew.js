@@ -694,9 +694,29 @@ document.addEventListener("DOMContentLoaded", function () {
   })();
   //#endregion
 });
-document
-  .getElementById("departmentSelect")
-  .addEventListener("change", function () {
+const sessionDate = document.getElementById("session_date");
+
+if (sessionDate) {
+  sessionDate.addEventListener("change", function () {
+    const dateValue = this.value;
+    if (!dateValue) return;
+
+    const date = new Date(dateValue);
+    const jsDay = date.getDay();
+
+    if (jsDay === 0) {
+      alert("Chủ nhật nghỉ");
+      return;
+    }
+
+    const thu = jsDay + 1;
+    document.getElementById("day_of_week").value = thu;
+  });
+}
+const departmentSelect = document.getElementById("departmentSelect");
+
+if (departmentSelect) {
+  departmentSelect.addEventListener("change", function () {
     let department_id = this.value;
 
     fetch(
@@ -706,37 +726,27 @@ document
       .then((response) => response.json())
       .then((data) => {
         let classSelect = document.getElementById("classSelect");
+
+        if (!classSelect) return;
+
         classSelect.innerHTML = '<option value="">-- Chọn lớp --</option>';
 
         data.forEach((cls) => {
           classSelect.innerHTML += `<option value="${cls.id}">${cls.class_name}</option>`;
         });
+      })
+      .catch((err) => {
+        console.error("Fetch lỗi:", err);
       });
   });
+}
 // đổi màu khi chọn điểm danh
 function changeColor(select) {
   let cls = select.options[select.selectedIndex].dataset.class;
   select.parentElement.className = cls;
 }
 
-document.getElementById("session_date").addEventListener("change", function () {
-  const dateValue = this.value;
-  if (!dateValue) return;
 
-  const date = new Date(dateValue);
-  const jsDay = date.getDay();
-  // 0 = CN, 1 = Thứ 2, ..., 6 = Thứ 7
-
-  if (jsDay === 0) {
-    alert("Chủ nhật nghỉ");
-    return;
-  }
-
-  const thu = jsDay + 1;
-
-  // GÁN THẲNG VÀO SELECT
-  document.getElementById("day_of_week").value = thu;
-});
 function toggleDepartment() {
   var role = document.getElementById("roleSelect").value;
   var departmentField = document.getElementById("department_id");
