@@ -664,17 +664,20 @@ select {
 }
 
 /* Action column */
-.main-table td.action {
+.main-table .action {
   display: flex;
   justify-content: center;
   gap: 5px;
   width: 250px;
+  /* padding-left: 50px; */
+  /* padding-right: 50px; */
   align-items: center;
 }
 /* Name column*/
 .main-table .thName,
 .main-table .tdName {
-  min-width: 240px;
+  width: 140px;
+  white-space: nowrap;
 }
 
 .main-table .tdDate {
@@ -1416,6 +1419,8 @@ select {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .card h3 {
@@ -1439,6 +1444,10 @@ select {
   margin: 10px 0;
   margin-left: 10px;
   /* text-align: left; */
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 #totalSV {
@@ -1961,7 +1970,6 @@ select {
   vertical-align: middle;
 }
 
-
 .timetable-table th:nth-child(8) {
   text-align: center;
 }
@@ -2244,8 +2252,9 @@ select {
 }
 
 .chartBox {
-  width: 600px;
-  height: 350px;
+  /* width: 850px; */
+  flex: 2;
+  height: 530px;
   /* margin: 40px auto; */
   background: white;
   padding: 20px;
@@ -2253,7 +2262,13 @@ select {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+#facultyChart {
+  flex: 1;
+}
+
 .card-student-new {
+  /* width: 400px; */
+  flex: 1;
   background: #fff;
   border-radius: 12px;
   padding: 15px;
@@ -2317,8 +2332,14 @@ select {
 }
 
 .select-filter {
-    padding: 10px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    width: 30%;
+  padding: 10px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 30%;
+}
+
+.card-link {
+  text-decoration: none; /* bỏ gạch chân */
+  color: inherit; /* giữ màu như card */
+  display: block; /* QUAN TRỌNG */
 }

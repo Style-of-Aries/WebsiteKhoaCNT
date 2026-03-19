@@ -4,29 +4,32 @@ ob_start();
 ?>
 <div class="containerDashboard">
     <div class="dashboard-cards">
-        <div class="card" id="totalSV">
+        <div class="card" id="totalSV" data-url="index.php?controller=admin&action=getAllSinhVien">
             <h3><i class="bx bxs-graduation"></i> Tổng số sinh viên</h3>
             <p><?= count($totalSinhVien) ?></p>
         </div>
-        <div class="card" id="totalGV">
+
+        <div class="card" id="totalGV" data-url="index.php?controller=admin&action=getAllUser">
             <h3><i class="bx bxs-user-badge"></i> Tổng số giảng viên</h3>
             <p><?= count($totalGiangVien) ?></p>
         </div>
-        <div class="card" id="totalLop">
+
+        <div class="card" id="totalLop" data-url="index.php?controller=classes&action=getAllLopHoc">
             <h3><i class="bx bxs-group"></i> Tổng số lớp học</h3>
             <p><?= count($totalLopHoc) ?></p>
         </div>
-        <div class="card" id="totalKhoa">
-            <h3><i class="bx bxs-building"></i> Tổng số khoa</h3>
+
+        <div class="card" id="totalKhoa" data-url="index.php?controller=department&action=index">
+            <h3><i class="bx bxs-building"></i> Tổng số ngành học</h3>
             <p><?= count($totalKhoa) ?></p>
         </div>
     </div>
 
-    <div style="display: flex;">
+    <div style="display: flex; margin-top: 20px; gap: 20px;">
         <!-- CHART -->
         <div class="chartBox">
 
-            <h2>Sinh viên theo khoa</h2>
+            <h2>Sinh viên theo ngành học</h2>
 
             <canvas id="facultyChart"></canvas>
 
@@ -43,9 +46,9 @@ ob_start();
                     <?php foreach ($newStudents as $sv): ?>
                         <div class="student-item">
                             <img src="<?=
-                                    $sv['gender'] === 'Nữ'
-                                    ? BASE_URL . 'img/female.jpg'
-                                    : BASE_URL . 'img/male.jpg'
+                                $sv['gender'] === 'Nữ'
+                                ? BASE_URL . 'img/female.jpg'
+                                : BASE_URL . 'img/male.jpg'
                                 ?>" alt="avatar">
 
                             <div class="info">
@@ -74,34 +77,81 @@ ob_start();
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-
-    const labels = <?= json_encode($facultyLabels) ?>;
-    const data = <?= json_encode($facultyCount) ?>;
+    document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("click", function () {
+            const url = this.getAttribute("data-url");
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+    const labels = <?= json_encode($labels) ?>;
+    const total = <?= json_encode($total) ?>;
+    const male = <?= json_encode($male) ?>;
+    const female = <?= json_encode($female) ?>;
 
     new Chart(document.getElementById("facultyChart"), {
-
         type: 'bar',
 
         data: {
             labels: labels,
-            datasets: [{
-                label: "Số sinh viên",
-                data: data,
-                borderWidth: 1
-            }]
+            datasets: [
+                {
+                    label: "Tổng SV",
+                    data: total,
+                    backgroundColor: "#4BC0C0",
+                    borderRadius: 8
+                },
+                {
+                    label: "Nam",
+                    data: male,
+                    backgroundColor: "#36A2EB",
+                    borderRadius: 8
+                },
+                {
+                    label: "Nữ",
+                    data: female,
+                    backgroundColor: "#FF6384",
+                    borderRadius: 8
+                }
+            ]
         },
 
         options: {
             responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            size: 13
+                        }
+                    }
+                }
+            },
             scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: 14
+                        }
+                    },
+                }, // ✅ thêm dấu phẩy ở đây
+
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        maxTicksLimit: 6,
+                        font: {
+                            size: 13
+                        }
+                    },
+                    grid: {
+                        color: "#eee"
+                    }
                 }
             }
         }
-
     });
-
 </script>
 
 
