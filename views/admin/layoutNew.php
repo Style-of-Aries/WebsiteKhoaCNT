@@ -46,6 +46,7 @@ require_once __DIR__ . "/../../config/config.php";
 
 
         <div class="header">
+            <div class="menu-toggle">☰</div>
             <div class="avatar">
                 <?php
                 $fullName = $_SESSION['user']['full_name'] ?? 'Admin';
@@ -89,6 +90,7 @@ require_once __DIR__ . "/../../config/config.php";
     <script src="<?= BASE_URL ?>js/layoutNew.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <div class="overlay"></div>
 </body>
 
 </html>

@@ -42,7 +42,7 @@ $urlLop = PermissionService::has($role, 'classes')
         </div>
     </div>
 
-    <div style="display: flex; margin-top: 20px; gap: 20px;">
+    <div class="dashboard-bottom">
         <!-- CHART -->
         <div class="chartBox">
 
@@ -56,7 +56,7 @@ $urlLop = PermissionService::has($role, 'classes')
             <div class="card-header">
                 <h3>🎓 Sinh viên mới</h3>
                 
-                <?= PermissionService::has($role, 'student')
+                <?= PermissionService::has($role, 'students')
                     ? '<a href="index.php?controller=admin&action=getAllSinhVien">Xem tất cả</a>'
                     : '' ?>
             </div>

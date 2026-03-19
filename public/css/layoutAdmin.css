@@ -1446,8 +1446,8 @@ select {
   /* text-align: left; */
 }
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 #totalSV {
@@ -2342,4 +2342,233 @@ select {
   text-decoration: none; /* bỏ gạch chân */
   color: inherit; /* giữ màu như card */
   display: block; /* QUAN TRỌNG */
+}
+
+/* ===============================
+   RESPONSIVE - TABLET
+================================ */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 200px;
+  }
+
+  .sidebar {
+    width: 250px;
+  }
+
+  .dashboard-cards {
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1 1 calc(50% - 10px);
+  }
+}
+
+/* ===============================
+   RESPONSIVE - MOBILE
+================================ */
+@media (max-width: 768px) {
+  body {
+    overflow: auto;
+  }
+
+  /* Sidebar ẩn */
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  /* Content full width */
+  .main-content {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  /* Header nhỏ lại */
+  .header {
+    height: 50px;
+    padding: 0 10px;
+  }
+
+  .header .avatar img {
+    width: 35px;
+    height: 35px;
+  }
+
+  /* Cards stack */
+  .dashboard-cards {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  /* Form */
+  .row {
+    flex-direction: column;
+  }
+
+  /* Table scroll ngang */
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  .main-table {
+    min-width: 700px;
+  }
+}
+
+/* ===============================
+   RESPONSIVE - SMALL MOBILE
+================================ */
+@media (max-width: 480px) {
+  .card p {
+    font-size: 30px;
+  }
+
+  .btn-submit {
+    width: 100%;
+  }
+
+  .searchScore {
+    width: 100%;
+  }
+
+  .week-select {
+    width: 100%;
+  }
+}
+.dashboard-bottom {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .dashboard-bottom {
+    flex-direction: column;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .dashboard-bottom {
+    flex-direction: column;
+  }
+}
+
+.chartBox,
+.card-student-new {
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .chartBox {
+    height: 350px;
+  }
+
+  .card-student-new {
+    padding: 10px;
+  }
+
+  .student-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .student-item .date {
+    margin-top: 5px;
+  }
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: auto;
+}
+
+/* Hiện nút khi mobile */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+}
+
+/* ====== CSS CỦA BẠN Ở TRÊN ====== */
+
+
+/* ====== FIX CROSS-BROWSER (ĐẶT CUỐI FILE) ====== */
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+input, select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.main-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Sidebar ẩn trên mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: 0.3s;
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 900;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Nút toggle */
+.menu-toggle {
+  font-size: 22px;
+  cursor: pointer;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
 }

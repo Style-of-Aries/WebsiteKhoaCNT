@@ -240,6 +240,39 @@ function exportExcel(tableId = "mainTable", fileName = "DanhSach.xlsx") {
 //   }
 // const fullNameInput = document.querySelector('input[name="full_name"]');
 document.addEventListener("DOMContentLoaded", function () {
+  const sidebar = document.querySelector(".sidebar");
+  const toggleBtn = document.querySelector(".menu-toggle");
+  const overlay = document.querySelector(".overlay");
+
+  // mở / đóng sidebar
+  function toggleSidebar() {
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+  }
+
+  // click nút ☰
+  toggleBtn.addEventListener("click", function (e) {
+    e.stopPropagation(); // tránh bị đóng ngay
+    toggleSidebar();
+  });
+
+  // click overlay để đóng
+  overlay.addEventListener("click", function () {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+  });
+
+  // click ngoài sidebar để đóng
+  document.addEventListener("click", function (e) {
+    if (
+      sidebar.classList.contains("active") &&
+      !e.target.closest(".sidebar") &&
+      !e.target.closest(".menu-toggle")
+    ) {
+      sidebar.classList.remove("active");
+      overlay.classList.remove("active");
+    }
+  });
   initSemesterDate();
 
   //#region ================= checkbox-semester =================
@@ -745,7 +778,6 @@ function changeColor(select) {
   let cls = select.options[select.selectedIndex].dataset.class;
   select.parentElement.className = cls;
 }
-
 
 function toggleDepartment() {
   var role = document.getElementById("roleSelect").value;
