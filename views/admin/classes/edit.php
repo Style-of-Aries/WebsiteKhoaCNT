@@ -7,27 +7,28 @@ ob_start();
 
     <form class="song-form" action="index.php?controller=classes&action=edit" method="POST"
         enctype="multipart/form-data">
-        <input type="hidden" name="id" value=" <?= $user['id'] ?>">
+        <input type="hidden" name="id" value="<?= $user['id'] ?? '' ?>">
         <div class="row">
             <div class="col">
                 <label>Tên lớp học</label>
-                <input type="text" name="class_name" placeholder="Tên lớp học" value="<?= $user['class_name'] ?>"
+                <input type="text" name="class_name" placeholder="Tên lớp học" value="<?= htmlspecialchars($user['class_name']) ?? '' ?>"
                     required>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <label>Mã lớp</label>
-                <input type="text" name="class_code" placeholder="Mã lớp" value="<?= $user['class_code'] ?>" required>
-                <?php if (!empty($errorMaSv))
-                    echo "<span style='color:red;'>$errorMaSv</span><br>"; ?>
+                <input type="text" name="class_code" placeholder="Mã lớp" value="<?= htmlspecialchars($user['class_code']) ?? '' ?>" required>
+
             </div>
         </div>
+        <?php if (!empty($errorLop))
+            echo "<span style='color:red;'>$errorLop</span><br>"; ?>
         <div class="row">
             <div class="col">
                 <label>Lớp</label>
                 <select name="department_id" required>
-                    <option value="">-- Chọn lớp --</option>
+                    <option value="">-- Chọn ngành --</option>
 
                     <?php foreach ($department as $class): ?>
                         <option value="<?= $class['id'] ?>" <?= ($class['id'] == $user['department_id']) ? 'selected' : '' ?>>

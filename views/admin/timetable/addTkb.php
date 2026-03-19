@@ -83,20 +83,21 @@
                         <?php foreach ($rooms as $r): ?>
                             <option value="<?= $r['id'] ?>"
                                 <?= ($oldRooms[$index] ?? '') == $r['id'] ? 'selected' : '' ?>>
-                                <?= $r['room_name'] ?> (<?= $r['building'] ?>) - Số lượng:  <?= $r['capacity'] ?>
+                                <?= $r['room_name'] ?> (<?= $r['building'] ?>) - Số lượng: <?= $r['capacity'] ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
 
-                    <?php if (!empty($errors['room_id'])): ?>
-                        <small style="color:red"><?= $errors['room_id'] ?></small>
-                    <?php endif; ?>
+
 
                     <?php if ($index > 0): ?>
                         <button type="button" onclick="removeSchedule(this)">X</button>
                     <?php endif; ?>
 
                 </div>
+                <?php if (!empty($errors['room_id'])): ?>
+                    <small style="color:red"><?= $errors['room_id'] ?></small>
+                <?php endif; ?>
 
             <?php endfor; ?>
             <?php if (!empty($errors['schedule'])): ?>

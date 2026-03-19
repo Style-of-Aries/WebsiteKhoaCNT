@@ -4,7 +4,7 @@ ob_start();
 ?>
 <div class="admin-table-wrapper">
   <div class="table-toolbar">
-    <h2>Danh sách Người dùng</h2>
+    <h2>Danh sách phòng học</h2>
     <input type="text" id="searchTable" placeholder="Tìm kiếm phòng học, loại phòng...">
   </div>
   <button class="add-button" onclick="location.href='index.php?controller=room&action=addPhongHoc'">

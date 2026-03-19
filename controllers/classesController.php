@@ -29,67 +29,87 @@ class classesController
         $classes = $this->classesModel->getAll();
         require_once './../views/admin/classes/list.php';
     }
-    public function getAllSinhVienCuaLop(){
-        $id=$_GET['id'];
+    public function getAllSinhVienCuaLop()
+    {
+        $id = $_GET['id'];
         $students = $this->classesModel->getAllSinhVienCuaLop($id);
         require_once './../views/admin/classes/listSv.php';
     }
-    
+
     public function addLopHoc()
     {
+        $errorLop = '';
         $department = $this->departmentModel->getAllDepartment();
         $lecturer = $this->lecturerModel->getAll();
         require_once './../views/admin/classes/add.php';
     }
     public function editLh()
     {
-        $id=$_GET['id'];
-        $user= $this->classesModel->getById($id);
-        $department = $this->departmentModel->getAll();
+        $id = $_GET['id'];
+        $user = $this->classesModel->getById($id);
+        $department = $this->departmentModel->getAllDepartment();
         $lecturer = $this->lecturerModel->getAll();
         require_once './../views/admin/classes/edit.php';
     }
     // thêm 
     public function getLecturerByDepartment()
-{
-    $department_id = $_GET['id'];
+    {
+        $department_id = $_GET['id'];
 
-    $lecturers = $this->classesModel->getLecturerByDepartment($department_id);
+        $lecturers = $this->classesModel->getLecturerByDepartment($department_id);
 
-    header('Content-Type: application/json');
-    echo json_encode($lecturers);
-    exit;
-}
+        header('Content-Type: application/json');
+        echo json_encode($lecturers);
+        exit;
+    }
     public function add()
     {
+        $old = [];
+        $errorLop = '';
         if (isset($_POST['btn_add'])) {
+
+            $old = $_POST;
             $class_name = $_POST['class_name'];
             $class_code = $class_name;
             $department_id = $_POST['department_id'];
             $lecturer_id = $_POST['lecturer_id'];
-            $class = $this->classesModel->addLopHoc($class_name, $class_code, $department_id, $lecturer_id);
-            if ($class) {
-                $this->getAllLopHoc();
+            if ($this->classesModel->checkMaLopAdd($class_code)) {
+                $errorLop = "Lớp hành chính đã tồn tại";
+            }
+            if (empty($errorLop)) {
+                $class = $this->classesModel->addLopHoc($class_name, $class_code, $department_id, $lecturer_id);
+                if ($class) {
+                    $this->getAllLopHoc();
+                    exit();
+                }
             }
         }
+        // nếu sai gán lại dữ liệu
+        $department = $this->departmentModel->getAllDepartment();
+        $lecturer = $this->lecturerModel->getAll();
+        include_once "./../views/admin/classes/add.php";
     }
     // sửa 
-    public function edit(){
-        if ($_POST['btn_edit']) {
-            $id= $_POST['id'];
+    public function edit()
+    {
+        // Luôn lấy danh sách để tránh lỗi khi load lại view
+        $department = $this->departmentModel->getAllDepartment();
+        $lecturer = $this->lecturerModel->getAll();
+
+        if (isset($_POST['btn_edit'])) {
+            $id = $_POST['id'];
             $class_name = $_POST['class_name'];
             $class_code = $_POST['class_code'];
             $department_id = $_POST['department_id'];
             $lecturer_id = $_POST['lecturer_id'];
-            if ($this->classesModel->checkMaLop($id, $class_code)) {
-                $errorMaSv = "Lớp đã tồn tại";
+            if ($this->classesModel->checkMaLop( $class_code,$id)) {
+                $errorLop = "Lớp hành chính đã tồn tại";
             }
-            if (empty($errorMaSv)) {
-                $this->classesModel->editLopHoc($id,$class_name, $class_code, $department_id, $lecturer_id);
+            if (empty($errorLop)) {
+                $this->classesModel->editLopHoc($id, $class_name, $class_code, $department_id, $lecturer_id);
                 $this->getAllLopHoc();
                 exit;
-            }
-             else {
+            } else {
                 // Gán lại dữ liệu vừa nhập để hiển thị lại form
                 $user = [
                     'id' => $id,
@@ -98,16 +118,22 @@ class classesController
                     'department_id' => $department_id,
                     'lecturer_id' => $lecturer_id
                 ];
-                $department= $this->departmentModel->getAll();
-                $lecturer= $this->lecturerModel->getAll();
+                $department = $this->departmentModel->getAllDepartment();
+                $lecturer = $this->lecturerModel->getAll();
+            }
+        } else {
+            // Load dữ liệu ban đầu khi vào trang edit
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $user = $this->classesModel->getById($id);
             }
         }
         include_once "./../views/admin/classes/edit.php";
-
     }
-    public function deleteLh(){
+    public function deleteLh()
+    {
 
-        $id= $_GET['id'];
+        $id = $_GET['id'];
         $this->classesModel->deleteLh($id);
         $this->getAllLopHoc();
     }

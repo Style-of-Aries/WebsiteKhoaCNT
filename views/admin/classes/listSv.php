@@ -1,96 +1,107 @@
 <!-- views/admin/songs/list.php -->
 <?php
-//  require_once "./../../../config/config.php";
-?>
-<?php
 ob_start();
 ?>
-<div class="container-admin">
-  <div class="sv-header">
-    <h2>Danh sách sinh viên của lớp: <?php echo $_GET['user']?></h2>
-    <div class="add">
-      <a href="index.php?controller=admin&action=addSinhVien">
-        <i class="ri-add-circle-line"></i>
-        Thêm Sinh Viên Mới</a>
-    </div>
+
+<div class="admin-table-wrapper">
+  <div class="table-toolbar">
+    <h2>Danh sách Sinh viên lớp <?php echo $_GET['user'] ?> </h2>
+    <input type="text" id="searchTable" placeholder="Tìm kiếm sinh viên, mã sinh viên, email...">
   </div>
-  <?php foreach ($students as $index => $user): ?>
-    <div class="student-card">
-      <div class="student-avatar">
-        <img src="<?= BASE_URL ?>/upload/avatar/<?= $user['avatar'] ?>" alt="avatar">
-      </div>
+  <!-- <form method="GET">
+    <input type="hidden" name="controller" value="admin">
+    <input type="hidden" name="action" value="getAllSinhVien">
 
-      <div class="student-info">
-        <div class="btnManager">
-          <h3><?= htmlspecialchars($user['full_name']) ?></h3>
-          <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>"
-            class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
-          <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>" class="action-btn delete-btn"
-            onclick="return confirm('Xóa người dùng này?')"><i class="ri-delete-bin-line"></i> Xóa</a>
-        </div>
-        <div class="info-grid">
-          <div class="info-item">
-            <i class='bx bx-user' data-label="Mã sinh viên"></i>
-            <span><?= htmlspecialchars($user['student_code']) ?></span>
-          </div>
+    <?php
+    $selected = $_GET['faculty_id'] ?? null; // đổi tên chuẩn
+    $name = 'faculty_id';
 
-          <div class="info-item">
-            <i class='bx bx-calendar' data-label="Ngày sinh"></i>
-            <span><?= htmlspecialchars($user['date_of_birth']) ?></span>
-          </div>
-          <div class="info-item">
-            <i class='bx bx-male-female' data-label="Giới tính"></i>
-            <span><?= htmlspecialchars($user['gender']) ?></span>
-          </div>
+    require __DIR__ . '/../../components/fillter.php'; // sửa lại tên file
+    ?>
+  </form> -->
+  <!-- <div class="add">
+    <a href="index.php?controller=admin&action=addSinhVien">
+      <i class="ri-add-circle-line"></i> Thêm Sinh Viên Mới
+    </a>
+  </div> -->
 
-          <div class="info-item">
-            <i class='bx bx-sitemap' data-label="Khoa"></i>
-            <span><?= htmlspecialchars($user['department_name']) ?></span>
-          </div>
-          <div class="info-item">
-            <i class='bx bx-book' data-label="Lớp"></i>
-            <span><?= htmlspecialchars($user['class_name']) ?></span>
-          </div>
+  <!-- <button class="add-button" onclick="location.href='index.php?controller=admin&action=addSinhVien'">
+    <div class="sign">+</div>
+    <div class="text">Thêm Sinh Viên Mới</div>
+  </button> -->
 
-          <div class="info-item">
-            <i class='bx bx-envelope' data-label="Email"></i>
-            <span><?= htmlspecialchars($user['email']) ?></span>
-          </div>
+  <div class="table-wrap">
+    <table class="main-table student-table" id="mainTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">STT</th>
+          <th onclick="sortTable(1)">Tên sinh viên</th>
+          <th onclick="sortTable(2)">Mã sinh viên</th>
+          <th onclick="sortTable(3)">Email</th>
+          <th onclick="sortTable(4)">Ngành</th>
+          <th onclick="sortTable(5)">Năm học</th>
+          <th onclick="sortTable(6)">Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($students as $index => $user): ?>
+          <tr>
+            <td><?= $index + 1 ?></td>
+            <td><?= htmlspecialchars($user['full_name']) ?></td>
+            <td><?= htmlspecialchars($user['student_code']) ?></td>
+            <td><?= htmlspecialchars($user['email']) ?></td>
+            <td><?= htmlspecialchars($user['department_name']) ?></td>
+            <td>Năm <?= htmlspecialchars($user['student_year']) ?></td>
+            <td class="status">
+              <?php if ($user['status'] == 'Đang học'): ?>
+                <span class="count-badge green">Đang học</span>
 
-          <div class="info-item">
-            <i class='bx bx-phone' data-label="Số điện thoại"></i>
-            <span><?= htmlspecialchars($user['phone']) ?></span>
-          </div>
+              <?php elseif ($user['status'] == 'Bảo lưu'): ?>
+                <span class="count-badge yellow">Bảo lưu</span>
 
-          <div class="info-item">
-            <i class='bx bx-id-card' data-label="CCCD / CMND"></i>
-            <span><?= htmlspecialchars($user['identity_number']) ?></span>
-          </div>
+              <?php elseif ($user['status'] == 'Thôi học'): ?>
+                <span class="count-badge red">Thôi học</span>
 
-          <div class="info-item">
-            <i class='bx bxs-graduation' data-label="Hệ đào tạo"></i>
-            <span><?= htmlspecialchars($user['education_type']) ?></span>
-          </div>
+              <?php elseif ($user['status'] == 'Đã tốt nghiệp'): ?>
+                <span class="count-badge blue">Đã tốt nghiệp</span>
 
-          <div class="info-item">
-            <i class='bx bx-check-circle' data-label="Trạng thái"></i>
-            <span><?= htmlspecialchars($user['status']) ?></span>
-          </div>
-          <div class="info-item">
-            <i class='bx bx-calendar-event' data-label="Thời gian nhập học"></i>
-            <span><?= htmlspecialchars($user['created_at']) ?></span>
-          </div>
-
-          <div class="info-item">
-            <i class='bx bx-home' data-label="Địa chỉ"></i>
-            <span><?= htmlspecialchars($user['address']) ?></span>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  <?php endforeach ?>
+              <?php else: ?>
+                <span class="count-badge">Không xác định</span>
+              <?php endif; ?>
+            </td>
+            <td class="action">
+              <!-- <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>"
+                class="action-btn edit-btn"><i class="ri-pencil-line"></i>Chi tiết</a>
+              <a href="index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>"
+                class="action-btn edit-btn"><i class="ri-pencil-line"></i>Sửa</a>
+              <a href="index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>"
+                class="action-btn delete-btn" onclick="return confirm('Xóa người dùng này?')"><i
+                  class="ri-delete-bin-line"></i> Xóa</a> -->
+              <button class="prf-button"
+                onclick="location.href='index.php?controller=admin&action=editSv&id=<?= $user['id'] ?>&full_name=<?= $user['full_name'] ?>'">
+                <svg xmlns="http://www.w3.org/2000/svg" class="prf-svgIcon" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd">
+                  </path>
+                </svg>
+              </button>
+              <button class="delete-button"
+                onclick="if(confirm('Xóa sinh viên này?')) location.href='index.php?controller=admin&action=deleteStudent&id=<?= $user['id'] ?>'">
+                <svg class="delete-svgIcon" viewBox="0 0 448 512">
+                  <path
+                    d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z">
+                  </path>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
 </div>
+</div>
+
 
 
 <?php

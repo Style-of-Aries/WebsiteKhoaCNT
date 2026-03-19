@@ -202,11 +202,15 @@ class adminController
             }
             if (!preg_match('/^(03|05|07|08|09)[0-9]{8}$/', $phone)) {
                 $errorSdt = "Số điện thoại phải 10 số và bắt đầu bằng 03,05,07,08,09";
+            }elseif ($this->studentModel->checkSdtById($phone,$id) ) {
+                $errorSdt = "Số điện thoại đã tồn tại";
             }
 
             /* Validate CCCD / CMND */
             if (!preg_match('/^([0-9]{9}|[0-9]{12})$/', $identity_number)) {
                 $errorCccd = "CMND hoặc CCCD không hợp lệ";
+            }elseif ($this->studentModel->checkCCCDById($identity_number,$id) ) {
+                $errorCccd = "CCCD đã tồn tại";
             }
 
 
@@ -342,10 +346,15 @@ class adminController
             if (!preg_match('/^(03|05|07|08|09)[0-9]{8}$/', $phone)) {
                 $errorSdt = "Số điện thoại phải 10 số và bắt đầu bằng 03,05,07,08,09";
             }
+            elseif ($this->studentModel->checkSdt($phone) ) {
+                $errorSdt = "Số điện thoại đã tồn tại";
+            }
 
             /* Validate CCCD / CMND */
             if (!preg_match('/^([0-9]{9}|[0-9]{12})$/', $identity_number)) {
                 $errorCccd = "CMND hoặc CCCD không hợp lệ";
+            }elseif ($this->studentModel->checkCCCD($identity_number) ) {
+                $errorCccd = "CCCD đã tồn tại";
             }
 
             $today = date('Y-m-d');
