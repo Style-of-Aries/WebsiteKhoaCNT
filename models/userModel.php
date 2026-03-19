@@ -558,23 +558,24 @@ WHERE u.role = 'lecturer'";
                     $sql = "DELETE FROM lecturer WHERE id = $ref_id";
                     break;
 
-                case 'student':
+                case 'Sinh viên':
                     $sql = "DELETE FROM student WHERE id = $ref_id";
+                    $sql = "DELETE FROM student_profiles WHERE student_id = $ref_id";
                     break;
 
                 case 'Phòng đào tạo':
                     $sql = "DELETE FROM training_office WHERE id = $ref_id";
                     break;
 
-                case 'Học vụ':
+                case 'Phòng học vụ':
                     $sql = "DELETE FROM academic_affairs WHERE id = $ref_id";
                     break;
 
-                case 'Khảo thí':
+                case 'Phòng khảo thí':
                     $sql = "DELETE FROM exam_office WHERE id = $ref_id";
                     break;
 
-                case 'Công tác SV':
+                case 'Phòng công tác sinh viên':
                     $sql = "DELETE FROM student_affairs WHERE id = $ref_id";
                     break;
 
