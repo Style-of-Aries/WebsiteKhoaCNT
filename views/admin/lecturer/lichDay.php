@@ -85,9 +85,15 @@ foreach ($timetables as $row) {
             <div class="tkb-cell">
                 <?php if (!empty($schedule['Chiều'][$dayKey])): ?>
                     <?php foreach ($schedule['Chiều'][$dayKey] as $item): ?>
-                        <strong><?= htmlspecialchars($item['subject_name']) ?></strong>
-                        <!-- <div>Lớp: <?= htmlspecialchars($item['class_code']) ?></div> -->
-                        <div>Phòng: <?= htmlspecialchars($item['room_name']) ?></div>
+                        <div class="tkb-item">
+                            <strong><?= htmlspecialchars($item['subject_name']) ?></strong><br>
+                            <span>Phòng: <?= htmlspecialchars($item['room_name']) ?></span><br>
+                            <?php if (!empty($item['admin_classes'])): ?>
+                                <span class="tkb-class">
+                                    <?= htmlspecialchars($item['admin_classes']) ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>

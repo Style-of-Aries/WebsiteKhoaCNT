@@ -114,6 +114,29 @@ LEFT JOIN student_affairs sa
         return $this->__query($sql);
     }
 
+    public function getUserLecturer()
+    {
+        $sql = "
+SELECT 
+    u.id,
+    u.username,
+    u.password,
+    u.ref_id,
+
+    l.full_name AS full_name,
+
+    'Giảng viên' AS role
+
+FROM users u
+
+LEFT JOIN lecturer l 
+    ON u.ref_id = l.id
+
+WHERE u.role = 'lecturer'";
+
+        return $this->__query($sql);
+    }
+
     // lấy thông tin user theo id 
     public function getById($id)
     {

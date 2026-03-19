@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../../services/PermissionService.php";
 $role = $_SESSION['user']['role'];
 // var_dump($role);
-// var_dump(PermissionService::has($role, 'attendance'));
+// var_dump(PermissionService::has($role, 'student'));
 // die;
 $urlTimetable = "";
 if($role === 'lecturer') {

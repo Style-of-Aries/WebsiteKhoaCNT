@@ -57,6 +57,47 @@ class departmentModel
 
         return $departments;
     }
+    public function getAllListDepartment()
+    {
+        $sql = "
+        SELECT 
+    k.id,
+    k.name AS faculty_name,
+    t.name AS parent_name,
+    
+    'Ngành' AS type,
+
+    COUNT(l.id) AS staff_count,
+    k.created_at,
+    k.updated_at
+
+FROM department k
+
+LEFT JOIN department t 
+    ON k.parent_id = t.id
+
+LEFT JOIN lecturer l 
+    ON l.department_id = k.id
+
+WHERE k.type = 'department'
+
+GROUP BY 
+    k.id,
+    k.name,
+    t.name,
+    k.created_at,
+    k.updated_at
+    ";
+
+        $query = $this->__query($sql);
+        $departments = [];
+
+        while ($row = mysqli_fetch_assoc($query)) {
+            $departments[] = $row;
+        }
+
+        return $departments;
+    }
     public function getAllDepartment()
     {
         $sql = "

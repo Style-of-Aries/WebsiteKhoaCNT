@@ -59,8 +59,13 @@ class adminController
     // giao diện danh sách người dùng
     public function getAllUser()
     {
-
         $users = $this->userModel->getAll();
+        require_once './../views/admin/users/list.php';
+        // require_once './../views/user/profile.php';
+    }
+    public function getUserRoleLecturer()
+    {
+        $users = $this->userModel->getUserLecturer();
         require_once './../views/admin/users/list.php';
         // require_once './../views/user/profile.php';
     }

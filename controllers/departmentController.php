@@ -28,6 +28,12 @@ class departmentController
         $departments = $this->departmentModel->getAll();
         require_once './../views/admin/department/list.php';
     }
+    public function getAllListDepartment()
+    {
+
+        $departments = $this->departmentModel->getAllListDepartment();
+        require_once './../views/admin/department/list.php';
+    }
     public function getAllGiangVienCuaKhoa(){
         $id=$_GET['id'];
         $department = $this->departmentModel->getAllGiangVienCuaKhoa($id);

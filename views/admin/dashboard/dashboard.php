@@ -1,25 +1,42 @@
 <?php
 ob_start();
-// print_r($newStudents);die();    
+require_once __DIR__ . "/../../../services/PermissionService.php";
+$role = $_SESSION['user']['role'];
+$urlSV = PermissionService::has($role, 'students')
+    ? 'data-url="index.php?controller=admin&action=getAllSinhVien"'
+    : '';
+
+$urlGV = PermissionService::has($role, 'lecturer')
+    ? 'data-url="index.php?controller=admin&action=getUserRoleLecturer"'
+    : '';
+$urlKhoa = PermissionService::has($role, 'departments')
+    ? 'data-url="index.php?controller=department&action=getAllListDepartment"'
+    : '';
+$urlLop = PermissionService::has($role, 'classes')
+    ? 'data-url="index.php?controller=classes&action=getAllLopHoc"'
+    : '';
+// print_r($urlSV);
+// var_dump(PermissionService::has($role, 'student'));die();    
 ?>
 <div class="containerDashboard">
     <div class="dashboard-cards">
-        <div class="card" id="totalSV" data-url="index.php?controller=admin&action=getAllSinhVien">
+
+        <div class="card" id="totalSV" <?= $urlSV ?>>
             <h3><i class="bx bxs-graduation"></i> Tổng số sinh viên</h3>
             <p><?= count($totalSinhVien) ?></p>
         </div>
 
-        <div class="card" id="totalGV" data-url="index.php?controller=admin&action=getAllUser">
+        <div class="card" id="totalGV" <?= $urlGV ?>>
             <h3><i class="bx bxs-user-badge"></i> Tổng số giảng viên</h3>
             <p><?= count($totalGiangVien) ?></p>
         </div>
 
-        <div class="card" id="totalLop" data-url="index.php?controller=classes&action=getAllLopHoc">
+        <div class="card" id="totalLop" <?= $urlLop ?>>
             <h3><i class="bx bxs-group"></i> Tổng số lớp học</h3>
             <p><?= count($totalLopHoc) ?></p>
         </div>
 
-        <div class="card" id="totalKhoa" data-url="index.php?controller=department&action=index">
+        <div class="card" id="totalKhoa" <?= $urlKhoa ?>>
             <h3><i class="bx bxs-building"></i> Tổng số ngành học</h3>
             <p><?= count($totalKhoa) ?></p>
         </div>
@@ -38,7 +55,10 @@ ob_start();
         <div class="card-student-new">
             <div class="card-header">
                 <h3>🎓 Sinh viên mới</h3>
-                <a href="index.php?controller=admin&action=getAllSinhVien">Xem tất cả</a>
+                
+                <?= PermissionService::has($role, 'student')
+                    ? '<a href="index.php?controller=admin&action=getAllSinhVien">Xem tất cả</a>'
+                    : '' ?>
             </div>
 
             <div class="card-body">
