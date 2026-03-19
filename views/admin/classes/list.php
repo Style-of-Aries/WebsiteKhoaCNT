@@ -32,7 +32,7 @@ ob_start();
 
 <div class="admin-table-wrapper">
   <div class="table-toolbar">
-    <h2>Danh sách Lớp học</h2>
+    <h2>Danh sách Lớp hành chính</h2>
     <input type="text" id="searchTable" placeholder="Tìm kiếm lớp học, mã lớp, khoa...">
   </div>
   <!-- <div class="add">

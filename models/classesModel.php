@@ -24,7 +24,18 @@ class classesModel
     public function checkMaLop($class_code, $id)
     {
 
-        $sql = "Select *from classes where class_code = '$class_code'AND id != '$id'
+        $class_code = trim($class_code);
+        $sql = "Select *from classes where class_code = '$class_code' AND id != '$id'
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
+            return true;
+        }
+    }
+    public function checkMaLopAdd($class_code)
+    {
+
+        $sql = "Select *from classes where class_code = '$class_code'
         LIMIT 1";
         $query = $this->__query($sql);
         if (mysqli_num_rows($query) > 0) {
@@ -113,40 +124,113 @@ class classesModel
 
     public function getAllSinhVienCuaLop($id)
     {
+        //         $sql = "SELECT
+        //     s.id,
+        //     s.student_code,
+        //     s.created_at,
+        //     s.class_id,
+        //     s.department_id,
+
+        //     sp.full_name,
+        //     sp.gender,
+        //     sp.date_of_birth,
+        //     sp.email,
+        //     sp.phone,
+        //     sp.identity_number,
+        //     sp.address,
+        //     sp.avatar,
+        //     sp.education_type,
+        //     sp.status,
+
+        //     c.class_name,
+        //     d.name AS department_name
+        //     -- CEIL(COUNT(CASE WHEN ss.status = 'studying' THEN ss.semester_id END) / 2) AS student_year
+
+        // FROM student s
+        // JOIN student_profiles sp 
+        //     ON sp.student_id = s.id
+
+        // LEFT JOIN classes c 
+        //     ON c.id = s.class_id
+
+        // LEFT JOIN department d 
+        //     ON d.id = s.department_id
+
+        // WHERE c.id = '$id';
+
+        // ";
         $sql = "SELECT
-    s.id,
-    s.student_code,
-    s.created_at,
-    s.class_id,
-    s.department_id,
+        s.id,
+        s.student_code,
+        s.created_at,
+        s.class_id,
+        s.department_id,
 
-    sp.full_name,
-    sp.gender,
-    sp.date_of_birth,
-    sp.email,
-    sp.phone,
-    sp.identity_number,
-    sp.address,
-    sp.avatar,
-    sp.education_type,
-    sp.status,
+        sp.full_name,
+        sp.gender,
+        sp.date_of_birth,
+        sp.email,
+        sp.phone,
+        sp.identity_number,
+        sp.address,
+        sp.avatar,
+        sp.education_type,
+        sp.status,
 
-    c.class_name,
-    d.name AS department_name
+        c.class_name,
+        d.name AS department_name,
+        f.name AS faculty_name,
 
-FROM student s
-JOIN student_profiles sp 
-    ON sp.student_id = s.id
+        CEIL(COUNT(CASE WHEN ss.status = 'studying' THEN ss.semester_id END) / 2) AS student_year
 
-LEFT JOIN classes c 
-    ON c.id = s.class_id
+    FROM student s
 
-LEFT JOIN department d 
-    ON d.id = s.department_id
+    JOIN student_profiles sp 
+        ON sp.student_id = s.id
 
-WHERE c.id = '$id';
+    LEFT JOIN classes c 
+        ON c.id = s.class_id
 
-";
+    LEFT JOIN department d 
+        ON d.id = s.department_id
+
+    LEFT JOIN department f 
+        ON d.parent_id = f.id
+
+    LEFT JOIN student_semesters ss
+        ON ss.student_id = s.id
+
+    WHERE c.id = $id
+
+    GROUP BY 
+        s.id,
+        s.student_code,
+        s.created_at,
+        s.class_id,
+        s.department_id,
+        sp.full_name,
+        sp.gender,
+        sp.date_of_birth,
+        sp.email,
+        sp.phone,
+        sp.identity_number,
+        sp.address,
+        sp.avatar,
+        sp.education_type,
+        sp.status,
+        c.class_name,
+        d.name,
+        f.name
+
+    ORDER BY 
+    CASE 
+        WHEN sp.status = 'Đang học' THEN 1
+        WHEN sp.status = 'Bảo lưu' THEN 2
+        WHEN sp.status = 'Thôi học' THEN 3
+        WHEN sp.status = 'Đã tốt nghiệp' THEN 4
+        ELSE 5
+    END,
+    s.created_at DESC";
         return $this->__query($sql);
     }
 }

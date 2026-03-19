@@ -83,6 +83,8 @@ WHERE cs.course_class_id IS NULL";
         $sql = "SELECT 
         cc.id,
     cc.class_code,
+    cc.max_students,
+
     s.name AS subject_name,
     l.full_name AS lecturer_name,
     se.name AS semester_name,

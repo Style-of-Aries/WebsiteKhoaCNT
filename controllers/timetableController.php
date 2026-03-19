@@ -332,6 +332,9 @@ class timetableController
                             $errors['schedule'] = "Giảng viên đã có lịch vào Thứ {$days[$i]} - {$sessions[$i]} trong khoảng tuần này";
                         }
                     }
+                    $room = $this->roomModel->getById($room_id);
+                    $room_name = $room['room_name'] ?? 'null';
+                    $room_soluong = $room['capacity'] ?? 'null';
                     if (
                         $this->timetableModel->checkRoomTuan(
                             $room_id,
@@ -342,12 +345,13 @@ class timetableController
                             $endWeek
                         )
                     ) {
-                        $errors['room_id'] = "Phòng học đã có lịch";
+                        $errors['room_id'] = "Phòng $room_name đã có lịch vào thứ $day";
                     }
                     $course_classes = $this->course_classesModel->getByCoures_class_id($course_class_id);
                     $soLuong = $course_classes['max_students'];
-                    if($this->timetableModel->checkSoLuong($soLuong,$room_id)){
-                            $errors['room_id'] = "Phòng học này có số lượng tối đa :.$soLuong";
+
+                    if ($this->timetableModel->checkSoLuong($soLuong, $room_id)) {
+                        $errors['room_id'] = "Phòng học này có số lượng tối đa :$room_soluong";
                     }
                 }
             }
@@ -464,42 +468,7 @@ class timetableController
         }
         include_once "./../views/admin/course_classes/add.php";
     }
-    // sửa 
-    // public function edithp()
-    // {
-    //     if ($_POST['btn_edit']) {
-    //         $id = $_POST['id'];
-    //         $subject_id = $_POST['subject_id'];
-    //         $lecturer_id = $_POST['lecturer_id'];
-    //         $semester_id = $_POST['semester_id'];
-    //         $max_students = $_POST['max_students'];
-    //         $class_code = $_POST['class_code'];
-    //         if ($this->course_classesModel->checkHocPhan($subject_id, $lecturer_id, $semester_id)) {
-    //             $errorHocPhan = "Giảng viên đã dạy môn này!";
-    //         }
-    //         if (empty($errorHocPhan)) {
-    //             $course_classes = $this->course_classesModel->editHocPhan($id, $subject_id, $lecturer_id, $semester_id, $class_code, $max_students);
-    //             if ($course_classes) {
-    //                 $this->getAllHocPhan();
-    //                 exit();
-    //             }
-    //         } else {
 
-    //             $course_classes = [
-    //                 'max_students' => $max_students,
-    //                 'class_code' => $class_code,
-    //                 'id' => $id,
-    //                 'subject_id' => $subject_id,
-    //                 'lecturer_id' => $lecturer_id,
-    //                 'semester_id' => $semester_id
-    //             ];
-    //             $subject = $this->subjectModel->getAll();
-    //             $lecturer = $this->lecturerModel->getAll();
-    //             $semester = $this->semesterModel->getAll();
-    //         }
-    //     }
-    //     include_once "./../views/admin/course_classes/edit.php";
-    // }
 
 
 
@@ -559,167 +528,6 @@ class timetableController
         $rooms = $this->roomModel->getAll();
         require_once './../views/admin/timetable/addTkb.php';
     }
-    // public function editTkb()
-    // {
-    //     $id = (int) $_GET['id'];
-
-    //     $subject = $this->subjectModel->getAll();
-    //     $lecturer = $this->lecturerModel->getAll();
-    //     $rooms = $this->roomModel->getAll();
-
-    //     $semester = $this->semesterModel->getActiveSemester();
-    //     if (!$semester)
-    //         die("Chưa có học kỳ đang hoạt động");
-
-    //     $semesterStart = $semester['start_date'];
-    //     $semesterEnd = $semester['end_date'];
-
-    //     $totalWeeks = ceil(
-    //         (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-    //             / (7 * 86400)
-    //     );
-
-    //     $course_classes = $this->course_classesModel->getById($id);
-    //     $timetable = $this->timetableModel->getByCourseClassId($id);
-
-    //     $errors = [];
-
-    //     require_once './../views/admin/course_classes/edit.php';
-    // }
-
-    // thêm 
-    // public function add()
-    // {
-    //     $errors = [];
-    //     $old = [];
-
-    //     $subject = $this->subjectModel->getAll();
-    //     $lecturer = $this->lecturerModel->getAll();
-    //     $rooms = $this->roomModel->getAll();
-
-    //     $semester = $this->semesterModel->layHocKyDangHoatDong();
-    //     if (!$semester) {
-    //         die("Không có học kỳ đang hoạt động");
-    //     }
-
-    //     $semester_id = $semester['id'];
-    //     $semesterStart = $semester['start_date'];
-    //     $semesterEnd = $semester['end_date'];
-
-    //     $totalWeeks = ceil(
-    //         (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-    //             / (7 * 86400)
-    //     );
-
-    //     if (isset($_POST['btn_add'])) {
-
-    //         $old = $_POST;
-
-    //         $subject_id = (int) ($_POST['subject_id'] ?? 0);
-    //         $lecturer_id = (int) ($_POST['lecturer_id'] ?? 0);
-    //         $max_students = (int) ($_POST['max_students'] ?? 0);
-    //         $day = (int) ($_POST['day_of_week'] ?? 0);
-    //         $session = $_POST['session'] ?? '';
-    //         $room_id = (int) ($_POST['room_id'] ?? 0);
-    //         $startWeek = (int) ($_POST['start_week'] ?? 0);
-    //         $endWeek = (int) ($_POST['end_week'] ?? 0);
-
-    //         // validate 
-    //         if (!$subject_id) {
-    //             $errors['subject_id'] = "Vui lòng chọn môn học";
-    //         }
-
-    //         if (!$lecturer_id) {
-    //             $errors['lecturer_id'] = "Vui lòng chọn giảng viên";
-    //         }
-
-    //         if ($max_students <= 0) {
-    //             $errors['max_students'] = "Sĩ số phải lớn hơn 0";
-    //         }
-
-    //         if (!$day) {
-    //             $errors['day_of_week'] = "Vui lòng chọn thứ học";
-    //         }
-
-    //         if (!$session) {
-    //             $errors['session'] = "Vui lòng chọn buổi học";
-    //         }
-
-    //         if (!$room_id) {
-    //             $errors['room_id'] = "Vui lòng chọn phòng học";
-    //         }
-
-    //         if (!$startWeek || !$endWeek) {
-    //             $errors['week'] = "Vui lòng chọn đầy đủ tuần học";
-    //         } elseif ($startWeek > $endWeek) {
-    //             $errors['week'] = "Tuần bắt đầu không được lớn hơn tuần kết thúc";
-    //             $semester = $this->semesterModel->getActiveSemester();
-    //             if (!$semester)
-    //                 die("Chưa có học kỳ đang hoạt động");
-
-    //             $semesterStart = $semester['start_date'];
-    //             $semesterEnd = $semester['end_date'];
-
-    //             $totalWeeks = ceil(
-    //                 (strtotime($semesterEnd) - strtotime($semesterStart) + 86400)
-    //                     / (7 * 86400)
-    //             );
-    //         }
-
-    //         // validate 
-    //         if (empty($errors)) {
-
-    //             if (
-    //                 $this->course_classesModel->tonTaiHocPhan(
-    //                     $subject_id,
-    //                     $lecturer_id,
-    //                     $semester_id
-    //                 )
-    //             ) {
-    //                 $errors['lecturer_id'] = "Giảng viên đã dạy môn này trong học kỳ";
-    //             }
-
-    //             if (
-    //                 $this->timetableModel->phongDaCoLich(
-    //                     $room_id,
-    //                     $day,
-    //                     $session
-    //                 )
-    //             ) {
-    //                 $errors['room_id'] = "Phòng học đã có lịch";
-    //             }
-    //         }
-
-    //         //    thêm 
-    //         if (empty($errors)) {
-
-    //             $class_code = $this->course_classesModel->malop($subject_id);
-
-    //             $course_class_id = $this->course_classesModel->themHocPhan(
-    //                 $subject_id,
-    //                 $lecturer_id,
-    //                 $semester_id,
-    //                 $class_code,
-    //                 $max_students
-    //             );
-
-    //             $this->timetableModel->themThoiKhoaBieu(
-    //                 $course_class_id,
-    //                 $room_id,
-    //                 $day,
-    //                 $session,
-    //                 $startWeek,
-    //                 $endWeek
-    //             );
-    //             $this->classSessionsModel->generateSessions($course_class_id);
-    //             $this->getAllHocPhan();
-    //             exit();
-    //         }
-    //     }
-
-    //     require_once './../views/admin/course_classes/add.php';
-    // }
-
 
 
     // sửa 
@@ -797,6 +605,14 @@ class timetableController
                 )
             ) {
                 $errors['room_id'] = "Phòng đã có lịch";
+            }
+            $room = $this->roomModel->getById($room_id);
+            // $room_name = $room['room_name'] ?? 'null';
+            $room_soluong = $room['capacity'] ?? 'null';
+            $course_classes = $this->course_classesModel->getByCoures_class_id($course_class_id);
+            $soLuong = $course_classes['max_students'];
+            if ($this->timetableModel->checkSoLuong($soLuong, $room_id)) {
+                $errors['room_id'] = "Phòng học này có số lượng tối đa :$room_soluong";
             }
 
             // update 

@@ -16,7 +16,9 @@ ob_start();
         <div class="row">
             <div class="col">
                 <label>Tên lớp</label>
-                <input type="text" name="class_name" required>
+                <input type="text" name="class_name" value="<?= htmlspecialchars($old['class_name'] ?? '') ?>" required>
+                <?php if (!empty($errorLop))
+                    echo "<span style='color:red;'>$errorLop</span><br>"; ?>
                 <!-- <i class="fa-solid fa-user"></i> -->
                 <!-- <small class="error" id="error-title"></small> -->
             </div>
@@ -35,7 +37,8 @@ ob_start();
                     <option value="">-- Chọn ngành học --</option>
 
                     <?php foreach ($department as $dep): ?>
-                        <option value="<?= $dep['id'] ?>">
+                        <option value="<?= $dep['id'] ?>"
+                            <?= (string)($old['department_id'] ?? '') === (string)$dep['id'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($dep['faculty_name']) ?>
                         </option>
                     <?php endforeach; ?>
@@ -50,7 +53,8 @@ ob_start();
                     <option value="">-- Chọn giảng viên --</option>
 
                     <?php foreach ($lecturer as $class): ?>
-                        <option value="<?= $class['id'] ?>">
+                        <option value="<?= $class['id'] ?>"
+                            <?= (string)($old['lecturer_id'] ?? '') === (string)$class['id'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($class['full_name']) ?>
                         </option>
                     <?php endforeach; ?>

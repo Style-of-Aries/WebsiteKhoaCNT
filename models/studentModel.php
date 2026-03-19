@@ -298,6 +298,46 @@ WHERE st.id = $studentId;
             return true;
         }
     }
+    public function checkSdt($phone)
+    {
+        $phone = trim($phone);
+        $sql = "Select *from student_profiles where phone='$phone'
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
+            return true;
+        }
+    }
+    public function checkSdtById($phone,$id)
+    {
+        $phone = trim($phone);
+        $sql = "Select *from student_profiles where phone='$phone' AND student_id != '$id'
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
+            return true;
+        }
+    }
+    public function checkCCCDById($identity_number,$id)
+    {
+        $identity_number = trim($identity_number);
+        $sql = "Select *from student_profiles where identity_number='$identity_number' and student_id != '$id'
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
+            return true;
+        }
+    }
+    public function checkCCCD($identity_number)
+    {
+        $identity_number = trim($identity_number);
+        $sql = "Select *from student_profiles where identity_number='$identity_number'
+        LIMIT 1";
+        $query = $this->__query($sql);
+        if (mysqli_num_rows($query) > 0) {
+            return true;
+        }
+    }
     public function isStudentCodeExists($student_code, $id)
     {
         $student_code = trim($student_code);

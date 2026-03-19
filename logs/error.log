@@ -201,3 +201,6 @@
 2026-03-13 00:29:56 | Duplicate entry '56-62-2' for key 'course_classes.uq_subject_lecturer_semester'
 2026-03-14 21:23:44 | Nguyễn Đức Trọng không đủ điều kiện chuyên cần (< 80%)
 2026-03-14 21:23:44 | SV 29: Nguyễn Đức Trọng không đủ điều kiện chuyên cần (< 80%)
+2026-03-19 11:01:07 | Duplicate entry '60-64-1' for key 'course_classes.uq_subject_lecturer_semester'
+2026-03-19 11:01:25 | Duplicate entry '60-64-1' for key 'course_classes.uq_subject_lecturer_semester'
+2026-03-19 11:24:36 | Duplicate entry '62-64-1' for key 'course_classes.uq_subject_lecturer_semester'

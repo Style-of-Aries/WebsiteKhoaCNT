@@ -98,6 +98,7 @@ ob_start();
             <div class="info-row">
                 <label>Số điện thoại</label>
                 <input type="text" name="phone" placeholder="0969768666" pattern="^(03|05|07|08|09)[0-9]{8}$"
+                title="số điện thoại phải đủ 10 số"
                     value="<?= $old['phone'] ?? '' ?>" required>
                 <span style="color:red"><?= $errorSdt ?? '' ?></span>
 
