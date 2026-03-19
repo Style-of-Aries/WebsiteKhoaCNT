@@ -250,75 +250,86 @@ WHERE course_class_id = $courseClassId;";
         $studentId = (int) $studentId;
 
         $sql = "
-        SELECT 
-    cc.id,
-    cc.class_code,
-    s.name AS subject_name,
-    cc.max_students,
-    l.full_name AS lecturer_name,
+    SELECT 
+        cc.id,
+        cc.class_code,
+        s.name AS subject_name,
+        cc.max_students,
+        l.full_name AS lecturer_name,
 
-    cc.registration_start,
-    cc.registration_end,
+        cc.registration_start,
+        cc.registration_end,
 
-    COUNT(DISTINCT scc.student_id) AS current_students,
+        COUNT(DISTINCT scc.student_id) AS current_students,
 
-    GROUP_CONCAT(
-        DISTINCT CONCAT(
-            CASE t.day_of_week
-                WHEN 2 THEN 'Thứ 2'
-                WHEN 3 THEN 'Thứ 3'
-                WHEN 4 THEN 'Thứ 4'
-                WHEN 5 THEN 'Thứ 5'
-                WHEN 6 THEN 'Thứ 6'
-                WHEN 7 THEN 'Thứ 7'
-                ELSE 'CN'
-            END,
-            ' (Tuần ', t.start_week, '-', t.end_week,
-            ' ', t.session, ')'
+        GROUP_CONCAT(
+            DISTINCT CONCAT(
+                CASE t.day_of_week
+                    WHEN 2 THEN 'Thứ 2'
+                    WHEN 3 THEN 'Thứ 3'
+                    WHEN 4 THEN 'Thứ 4'
+                    WHEN 5 THEN 'Thứ 5'
+                    WHEN 6 THEN 'Thứ 6'
+                    WHEN 7 THEN 'Thứ 7'
+                    ELSE 'CN'
+                END,
+                ' (Tuần ', t.start_week, '-', t.end_week,
+                ' ', t.session, ')'
+            )
+            ORDER BY t.day_of_week
+            SEPARATOR '<br>'
+        ) AS schedule,
+
+        EXISTS (
+            SELECT 1 
+            FROM student_course_classes sc2 
+            WHERE sc2.course_class_id = cc.id 
+            AND sc2.student_id = $studentId
+        ) AS is_registered
+
+    FROM course_classes cc
+
+    JOIN subjects s 
+        ON cc.subject_id = s.id
+
+    JOIN lecturer l 
+        ON cc.lecturer_id = l.id
+
+    JOIN semesters sem 
+        ON cc.semester_id = sem.id
+        AND sem.is_active = 1
+
+    LEFT JOIN timetables t 
+        ON cc.id = t.course_class_id
+
+    LEFT JOIN student_course_classes scc 
+        ON cc.id = scc.course_class_id
+
+    WHERE 
+        cc.status <> 'finished'
+        AND s.recommended_year <= $academic_year
+        AND s.department_id = (
+            SELECT department_id 
+            FROM student 
+            WHERE id = $studentId
         )
-        ORDER BY t.day_of_week
-        SEPARATOR '<br>'
-    ) AS schedule,
 
-    EXISTS (
-        SELECT 1 
-        FROM student_course_classes sc2 
-        WHERE sc2.course_class_id = cc.id 
-        AND sc2.student_id = $studentId
-    ) AS is_registered
+        /* LOẠI MÔN ĐÃ PASS */
+        AND NOT EXISTS (
+            SELECT 1
+            FROM academic_results ar
+            JOIN course_classes cc2 ON ar.course_class_id = cc2.id
+            WHERE ar.student_id = $studentId
+            AND cc2.subject_id = cc.subject_id
+            AND ar.result_status = 'pass'
+            AND ar.approval_status = 'PUBLISHED'
+        )
 
-FROM course_classes cc
+    GROUP BY 
+        cc.id
 
-JOIN subjects s 
-    ON cc.subject_id = s.id
-
-JOIN lecturer l 
-    ON cc.lecturer_id = l.id
-
-JOIN semesters sem 
-    ON cc.semester_id = sem.id
-    AND sem.is_active = 1
-
-LEFT JOIN timetables t 
-    ON cc.id = t.course_class_id
-
-LEFT JOIN student_course_classes scc 
-    ON cc.id = scc.course_class_id
-
-WHERE 
-    cc.status <> 'finished'
-    AND s.recommended_year <= $academic_year
-    AND s.department_id = (
-        SELECT department_id 
-        FROM student 
-        WHERE id = $studentId
-    )
-
-GROUP BY 
-    cc.id
-
-ORDER BY 
-    s.name;
+    ORDER BY 
+        s.name;
     ";
 
         return $this->__query($sql);
