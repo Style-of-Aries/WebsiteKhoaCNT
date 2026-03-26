@@ -55,54 +55,54 @@ if($role === 'lecturer') {
     <li class="<?= PermissionService::has($role, 'dashboard') ? 'dropdown' : 'locked' ?>">
         <a class="drop-btn" href="index.php?controller=admin&action=index">Trang chủ</a>
     </li>
-    <li class="<?= PermissionService::has($role, 'students') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn" href="index.php?controller=admin&action=getAllUser">Người dùng</a>
+    <li class="<?= PermissionService::has($role, 'users') ? 'dropdown' : 'locked' ?>">
+        <a class="drop-btn" href="index.php?controller=admin&action=getAllUser">Quản Lý Người Dùng</a>
     </li>
     <li class="<?= PermissionService::has($role, 'training') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn">Đào tạo ▸</a>
+        <a class="drop-btn">Quản lý đào tạo ▸</a>
         <ul class="submenu">
 
             <li class="<?= PermissionService::has($role, 'departments') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=department&action=getAllKhoa">Khoa</a>
+                <a href="index.php?controller=department&action=getAllKhoa">Quản lý khoa</a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'room') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=room&action=getAll">Phòng học</a>
+                <a href="index.php?controller=room&action=getAll">Quản lý phòng học</a>
             </li>
             <li class="<?= PermissionService::has($role, 'subjects') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=subject&action=getAllMonHoc">Môn học</a>
+                <a href="index.php?controller=subject&action=getAllMonHoc">Quản lý Môn học</a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'classes') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=classes&action=getAllLopHoc">Lớp hành chính</a>
+                <a href="index.php?controller=classes&action=getAllLopHoc">Quản lý Lớp hành chính</a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'semesters') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=semester&action=getAllSemester">Học kỳ</a>
+                <a href="index.php?controller=semester&action=getAllSemester">Quản lý học kỳ</a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'course_classes') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=course_classes&action=getAllHocPhan">Lớp học phần</a>
+                <a href="index.php?controller=course_classes&action=getAllHocPhan">QUản lý lớp học phần</a>
             </li>
 
         </ul>
     </li>
 
     <li class="<?= PermissionService::has($role, 'students') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn" href="index.php?controller=admin&action=getAllSinhVien">Hồ sơ sinh viên</a>
+        <a class="drop-btn" href="index.php?controller=admin&action=getAllSinhVien">Quản lý hồ sơ sinh viên</a>
     </li>
 
     <li class="<?= PermissionService::has($role, 'result') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn">Kết quả học tập ▸</a>
+        <a class="drop-btn">Quản lý kết quả học tập ▸</a>
         <ul class="submenu">
 
             <li class="<?= PermissionService::has($role, 'attendance') ? 'dropdown' : 'locked' ?>">
-                <a href="index.php?controller=lecturer&action=getCourseClass&type=attendance">Điểm danh</a>
+                <a href="index.php?controller=lecturer&action=getCourseClass&type=attendance">Quản lý điểm danh</a>
             </li>
 
             <li class="<?= PermissionService::has($role, 'score') ? 'dropdown' : 'locked' ?>">
                 <a href="index.php?controller=lecturer&action=getCourseClass&type=score">
-                    Nhập điểm <?= $role == 'lecturer' ? 'thành phần' : ($role == 'exam_office' ? 'thi' : '') ?>
+                    Quản lý nhập điểm <?= $role == 'lecturer' ? 'thành phần' : ($role == 'exam_office' ? 'thi' : '') ?>
                 </a>
             </li>
 
@@ -117,7 +117,7 @@ if($role === 'lecturer') {
         <a class="drop-btn" href="index.php?controller=timetable&action=getAllTkb">Lịch dạy</a>
     </li> -->
     <li class="<?= PermissionService::has($role, 'timetable') ? 'dropdown' : 'locked' ?>">
-        <a class="drop-btn" href="<?= $urlTimetable ?>">Thời khóa biểu</a>
+        <a class="drop-btn" href="<?= $urlTimetable ?>">Quản lý thời khóa biểu</a>
     </li>
 
 </ul>

@@ -62,22 +62,22 @@ $currentAction = $_GET['action'] ?? '';
 
                 <a href="?controller=student&action=profile"
                     class="<?= ($currentController == 'student' && $currentAction == 'profile') ? 'active' : '' ?>">
-                    Hồ sơ
+                    Xem hồ sơ
                 </a>
 
                 <a href="?controller=student&action=getCourseClass"
                     class="<?= ($currentController == 'student' && $currentAction == 'getCourseClass') ? 'active' : '' ?>">
-                    Môn học
+                    Đăng ký môn học
                 </a>
 
                 <a href="?controller=student&action=lichHoc"
                     class="<?= ($currentController == 'student' && $currentAction == 'lichHoc') ? 'active' : '' ?>">
-                    Thời khóa biểu
+                    Xem thời khóa biểu
                 </a>
 
                 <a href="?controller=student&action=getAllResult"
                     class="<?= ($currentController == 'student' && $currentAction == 'getAllResult') ? 'active' : '' ?>">
-                    Kết quả học tập
+                    Xem kết quả học tập
                 </a>
 
             <?php endif; ?>
