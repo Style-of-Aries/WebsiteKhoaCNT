@@ -61,10 +61,13 @@ WHERE s.id = '$id';
         $where = "";
 
         if (!empty($faculty_id)) {
-            $where .= " AND f.id = " . intval($faculty_id);
+            $where .= " AND d.id = " . intval($faculty_id);
         }
 
-        $sql = "SELECT
+        $sql = "SELECT *
+FROM (
+    -- toàn bộ query của bạn giữ nguyên
+    SELECT
         s.id,
         s.student_code,
         s.created_at,
@@ -126,16 +129,19 @@ WHERE s.id = '$id';
         c.class_name,
         d.name,
         f.name
-
+) AS t
     ORDER BY 
     CASE 
-        WHEN sp.status = 'Đang học' THEN 1
-        WHEN sp.status = 'Bảo lưu' THEN 2
-        WHEN sp.status = 'Thôi học' THEN 3
-        WHEN sp.status = 'Đã tốt nghiệp' THEN 4
+        WHEN t.status = 'Đang học' THEN 1
+        WHEN t.status = 'Bảo lưu' THEN 2
+        WHEN t.status = 'Thôi học' THEN 3
+        WHEN t.status = 'Đã tốt nghiệp' THEN 4
         ELSE 5
     END,
-    s.created_at DESC";
+
+    t.student_year ASC,
+
+    t.created_at DESC";
 
         return $this->__query($sql);
     }
@@ -308,7 +314,7 @@ WHERE st.id = $studentId;
             return true;
         }
     }
-    public function checkSdtById($phone,$id)
+    public function checkSdtById($phone, $id)
     {
         $phone = trim($phone);
         $sql = "Select *from student_profiles where phone='$phone' AND student_id != '$id'
@@ -318,7 +324,7 @@ WHERE st.id = $studentId;
             return true;
         }
     }
-    public function checkCCCDById($identity_number,$id)
+    public function checkCCCDById($identity_number, $id)
     {
         $identity_number = trim($identity_number);
         $sql = "Select *from student_profiles where identity_number='$identity_number' and student_id != '$id'

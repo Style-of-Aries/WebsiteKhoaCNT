@@ -9,6 +9,7 @@ $today = date('Y-m-d',NOW);
 /* kiểm tra lớp có buổi hôm nay không */
 mysqli_data_seek($sessions,0);
 $role = $_SESSION['user']['role'];
+$hasSession = mysqli_num_rows($sessions) > 0;
 $canEdit = false;
 
 while($s = mysqli_fetch_assoc($sessions)){

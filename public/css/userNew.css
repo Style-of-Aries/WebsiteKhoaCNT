@@ -934,3 +934,131 @@
   text-align: center;
   vertical-align: middle;
 }
+
+.profile-paper,
+.admin-table-wrapper,
+.container-main {
+  height: auto;          /* bỏ calc */
+  max-height: calc(100vh - var(--header-height));
+}
+
+.container-main {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.welcome-text {
+  font-size: 50px;
+}
+
+@media (max-width: 768px) {
+  .welcome-text {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 992px) {
+
+  /* layout chung */
+  .profile-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* bảng scroll ngang */
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  .main-table {
+    min-width: 900px;
+  }
+
+  /* grid thời khóa biểu */
+  .tkb-grid {
+    grid-template-columns: 60px repeat(6, minmax(120px, 1fr));
+    overflow-x: auto;
+  }
+
+  /* card */
+  .card {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .profile-paper {
+    padding: 20px;
+  }
+
+  .info-row {
+    grid-template-columns: 1fr;
+  }
+
+  .table-toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .table-toolbar input {
+    width: 100%;
+  }
+
+  .att-btn {
+    width: 100%;
+  }
+
+  .welcome-text {
+    font-size: 24px;
+  }
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.main-table {
+  min-width: 1000px;
+}
+html {
+  scroll-behavior: smooth;
+}
+input, select, textarea {
+  font-size: 16px; /* tránh zoom iOS */
+}
+.header-info .info-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+}
+.stats-box,
+.filter-form,
+.att-form-right {
+  flex-wrap: wrap;
+}
+button {
+  white-space: nowrap;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* áp dụng cho cả 2 bảng */
+.main-table,
+.grade-table {
+  width: 100%;
+  min-width: 1000px;
+}
+@media (max-width: 768px) {
+  .main-table,
+  .grade-table {
+    min-width: 700px; /* giảm lại cho mobile */
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+}

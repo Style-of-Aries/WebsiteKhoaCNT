@@ -101,6 +101,8 @@ class classesModel
     FROM classes c
     LEFT JOIN department d ON c.department_id = d.id
     LEFT JOIN lecturer l ON c.lecturer_id = l.id
+    ORDER BY c.class_code
+    
 ";
         $query = $this->__query($sql);
         $classes = [];

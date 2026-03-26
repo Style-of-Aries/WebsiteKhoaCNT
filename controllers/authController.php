@@ -43,21 +43,21 @@ class authController
             $result = $this->userModel->getByUsername($name);
             $user = mysqli_fetch_assoc($result);
 
-            // ❗ 1. Kiểm tra user tồn tại trước
+            //  Kiểm tra user tồn tại trước
             if (!$user) {
                 $errorLogin = "Tài khoản không tồn tại";
                 include_once "./../views/auth/login.php";
                 return;
             }
 
-            // ❗ 2. Kiểm tra mật khẩu
+            //  Kiểm tra mật khẩu
             if (trim($user['password']) !== $password) {
                 $errorLogin = "Sai mật khẩu";
                 include_once "./../views/auth/login.php";
                 return;
             }
 
-            // ❗ 3. Lấy profile sau khi chắc chắn user tồn tại
+            //  Lấy profile sau khi chắc chắn user tồn tại
             $profile = $this->userModel->getUserProfile(
                 $user['role'],
                 $user['ref_id']

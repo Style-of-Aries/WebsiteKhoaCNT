@@ -54,7 +54,18 @@ $isDashboard = ($_GET['view'] ?? '') === 'dashboard';
             <td><?= htmlspecialchars($user['student_code']) ?></td>
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td><?= htmlspecialchars($user['department_name']) ?></td>
-            <td>Năm <?= htmlspecialchars($user['student_year']) ?></td>
+            <td>
+              <?php
+              $yearMap = [
+                1 => 'Năm nhất',
+                2 => 'Năm hai',
+                3 => 'Năm ba',
+                4 => 'Năm tư'
+              ];
+
+              echo $yearMap[$user['student_year']] ?? 'Năm nhất';
+              ?>
+            </td>
             <td class="status">
               <?php if ($user['status'] == 'Đang học'): ?>
                 <span class="count-badge green">Đang học</span>

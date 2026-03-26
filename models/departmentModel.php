@@ -293,7 +293,7 @@ GROUP BY
     {
         $sql = "SELECT id, name 
             FROM department 
-            WHERE type = 'faculty'";
+            WHERE type = 'department'";
 
         return $this->__query($sql);
     }

@@ -355,54 +355,57 @@ ORDER BY cs.session_date ASC";
     {
         $sql = "
     SELECT
-    sb.name AS subject_name,
-    t.day_of_week,
-    t.session,
-    r.room_name,
-    l.full_name AS lecturer_name,
+        sb.name AS subject_name,
+        cs.day_of_week,
+        cs.session,
+        cs.session_date,
+        r.room_name,
+        l.full_name AS lecturer_name,
 
-    -- Gộp các lớp hành chính học chung
-    GROUP_CONCAT(DISTINCT c.class_name ORDER BY c.class_name SEPARATOR '+') 
-        AS admin_classes
+        GROUP_CONCAT(DISTINCT c.class_name ORDER BY c.class_name SEPARATOR '+') 
+            AS admin_classes
 
-FROM course_classes cc
+    FROM class_sessions cs
 
-JOIN subjects sb 
-    ON sb.id = cc.subject_id
+    JOIN course_classes cc 
+        ON cc.id = cs.course_class_id
 
-JOIN timetables t 
-    ON t.course_class_id = cc.id
+    JOIN semesters sm 
+        ON sm.id = cc.semester_id
 
-JOIN rooms r 
-    ON r.id = t.room_id
+    JOIN subjects sb 
+        ON sb.id = cc.subject_id
 
-JOIN lecturer l 
-    ON l.id = cc.lecturer_id
+    JOIN rooms r 
+        ON r.id = cs.room_id
 
--- Lấy toàn bộ sinh viên trong học phần
-JOIN student_course_classes scc 
-    ON scc.course_class_id = cc.id
+    JOIN lecturer l 
+        ON l.id = cc.lecturer_id
 
-JOIN student st 
-    ON st.id = scc.student_id
+    JOIN student_course_classes scc 
+        ON scc.course_class_id = cc.id
 
-JOIN classes c 
-    ON c.id = st.class_id
+    JOIN student st 
+        ON st.id = scc.student_id
 
-WHERE cc.lecturer_id = $lecturerId
-  AND t.start_week <= $week
-  AND t.end_week >= $week
+    JOIN classes c 
+        ON c.id = st.class_id
 
-GROUP BY 
-    sb.name,
-    t.day_of_week,
-    t.session,
-    r.room_name,
-    l.full_name
+    WHERE cc.lecturer_id = '$lecturerId'
+      AND cs.week_number = '$week'
+      AND sm.is_active = 1
 
-ORDER BY 
-    t.day_of_week,
-    FIELD(t.session, 'Sáng', 'Chiều');
+    GROUP BY 
+        sb.name,
+        cs.day_of_week,
+        cs.session,
+        cs.session_date,
+        r.room_name,
+        l.full_name
+
+    ORDER BY 
+        cs.day_of_week,
+        FIELD(cs.session, 'Sáng', 'Chiều')
 
     ";
 

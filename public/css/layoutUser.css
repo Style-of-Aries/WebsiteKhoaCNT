@@ -25,8 +25,9 @@
 /* RESET */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-
 body {
   margin: 0;
   padding: 0;
@@ -392,11 +393,11 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
 /* ================= CONTENT ================= */
 .portal-content {
   flex: 1;
-  margin-top: var(--header-height); /* Height of the header */
+  margin-top: var(--header-height);
   padding: 20px;
-  height: 100vh;
-  /* overflow: auto; */
-  color: var(--text-main);
+
+  height: auto;
+  overflow-x: auto;
 }
 
 /* ================= MOBILE ================= */
@@ -553,4 +554,67 @@ More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
 .alert-error {
   background-color: var(--red-main);
   color: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+} 
+input, select, textarea {
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 16px; /* tránh zoom iOS */
+}
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .header-nav {
+
+    /* flex-direction: column; */
+    gap: 10px;
+  }
+
+  .header-right {
+    margin-left: auto;
+  }
+
+  .portal-content {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .portal-header {
+    padding: 10px;
+  }
+
+  .header-left {
+    font-size: 16px;
+  }
+
+  .header-nav a {
+    font-size: 14px;
+  }
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.attendance-table {
+  min-width: 1000px;
+}
+
+.attendance-table th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }

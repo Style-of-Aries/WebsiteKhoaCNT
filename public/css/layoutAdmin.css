@@ -1412,7 +1412,7 @@ select {
   /* padding: 20px; */
 }
 
-.card {
+.dashboard-cards .card {
   flex: 1;
   background-color: #2e253a;
   padding: 20px;
@@ -1423,7 +1423,7 @@ select {
   transition: 0.3s;
 }
 
-.card h3 {
+.dashboard-cards .card h3 {
   color: #fff;
   margin-bottom: 12px;
   font-size: 18px;
@@ -1432,12 +1432,12 @@ select {
   display: flex;
 }
 
-.card i {
+.dashboard-cards .card i {
   font-size: 35px;
   /* margin-right: 10px; */
 }
 
-.card p {
+.dashboard-cards .card p {
   font-size: 50px;
   font-weight: bold;
   color: #fff;
@@ -1445,7 +1445,7 @@ select {
   margin-left: 10px;
   /* text-align: left; */
 }
-.card:hover {
+.dashboard-cards .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }

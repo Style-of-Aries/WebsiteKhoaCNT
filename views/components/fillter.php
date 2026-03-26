@@ -9,7 +9,7 @@ $selected = $selected ?? null;
 ?>
 
 <select name="<?= $name ?>" onchange="this.form.submit()" class="select-filter">
-    <option value="">-- Tất cả khoa --</option>
+    <option value="">-- Tất cả ngành học --</option>
 
     <?php foreach ($departments as $d): ?>
         <option value="<?= $d['id'] ?>" <?= ($selected == $d['id']) ? 'selected' : '' ?>>

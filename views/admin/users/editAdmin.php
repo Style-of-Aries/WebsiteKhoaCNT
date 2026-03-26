@@ -27,7 +27,9 @@ ob_start();
 
 
 
-    <input type="submit" value="Lưu" name="btn_edit">
+    <button name="btn_edit" type="submit" class="btn-submit">
+        Lưu
+    </button>
 </form>
 
 <?php

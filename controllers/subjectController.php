@@ -165,7 +165,7 @@ class subjectController
             foreach ($components as $c) {
 
                 $type = $c['type'] ?? '';
-                $weight = (int) ($c['weight'] ?? 0);
+                $weight = (float) ($c['weight'] ?? 0);
                 // $nameComponent = trim($c['name'] ?? '');
 
                 // if ($nameComponent === '' && $error === '') {
@@ -196,14 +196,14 @@ class subjectController
                     $isProject = true;
                 }
 
-                $totalWeight += $weight;
+                $totalWeight += round($weight, 2);
             }
 
             if ($subjectNormal && (!$hasTX || !$hasDK) && $error === '') {
                 $error = "Môn thường phải có ít nhất 1 điểm thường xuyên và định kì";
             }
 
-            if ($totalWeight !== 100 && $error === '') {
+            if (abs($totalWeight - 100) > 0.01 && $error === '') {
                 $error = "Tổng trọng số phải bằng 100%";
             }
 

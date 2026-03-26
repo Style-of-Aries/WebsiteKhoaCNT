@@ -50,7 +50,7 @@ class userModel
 
             case 'admin':
                 return [
-                    'full_name' => 'Administrator',
+                    'full_name' => 'Quản trị viên',
                     'gender' => 'Nam'
                 ];
 

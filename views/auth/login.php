@@ -102,10 +102,10 @@
 
       <span class="error"><?php echo $errorLogin ?></span>
 
-      <div class="remember-forgot">
+      <!-- <div class="remember-forgot">
         <label><input type="checkbox" name="remember"> Nhớ mật khẩu</label>
         <a href="#">Quên mật khẩu?</a>
-      </div>
+      </div> -->
 
       <!-- <button type="submit" name="btn_login" class="btn">Đăng nhập</button> -->
       <button type="submit" name="btn_login">

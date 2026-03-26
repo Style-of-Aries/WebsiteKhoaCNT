@@ -38,7 +38,10 @@ ob_start();
         <p style="color:red;"><?= $errorName ?></p>
     <?php endif; ?>
 
-    <input type="submit" value="Lưu" name="btn_edit">
+    <!-- <input type="submit" value="Lưu" name="btn_edit"> -->
+    <button name="btn_edit" type="submit" class="btn-submit">
+        Lưu
+    </button>
 </form>
 
 <?php

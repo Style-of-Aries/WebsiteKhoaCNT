@@ -36,7 +36,10 @@ ob_start();
     </div>
 
 
-    <input type="submit" value="Thêm phòng học" name="btn_add">
+    <!-- <input type="submit" value="Thêm phòng học" name="btn_add"> -->
+    <button name="btn_add" type="submit" class="btn-submit">
+        Thêm phòng học
+    </button>
 </form>
 
 <?php

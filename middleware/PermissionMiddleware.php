@@ -23,7 +23,8 @@ class PermissionMiddleware
             return; // không chặn login
         }
         if (!isset($_SESSION['user']['role'])) {
-            die('🚫 Chưa đăng nhập');
+            header('location: index.php');
+            exit();
         }
 
         $key = strtolower($controller . '@' . $action);
