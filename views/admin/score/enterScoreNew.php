@@ -92,7 +92,7 @@ $hasEditableInput = false;
                                         // Phòng khảo thí nhập CK sau khi kết thúc môn
                                         if (
                                             $role === 'exam_office' &&
-                                            $statusCourseClass !== 'studying' &&
+                                            
                                             $c['type'] === 'CK'
                                         ) {
                                             $canEdit = true;
