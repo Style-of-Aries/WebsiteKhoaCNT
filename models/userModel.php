@@ -83,10 +83,10 @@ SELECT
         WHEN 'admin' THEN 'Quản trị viên'
         WHEN 'lecturer' THEN 'Giảng viên'
         WHEN 'student' THEN 'Sinh viên'
-        WHEN 'training_office' THEN 'Phòng đào tạo'
-        WHEN 'academic_affairs' THEN 'Phòng học vụ'
-        WHEN 'exam_office' THEN 'Phòng khảo thí'
-        WHEN 'student_affairs' THEN 'Phòng công tác sinh viên'
+        WHEN 'training_office' THEN 'Cán bộ phòng đào tạo'
+        WHEN 'academic_affairs' THEN 'Cán bộ phòng học vụ'
+        WHEN 'exam_office' THEN 'Cán bộ phòng khảo thí'
+        WHEN 'student_affairs' THEN 'Cán bộ phòng công tác sinh viên'
         ELSE u.role
     END AS role
 
@@ -563,19 +563,19 @@ WHERE u.role = 'lecturer'";
                     $sql = "DELETE FROM student_profiles WHERE student_id = $ref_id";
                     break;
 
-                case 'Phòng đào tạo':
+                case 'Cán bộ phòng đào tạo':
                     $sql = "DELETE FROM training_office WHERE id = $ref_id";
                     break;
 
-                case 'Phòng học vụ':
+                case 'Cán bộ phòng học vụ':
                     $sql = "DELETE FROM academic_affairs WHERE id = $ref_id";
                     break;
 
-                case 'Phòng khảo thí':
+                case 'Cán bộ phòng khảo thí':
                     $sql = "DELETE FROM exam_office WHERE id = $ref_id";
                     break;
 
-                case 'Phòng công tác sinh viên':
+                case 'Cán bộ phòng công tác sinh viên':
                     $sql = "DELETE FROM student_affairs WHERE id = $ref_id";
                     break;
 

@@ -21,11 +21,11 @@ ob_start();
         <label>Role</label>
         <select name="role" id="roleSelect" onchange="toggleDepartment()">
             <!-- <option value="student">Sinh viên</option> -->
-            <option value="training_office">Phòng đào tạo</option>
+            <option value="training_office">Cán bộ phòng đào tạo</option>
             <option value="lecturer">Giảng viên</option>
-            <option value="academic_affairs">Học vụ</option>
-            <option value="exam_office">Khảo thí</option>
-            <option value="student_affairs">Công tác SV</option>
+            <option value="academic_affairs">Cán bộ phòng học vụ</option>
+            <option value="exam_office">Cán bộ phòng Khảo thí</option>
+            <option value="student_affairs">Cán bộ phòng Công tác HSSV</option>
         </select>
     </div>
     <div class="row" id="department_id" style="display:none;">
