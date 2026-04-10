@@ -42,7 +42,18 @@ Thiết kế hệ thống
 - Phân quyền theo Role-Based Access Control (RBAC)
 - Kiểm soát logic và dữ liệu ở backend
 
+Điểm nổi bật
+
+- Xây dựng hệ thống phân quyền RBAC với 5 vai trò khác nhau
+- Kiểm soát đăng ký học phần:
+  + Giới hạn số lượng sinh viên
+  + Kiểm tra điều kiện tiên quyết
+- Xử lý logic thời khóa biểu:
+  + Tránh trùng phòng, trùng lịch
+- Thiết kế database chuẩn hóa, đảm bảo ràng buộc dữ liệu
+
 Demo
+
 <img width="915" height="491" alt="image" src="https://github.com/user-attachments/assets/8286bd3f-ca03-4d23-a75b-4252ba2b6eb3" />
 <p align="center"><i>Hình 1. Màn hình chức năng Đăng nhập</i></p>
 <img width="915" height="435" alt="image" src="https://github.com/user-attachments/assets/79d8a277-8dfe-404d-8ef4-3b519bbdb2be" />
