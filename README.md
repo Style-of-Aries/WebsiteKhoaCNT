@@ -11,7 +11,7 @@ Công nghệ sử dụng
 - PHP (lập trình hướng đối tượng - OOP)
 - MySQL
 - HTML, CSS, JavaScript
-- XAMPP
+- Laragon
 
 Chức năng chính
 
