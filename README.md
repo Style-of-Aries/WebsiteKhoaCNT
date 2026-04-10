@@ -52,6 +52,18 @@ Thiết kế hệ thống
   + Tránh trùng phòng, trùng lịch
 - Thiết kế database chuẩn hóa, đảm bảo ràng buộc dữ liệu
 
+Cấu trúc thư mục
+
+- /config       : cấu hình hệ thống (database, app config)
+- /controllers  : xử lý request, điều hướng logic
+- /models       : thao tác dữ liệu và làm việc với database
+- /services     : xử lý business logic (tách khỏi controller)
+- /middleware   : kiểm tra quyền truy cập, xác thực người dùng
+- /views        : giao diện người dùng (UI)
+- /public       : tài nguyên tĩnh (CSS, JS, images)
+- /database     : file SQL và dữ liệu mẫu
+- index.php     : entry point của hệ thống
+
 Demo
 
 <img width="915" height="491" alt="image" src="https://github.com/user-attachments/assets/8286bd3f-ca03-4d23-a75b-4252ba2b6eb3" />
@@ -63,7 +75,7 @@ Demo
 <img width="915" height="453" alt="image" src="https://github.com/user-attachments/assets/be86ba73-0d1d-4ea3-b1ea-47aa4be0a843" />
 <p align="center"><i>Hình 4. Màn hình chức năng Xem thời khóa biểu</i></p>
 <img width="915" height="429" alt="image" src="https://github.com/user-attachments/assets/349efed1-497d-4775-b21e-b12e5d2c55d4" />
-<p align="center"><i>Hình 5. Màn hình chức năng Quản lý hồ sơ sinh viênp</i></p>
+<p align="center"><i>Hình 5. Màn hình chức năng Quản lý hồ sơ sinh viên</i></p>
 <img width="915" height="434" alt="image" src="https://github.com/user-attachments/assets/39cf65e7-db00-4e23-996f-6fe366e0c22b" />
 <p align="center"><i>Hình 6. Màn hình chức năng Thêm hồ sơ sinh viên</i></p>
 <img width="915" height="427" alt="image" src="https://github.com/user-attachments/assets/07156b00-d2ca-4513-96de-bcb447587fe4" />
